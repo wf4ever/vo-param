@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<UWS_Service xmlns="http://www.ivoa.net/xml/Parameter/v0.1"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://www.ivoa.net/xml/Parameter/v0.1 UWS2-V1.1.xsd"
+>
+   <ServiceId>CMZ_PROTO_01</ServiceId>
+   <serviceName>name</serviceName>
+   <Description>This simple service take as parameters a 3D vector speed, a mass and a time. It computes the kinetic energy and the displacement, assuming the speed is constant</Description>
+   <ParameterList>
+      <parameter>
+         <Name>speedX</Name>
+         <ParameterType>real</ParameterType>
+         <SkossConcept>SKOSS_SPEED_COMPONENT</SkossConcept>
+         <Unit>m/s</Unit>
+         <Precision>0.0001</Precision>
+      </parameter>
+      <parameter>
+         <Name>speedY</Name>
+         <ParameterType>real</ParameterType>
+         <SkossConcept>SKOSS_SPEED_COMPONENT</SkossConcept>
+         <Unit>m/s</Unit>
+         <Precision>0.0001</Precision>
+      </parameter>
+      <parameter>
+         <Name>speedZ</Name>
+         <ParameterType>real</ParameterType>
+         <SkossConcept>SKOSS_SPEED_COMPONENT</SkossConcept>
+         <Unit>m/s</Unit>
+         <Precision>0.0001</Precision>
+      </parameter>
+      <parameter>
+         <Name>mass</Name>
+         <ParameterType>real</ParameterType>
+         <SkossConcept>SKOSS_MASS</SkossConcept>
+         <Unit>kg</Unit>
+         <Precision>0.0001</Precision>
+      </parameter>
+      <parameter>
+         <Name>E</Name>
+         <ParameterType>real</ParameterType>
+         <SkossConcept>SKOSS_ENERGY</SkossConcept>
+         <Unit>J</Unit>
+         <Precision>0.0001</Precision>
+      </parameter>
+      <parameter>
+         <Name>time</Name>
+         <ParameterType>real</ParameterType>
+         <SkossConcept>SKOSS_TIME</SkossConcept>
+         <Unit>s</Unit>
+         <Precision>0.0001</Precision>
+      </parameter>
+      <parameter>
+         <Name>distance</Name>
+         <ParameterType>real</ParameterType>
+         <SkossConcept>SKOSS_LENGHT</SkossConcept>
+         <Unit>m</Unit>
+         <Precision>0.0001</Precision>
+      </parameter>
+   </ParameterList>
+   <Inputs>
+      <parameterRef>
+         <parameterName>mass</parameterName>
+      </parameterRef>
+      <parameterRef>
+         <parameterName>time</parameterName>
+      </parameterRef>
+      <ConstraintOnGroup>
+         <Condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:type="always"
+         >
+            <Criterium>
+               <expression xsi:type="AtomicParameterExpression">
+                  <parameterRef>
+                     <parameterName>time</parameterName>
+                  </parameterRef>
+               </expression>
+               <conditionType xsi:type="ValueLargerThan">
+                  <Value>0</Value>
+                  <reached>true</reached>
+               </conditionType>
+            </Criterium>
+         </Condition>
+         <Condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:type="always"
+         >
+            <Criterium>
+               <expression xsi:type="AtomicParameterExpression">
+                  <parameterRef>
+                     <parameterName>mass</parameterName>
+                  </parameterRef>
+               </expression>
+               <conditionType xsi:type="ValueLargerThan">
+                  <Value>0</Value>
+                  <reached>true</reached>
+               </conditionType>
+            </Criterium>
+         </Condition>
+      </ConstraintOnGroup>
+      <ParameterGroup>
+         <Name>vectorSpeed</Name>
+         <parameterRef>
+            <parameterName>speedX</parameterName>
+         </parameterRef>
+         <parameterRef>
+            <parameterName>speedY</parameterName>
+         </parameterRef>
+         <parameterRef>
+            <parameterName>speedZ</parameterName>
+         </parameterRef>
+         <ConstraintOnGroup>
+            <Condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:type="always"
+            >
+               <Criterium>
+                  <expression xsi:type="ParentesisContent">
+                     <expression xsi:type="AtomicParameterExpression">
+                        <parameterRef>
+                           <parameterName>speedX</parameterName>
+                        </parameterRef>
+                        <power>2</power>
+                        <Operation>
+                           <OperationType>PLUS</OperationType>
+                           <expression xsi:type="AtomicParameterExpression">
+                              <parameterRef>
+                                 <parameterName>speedY</parameterName>
+                              </parameterRef>
+                              <power>2</power>
+                              <Operation>
+                                 <OperationType>PLUS</OperationType>
+                                 <expression xsi:type="AtomicParameterExpression">
+                                    <parameterRef>
+                                       <parameterName>speedZ</parameterName>
+                                    </parameterRef>
+                                    <power>2</power>
+                                 </expression>
+                              </Operation>
+                           </expression>
+                        </Operation>
+                     </expression>
+                     <power>0.5</power>
+                  </expression>
+                  <conditionType xsi:type="ValueInRange">
+                     <Sup>
+                        <Value>299792458</Value>
+                        <reached>false</reached>
+                     </Sup>
+                     <Inf>
+                        <Value>0</Value>
+                        <reached>true</reached>
+                     </Inf>
+                  </conditionType>
+               </Criterium>
+            </Condition>
+         </ConstraintOnGroup>
+      </ParameterGroup>
+   </Inputs>
+   <Outputs>
+      <parameterRef>
+         <parameterName>E</parameterName>
+      </parameterRef>
+      <parameterRef>
+         <parameterName>distance</parameterName>
+      </parameterRef>
+      <ConstraintOnGroup>
+         <Condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:type="always"
+         >
+            <Criterium>
+               <expression xsi:type="AtomicParameterExpression">
+                  <parameterRef>
+                     <parameterName>E</parameterName>
+                  </parameterRef>
+               </expression>
+               <conditionType xsi:type="ValueLargerThan">
+                  <Value>0</Value>
+                  <reached>true</reached>
+               </conditionType>
+            </Criterium>
+         </Condition>
+      </ConstraintOnGroup>
+   </Outputs>
+</UWS_Service>

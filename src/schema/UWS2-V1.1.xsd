@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+   xmlns:pm="http://www.ivoa.net/xml/Parameter/v0.1" elementFormDefault="qualified"
+   targetNamespace="http://www.ivoa.net/xml/Parameter/v0.1"
+>
+   <xs:annotation>
+      <xs:documentation> IVOA Description of the set of parameters for a
+         process</xs:documentation>
+   </xs:annotation>
+   <xs:element name="UWS_Service">
+      <xs:annotation>
+         <xs:documentation> The base application description. An
+            application in this context is simply some sort of process
+            that has input parameters and produces output parameters.
+         </xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="ServiceId" type="xs:string"
+               minOccurs="1" maxOccurs="1" />
+            <xs:element name="serviceName" type="xs:string"
+               minOccurs="1" maxOccurs="1" />
+            <xs:element name="Description" type="xs:string"
+               minOccurs="1" maxOccurs="1" />
+            <xs:element name="ParameterList" type="pm:ParameterList"
+               minOccurs="1" maxOccurs="1" />
+            <xs:element name="Inputs" type="pm:ParameterGroup"
+               minOccurs="1" maxOccurs="1"
+            >
+            </xs:element>
+            <xs:element name="Outputs" type="pm:ParameterGroup"
+               minOccurs="1" maxOccurs="1" />
+         </xs:sequence>
+      </xs:complexType>
+      <xs:unique name="KeyName">
+         <xs:selector xpath="./pm:ParameterList/pm:parameter" />
+         <xs:field xpath="pm:Name" />
+      </xs:unique>
+      <xs:keyref name="expressionKeyref" refer="pm:KeyName">
+                     <xs:selector xpath=".//pm:parameterRef" />
+                     <xs:field xpath="pm:parameterName" />
+                  </xs:keyref>
+ 
+   </xs:element>
+   <xs:complexType name="ParameterList">
+      <xs:sequence>
+         <xs:element name="parameter" type="pm:SingleParameter"
+            minOccurs="1" maxOccurs="unbounded"
+         >
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="ParameterReference">
+      <xs:sequence>
+         <xs:element name="parameterName" type="xs:string">
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="Description">
+      <xs:sequence>
+         <xs:element name="humanReadableDescription" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:simpleType name="ParameterType">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="boolean" />
+         <xs:enumeration value="String" />
+         <xs:enumeration value="rational" />
+         <xs:enumeration value="integer" />
+         <xs:enumeration value="real" />
+         <xs:enumeration value="date" />
+         <xs:enumeration value="file" />
+      </xs:restriction>
+   </xs:simpleType>
+   <xs:complexType name="SingleParameter">
+      <xs:sequence>
+         <xs:element name="Name" type="xs:string" minOccurs="1"
+            maxOccurs="1"
+         >
+         </xs:element>
+         <xs:element name="ParameterType" type="pm:ParameterType"
+            minOccurs="1" maxOccurs="1"
+         >
+         </xs:element>
+         <xs:element name="SkossConcept" type="xs:string"
+            minOccurs="1" maxOccurs="1" />
+         <xs:element name="Unit" type="xs:string" minOccurs="1"
+            maxOccurs="1" />
+         <xs:element name="Precision" type="xs:string"
+            minOccurs="1" maxOccurs="1" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="ParameterGroup">
+      <xs:sequence>
+         <xs:element name="Name" type="xs:string" maxOccurs="1"
+            minOccurs="0" />
+         <xs:element name="parameterRef" type="pm:ParameterReference"
+            minOccurs="0" maxOccurs="unbounded"
+         >
+        </xs:element>
+         <xs:element name="ConstraintOnGroup" type="pm:ConstraintOnGroup"
+            maxOccurs="1" minOccurs="0" />
+         <xs:element name="ParameterGroup" type="pm:ParameterGroup"
+            minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType abstract="true" name="Condition">
+      <xs:sequence>
+         <xs:element name="Criterium" type="pm:Criterium"
+            minOccurs="1" maxOccurs="1"
+         >
+         </xs:element>
+         <xs:element name="SubCondition" type="pm:Condition"
+            minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="always">
+      <xs:complexContent>
+         <xs:extension base="pm:Condition" />
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="if">
+      <xs:complexContent>
+         <xs:extension base="pm:Condition" />
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="and">
+      <xs:complexContent>
+         <xs:extension base="pm:Condition" />
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="or">
+      <xs:complexContent>
+         <xs:extension base="pm:Condition" />
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="then">
+      <xs:complexContent>
+         <xs:extension base="pm:Condition" />
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType abstract="true" name="AbstractCondition" />
+   <xs:complexType name="IsNull">
+      <xs:complexContent>
+         <xs:extension base="pm:AbstractCondition" />
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="isInteger">
+      <xs:complexContent>
+         <xs:extension base="pm:AbstractCondition">
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="isReal">
+      <xs:complexContent>
+         <xs:extension base="pm:AbstractCondition">
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="isRational">
+      <xs:complexContent>
+         <xs:extension base="pm:AbstractCondition">
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="BelongToSet">
+      <xs:complexContent>
+         <xs:extension base="pm:AbstractCondition">
+            <xs:sequence>
+               <xs:element name="Value" type="xs:string"
+                  minOccurs="1" maxOccurs="unbounded" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="ValueLargerThan">
+      <xs:complexContent>
+         <xs:extension base="pm:AbstractCondition">
+            <xs:sequence>
+               <xs:element name="Value" type="xs:string"
+                  maxOccurs="1" minOccurs="1" />
+               <xs:element name="reached" maxOccurs="1"
+                  minOccurs="1"
+               >
+                  <xs:simpleType>
+                     <xs:restriction base="xs:string">
+                        <xs:enumeration value="true" />
+                        <xs:enumeration value="false" />
+                     </xs:restriction>
+                  </xs:simpleType>
+               </xs:element>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="ValueSmallerThan">
+      <xs:complexContent>
+         <xs:extension base="pm:AbstractCondition">
+            <xs:sequence>
+               <xs:element name="Value" type="xs:string"
+                  maxOccurs="1" minOccurs="1" />
+               <xs:element name="reached" maxOccurs="1"
+                  minOccurs="1"
+               >
+                  <xs:simpleType>
+                     <xs:restriction base="xs:string">
+                        <xs:enumeration value="true" />
+                        <xs:enumeration value="false" />
+                     </xs:restriction>
+                  </xs:simpleType>
+               </xs:element>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="ValueDifferentOf">
+      <xs:complexContent>
+         <xs:extension base="pm:AbstractCondition">
+            <xs:sequence>
+               <xs:element name="Value" type="xs:string"
+                  maxOccurs="1" minOccurs="1" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="ValueInRange">
+      <xs:complexContent>
+         <xs:extension base="pm:AbstractCondition">
+            <xs:sequence>
+               <xs:element name="Sup" type="pm:ValueSmallerThan"
+                  maxOccurs="1" minOccurs="1" />
+               <xs:element name="Inf" type="pm:ValueLargerThan"
+                  maxOccurs="1" minOccurs="1" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="Criterium">
+      <xs:sequence>
+         <xs:element name="expression" type="pm:Expression"
+            minOccurs="1" maxOccurs="1"
+         >
+         </xs:element>
+         <xs:element name="conditionType" type="pm:AbstractCondition"
+            minOccurs="1" maxOccurs="1" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="ConstraintOnGroup">
+      <xs:sequence>
+         <xs:element name="Condition" type="pm:Condition"
+            maxOccurs="unbounded" minOccurs="1" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="Function">
+      <xs:complexContent>
+         <xs:extension base="pm:Expression">
+            <xs:sequence>
+               <xs:element name="functionName" maxOccurs="1"
+                  minOccurs="1"
+               >
+                  <xs:simpleType>
+                     <xs:restriction base="xs:string">
+                        <xs:enumeration value="abs" />
+                        <xs:enumeration value="sin" />
+                        <xs:enumeration value="cos" />
+                        <xs:enumeration value="tan" />
+                        <xs:enumeration value="asin" />
+                        <xs:enumeration value="acos" />
+                        <xs:enumeration value="atan" />
+                        <xs:enumeration value="exp" />
+                        <xs:enumeration value="log" />
+                     </xs:restriction>
+                  </xs:simpleType>
+               </xs:element>
+               <xs:element name="expression" type="pm:Expression" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="Operation">
+      <xs:sequence>
+         <xs:element name="OperationType" minOccurs="1"
+            maxOccurs="1"
+         >
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:enumeration value="PLUS" />
+                  <xs:enumeration value="MINUS" />
+                  <xs:enumeration value="MULTIPLIE" />
+                  <xs:enumeration value="DIVIDE" />
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="expression" type="pm:Expression"
+            maxOccurs="1" minOccurs="1" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType abstract="true" name="Expression">
+   </xs:complexType>
+   <xs:complexType name="ParentesisContent">
+      <xs:complexContent>
+         <xs:extension base="pm:Expression">
+            <xs:sequence>
+               <xs:element name="expression" type="pm:Expression"
+                  minOccurs="1" maxOccurs="1" />
+               <xs:element name="power" type="xs:string"
+                  maxOccurs="1" minOccurs="0" />
+               <xs:element name="Operation" type="pm:Operation"
+                  maxOccurs="1" minOccurs="0" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="AtomicParameterExpression">
+      <xs:complexContent>
+         <xs:extension base="pm:Expression">
+            <xs:sequence>
+               <xs:element name="parameterRef" type="pm:ParameterReference"
+                  maxOccurs="1" minOccurs="1"
+               >
+               </xs:element>
+               <xs:element name="power" type="xs:string"
+                  maxOccurs="1" minOccurs="0" />
+               <xs:element name="Operation" type="pm:Operation"
+                  maxOccurs="1" minOccurs="0" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="AtomicConstantExpression">
+      <xs:complexContent>
+         <xs:extension base="pm:Expression">
+            <xs:sequence>
+               <xs:element name="constant" type="xs:string"
+                  maxOccurs="1" minOccurs="1" />
+               <xs:element name="power" type="xs:string"
+                  maxOccurs="1" minOccurs="0" />
+               <xs:element name="Operation" type="pm:Operation"
+                  maxOccurs="1" minOccurs="0" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="FunctionExpression">
+      <xs:complexContent>
+         <xs:extension base="pm:Expression">
+            <xs:sequence>
+               <xs:element name="function" type="pm:Function"
+                  maxOccurs="1" minOccurs="1" />
+               <xs:element name="power" type="xs:string"
+                  maxOccurs="1" minOccurs="0" />
+               <xs:element name="Operation" type="pm:Operation"
+                  maxOccurs="1" minOccurs="0" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="MinMaxArgument">
+      <xs:sequence>
+         <xs:element maxOccurs="1" minOccurs="1" name="type">
+            <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:enumeration value="min" />
+                  <xs:enumeration value="MAX" />
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element maxOccurs="unbounded" minOccurs="2"
+            name="parameterName" type="xs:string" />
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="MinMaxFunctionExpression">
+      <xs:complexContent>
+         <xs:extension base="pm:Expression">
+            <xs:sequence>
+               <xs:element maxOccurs="1" minOccurs="1"
+                  name="expression" type="pm:MinMaxArgument" />
+               <xs:element maxOccurs="1" minOccurs="0" name="power"
+                  type="xs:string" />
+               <xs:element maxOccurs="1" minOccurs="0"
+                  name="Operation" type="pm:Operation" />
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+</xs:schema>

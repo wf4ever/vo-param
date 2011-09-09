@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<UWS_Service>
+	<ServiceId>CMZ_PROTO_02</ServiceId>
+	<Description>This service compute the momentum of a given particle. If
+		the particle has a mass, then the momentum is classical. If the
+		particle has no mass, we use de Broglie relation</Description>
+	<Inputs>
+		<parameter>
+			<Name>ParticleType</Name>
+			<ParameterType>String</ParameterType>
+			<SkossConcept>SKOSS_PARTICLE_FAMILY</SkossConcept>
+			<Unit>none</Unit>
+		</parameter>
+		<parameter>
+			<Name>ParticleMass</Name>
+			<ParameterType>real</ParameterType>
+			<SkossConcept>SKOSS_MASS</SkossConcept>
+			<Unit>kg</Unit>
+			<Precision>0.0001</Precision>
+		</parameter>
+		<parameter>
+			<Name>ParticleSpeedNorm</Name>
+			<ParameterType>real</ParameterType>
+			<SkossConcept>SKOS_SPEED</SkossConcept>
+			<Unit>m/s</Unit>
+			<Precision>0.0001</Precision>
+		</parameter>
+		<parameter>
+			<Name>ParticleFrequency</Name>
+			<ParameterType>real</ParameterType>
+			<SkossConcept>SKOSS_FREQUENCY</SkossConcept>
+			<Unit>Hz</Unit>
+			<Precision>0.0001</Precision>
+		</parameter>
+		<ConstraintOnGroup>
+			<Condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				xsi:type="always">
+				<Criterium>
+					<expression xsi:type="AtomicParameterExpression">
+						<parameterName>ParticleType</parameterName>
+					</expression>
+					<conditionType xsi:type="BelongToSet">
+						<Value>boson</Value>
+						<Value>fermion</Value>
+					</conditionType>
+				</Criterium>
+			</Condition>
+			<Condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				xsi:type="if">
+				<Criterium>
+					<expression xsi:type="AtomicParameterExpression">
+						<parameterName>ParticleMass</parameterName>
+					</expression>
+					<conditionType xsi:type="ValueLargerThan">
+						<Value>0</Value>
+						<reached>false</reached>
+					</conditionType>
+				</Criterium>
+				<SubCondition xsi:type="then">
+					<Criterium>
+						<expression xsi:type="AtomicParameterExpression">
+							<parameterName>ParticleSpeedNorm</parameterName>
+						</expression>
+						<conditionType xsi:type="ValueInRange">
+							<Sup>
+								<Value>299792458</Value>
+								<reached>false</reached>
+							</Sup>
+							<Inf>
+								<Value>0</Value>
+								<reached>true</reached>
+							</Inf>
+						</conditionType>
+					</Criterium>
+					<SubCondition xsi:type="and">
+						<Criterium>
+							<expression xsi:type="AtomicParameterExpression">
+								<parameterName>ParticleFrequency</parameterName>
+							</expression>
+							<conditionType xsi:type="IsNull" />
+						</Criterium>
+					</SubCondition>
+				</SubCondition>
+			</Condition>
+			<Condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				xsi:type="if">
+				<Criterium>
+					<expression xsi:type="AtomicParameterExpression">
+						<parameterName>ParticleMass</parameterName>
+					</expression>
+					<conditionType xsi:type="BelongToSet">
+						<Value>0</Value>
+					</conditionType>
+				</Criterium>
+				<SubCondition xsi:type="then">
+					<Criterium>
+						<expression xsi:type="AtomicParameterExpression">
+							<parameterName>ParticleFrequency</parameterName>
+						</expression>
+						<conditionType xsi:type="ValueLargerThan">
+							<Value>0</Value>
+							<reached>true</reached>
+						</conditionType>
+					</Criterium>
+					<SubCondition xsi:type="and">
+						<Criterium>
+							<expression xsi:type="AtomicParameterExpression">
+								<parameterName>ParticleSpeedNorm</parameterName>
+							</expression>
+							<conditionType xsi:type="IsNull" />
+						</Criterium>
+					</SubCondition>
+				</SubCondition>
+			</Condition>
+		</ConstraintOnGroup>
+	</Inputs>
+	<Outputs>
+		<parameter>
+			<Name>ParticleMomentum</Name>
+			<ParameterType>real</ParameterType>
+			<SkossConcept>SKOSS_IMPULSION</SkossConcept>
+			<Unit>Kg m/s</Unit>
+			<Precision>0.001</Precision>
+		</parameter>
+		<ConstraintOnGroup>
+			<Condition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				xsi:type="always">
+				<Criterium>
+					<expression xsi:type="AtomicParameterExpression">
+						<parameterName>ParticleMomentum</parameterName>
+					</expression>
+					<conditionType xsi:type="ValueLargerThan">
+						<Value>0</Value>
+						<reached>true</reached>
+					</conditionType>
+				</Criterium>
+			</Condition>
+		</ConstraintOnGroup>
+	</Outputs>
+</UWS_Service>

@@ -1,0 +1,37 @@
+<jxb:bindings version="1.0" xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+   xmlns:xs="http://www.w3.org/2001/XMLSchema"
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+    
+   xsi:schemaLocation="http://java.sun.com/xml/ns/jaxb http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd"
+>
+<!-- cannot make global stuff really global? complaining about not being bound to a schema... this seems broken for external bindings
+    Though from below it would seem that one global binding decl in one of the schema specific bindings does have global effect - messy..
+    
+    
+    <jxb:bindings node="*">
+        <jxb:globalBindings>
+       <xjc:javaType name="org.joda.time.DateTime" xmlType="xsd:dateTime"
+        adapter="net.ivoa.DateTimeXmlAdapter" />
+       </jxb:globalBindings>
+     </jxb:bindings>   
+ -->
+     <jxb:bindings schemaLocation="../schema/UWS2-V1.1.xsd"
+      node="/xs:schema"
+   >
+   <!-- 
+   <jxb:globalBindings>
+         <xjc:javaType name="org.joda.time.DateTime" xmlType="xs:dateTime"
+           adapter="net.ivoa.DateTimeXmlAdapter" />
+   
+   </jxb:globalBindings>
+   -->
+      <jxb:schemaBindings>
+         <jxb:package name="net.ivoa.parameter.model">
+            <jxb:javadoc><![CDATA[<body>Parameter classes</body>]]>
+            </jxb:javadoc>
+         </jxb:package>
+      </jxb:schemaBindings>
+   </jxb:bindings>
+   
+</jxb:bindings>
