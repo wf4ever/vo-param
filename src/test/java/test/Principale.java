@@ -9,10 +9,13 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import net.ivoa.parameter.model.Always;
+import net.ivoa.parameter.model.AlwaysConditionalSentence;
 import net.ivoa.parameter.model.AtomicParameterExpression;
 import net.ivoa.parameter.model.Condition;
 import net.ivoa.parameter.model.ConstraintOnGroup;
 import net.ivoa.parameter.model.Criterium;
+import net.ivoa.parameter.model.LogicalConnector;
 import net.ivoa.parameter.model.ObjectFactory;
 import net.ivoa.parameter.model.Operation;
 import net.ivoa.parameter.model.ParameterGroup;
@@ -184,19 +187,27 @@ public class Principale {
 		vir2.setSup(vst2);
 		speedCriterium.setConditionType(vir2);
 
-		Condition speedCondition = factory.createAlways();
+		Always speedCondition = factory.createAlways();
 		speedCondition.setCriterium(speedCriterium);
 
 		// Adding the three components of speed to the group speed
 		speed.getParameterRef().add(speedxref);
 		speed.getParameterRef().add(speedyref);
 		speed.getParameterRef().add(speedzref);
-
-		speedConstraint.getCondition().add(speedCondition);
+		
+		
+		AlwaysConditionalSentence alwaysSentence = factory.createAlwaysConditionalSentence();
+		
+		alwaysSentence.setAlways(speedCondition);
+		
+		
+		speedConstraint.getConditionalSentence().add(alwaysSentence);
 
 		// Adding the speed constraint to the group speed
 		speed.setConstraintOnGroup(speedConstraint);
 
+		
+		
 		// Defining constraint on time (must be positive)
 		AtomicParameterExpression timeExpression = factory
 				.createAtomicParameterExpression();
@@ -211,9 +222,7 @@ public class Principale {
 		vltime.setReached("true");
 		timeCriterium.setConditionType(vltime);
 
-		Condition timeCondition = factory.createAlways();
-		timeCondition.setCriterium(timeCriterium);
-
+		
 		// Defining constraint on mass (must be positive)
 		AtomicParameterExpression massExpression = factory
 				.createAtomicParameterExpression();
@@ -227,8 +236,29 @@ public class Principale {
 		vlmass.setReached("true");
 		massCriterium.setConditionType(vlmass);
 
-		Condition massCondition = factory.createAlways();
-		massCondition.setCriterium(massCriterium);
+		// Workin a little bit on inputs
+		inputsPG.getParameterRef().add(massRef);
+		inputsPG.getParameterRef().add(timeref);
+
+		inputsPG.getParameterGroup().add(speed);
+
+		ConstraintOnGroup inputsConstraint = factory.createConstraintOnGroup();
+		
+		LogicalConnector massAndTime = factory.createAnd();
+		massAndTime.setCriterium(timeCriterium);
+		massCriterium.setLogicalConnector(massAndTime);
+		
+		Always massAndTimePositive = factory.createAlways();
+		massAndTimePositive.setCriterium(massCriterium);
+		
+		
+		AlwaysConditionalSentence massAndTimeAlwaysSentence = factory.createAlwaysConditionalSentence();
+		massAndTimeAlwaysSentence.setAlways(massAndTimePositive);
+		
+		inputsConstraint.getConditionalSentence().add(massAndTimeAlwaysSentence);
+		
+
+		inputsPG.setConstraintOnGroup(inputsConstraint);
 
 		// Defining constraint on kinetic energy (must be positive)
 		AtomicParameterExpression kineticExpression = factory
@@ -243,27 +273,21 @@ public class Principale {
 		vlkinetic.setReached("true");
 		kineticCriterium.setConditionType(vlkinetic);
 
-		Condition kineticCondition = factory.createAlways();
-		kineticCondition.setCriterium(kineticCriterium);
-
-		// Workin a little bit on inputs
-		inputsPG.getParameterRef().add(massRef);
-		inputsPG.getParameterRef().add(timeref);
-
-		inputsPG.getParameterGroup().add(speed);
-
-		ConstraintOnGroup inputsConstraint = factory.createConstraintOnGroup();
-		inputsConstraint.getCondition().add(timeCondition);
-		inputsConstraint.getCondition().add(massCondition);
-
-		inputsPG.setConstraintOnGroup(inputsConstraint);
+				
+		Always alwaysKinetic = factory.createAlways();
+		alwaysKinetic.setCriterium(kineticCriterium);
+		
+		AlwaysConditionalSentence alwaysKineticEnergyPositiveSentence = factory.createAlwaysConditionalSentence();
+		alwaysKineticEnergyPositiveSentence.setAlways(alwaysKinetic);
+		
+		
 
 		// Working on outputs
 		outputsPG.getParameterRef().add(KenergyRef);
 		outputsPG.getParameterRef().add(mkRef(distance));
 
 		ConstraintOnGroup outputsConstraint = factory.createConstraintOnGroup();
-		outputsConstraint.getCondition().add(kineticCondition);
+		outputsConstraint.getConditionalSentence().add(alwaysKineticEnergyPositiveSentence);
 
 		outputsPG.setConstraintOnGroup(outputsConstraint);
 
