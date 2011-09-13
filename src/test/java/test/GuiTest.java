@@ -114,7 +114,6 @@ public class GuiTest extends JFrame {
 		
 		GuiTest test = new GuiTest(listeGroups, listeParams);
 		test.setVisible(true);
-		test.toString();
 	}
 
 	private static ParameterReference mkRef(SingleParameter par) {
