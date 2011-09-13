@@ -3,18 +3,16 @@ package test;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 import net.ivoa.parameter.model.Always;
-import net.ivoa.parameter.model.AlwaysConditionalSentence;
+import net.ivoa.parameter.model.AlwaysConditionalStatement;
 import net.ivoa.parameter.model.AtomicParameterExpression;
-import net.ivoa.parameter.model.Condition;
 import net.ivoa.parameter.model.ConstraintOnGroup;
-import net.ivoa.parameter.model.Criterium;
+import net.ivoa.parameter.model.Criterion;
 import net.ivoa.parameter.model.LogicalConnector;
 import net.ivoa.parameter.model.ObjectFactory;
 import net.ivoa.parameter.model.Operation;
@@ -22,7 +20,7 @@ import net.ivoa.parameter.model.ParameterGroup;
 import net.ivoa.parameter.model.ParameterList;
 import net.ivoa.parameter.model.ParameterReference;
 import net.ivoa.parameter.model.ParameterType;
-import net.ivoa.parameter.model.ParentesisContent;
+import net.ivoa.parameter.model.ParenthesisContent;
 import net.ivoa.parameter.model.SingleParameter;
 import net.ivoa.parameter.model.UWSService;
 import net.ivoa.parameter.model.ValueInRange;
@@ -44,7 +42,7 @@ public class Principale {
 		Marshaller marshaller = jaxbContext.createMarshaller();
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(
 				true));
-
+		marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, "http://www.ivoa.net/xml/Parameter/v0.1 UWS2-V1.1.xsd");
 		// Creating the object factory factory
 		ObjectFactory factory = new ObjectFactory();
 
@@ -168,27 +166,26 @@ public class Principale {
 
 		vx2.setOperation(plusVY2);
 
-		ParentesisContent speedNorm = factory.createParentesisContent();
+		ParenthesisContent speedNorm = factory.createParenthesisContent();
 		speedNorm.setExpression(vx2);
 		speedNorm.setPower("0.5");
 
-		// Creating the criterium related to the relativistic speed constraint
-		Criterium speedCriterium = factory.createCriterium();
-		speedCriterium.setExpression(speedNorm);
+		// Creating the criterion related to the relativistic speed constraint
+		Criterion speedCriterion = factory.createCriterion();
+		speedCriterion.setExpression(speedNorm);
 
-		ValueLargerThan vlt2 = factory.createValueLargerThan();
-		vlt2.setValue("0");
-		vlt2.setReached("true");
+		//example of constructor with all values set
+		ValueLargerThan vlt2 = new ValueLargerThan("0", true);
 		ValueSmallerThan vst2 = factory.createValueSmallerThan();
 		vst2.setValue("299792458");
-		vst2.setReached("false");
+		vst2.setReached(false);
 		ValueInRange vir2 = factory.createValueInRange();
 		vir2.setInf(vlt2);
 		vir2.setSup(vst2);
-		speedCriterium.setConditionType(vir2);
+		speedCriterion.setConditionType(vir2);
 
 		Always speedCondition = factory.createAlways();
-		speedCondition.setCriterium(speedCriterium);
+		speedCondition.setCriterion(speedCriterion);
 
 		// Adding the three components of speed to the group speed
 		speed.getParameterRef().add(speedxref);
@@ -196,12 +193,12 @@ public class Principale {
 		speed.getParameterRef().add(speedzref);
 		
 		
-		AlwaysConditionalSentence alwaysSentence = factory.createAlwaysConditionalSentence();
+		AlwaysConditionalStatement alwaysStatement = factory.createAlwaysConditionalStatement();
 		
-		alwaysSentence.setAlways(speedCondition);
+		alwaysStatement.setAlways(speedCondition);
 		
 		
-		speedConstraint.getConditionalSentence().add(alwaysSentence);
+		speedConstraint.getConditionalStatement().add(alwaysStatement);
 
 		// Adding the speed constraint to the group speed
 		speed.setConstraintOnGroup(speedConstraint);
@@ -215,26 +212,27 @@ public class Principale {
 		timeref.setParameterName(time.getName());
                 timeExpression.setParameterRef(timeref);
 
-		Criterium timeCriterium = factory.createCriterium();
-		timeCriterium.setExpression(timeExpression);
+		Criterion timeCriterion = factory.createCriterion();
+		timeCriterion.setExpression(timeExpression);
 		ValueLargerThan vltime = factory.createValueLargerThan();
 		vltime.setValue("0");
-		vltime.setReached("true");
-		timeCriterium.setConditionType(vltime);
+		vltime.setReached(true);
+		timeCriterion.setConditionType(vltime);
 
 		
 		// Defining constraint on mass (must be positive)
 		AtomicParameterExpression massExpression = factory
 				.createAtomicParameterExpression();
 		ParameterReference massRef = mkRef(mass);
-        massExpression.setParameterRef(massRef);
+                massExpression.setParameterRef(massRef);
 
-		Criterium massCriterium = factory.createCriterium();
-		massCriterium.setExpression(massExpression);
-		ValueLargerThan vlmass = factory.createValueLargerThan();
+		Criterion massCriterion = factory.createCriterion();
+		massCriterion.setExpression(massExpression);
+		//example of the "fluid" api
+		ValueLargerThan vlmass = factory.createValueLargerThan().withValue("0").withReached(false);
 		vlmass.setValue("0");
-		vlmass.setReached("true");
-		massCriterium.setConditionType(vlmass);
+		vlmass.setReached(true);
+		massCriterion.setConditionType(vlmass);
 
 		// Workin a little bit on inputs
 		inputsPG.getParameterRef().add(massRef);
@@ -245,17 +243,17 @@ public class Principale {
 		ConstraintOnGroup inputsConstraint = factory.createConstraintOnGroup();
 		
 		LogicalConnector massAndTime = factory.createAnd();
-		massAndTime.setCriterium(timeCriterium);
-		massCriterium.setLogicalConnector(massAndTime);
+		massAndTime.setCriterion(timeCriterion);
+		massCriterion.setLogicalConnector(massAndTime);
 		
 		Always massAndTimePositive = factory.createAlways();
-		massAndTimePositive.setCriterium(massCriterium);
+		massAndTimePositive.setCriterion(massCriterion);
 		
 		
-		AlwaysConditionalSentence massAndTimeAlwaysSentence = factory.createAlwaysConditionalSentence();
-		massAndTimeAlwaysSentence.setAlways(massAndTimePositive);
+		AlwaysConditionalStatement massAndTimeAlwaysStatement = factory.createAlwaysConditionalStatement();
+		massAndTimeAlwaysStatement.setAlways(massAndTimePositive);
 		
-		inputsConstraint.getConditionalSentence().add(massAndTimeAlwaysSentence);
+		inputsConstraint.getConditionalStatement().add(massAndTimeAlwaysStatement);
 		
 
 		inputsPG.setConstraintOnGroup(inputsConstraint);
@@ -266,19 +264,19 @@ public class Principale {
 		ParameterReference KenergyRef = mkRef(Kenergy);
         kineticExpression.setParameterRef(KenergyRef);
 
-		Criterium kineticCriterium = factory.createCriterium();
-		kineticCriterium.setExpression(kineticExpression);
+		Criterion kineticCriterion = factory.createCriterion();
+		kineticCriterion.setExpression(kineticExpression);
 		ValueLargerThan vlkinetic = factory.createValueLargerThan();
 		vlkinetic.setValue("0");
-		vlkinetic.setReached("true");
-		kineticCriterium.setConditionType(vlkinetic);
+		vlkinetic.setReached(true);
+		kineticCriterion.setConditionType(vlkinetic);
 
 				
 		Always alwaysKinetic = factory.createAlways();
-		alwaysKinetic.setCriterium(kineticCriterium);
+		alwaysKinetic.setCriterion(kineticCriterion);
 		
-		AlwaysConditionalSentence alwaysKineticEnergyPositiveSentence = factory.createAlwaysConditionalSentence();
-		alwaysKineticEnergyPositiveSentence.setAlways(alwaysKinetic);
+		AlwaysConditionalStatement alwaysKineticEnergyPositiveStatement = factory.createAlwaysConditionalStatement();
+		alwaysKineticEnergyPositiveStatement.setAlways(alwaysKinetic);
 		
 		
 
@@ -287,7 +285,7 @@ public class Principale {
 		outputsPG.getParameterRef().add(mkRef(distance));
 
 		ConstraintOnGroup outputsConstraint = factory.createConstraintOnGroup();
-		outputsConstraint.getConditionalSentence().add(alwaysKineticEnergyPositiveSentence);
+		outputsConstraint.getConditionalStatement().add(alwaysKineticEnergyPositiveStatement);
 
 		outputsPG.setConstraintOnGroup(outputsConstraint);
 

@@ -36,6 +36,11 @@
          <artifactId>logback-classic</artifactId>
          <version>0.9.29</version>
       </dependency>
+      <dependency>
+         <groupId>org.jvnet.jaxb2_commons</groupId>
+         <artifactId>jaxb2-basics-runtime</artifactId>
+         <version>0.6.0</version>
+      </dependency>
    </dependencies>
    <build>
       <plugins>
@@ -70,17 +75,42 @@
                   <include>*.xml</include>
                </bindingIncludes>
                <args>
+                  <!-- visitor args -->
                   <arg>-Xvisitor</arg>
                   <arg>-Xvisitor-package:net.ivoa.parameter.visitor</arg>
+                  <!-- basics args 
+                  <arg>-XtoString</arg>
+                  <arg>-Xequals</arg>
+                  <arg>-XhashCode</arg>
+                  <arg>-Xcopyable</arg>
+                  <arg>-Xmergeable</arg>-->
+                  <arg>-Xfluent-api</arg>
+                  <arg>-Xvalue-constructor</arg>
                </args>
                <forceRegenerate>true</forceRegenerate>
                <verbose>true</verbose>
                <plugins>
-                  <plugin>
+                  <plugin> <!-- visitor plugin -->
                      <groupId>com.massfords</groupId>
                      <artifactId>jaxb-visitor</artifactId>
                      <version>1.5</version>
                   </plugin>
+                  <plugin> <!-- basics plugin -->
+                     <groupId>org.jvnet.jaxb2_commons</groupId>
+                     <artifactId>jaxb2-basics</artifactId>
+                     <version>0.6.2</version>
+                  </plugin>
+                  <plugin>
+                     <groupId>org.jvnet.jaxb2_commons</groupId>
+                     <artifactId>jaxb2-fluent-api</artifactId>
+                     <version>3.0</version>
+                  </plugin>
+                  <plugin>
+                     <groupId>org.jvnet.jaxb2_commons</groupId>
+                     <artifactId>jaxb2-value-constructor</artifactId>
+                     <version>3.0</version>
+                  </plugin>
+ 
                </plugins>
             </configuration>
          </plugin>
