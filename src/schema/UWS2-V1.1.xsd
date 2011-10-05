@@ -270,6 +270,15 @@
          </xs:extension>
       </xs:complexContent>
    </xs:complexType>
+   <xs:complexType name="DefaultValueIs">
+      <xs:complexContent>
+         <xs:extension base="pm:AbstractCondition">
+            <xs:sequence>
+               <xs:element name="Value" type="xs:string" maxOccurs="1" minOccurs="1"/>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
    <xs:complexType name="ValueInRange">
       <xs:complexContent>
          <xs:extension base="pm:AbstractCondition">
