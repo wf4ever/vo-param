@@ -155,7 +155,6 @@
          <xs:element name="Unit" type="xs:string" minOccurs="0" maxOccurs="1"/>
          <xs:element name="Precision" type="pm:Expression" minOccurs="0" maxOccurs="1"/>
          <xs:element name="Dimension" type="pm:Expression" maxOccurs="1" minOccurs="1"/>
-         <xs:element name="DefaultValue" type="pm:Expression" maxOccurs="1" minOccurs="0"/>
       </xs:sequence>
       <xs:attribute name="dependency">
          <xs:simpleType>
@@ -303,11 +302,11 @@
          </xs:extension>
       </xs:complexContent>
    </xs:complexType>
-   <xs:complexType name="DefaultValueIs">
+   <xs:complexType name="DefaultValue">
       <xs:complexContent>
          <xs:extension base="pm:AbstractCondition">
             <xs:sequence>
-               <xs:element name="Value" type="xs:string" maxOccurs="1" minOccurs="1"/>
+               <xs:element name="Value" type="pm:Expression" maxOccurs="1" minOccurs="1"/>
             </xs:sequence>
          </xs:extension>
       </xs:complexContent>
