@@ -18,21 +18,25 @@
             <xs:element name="ServiceId" type="xs:string" minOccurs="1" maxOccurs="1">
                <xs:annotation>
                   <xs:documentation>The ivoa identifier for the service</xs:documentation>
-               </xs:annotation></xs:element>
+               </xs:annotation>
+            </xs:element>
             <xs:element name="serviceName" type="xs:string" minOccurs="1" maxOccurs="1"/>
             <xs:element name="Description" type="xs:string" minOccurs="1" maxOccurs="1"/>
             <xs:element name="ParameterList" type="pm:ParameterList" minOccurs="1" maxOccurs="1">
                <xs:annotation>
                   <xs:documentation>The list of all possible parameters both input and output parameters</xs:documentation>
-               </xs:annotation></xs:element>
+               </xs:annotation>
+            </xs:element>
             <xs:element name="Inputs" type="pm:ParameterGroup" minOccurs="1" maxOccurs="1">
- <xs:annotation>
-    <xs:documentation>The input parameters for a service.</xs:documentation>
- </xs:annotation></xs:element>
+               <xs:annotation>
+                  <xs:documentation>The input parameters for a service.</xs:documentation>
+               </xs:annotation>
+            </xs:element>
             <xs:element name="Outputs" type="pm:ParameterGroup" minOccurs="1" maxOccurs="1">
                <xs:annotation>
                   <xs:documentation>The parameters output from a service.</xs:documentation>
-               </xs:annotation></xs:element>
+               </xs:annotation>
+            </xs:element>
          </xs:sequence>
       </xs:complexType>
       <!-- keys to ensure that parameter names are unique -->
@@ -47,10 +51,10 @@
 
    </xs:element>
    <xs:complexType name="ParameterList">
-        <xs:annotation>
-           <xs:documentation>The list of possible parameters both input and output.</xs:documentation>
-        </xs:annotation>
-        <xs:sequence>
+      <xs:annotation>
+         <xs:documentation>The list of possible parameters both input and output.</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
          <xs:element name="parameter" type="pm:SingleParameter" minOccurs="1" maxOccurs="unbounded">
          </xs:element>
       </xs:sequence>
@@ -59,15 +63,17 @@
       <xs:attribute name="parameterName" type="xs:string">
          <xs:annotation>
             <xs:documentation>The name of the parameter being referred to.</xs:documentation>
-         </xs:annotation></xs:attribute>
+         </xs:annotation>
+      </xs:attribute>
    </xs:complexType>
    <xs:complexType name="Description">
       <xs:sequence>
          <xs:element name="humanReadableDescription" type="xs:string"/>
       </xs:sequence>
    </xs:complexType>
+
    <xs:simpleType name="ParameterType">
-        <xs:annotation>
+      <xs:annotation>
          <xs:documentation>The types that a parameter may have.</xs:documentation>
          <xs:documentation>
             Note that the types are made more specific by using the UCD attribute of the parameter definition. 
@@ -77,21 +83,24 @@
               <li>time - to provide suitable widgets for times and durations</li>
             </ul>
          </xs:documentation>
-        </xs:annotation>
-        <xs:restriction base="xs:string">
+      </xs:annotation>
+      <xs:restriction base="xs:string">
          <xs:enumeration value="boolean">
             <xs:annotation>
                <xs:documentation>A representation of a boolean - e.g. true/false on/off</xs:documentation>
-            </xs:annotation></xs:enumeration>
+            </xs:annotation>
+         </xs:enumeration>
          <xs:enumeration value="string">
             <xs:annotation>
                <xs:documentation>Data that can be interpreted as text.</xs:documentation>
-            </xs:annotation></xs:enumeration>
+            </xs:annotation>
+         </xs:enumeration>
          <xs:enumeration value="rational"/>
          <xs:enumeration value="complex">
             <xs:annotation>
                <xs:documentation>A complex number</xs:documentation>
-            </xs:annotation></xs:enumeration>
+            </xs:annotation>
+         </xs:enumeration>
          <xs:enumeration value="integer"/>
          <xs:enumeration value="real"/>
          <xs:enumeration value="date"/>
@@ -99,39 +108,63 @@
             <xs:annotation>
                <xs:documentation>Generic binary data that would normally be stored in a file.</xs:documentation>
                <xs:documentation>how to specify specific file types</xs:documentation>
-            </xs:annotation></xs:enumeration>
-        <xs:enumeration value="Table">
-         <xs:annotation><xs:documentation>Data formatted in a tabular fashion</xs:documentation></xs:annotation>
+            </xs:annotation>
          </xs:enumeration>
-         <xs:enumeration value="Image"><xs:annotation><xs:documentation>An image</xs:documentation></xs:annotation></xs:enumeration>
-         <xs:enumeration value="Spectrum"><xs:annotation><xs:documentation>A spectrum</xs:documentation></xs:annotation></xs:enumeration>
+         <xs:enumeration value="Table">
+            <xs:annotation>
+               <xs:documentation>Data formatted in a tabular fashion</xs:documentation>
+            </xs:annotation>
+         </xs:enumeration>
+         <xs:enumeration value="Image">
+            <xs:annotation>
+               <xs:documentation>An image</xs:documentation>
+            </xs:annotation>
+         </xs:enumeration>
+         <xs:enumeration value="Spectrum">
+            <xs:annotation>
+               <xs:documentation>A spectrum</xs:documentation>
+            </xs:annotation>
+         </xs:enumeration>
       </xs:restriction>
    </xs:simpleType>
+
+
+   <xs:simpleType name="functionType">
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="size"/>
+         <xs:enumeration value="abs"/>
+         <xs:enumeration value="sin"/>
+         <xs:enumeration value="cos"/>
+         <xs:enumeration value="tan"/>
+         <xs:enumeration value="asin"/>
+         <xs:enumeration value="acos"/>
+         <xs:enumeration value="atan"/>
+         <xs:enumeration value="exp"/>
+         <xs:enumeration value="log"/>
+      </xs:restriction>
+   </xs:simpleType>
+
+
    <xs:complexType name="SingleParameter">
       <xs:sequence>
-         <xs:element name="Name" type="xs:string" minOccurs="1"
-            maxOccurs="1"
-         >
-         </xs:element>
-         <xs:element name="ParameterType" type="pm:ParameterType"
-            minOccurs="1" maxOccurs="1"
-         >
-         </xs:element>
-         <xs:element name="UCD" type="xs:string" maxOccurs="1"
-            minOccurs="0"
-         >
-         </xs:element>
-         <xs:element name="UType" type="xs:string" maxOccurs="1" minOccurs="0"></xs:element>
-         <xs:element name="SkossConcept" type="xs:string" minOccurs="0"
-            maxOccurs="1"
-         />
-         <xs:element name="Unit" type="xs:string" minOccurs="0"
-            maxOccurs="1"
-         />
-         <xs:element name="Precision" type="xs:string" minOccurs="0"
-            maxOccurs="1"
-         />
+         <xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1"> </xs:element>
+         <xs:element name="ParameterType" type="pm:ParameterType" minOccurs="1" maxOccurs="1"> </xs:element>
+         <xs:element name="UCD" type="xs:string" maxOccurs="1" minOccurs="0"> </xs:element>
+         <xs:element name="UType" type="xs:string" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="SkossConcept" type="xs:string" minOccurs="0" maxOccurs="1"/>
+         <xs:element name="Unit" type="xs:string" minOccurs="0" maxOccurs="1"/>
+         <xs:element name="Precision" type="pm:Expression" minOccurs="0" maxOccurs="1"/>
+         <xs:element name="Dimension" type="pm:Expression" maxOccurs="1" minOccurs="1"/>
+         <xs:element name="DefaultValue" type="pm:Expression" maxOccurs="1" minOccurs="0"/>
       </xs:sequence>
+      <xs:attribute name="dependency">
+         <xs:simpleType>
+            <xs:restriction base="xs:string">
+               <xs:enumeration value="required"/>
+               <xs:enumeration value="optional"/>
+            </xs:restriction>
+         </xs:simpleType>
+      </xs:attribute>
    </xs:complexType>
    <xs:complexType name="ParameterGroup">
       <xs:sequence>
@@ -316,7 +349,8 @@
 
    <xs:complexType name="ConstraintOnGroup">
       <xs:sequence>
-         <xs:element name="conditionalStatement" type="pm:ConditionalStatement" minOccurs="0" maxOccurs="unbounded"/>
+         <xs:element name="conditionalStatement" type="pm:ConditionalStatement" minOccurs="0"
+            maxOccurs="unbounded"/>
       </xs:sequence>
    </xs:complexType>
 
@@ -324,23 +358,9 @@
       <xs:complexContent>
          <xs:extension base="pm:Expression">
             <xs:sequence>
-               <xs:element name="functionName" maxOccurs="1" minOccurs="1">
-                  <xs:simpleType>
-                     <xs:restriction base="xs:string">
-                        <xs:enumeration value="abs"/>
-                        <xs:enumeration value="sin"/>
-                        <xs:enumeration value="cos"/>
-                        <xs:enumeration value="tan"/>
-                        <xs:enumeration value="asin"/>
-                        <xs:enumeration value="acos"/>
-                        <xs:enumeration value="atan"/>
-                        <xs:enumeration value="exp"/>
-                        <xs:enumeration value="log"/>
-                     </xs:restriction>
-                  </xs:simpleType>
-               </xs:element>
                <xs:element name="expression" type="pm:Expression"/>
             </xs:sequence>
+            <xs:attribute name="functionName" type="pm:functionType"/>
          </xs:extension>
       </xs:complexContent>
    </xs:complexType>
@@ -365,7 +385,7 @@
          <xs:extension base="pm:Expression">
             <xs:sequence>
                <xs:element name="expression" type="pm:Expression" minOccurs="1" maxOccurs="1"/>
-               <xs:element name="power" type="xs:string" maxOccurs="1" minOccurs="0"/>
+               <xs:element name="power" type="pm:Expression" maxOccurs="1" minOccurs="0"/>
                <xs:element name="Operation" type="pm:Operation" maxOccurs="1" minOccurs="0"/>
             </xs:sequence>
          </xs:extension>
@@ -377,7 +397,7 @@
             <xs:sequence>
                <xs:element name="parameterRef" type="pm:ParameterReference" maxOccurs="1"
                   minOccurs="1"> </xs:element>
-               <xs:element name="power" type="xs:string" maxOccurs="1" minOccurs="0"/>
+               <xs:element name="power" type="pm:Expression" maxOccurs="1" minOccurs="0"/>
                <xs:element name="Operation" type="pm:Operation" maxOccurs="1" minOccurs="0"/>
             </xs:sequence>
          </xs:extension>
@@ -387,8 +407,8 @@
       <xs:complexContent>
          <xs:extension base="pm:Expression">
             <xs:sequence>
-               <xs:element name="constant" type="xs:string" maxOccurs="1" minOccurs="1"/>
-               <xs:element name="power" type="xs:string" maxOccurs="1" minOccurs="0"/>
+               <xs:element name="constant" type="xs:string" maxOccurs="unbounded" minOccurs="1"/>
+               <xs:element name="power" type="pm:Expression" maxOccurs="1" minOccurs="0"/>
                <xs:element name="Operation" type="pm:Operation" maxOccurs="1" minOccurs="0"/>
             </xs:sequence>
          </xs:extension>
@@ -399,7 +419,7 @@
          <xs:extension base="pm:Expression">
             <xs:sequence>
                <xs:element name="function" type="pm:Function" maxOccurs="1" minOccurs="1"/>
-               <xs:element name="power" type="xs:string" maxOccurs="1" minOccurs="0"/>
+               <xs:element name="power" type="pm:Expression" maxOccurs="1" minOccurs="0"/>
                <xs:element name="Operation" type="pm:Operation" maxOccurs="1" minOccurs="0"/>
             </xs:sequence>
          </xs:extension>
@@ -407,40 +427,39 @@
    </xs:complexType>
    <xs:complexType name="MinMaxArgument">
       <xs:sequence>
-         <xs:element maxOccurs="1" minOccurs="1" name="type">
-            <xs:simpleType>
-               <xs:restriction base="xs:string">
-                  <xs:enumeration value="min"/>
-                  <xs:enumeration value="MAX"/>
-               </xs:restriction>
-            </xs:simpleType>
-         </xs:element>
-         <xs:element maxOccurs="unbounded" minOccurs="2" name="parameterName" type="xs:string"/>
+         <xs:element maxOccurs="unbounded" minOccurs="2" name="parameterRef"
+            type="pm:ParameterReference"/>
       </xs:sequence>
+      <xs:attribute name="type">
+         <xs:simpleType>
+            <xs:restriction base="xs:string">
+               <xs:enumeration value="min"/>
+               <xs:enumeration value="MAX"/>
+            </xs:restriction>
+         </xs:simpleType>
+      </xs:attribute>
    </xs:complexType>
    <xs:complexType name="MinMaxFunctionExpression">
       <xs:complexContent>
          <xs:extension base="pm:Expression">
             <xs:sequence>
                <xs:element maxOccurs="1" minOccurs="1" name="expression" type="pm:MinMaxArgument"/>
-               <xs:element maxOccurs="1" minOccurs="0" name="power" type="xs:string"/>
+               <xs:element maxOccurs="1" minOccurs="0" name="power" type="pm:Expression"/>
                <xs:element maxOccurs="1" minOccurs="0" name="Operation" type="pm:Operation"/>
             </xs:sequence>
          </xs:extension>
       </xs:complexContent>
    </xs:complexType>
-   
-      <xs:attributeGroup name="cardinality">
+
+   <xs:attributeGroup name="cardinality">
       <xs:annotation>
          <xs:documentation>
             attributes for specifiying how often a parameter or
             parameter group should occur
          </xs:documentation>
       </xs:annotation>
-      <xs:attribute name="minOccurs" type="xs:int" use="optional"
-         default="1" />
-      <xs:attribute name="maxOccurs" type="xs:int" use="optional"
-         default="1">
+      <xs:attribute name="minOccurs" type="xs:int" use="optional" default="1"/>
+      <xs:attribute name="maxOccurs" type="xs:int" use="optional" default="1">
          <xs:annotation>
             <xs:documentation>
                a value of 0 implies unbounded
@@ -448,5 +467,4 @@
          </xs:annotation>
       </xs:attribute>
    </xs:attributeGroup>
-   
 </xs:schema>
