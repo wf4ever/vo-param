@@ -1,0 +1,106 @@
+\documentclass[11pt]{amsart}
+\usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\usepackage{hyperref}
+\usepackage{color}
+
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\title{The Parameter Description Language. }
+\author{Carlo Maria Zw\"olf, Paul Harrison and Franck Le Petit}
+%\date{}                                           % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+
+\section{Introduction}
+Bla Bla on PDL
+
+\section{Basic concepts and general ideas}
+
+
+\section{The SingleParameter Object}\label{par01}
+The {\it SingleParameter} object is the core element for describing jobs. 
+Every object of this type must be characterized by:
+\begin{itemize}
+\item A name (which is unique and is the Id of the parameter);
+\item A unique parameter type, which explain the nature of the current parameter. The admitted types are : boolean, string, rational, complex, integer, real, date;
+\item A unique dimension. A $1$-dimension corresponds to a scalar parameter whereas a dimension equal to N corresponds to a N-size vector. The dimension is expressed using an {\it expression} (cf. paragraph \ref{par02}). The result of the expression that appears in this {\it SingleParameter}-field object {\bf must be integer}.\footnote{This is obvious, since this value corresponds to a vector size.} 
+\end{itemize}
+The unique attribute {\it dependency} can take one of the two values {\bf required} or {\bf optional}. If required the parameter {\bf must be} provided to the service. If optional, the service could work even without the current parameter and the values will be considered for processing only if provided.\\
+
+Optional fields for the {\it SingleParameter} object are:
+\begin{itemize}
+\item a unique UCD : which is a reference to an existing UCD for characterizing the parameter (\textcolor{red}{to be extended});
+\item a unique Utype  : which is a reference to an existing Utype for characterizing the parameter (\textcolor{red}{to be extended});
+\item a unique SkossConcempt (\textcolor{red}{to be extended}).
+\item a unique Unit (\textcolor{red}{to be extended}).
+\item a unique precision. This field must be specified only for parameter types where precision-concepts has a sense. It has indeed no sense for integer, rational or string. It has sense, for instance, on real type. For understanding the meaning of this field, let the function $f$ be a model of a given service. If $i$ denotes the input parameter, $f(i)$ denotes the output. The precision $\delta$ is the smaller value such that $f(i+\delta) \neq f(i)$.\\ The precision is expressed using an {\it expression} (cf. paragraph \ref{par02}). The result of the expression that appears in this {\it precision}-field  {\bf must be} of the same type than (i.e. could be naturally casted to) the type appearing in the field {\it parameter type}.
+\end{itemize}
+
+\section{The Expression Objects}\label{par02}
+The {\it Expression} is the more versatile component of the PDL. It occurs almost everywhere: in defining fields for {\it SingleParameters} (cf. paragraph \ref{par01} ) or in defining conditions and criteria).\\
+Expression is an abstract object. In this section we are going to review all the concrete object extending and specializing expression.
+
+\subsection{The atomic parameter expression}\label{par02_01}
+The {\it AtomicParameterExpression} is the simplest expression that could be build involving a defined parameter. This object {\bf must contains} unique reference to a given parameter.\\
+Optional fields, valid only for numerical types, are : 
+\begin{itemize}
+\item A unique power expression;
+\item A unique operation (cf. paragraph \ref{par02_02}).
+\end{itemize}
+Let $p$ and $exp$ be respectively the parameter and the power expression we want to encapsulate. The composite object could be presented as follows:
+\begin{equation}
+ \underbrace{  p^{exp} \underbrace{  \overbrace{\left( \begin{array}{c} + \\ - \\ \ast  \\ \cdot \\ \div   \end{array} \right) }^{\mbox{\tiny Operation type}}
+ \overbrace{    \left( \mbox{AnotherExpression}\right) }^{\mbox{\tiny expression contained in operation}}   }_{\mbox{\tiny Operation object}}}_{\mbox{\tiny Atomic Parameter Expression}}
+\end{equation}
+To evaluate a given {\it atomicParameterExpression}, one proceed as follows: 
+Let $d_p$, $d_{exp}$ and $d_{oo}$ be respectively the dimension of the parameter $p$ referenced, the dimension of the power expression and the dimension of the expression contained into the operation object.\\
+The exponent part of the expression is legal if and only if:
+\begin{itemize}
+\item $d_p=d_{exp}$. In this case $p^{exp}$ is a $d_p$-size vector expression and $\forall$ $i=1,...,d_p$ the $i$ component of this vector is equal to ${p_i}^{exp_i}$, where $p_i$ is the value of the $i$ component of vector parameter $p$ and $exp_i$ is the value obtained by interpreting the $i$ component of vector expression $exp$.
+\item $d_{exp}=1$. In this case, $\forall$ $i=1,...,d_p$ the $i$ component of this vector is equal to ${p_i}^{exp}$, where $p_i$ is the same as defined above.
+\end{itemize} 
+Whatever the method is used, let us note $ep$ the result of this first step. Is is clear that the dimension of $ep$ 
+is always equal to $d_p$. In order to complete the evaluation of the expression, one should proceed as exposed in paragraph \ref{par02_02}, by taking there $b=ep$
+
+
+
+%Suppose we've already defined the ContainerExp  and the Contained_Expression.
+
+\subsection{The Operation object}\label{par02_02}
+The {\it Operation} object is used for expressing operations involving two expressions. This object {\bf must contain}:
+\begin{itemize}
+\item a unique attribute operationType. This attribute could take the following values: plus for the sum, minus for the difference, multiply for the standard product, scalarProduct for the scalar product and divide for the standard division. Hereafter these operators will be respectively denoted $+,-,\ast,\cdot, \div$. 
+\item a unique expression.
+\end{itemize}
+\begin{equation}\label{OperationEquation}
+\underbrace{ \overbrace{\left( \begin{array}{c} + \\ - \\ \ast  \\ \cdot \\ \div   \end{array} \right) }^{\mbox{\tiny Operation type}}
+ \overbrace{    \left( \mbox{ContaindedExpression}\right) }^{\mbox{\tiny expression contained in operation}}   }_{\mbox{\tiny Operation object}}
+\end{equation}
+
+The {\it Operation} object is always contained into an {\it Expression} (cf. paragraph \ref{par02}) and could not exists alone.
+Let $a$ be the result of the evaluation of the expression object containing the operation\footnote{this came from the evaluation of parameterRef field in case of an {\it AtomicParameterExpression} cf. paragraph \ref{par02}, from the evaluation of constant field in the case of a {\it AtomicConstantExpression} (\textcolor{red}{to be extended...})} and let $b$ the result of the evaluation of the expression contained into the operation. As usual, we note $d_a$ and $d_b$ the dimensions of $a$ and $b$.\\
+
+The operation evaluation is legal if and only if:
+\begin{itemize}
+\item $d_a=d_b$ and operation type (i.e. the operator) $op \in \{ + , - , \ast , \div \}$. In this case $a \, op \, b$ is a vector expression of size $d_a$ and $\forall$ $i=1,...,d_a$ the $i$ component of this vector is equal to
+$(a_i \, op \,b_i)$ (i.e. a term by term operation).
+\item $d_a = d_b$ and operation type $op$ is "$\cdot$". In this case $a \cdot b$ is the result of the scalar product $\sum_{i =1}^{d_a} a_i \ast b_i$. It is obvious that the dimension of this result is equal to $1$.
+\item $d_b=1$ and operation type (i.e. the operator) $op \in \{ + , - , \ast , \div \}$. In this case $a \, op \, b$ is a vector expression of size $d_a$ and $\forall$ $i=1,...,d_a$ the $i$ component of this vector is equal to
+$(a_i \, op \,b)$.
+\item $d_a=1$ and operation type (i.e. the operator) $op \in \{ + , - , \ast , \div \}$. This case in symmetric to the previous one.
+\end{itemize}
+
+The type of the result is automatically induced by standard cast operation performed during the evaluations (Indeed for example a double vector added to an integer vector is a double vector).  
+
+\end{document}
+
+
+
+ 
