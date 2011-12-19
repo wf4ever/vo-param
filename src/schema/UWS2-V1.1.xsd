@@ -268,7 +268,7 @@
       <xs:complexContent>
          <xs:extension base="pm:AbstractCondition">
             <xs:sequence>
-               <xs:element name="Value" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+               <xs:element name="Value" type="pm:Expression" minOccurs="1" maxOccurs="unbounded"/>
             </xs:sequence>
          </xs:extension>
       </xs:complexContent>
@@ -277,7 +277,7 @@
       <xs:complexContent>
          <xs:extension base="pm:AbstractCondition">
             <xs:sequence>
-               <xs:element name="Value" type="xs:string" maxOccurs="1" minOccurs="1"/>
+               <xs:element name="Value" type="pm:Expression" maxOccurs="1" minOccurs="1"/>
             </xs:sequence>
             <xs:attribute name="reached" type="xs:boolean"/>
          </xs:extension>
@@ -287,7 +287,7 @@
       <xs:complexContent>
          <xs:extension base="pm:AbstractCondition">
             <xs:sequence>
-               <xs:element name="Value" type="xs:string" maxOccurs="1" minOccurs="1"/>
+               <xs:element name="Value" type="pm:Expression" maxOccurs="1" minOccurs="1"/>
             </xs:sequence>
             <xs:attribute name="reached" type="xs:boolean"/>
          </xs:extension>
@@ -365,18 +365,18 @@
    </xs:complexType>
    <xs:complexType name="Operation">
       <xs:sequence>
-         <xs:element name="OperationType" minOccurs="1" maxOccurs="1">
-            <xs:simpleType>
-               <xs:restriction base="xs:string">
-                  <xs:enumeration value="PLUS"/>
-                  <xs:enumeration value="MINUS"/>
-                  <xs:enumeration value="MULTIPLY"/>
-                  <xs:enumeration value="DIVIDE"/>
-               </xs:restriction>
-            </xs:simpleType>
-         </xs:element>
          <xs:element name="expression" type="pm:Expression" maxOccurs="1" minOccurs="1"/>
       </xs:sequence>
+      <xs:attribute name="operationType">
+         <xs:simpleType>
+            <xs:restriction base="xs:string">
+               <xs:enumeration value="PLUS"/>
+               <xs:enumeration value="MINUS"/>
+               <xs:enumeration value="MULTIPLY"/>
+               <xs:enumeration value="DIVIDE"/>
+            </xs:restriction>
+         </xs:simpleType>
+      </xs:attribute>
    </xs:complexType>
    <xs:complexType abstract="true" name="Expression"> </xs:complexType>
    <xs:complexType name="ParenthesisContent">
@@ -410,6 +410,7 @@
                <xs:element name="power" type="pm:Expression" maxOccurs="1" minOccurs="0"/>
                <xs:element name="Operation" type="pm:Operation" maxOccurs="1" minOccurs="0"/>
             </xs:sequence>
+            <xs:attribute name="constatType" type="pm:ParameterType"/>
          </xs:extension>
       </xs:complexContent>
    </xs:complexType>
