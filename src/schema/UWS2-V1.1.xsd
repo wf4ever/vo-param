@@ -141,6 +141,8 @@
          <xs:enumeration value="atan"/>
          <xs:enumeration value="exp"/>
          <xs:enumeration value="log"/>
+         <xs:enumeration value="sum"/>
+         <xs:enumeration value="product"/>
       </xs:restriction>
    </xs:simpleType>
 
@@ -165,9 +167,10 @@
          </xs:simpleType>
       </xs:attribute>
    </xs:complexType>
+   
    <xs:complexType name="ParameterGroup">
       <xs:sequence>
-         <xs:element name="Name" type="xs:string" maxOccurs="1" minOccurs="0"/>
+         <xs:element name="Name" type="xs:string" maxOccurs="1" minOccurs="1"/>
          <xs:element name="parameterRef" type="pm:ParameterReference" minOccurs="0"
             maxOccurs="unbounded"> </xs:element>
          <xs:element name="ConstraintOnGroup" type="pm:ConstraintOnGroup" maxOccurs="1"
