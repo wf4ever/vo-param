@@ -167,7 +167,7 @@
          </xs:simpleType>
       </xs:attribute>
    </xs:complexType>
-   
+
    <xs:complexType name="ParameterGroup">
       <xs:sequence>
          <xs:element name="Name" type="xs:string" maxOccurs="1" minOccurs="1"/>
@@ -181,6 +181,12 @@
    </xs:complexType>
 
 
+   <xs:complexType name="ConstraintOnGroup">
+      <xs:sequence>
+         <xs:element name="conditionalStatement" type="pm:ConditionalStatement" minOccurs="0"
+            maxOccurs="unbounded"/>
+      </xs:sequence>
+   </xs:complexType>
    <xs:complexType abstract="true" name="ConditionalStatement"/>
 
    <xs:complexType name="IfThenConditionalStatement">
@@ -193,7 +199,6 @@
          </xs:extension>
       </xs:complexContent>
    </xs:complexType>
-
    <xs:complexType name="AlwaysConditionalStatement">
       <xs:complexContent>
          <xs:extension base="pm:ConditionalStatement">
@@ -346,14 +351,6 @@
       <xs:complexContent>
          <xs:extension base="pm:AbstractCriterion"> </xs:extension>
       </xs:complexContent>
-   </xs:complexType>
-
-
-   <xs:complexType name="ConstraintOnGroup">
-      <xs:sequence>
-         <xs:element name="conditionalStatement" type="pm:ConditionalStatement" minOccurs="0"
-            maxOccurs="unbounded"/>
-      </xs:sequence>
    </xs:complexType>
 
    <xs:complexType name="Function">

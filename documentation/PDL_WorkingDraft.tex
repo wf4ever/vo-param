@@ -1,4 +1,4 @@
-\documentclass[11pt]{amsart}
+\documentclass[a4paper,11pt] {article}
 \usepackage{geometry}                % See geometry.pdf to learn the layout options. There are lots.
 \geometry{letterpaper}                   % ... or a4paper or a5paper or ... 
 %\geometry{landscape}                % Activate for for rotated page geometry
@@ -47,12 +47,12 @@ Optional fields for the {\it SingleParameter} object are:
 
 \section{The ParameterGroup object}\label{par-group}
 The {\it ParameterGroup} object is used for grouping parameters according to a criterion of relevancy arbitrary chosen by users (for instance parameters may be grouped according to the physics : position-group, speed-group; thermodynamic-group).
-But  the ParameterGroup is not only a kind of parameter set. Indeed it could be used for defining complex relations and/or constraints involving the contained parameters (cf. paraghrap XYZ).\\
+But  the ParameterGroup is not only a kind of parameter set. Indeed it could be used for defining complex relations and/or constraints involving the contained parameters (cf. paraghrap \ref{par-ConstraintsOnGroup}).\\
 This object {\bf must contain} a unique Name. This name is a String and is the identification label of the ParameterGroup. Indeed two groups can not have the same Name.\\
 Optional fields are
 \begin{itemize}
 \item the references to the parameters (cf. paragraph XYZ) one want to include into the group;
-\item a unique object ConstraintOnGroup of type {\it ConstraintOnGroup} (cf. paragraph XYZ). This object is used for 
+\item a unique object ConstraintOnGroup of type {\it ConstraintOnGroup} (cf. paragraph  \ref{par-ConstraintsOnGroup}). This object is used for 
 expressing the complex relations and constraints involving parameters.
 \item the objects of type {\it ParametersGroup} contained into the current root group. Indeed the {\it ParametersGroup} is a recursive object which can contain other sub-groups.
 \end{itemize}
@@ -61,11 +61,60 @@ expressing the complex relations and constraints involving parameters.
 
 {\bf NB:}  For any practical use, the number on the parameter referenced into a given group summed to the number of sub-groups of the same group must be greater than one. Otherwise the group would be a hollow shell.
 
+\section{The ConstraintOnGroup Object}\label{par-ConstraintsOnGroup}
+The {\it  ConstraintOnGroup} object is always contained into a {\it ParameterGroup} object and could not exist alone. 
+This object {\bf must contain} the {\it ConditionalStatement} objects. These last are used, As it is shown in paragraph \ref{par-ConditionalStatement}, for expressing the complex relations and constraints involving parameters.
 
+\section{The ConditionalStatement object}\label{par-ConditionalStatement}
+The {\it ConditionalStatement} object, as its name indicates, are used for defining conditional statement. This object is abstract. In this section we are going to review the two concrete objects extending and specializing  {\it ConditionalStatement}. 
 
+\subsection{The AlwaysConditionalStatement}\label{par-AlwaysConditionalStatement}
+As its name indicates, this object is used for expressing statement that must always be valid. It {\bf must contain} a unique {\it Always} object (this last extends {\it ConditionalClause}, cf. paragraph \ref{par-ConditionalClause}).
 
+\subsection{The IfThenConditionalStatement}\label{par-IfThenConditionalStatement}
+As its name indicates, this object is used for expressing statements that are valid only if a previous condition is verified. It {\bf must contain}:
+\begin{itemize}
+\item a unique {\it If} object (this last extends {\it ConditionalClause}, cf. paragraph \ref{par-ConditionalClause}).
+\item a unique {\it Then} object (this last extends {\it ConditionalClause}, cf. paragraph \ref{par-ConditionalClause}).
+\end{itemize}
+If the condition contained into the {\it If} object is valid, the condition contained into the {\it Then} object {\bf must be} valid too.
+
+\section{The ConditionalClause object}\label{par-ConditionalClause}
+The {\it ConditionalClause} object is abstract. It {\bf must contain} a unique Criterium object of type {\it AbstractCriterion} (cf. paragraph \ref{par-AbstractCriterion}).\\
+The three concrete objects extending the abstract {\it ConditionalClause} are:
+\begin{itemize}
+\item {\it Always};
+\item {\it If};
+\item {\it Then}.
+\end{itemize}
+The Criterium contained into a {\it Always} object must always be valid (cf paragraph \label{par-AlwaysConditionalStatement}).\\
+The {\it If} and {\it Then} objects work as a couple by composing the  {\it IfThenConditionalStatement} (cf. paragraph 
+\ref{par-IfThenConditionalStatement}).
+
+\section{The AbstractCriterion object}\label{par-AbstractCriterion}
+The objects extending {\it AbstractCriterion} are fundamentals for building {\it ConditionalStatemets} (cf. paragraph \ref{par-ConditionalStatement}) since they are contained into the {\it Always, If} and {\it Then} objects (cf. paragraph \ref{par-ConditionalClause}).
+An {\it AbstractCriterion} object {\bf must contain}:
+\begin{itemize}
+\item a unique {\it Expression} object (cf. paragraph \ref{par02});
+\item a unique ConditionType which is an object of type {\it AbstractCondition} (cf. paragraph  \ref{par-ConditionType}).
+\end{itemize}
+An optional field is a unique {\it LogicalConnector} object (cf. paragraph \ref{par-LogicalConnector}) used for building logical expressions.\\
+
+The two concrete objects extending  {\it AbstractCriterion}  are {\it Criterion} and {\it ParenthesisCriterion}. The difference between these two objects is in the priority they induce for interpreting and linking the criterions (cf. paragraph XYZ).
+
+\section{The LogicalConnector object}\label{par-LogicalConnector}
+The {\it LogicalConnector} object is used for building complex logical expressions. It is an abstract object and it {\bf must} contain a unique Criterion of type {\it AbstractCriterion} (cf. paragraph \ref{par-AbstractCriterion}).\\
+The two concrete objects extending {\it LogicalConnector} are:
+\begin{itemize}
+\item the {\it And} object used for introducing the logical AND operator between two criterions;\footnote{The first criterion is the one containing the {\it LogicalConnector} and the second is the criterion contained into the connector itself.}
+\item the {\it Or} object used for introducing the logical OR operator between two criterions.
+\end{itemize}
+
+\section{The AbstractCondition object}\label{par-ConditionType}
+ 
+ 
 \section{The Expression Objects}\label{par02}
-The {\it Expression} is the more versatile component of the PDL. It occurs almost everywhere: in defining fields for {\it SingleParameters} (cf. paragraph \ref{par01} ) or in defining conditions and criteria).\\
+The {\it Expression} is the more versatile component of the PDL. It occurs almost everywhere: in defining fields for {\it SingleParameters} (cf. paragraph \ref{par01}) or in defining conditions and criteria).\\
 Expression is an abstract object. In this section we are going to review all the concrete object extending and specializing expression.\\
 
 \noindent {\bf N.B.} In what follows, we will call a {\bf numerical expression} every {\it expression} involving only numerical types. This means that the evaluation of such expressions should lead to a number (or a vector number if the dimension of the expression is greater than one).\\
@@ -179,7 +228,8 @@ Let $exp$ be the result of the evaluation of the function argument expression an
 The {\it function} object evaluation {\bf is legal if and only if}:
 \begin{itemize}
 \item $f  \in \{ \mbox{abs, sin, cos, tan, asin, acos, atan, exp, log} \}$ and the function argument is a {\bf numerical} expression. In this case the  result  is a $d_{exp}$-size vector and each component  $r_i = f(exp_i$), $\forall \, i=1,...,d_{exp}$.
-\item $f=$sum (resp. $f=$product) and the argument is a {\bf numerical} expression. In this case the result is a scalar value equal to $\sum_{i=1}^{i=d_{exp}} exp_i$ (resp. $\prod _{i=1}^{i=d_{exp}} exp_i$), where $exp_i$ is the value obtained by interpreting the $i$ component of vector expression $exp$.
+\item $f=$sum (resp. $f=$product) and the argument is a {\bf numerical} expression. In this case the result is a scalar value equal to $\sum_{i=1}^{i=d_{exp}} exp_i$ (resp. $\prod _{i=1}^{i=d_{exp}} exp_i$), where $exp_i$ is the value obtained 
+by interpreting the $i$ component of vector expression $exp$.
 \item $f=$size. In this case the result is the scalar integer value $d_{exp}$. 
 \end{itemize}
 From what we saw above, the result of the interpretation of a function object { \bf is always a number}.
