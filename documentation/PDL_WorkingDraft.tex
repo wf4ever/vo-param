@@ -61,17 +61,19 @@ expressing the complex relations and constraints involving parameters.
 
 {\bf NB:}  For any practical use, the number on the parameter referenced into a given group summed to the number of sub-groups of the same group must be greater than one. Otherwise the group would be a hollow shell.
 
-\section{The ConstraintOnGroup Object}\label{par-ConstraintsOnGroup}
+\section{Expressing complex relations and constraints on parameters} 
+
+\subsection{The ConstraintOnGroup Object}\label{par-ConstraintsOnGroup}
 The {\it  ConstraintOnGroup} object is always contained into a {\it ParameterGroup} object and could not exist alone. 
 This object {\bf must contain} the {\it ConditionalStatement} objects. These last are used, As it is shown in paragraph \ref{par-ConditionalStatement}, for expressing the complex relations and constraints involving parameters.
 
-\section{The ConditionalStatement object}\label{par-ConditionalStatement}
+\subsection{The ConditionalStatement object}\label{par-ConditionalStatement}
 The {\it ConditionalStatement} object, as its name indicates, are used for defining conditional statement. This object is abstract. In this section we are going to review the two concrete objects extending and specializing  {\it ConditionalStatement}. 
 
-\subsection{The AlwaysConditionalStatement}\label{par-AlwaysConditionalStatement}
+\subsubsection{The AlwaysConditionalStatement}\label{par-AlwaysConditionalStatement}
 As its name indicates, this object is used for expressing statement that must always be valid. It {\bf must contain} a unique {\it Always} object (this last extends {\it ConditionalClause}, cf. paragraph \ref{par-ConditionalClause}).
 
-\subsection{The IfThenConditionalStatement}\label{par-IfThenConditionalStatement}
+\subsubsection{The IfThenConditionalStatement}\label{par-IfThenConditionalStatement}
 As its name indicates, this object is used for expressing statements that are valid only if a previous condition is verified. It {\bf must contain}:
 \begin{itemize}
 \item a unique {\it If} object (this last extends {\it ConditionalClause}, cf. paragraph \ref{par-ConditionalClause}).
@@ -79,7 +81,7 @@ As its name indicates, this object is used for expressing statements that are va
 \end{itemize}
 If the condition contained into the {\it If} object is valid, the condition contained into the {\it Then} object {\bf must be} valid too.
 
-\section{The ConditionalClause object}\label{par-ConditionalClause}
+\subsection{The ConditionalClause object}\label{par-ConditionalClause}
 The {\it ConditionalClause} object is abstract. It {\bf must contain} a unique Criterium object of type {\it AbstractCriterion} (cf. paragraph \ref{par-AbstractCriterion}).\\
 The three concrete objects extending the abstract {\it ConditionalClause} are:
 \begin{itemize}
@@ -91,18 +93,19 @@ The Criterium contained into a {\it Always} object must always be valid (cf para
 The {\it If} and {\it Then} objects work as a couple by composing the  {\it IfThenConditionalStatement} (cf. paragraph 
 \ref{par-IfThenConditionalStatement}).
 
-\section{The AbstractCriterion object}\label{par-AbstractCriterion}
+\subsection{The AbstractCriterion object}\label{par-AbstractCriterion}
 The objects extending {\it AbstractCriterion} are fundamentals for building {\it ConditionalStatemets} (cf. paragraph \ref{par-ConditionalStatement}) since they are contained into the {\it Always, If} and {\it Then} objects (cf. paragraph \ref{par-ConditionalClause}).
 An {\it AbstractCriterion} object {\bf must contain}:
 \begin{itemize}
 \item a unique {\it Expression} object (cf. paragraph \ref{par02});
 \item a unique ConditionType which is an object of type {\it AbstractCondition} (cf. paragraph  \ref{par-ConditionType}).
+This object specify which condition must be satisfies by the previous {\it Expression}.
 \end{itemize}
 An optional field is a unique {\it LogicalConnector} object (cf. paragraph \ref{par-LogicalConnector}) used for building logical expressions.\\
 
 The two concrete objects extending  {\it AbstractCriterion}  are {\it Criterion} and {\it ParenthesisCriterion}. The difference between these two objects is in the priority they induce for interpreting and linking the criterions (cf. paragraph XYZ).
 
-\section{The LogicalConnector object}\label{par-LogicalConnector}
+\subsection{The LogicalConnector object}\label{par-LogicalConnector}
 The {\it LogicalConnector} object is used for building complex logical expressions. It is an abstract object and it {\bf must} contain a unique Criterion of type {\it AbstractCriterion} (cf. paragraph \ref{par-AbstractCriterion}).\\
 The two concrete objects extending {\it LogicalConnector} are:
 \begin{itemize}
@@ -110,9 +113,98 @@ The two concrete objects extending {\it LogicalConnector} are:
 \item the {\it Or} object used for introducing the logical OR operator between two criterions.
 \end{itemize}
 
-\section{The AbstractCondition object}\label{par-ConditionType}
- 
- 
+\subsection{The AbstractCondition object}\label{par-ConditionType}
+{\it AbstractCondition} is abstract type. The objects extending it always always belong to an  {\it  AbstractCriterion} (cf. \ref{par-AbstractCriterion}). In this context, they are used combined with an {\it Expression} object, for expressing the condition that the expression must satisfy.\\ 
+Let us consider a given {\it AbstractCriterion} object $\mathcal{CR}$ and let us note $\mathcal E$ and
+$\mathcal C$ the expression and the condition contained into $\mathcal{CR}$.
+In what follows we are going to explain the different objects specializing  {\it AbstractCondition} and their behaviour.
+
+\subsubsection{The IsNull condition}
+This object is used for specifying that the expression $\mathcal E$ has no assigned value (this is exactly the same concept as the NULL value in Java or the None value in Python). 
+Indeed, if and only if $\mathcal E$ has no assigned value, the evaluation of the couple $(\mathcal E, \mathcal C)$ leads to a TRUE boolean value. Thus, in the case $\mathcal{CR}$ has no {\it LogicalConnector}, the criterion is true.
+
+
+
+\subsubsection{The "numerical-type" conditions}
+These objects are used for specifying that the result of the evaluation of the expression $\mathcal E$ is of a given numerical type. The couple $(\mathcal E, \mathcal C)$ is legal if and only if $\mathcal E$ is a {\bf numerical} expression. \\
+The "numerical-type" objects extending {\it AbstractCondition}  are:
+\begin{itemize}
+\item {\it IsInteger}, in this case the evaluation of the couple $(\mathcal E, \mathcal C)$ leads to a TRUE boolean value
+if and only if the evaluation of the numerical expression $\mathcal E$ is an integer.
+\item {\it IsRational}, in this case the evaluation of the couple $(\mathcal E, \mathcal C)$ leads to a TRUE boolean value if and only if the evaluation of the numerical expression $\mathcal E$ is a rational number.
+\item {\it IsReal}, in this case the evaluation of the couple $(\mathcal E, \mathcal C)$ leads to a TRUE boolean value
+if and only if the evaluation of the numerical expression $\mathcal E$ is real number.
+\end{itemize} 
+
+\subsubsection{The BelongToSet condition}\label{par-BelongToSet}
+This object is used for specifying that the expression $\mathcal E$ could take only a finite set of values. 
+It {\bf must contain} the {\it Values} (which are objects of type {\it Expression})  
+defining the set of legal values. The number of {\it Values} must be greater than one.\\
+This object is legal only if all the {\it Expressions} of the set are of the same type (e.g. they are all numerical, or all boolean or all String expressions).\\
+The couple $(\mathcal E, \mathcal C)$ leads to a TRUE boolean value if and only if 
+\begin{itemize}
+\item the expression $\mathcal E$ and the expressions composing the set are of the same type.
+\item it exists an element $\mathcal E_s$ in the set such that $\mathcal E_s = \mathcal E$.\\
+This last equality is to be unserstood in 
+the following sense: let $=_t$ be the equality operator induced by the type (for numerical type the equality is in the real number sense, for String type the equality is case sensitive and for boolean the equality is in the classic boolean sense).\\
+Two expressions are equals if and only if
+\begin{itemize}
+\item the expressions has the same size $d_{\mathcal E}$,
+\item $\mathcal E_s^i =_t \mathcal E^i$, $\forall i =1,...,d_{\mathcal E}$, where $\mathcal E_s^i$ and $ \mathcal E^i$ are respectively the result of the evaluation of the 
+$i$ component of expressions $\mathcal E_s$ and $\mathcal E$. 
+\end{itemize}
+\end{itemize}
+
+\subsubsection{The ValueLargerThan object}
+This object is used for expressing that the result of the evaluation of the expression $\mathcal E$ 
+must be greater than a given value.\\
+It {\bf must contain}
+\begin{itemize}
+\item a unique {\bf numerical} expression $\mathcal E_c$. 
+\item a unique {\it Reached} attribute which is a boolean type.
+\end{itemize}
+The couple $(\mathcal E, \mathcal C)$ is legal only if $\mathcal E$ is a numerical expression.\\
+This couple leads to a TRUE boolean value if and only if 
+the result of the evaluation of the expression $\mathcal E$ is greater (resp. greater or equal) than the result of the evaluation of the expression $\mathcal E_c$ and the attribute {\it Reached} is false (resp. the {\it Reached} attribute is true).
+
+\subsubsection{The ValueSmallerThan object}
+This object is used for expressing that the result of the evaluation of the expression $\mathcal E$ 
+must be smaller than a given value.\\
+It {\bf must contain}
+\begin{itemize}
+\item a unique {\bf numerical} expression $\mathcal E_c$. 
+\item a unique {\it Reached} attribute which is a boolean type.
+\end{itemize}
+The couple $(\mathcal E, \mathcal C)$ is legal only if $\mathcal E$ is a numerical expression.\\
+This couple leads to a TRUE boolean value if and only if 
+the result of the evaluation of the expression $\mathcal E$ is smaller (resp. smaller or equal) than the result of the evaluation of the expression $\mathcal E_c$ and the attribute {\it Reached} is false (resp. the {\it Reached} attribute is true).
+
+\subsubsection{The ValueInRange object}
+This object is used for expressing that the result of the evaluation of the expression $\mathcal E$ must belong to a given interval. The definition of the interval is made using the {\it ValueLargerThan} {\it ValueSmallerThan} objects. 
+Indeed, the {\it ValueInRange} object {\bf must contain}:
+\begin{itemize}
+\item a unique {\it ValueLargerThan} object,
+\item a unique {\it ValueSmallerThan} object. 
+\end{itemize}
+The couple $(\mathcal E, \mathcal C)$ is legal only if $\mathcal E$ is a numerical expression.\\
+This couple leads to a TRUE boolean value if and only if the evaluation of both couple 
+$(\mathcal E, \mbox{\it ValueSmallerThan})$ and $(\mathcal E, \mbox{\it ValueLargerThan})$ lead to TRUE boolean values.
+
+\subsubsection{The ValueDifferentOf object}
+This object is used for specifying that the expression $\mathcal E$ must be different of a given value.
+It {\bf must contain} a unique {\it Expression} $\mathcal E_c$.\\
+In order to be compared, the two expressions $\mathcal E$ and $\mathcal E_c$ must have the same type.
+The evaluation of the couple $(\mathcal E, \mathcal C)$  leads to a TRUE boolean value only if $\mathcal E \neq \mathcal E_c$. This inequality has to be understood in the sense explained in paragraph \ref{par-BelongToSet} (at the second point of the itemize).
+
+\subsubsection{The DefaultValue object}
+This object is used for specifying the default value of a parameter.\\
+It {\bf must contain} a unique expression $\mathcal E_c$.\\
+Since the default value of an expression involving functions, multiple parameters, etc. has no particular sense, in the case of the present object the couple $(\mathcal E, \mathcal C)$  is legal only if 
+\begin{itemize}
+\item $\mathcal E$ is an {\it AtomicParameterExpression} (cf. paragraph. \ref{par02_01})
+\item the dimension and the type of the expression $\mathcal E_c$ are equal to the dimension and type expressed in the {\it SingleParameter} object referenced into the {\it AtomicParameterExpression}.
+\end{itemize}
+
 \section{The Expression Objects}\label{par02}
 The {\it Expression} is the more versatile component of the PDL. It occurs almost everywhere: in defining fields for {\it SingleParameters} (cf. paragraph \ref{par01}) or in defining conditions and criteria).\\
 Expression is an abstract object. In this section we are going to review all the concrete object extending and specializing expression.\\

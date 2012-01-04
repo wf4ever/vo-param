@@ -301,11 +301,21 @@
          </xs:extension>
       </xs:complexContent>
    </xs:complexType>
+   <xs:complexType name="ValueInRange">
+      <xs:complexContent>
+         <xs:extension base="pm:AbstractCondition">
+            <xs:sequence>
+               <xs:element name="Sup" type="pm:ValueSmallerThan" maxOccurs="1" minOccurs="1"/>
+               <xs:element name="Inf" type="pm:ValueLargerThan" maxOccurs="1" minOccurs="1"/>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
    <xs:complexType name="ValueDifferentOf">
       <xs:complexContent>
          <xs:extension base="pm:AbstractCondition">
             <xs:sequence>
-               <xs:element name="Value" type="xs:string" maxOccurs="1" minOccurs="1"/>
+               <xs:element name="Value" type="pm:Expression" maxOccurs="1" minOccurs="1"/>
             </xs:sequence>
          </xs:extension>
       </xs:complexContent>
@@ -315,16 +325,6 @@
          <xs:extension base="pm:AbstractCondition">
             <xs:sequence>
                <xs:element name="Value" type="pm:Expression" maxOccurs="1" minOccurs="1"/>
-            </xs:sequence>
-         </xs:extension>
-      </xs:complexContent>
-   </xs:complexType>
-   <xs:complexType name="ValueInRange">
-      <xs:complexContent>
-         <xs:extension base="pm:AbstractCondition">
-            <xs:sequence>
-               <xs:element name="Sup" type="pm:ValueSmallerThan" maxOccurs="1" minOccurs="1"/>
-               <xs:element name="Inf" type="pm:ValueLargerThan" maxOccurs="1" minOccurs="1"/>
             </xs:sequence>
          </xs:extension>
       </xs:complexContent>
