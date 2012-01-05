@@ -6,6 +6,7 @@
 \usepackage{graphicx}
 \usepackage{amssymb}
 \usepackage{epstopdf}
+\usepackage{amsmath}
 \usepackage{hyperref}
 \usepackage{color}
 
@@ -102,8 +103,14 @@ An {\it AbstractCriterion} object {\bf must contain}:
 This object specify which condition must be satisfies by the previous {\it Expression}.
 \end{itemize}
 An optional field is a unique {\it LogicalConnector} object (cf. paragraph \ref{par-LogicalConnector}) used for building logical expressions.\\
+The two concrete objects extending  {\it AbstractCriterion}  are {\it Criterion} and {\it ParenthesisCriterion}.  The difference between these two objects is in the priority they induce for interpreting and linking the criterions (cf. paragraph \ref{par-EvalCriterions}).
 
-The two concrete objects extending  {\it AbstractCriterion}  are {\it Criterion} and {\it ParenthesisCriterion}. The difference between these two objects is in the priority they induce for interpreting and linking the criterions (cf. paragraph XYZ).
+\subsubsection{The Criterion object}
+This object extends the  {\it AbstractCriterion} without specializing it. It is indeed just a concrete version of the abstract type.
+
+\subsubsection{The ParenthesisCriterion object}
+This object extends and specialize the  {\it AbstractCriterion}. It is used for defining arbitrary priority in interpreting boolean expression based on criterions.
+The optional field of {\it ParenthesisCriterion} is a unique {\it ExternalLogicalConnector} object of type {\it LogicalConnector}. It is used for linking other criterions, out of the priority perimeter defined by the parenthesis (cf.  paragraph \ref{par-EvalCriterions}).
 
 \subsection{The LogicalConnector object}\label{par-LogicalConnector}
 The {\it LogicalConnector} object is used for building complex logical expressions. It is an abstract object and it {\bf must} contain a unique Criterion of type {\it AbstractCriterion} (cf. paragraph \ref{par-AbstractCriterion}).\\
@@ -115,11 +122,11 @@ The two concrete objects extending {\it LogicalConnector} are:
 
 \subsection{The AbstractCondition object}\label{par-ConditionType}
 {\it AbstractCondition} is abstract type. The objects extending it always always belong to an  {\it  AbstractCriterion} (cf. \ref{par-AbstractCriterion}). In this context, they are used combined with an {\it Expression} object, for expressing the condition that the expression must satisfy.\\ 
-Let us consider a given {\it AbstractCriterion} object $\mathcal{CR}$ and let us note $\mathcal E$ and
+Let us consider a given criterion object $\mathcal{CR}$ (extending{\it AbstractCriterion})  and let us note $\mathcal E$ and
 $\mathcal C$ the expression and the condition contained into $\mathcal{CR}$.
-In what follows we are going to explain the different objects specializing  {\it AbstractCondition} and their behaviour.
+In what follows we are going to explain the different objects specializing  {\it AbstractCondition} and their behavior.
 
-\subsubsection{The IsNull condition}
+\subsubsection{The IsNull condition}\label{par-IsNull}
 This object is used for specifying that the expression $\mathcal E$ has no assigned value (this is exactly the same concept as the NULL value in Java or the None value in Python). 
 Indeed, if and only if $\mathcal E$ has no assigned value, the evaluation of the couple $(\mathcal E, \mathcal C)$ leads to a TRUE boolean value. Thus, in the case $\mathcal{CR}$ has no {\it LogicalConnector}, the criterion is true.
 
@@ -196,7 +203,7 @@ It {\bf must contain} a unique {\it Expression} $\mathcal E_c$.\\
 In order to be compared, the two expressions $\mathcal E$ and $\mathcal E_c$ must have the same type.
 The evaluation of the couple $(\mathcal E, \mathcal C)$  leads to a TRUE boolean value only if $\mathcal E \neq \mathcal E_c$. This inequality has to be understood in the sense explained in paragraph \ref{par-BelongToSet} (at the second point of the itemize).
 
-\subsubsection{The DefaultValue object}
+\subsubsection{The DefaultValue object}\label{par-DefaultValue}
 This object is used for specifying the default value of a parameter.\\
 It {\bf must contain} a unique expression $\mathcal E_c$.\\
 Since the default value of an expression involving functions, multiple parameters, etc. has no particular sense, in the case of the present object the couple $(\mathcal E, \mathcal C)$  is legal only if 
@@ -204,6 +211,59 @@ Since the default value of an expression involving functions, multiple parameter
 \item $\mathcal E$ is an {\it AtomicParameterExpression} (cf. paragraph. \ref{par02_01})
 \item the dimension and the type of the expression $\mathcal E_c$ are equal to the dimension and type expressed in the {\it SingleParameter} object referenced into the {\it AtomicParameterExpression}.
 \end{itemize}
+Moreover, for having a legal {\it DefaultValue} object, the criterion $\mathcal{CR}$ containing it must be contained into 
+the {\it Always} or {\it Then}  objects (cf. paragraph \ref{par-ConditionalClause}).
+
+\subsection{Evaluating and interpreting criterions objects}\label{par-EvalCriterions}
+The evaluation of the criterion type objects (cf. paragraph \ref{par-AbstractCriterion}) always leads to a boolean value
+(the only exception is what we saw in paragraph \ref{par-DefaultValue}, where the criterion contains a {\it DefaultValue} condition).\\
+We use hereafter the same notation introduced in \ref{par-ConditionType}: let us consider a given criterion (extending{\it AbstractCriterion}) $\mathcal{CR}$ and let us note $\mathcal E$ and
+$\mathcal C$ the expression and the condition contained into $\mathcal{CR}$.\\
+When $\mathcal{CR}$ contains no {\it LogicalConnector} objects, the evaluation of the criterion is straightforward : 
+the result is equal to the boolean-evaluation of the couple $(\mathcal E, \mathcal C)$. This couple is evaluated according to the concrete class involved, as explained in paragraphs \ref{par-IsNull} to \ref{par-DefaultValue} \\
+It is a bit more complex when criterions contains {\it LogicalConnectors}. Let us see how to proceed.\\
+To begin with, in a first time let us consider only {\it Criterion} concrete objects:\\
+As we saw in the previous paragraphs, criterions object are (with the help of {\it LogicalConnectors} object) recursive and hierarchical objects.\\
+This hierarchical structure composing a complex criterion could be graphically represented as follows.
+\begin{equation}\label{eq-CriterionStructure01}
+(\mathcal E_1, \mathcal C_1) \xrightarrow[{\mbox{\tiny AND/OR}}]{LC_1} 
+(\mathcal E_2, \mathcal C_2) \xrightarrow[{\mbox{\tiny AND/OR}}]{LC_2}
+\cdots 
+(\mathcal E_i, \mathcal C_i) \xrightarrow[{\mbox{\tiny AND/OR}}]{LC_i}
+\cdots 
+(\mathcal E_{N-1}, \mathcal C_{N-1}) \xrightarrow[{\mbox{\tiny AND/OR}}]{LC_{N-1}}
+(\mathcal E_N, \mathcal C_N)
+\end{equation}
+where the index $1$, $i$ and $N$ are respectively for the root, the $i$ and the leaf criterion composing the structure. The term $LC_i$ denotes the {\it LogicalConnector} contained into the criterion $\mathcal{CR}_i$.\\
+As we saw in paragraphs \ref{par-IsNull} to \ref{par-DefaultValue} every couple $(\mathcal E_i, \mathcal C_i)$, $i=1,..,N$ could be evaluated (according to the concrete object involved) and leads to a boolean value $\mathcal B_i$. Thus the expression (\ref{eq-CriterionStructure01}) become
+\begin{equation}
+\mathcal B_1 \xrightarrow[{\mbox{\tiny AND/OR}}]{LC_1} 
+\mathcal B_2 \xrightarrow[{\mbox{\tiny AND/OR}}]{LC_2}
+\cdots 
+\mathcal B_i \xrightarrow[{\mbox{\tiny AND/OR}}]{LC_i}
+\cdots 
+\mathcal B_{N-1} \xrightarrow[{\mbox{\tiny AND/OR}}]{LC_{N-1}}
+\mathcal B_N
+\end{equation}
+This last is a classic sequential boolean expression. It is evaluated from left to right and the operator AND takes precedence over the OR operator.\\
+
+Let us now consider complex criterions involving not only {\it Criterion} objects but also {\it ParenthesisContent} ones. In this case a graphical linear representation of the complex-criterion structure is the following:
+\begin{equation}
+\begin{array}{l}
+\ (\mathcal E_1, \mathcal C_1) \xrightarrow{LC_1} 
+(\mathcal E_2, \mathcal C_2) \xrightarrow{LC_2}
+\cdots 
+\\
+\hspace{2cm}(\mathcal E_{i-1}, \mathcal C_{i-1}) \xrightarrow{LC_{i-1}}
+(\mathcal E_i, \mathcal C_i) \xrightarrow{LC_i}
+(\mathcal E_{i+1}, \mathcal C_{i+1}) \xrightarrow{LC_{i+1}}\\
+ \hspace{4cm} \cdots (\mathcal E_{N-1}, \mathcal C_{N-1}) \xrightarrow{LC_{N-1}}
+(\mathcal E_N, \mathcal C_N)\\
+\end{array}
+\end{equation}
+
+
+
 
 \section{The Expression Objects}\label{par02}
 The {\it Expression} is the more versatile component of the PDL. It occurs almost everywhere: in defining fields for {\it SingleParameters} (cf. paragraph \ref{par01}) or in defining conditions and criteria).\\

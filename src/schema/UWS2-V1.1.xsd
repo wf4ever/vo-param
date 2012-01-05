@@ -349,7 +349,12 @@
 
    <xs:complexType name="ParenthesisCriterion">
       <xs:complexContent>
-         <xs:extension base="pm:AbstractCriterion"> </xs:extension>
+         <xs:extension base="pm:AbstractCriterion">
+            <xs:sequence>
+               <xs:element name="ExternalLogicalConnector" type="pm:LogicalConnector" maxOccurs="1" minOccurs="0"/>
+                  
+            </xs:sequence>
+         </xs:extension>
       </xs:complexContent>
    </xs:complexType>
 
