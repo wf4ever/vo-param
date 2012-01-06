@@ -62,6 +62,146 @@ expressing the complex relations and constraints involving parameters.
 
 {\bf NB:}  For any practical use, the number on the parameter referenced into a given group summed to the number of sub-groups of the same group must be greater than one. Otherwise the group would be a hollow shell.
 
+
+\section{The Expression Objects}\label{par02}
+The {\it Expression} is the more versatile component of the PDL. It occurs almost everywhere: in defining fields for {\it SingleParameters} (cf. paragraph \ref{par01}) or in defining conditions and criteria).\\
+Expression is an abstract object. In this section we are going to review all the concrete object extending and specializing expression.\\
+
+\noindent {\bf N.B.} In what follows, we will call a {\bf numerical expression} every {\it expression} involving only numerical types. This means that the evaluation of such expressions should lead to a number (or a vector number if the dimension of the expression is greater than one).\\
+
+
+\subsection{The atomic parameter expression}\label{par02_01}
+The {\it AtomicParameterExpression} (extending {\it Expression}) is the simplest expression that could be built involving a defined parameter. This object {\bf must contains} unique reference to a given parameter.\\
+
+Optional fields, valid only for numerical types, are : 
+\begin{itemize}
+\item A unique {\bf numerical} power expression;
+\item A unique operation (cf. paragraph \ref{par02_02}).\\
+\end{itemize}
+Let $p$ and $exp$ be respectively the parameter and the power expression we want to encapsulate. The composite object could be presented as follows:
+\begin{equation}\label{eq01}
+ \underbrace{  p^{exp} \underbrace{  \overbrace{\left( \begin{array}{c} + \\ - \\ \ast  \\ \cdot \\ \div   \end{array} \right) }^{\mbox{\tiny Operation type}}
+ \overbrace{    \left( \mbox{AnotherExpression}\right) }^{\mbox{\tiny expression contained in operation}}   }_{\mbox{\tiny Operation object}}}_{\mbox{\tiny Atomic Parameter Expression}}
+\end{equation}
+
+To evaluate a given {\it atomicParameterExpression}, one proceed as follows: 
+Let $d_p$, $d_{exp}$ and $d_{oo}$ be respectively the dimension of the parameter $p$ referenced, the dimension of the power expression and the dimension of the expression contained into the operation object.\\
+The exponent part of the expression is legal if and only if:
+\begin{itemize}
+\item $d_p=d_{exp}$. In this case $p^{exp}$ is a $d_p$-size vector expression and $\forall$ $i=1,...,d_p$ the $i$ component of this vector is equal to ${p_i}^{exp_i}$, where $p_i$ is the value of the $i$ component of vector parameter $p$ and $exp_i$ is the value obtained by interpreting the $i$ component of vector expression $exp$.
+\item $d_{exp}=1$. In this case, $\forall$ $i=1,...,d_p$ the $i$ component of the vector result is equal to ${p_i}^{exp}$, where $p_i$ is the same as defined above.\\
+\end{itemize} 
+
+Whatever the method is used, let us note $ep$ the result of this first step. Is is clear that the dimension of $ep$ 
+is always equal to $d_p$. In order to complete the evaluation of the expression, one should proceed as exposed in paragraph \ref{par02_02}, by taking there $b=ep$.
+
+\subsection{The atomic constant expression}\label{par02_03}
+The {\it AtomicConstantExpression} (extending {\it Expression}) is the simplest expression that could be built involving constants. Since this object could be used for defining constant vector expression, it {\bf must contain} 
+\begin{itemize}
+\item A unique list of String which express the value of each component of the expression. Let $d_c$ be the size of the String list. If $d_c=1$ the expression is scalar and it is a vector expression if $d_c>1$. 
+\item A unique attribute {\it constantType} of type {\it ParameterType} (cf. paragraph XYZ) which explain the nature of the constant expression. Then the admitted types are the same as in the field {\it parameterType} of the object {\it SingleParameter}. 
+\end{itemize}
+The object {\bf is legal if and only if} every element of the String list could be cast into the type expressed by the attribute {\it constantType}.\\
+
+Optional fields, valid only for numerical types, are : 
+\begin{itemize}
+\item A unique {\bf numerical} power expression;
+\item A unique operation (cf. paragraph \ref{par02_02}).
+\end{itemize}
+
+Let $s_i$ ($i=1,...,d_c$) and $exp$ be respectively the $i$ component of the String list and the power expression we want to encapsulate. The composite object could be presented as follows:
+\begin{equation}
+ \underbrace{    \overbrace{ \left( s_1  , s_2, ..., s_{d_c}\right)^{exp} }^{\mbox{\tiny List of String  to cast into the provided type}}   \underbrace{  \overbrace{\left( \begin{array}{c} + \\ - \\ \ast  \\ \cdot \\ \div   \end{array} \right) }^{\mbox{\tiny Operation type}}
+ \overbrace{    \left( \mbox{AnotherExpression}\right) }^{\mbox{\tiny expression contained in operation}}   }_{\mbox{\tiny Operation object}}}_{\mbox{\tiny Atomic Constant Expression}}
+\end{equation}
+To evaluate a given {\it atomicConstantExpression}, one proceed as follows: let $d_{exp}$ and $d_{oo}$ be respectively the dimension of the parameter $p$ referenced, the dimension of the power expression and the dimension of the expression contained into the operation object.\\
+The exponent part of the expression is legal if and only if:
+\begin{itemize}
+\item $d_c = d_{exp}$. In this case $(s_1,...,s_{d_c})^{exp}$ is a $d_c$ size vector expression and $\forall i =1,...,d_c$ the $i$-th component of this vector is equal to $s_i^{exp_i}$, where $exp_i$ is the value obtained by interpreting the $i$ component of vector $exp$.
+\item $d_{exp}=1$. In this case, $\forall i =1,...,d_c$ the $i$ component of the vector result is equal to $s_i^{exp}$.\\
+\end{itemize}
+Whatever the method is used, let us note $ep$ (whose dimension is always equal to $d_c$) the result of 
+this first step.  In order to complete the evaluation of the expression, one should proceed as exposed in paragraph \ref{par02_02}, by taking there $b=ep$.
+
+
+\subsection{The parenthesis content expression}\label{par02_04}
+The {\it parenthesisContentExpression} (extending {\it Expression}) object is used to explicitly denote precedence by grouping the expressions that should be evaluated first. This object {\bf must contain} a unique {\bf numerical} object $Expression$ (noted hereafter $exp_1$).\\
+Optional fields are 
+\begin{itemize}
+\item A unique {\bf numerical} power expression (noted hereafter $exp_2$);
+\item A unique operation (cf. paragraph \ref{par02_02}).\\
+\end{itemize}
+This composite object could be presented as follows:
+\begin{equation}
+ \underbrace{    \underbrace{ \left( exp_1\right) }_{\mbox{\tiny Priority term}} ^{\hspace{15mm}exp_2} \underbrace{  \overbrace{\left( \begin{array}{c} + \\ - \\ \ast  \\ \cdot \\ \div   \end{array} \right) }^{\mbox{\tiny Operation type}}
+ \overbrace{    \left( \mbox{AnotherExpression}\right) }^{\mbox{\tiny expression contained in operation}}   }_{\mbox{\tiny Operation object}}}_{\mbox{\tiny Parenthesis Expression}}
+\end{equation}
+In order to evaluate this object expression, one proceed as follows: first one evaluate the expression $exp_1$ that has the main priority. Then one proceed exactly as in paragraph \ref{par02_01} (after the equation (\ref{eq01})) by taking $p=exp_1$ and $exp=exp_2$.
+
+
+%Suppose we've already defined the ContainerExp  and the Contained_Expression.
+
+\subsection{The Operation object}\label{par02_02}
+The {\it Operation} object is used for expressing operations involving two {\bf numerical} expressions. This object {\bf must contain}:
+\begin{itemize}
+\item a unique attribute operationType. This attribute could take the following values: plus for the sum, minus for the difference, multiply for the standard product, scalarProduct for the scalar product and divide for the standard division. Hereafter these operators will be respectively denoted $+,-,\ast,\cdot, \div$. 
+\item a unique expression.
+\end{itemize}
+\begin{equation}\label{OperationEquation}
+\underbrace{ \overbrace{\left( \begin{array}{c} + \\ - \\ \ast  \\ \cdot \\ \div   \end{array} \right) }^{\mbox{\tiny Operation type}}
+ \overbrace{    \left( \mbox{ContaindedExpression}\right) }^{\mbox{\tiny expression contained in operation}}   }_{\mbox{\tiny Operation object}}
+\end{equation}
+
+The {\it Operation} object is always contained into a {\bf numerical} {\it Expression} (cf. paragraph \ref{par02}) and could not exists alone.
+Let $a$ be the result of the evaluation of the expression object containing the operation\footnote{this came from the evaluation of parameterRef field in case of an {\it AtomicParameterExpression} cf. paragraph \ref{par02}, from the evaluation of constant field in the case of a {\it AtomicConstantExpression} (\textcolor{red}{to be extended...})} and let $b$ the result of the evaluation of the {\bf numerical} expression contained into the operation. As usual, we note $d_a$ and $d_b$ the dimensions of $a$ and $b$.\\
+
+The operation evaluation is legal if and only if:
+\begin{itemize}
+\item $d_a=d_b$ and operation type (i.e. the operator) $op \in \{ + , - , \ast , \div \}$. In this case $a \, op \, b$ is a vector expression of size $d_a$ and $\forall$ $i=1,...,d_a$ the $i$ component of this vector is equal to
+$(a_i \, op \,b_i)$ (i.e. a term by term operation).
+\item $d_a = d_b$ and operation type $op$ is "$\cdot$". In this case $a \cdot b$ is the result of the scalar product $\sum_{i =1}^{d_a} a_i \ast b_i$. It is obvious that the dimension of this result is equal to $1$.
+\item $d_b=1$ and operation type (i.e. the operator) $op \in \{ + , - , \ast , \div \}$. In this case $a \, op \, b$ is a vector expression of size $d_a$ and $\forall$ $i=1,...,d_a$ the $i$ component of this vector is equal to
+$(a_i \, op \,b)$.
+\item $d_a=1$ and operation type (i.e. the operator) $op \in \{ + , - , \ast , \div \}$. This case in symmetric to the previous one.
+\end{itemize}
+
+The type of the result is automatically induced by standard cast operation performed during the evaluations (Indeed for example a double vector added to an integer vector is a double vector).  
+
+\subsection{The Function object}\label{par02_05}
+The {\it function} object (extending {\it expression}) is used for expressing mathematical function on expressions.
+This object {\bf must contain} 
+\begin{itemize}
+\item A unique attribute {\it functionName} of type {\it functionType} (cf. paragraph XYZ) which specify the nature of the function.
+\item A unique expression (which is the function argument).\\
+\end{itemize}
+Let $exp$ be the result of the evaluation of the function argument expression and note $d_{exp}$ its dimension.
+The {\it function} object evaluation {\bf is legal if and only if}:
+\begin{itemize}
+\item $f  \in \{ \mbox{abs, sin, cos, tan, asin, acos, atan, exp, log} \}$ and the function argument is a {\bf numerical} expression. In this case the  result  is a $d_{exp}$-size vector and each component  $r_i = f(exp_i$), $\forall \, i=1,...,d_{exp}$.
+\item $f=$sum (resp. $f=$product) and the argument is a {\bf numerical} expression. In this case the result is a scalar value equal to $\sum_{i=1}^{i=d_{exp}} exp_i$ (resp. $\prod _{i=1}^{i=d_{exp}} exp_i$), where $exp_i$ is the value obtained 
+by interpreting the $i$ component of vector expression $exp$.
+\item $f=$size. In this case the result is the scalar integer value $d_{exp}$. 
+\end{itemize}
+From what we saw above, the result of the interpretation of a function object { \bf is always a number}.
+
+\subsection{The FunctionExpression object} 
+The {\it FunctionExpression} object (extending {\it Expression}) is used for building mathematical expressions involving functions.\\
+This object {\bf must contains} a unique {\it Function} object (cf. paragraph \ref{par02_05}).\\
+Optional fields, valid only for numerical types, are : 
+\begin{itemize}
+\item A unique {\bf numerical} power expression;
+\item A unique operation (cf. paragraph \ref{par02_02}).\\
+\end{itemize}
+
+This composite object could be presented as follows:
+\begin{equation}
+ \underbrace{    \underbrace{ \left(\mbox{function}\right) }_{\mbox{\tiny Function object}} ^{\hspace{15mm}exp} \underbrace{  \overbrace{\left( \begin{array}{c} + \\ - \\ \ast  \\ \cdot \\ \div   \end{array} \right) }^{\mbox{\tiny Operation type}}
+ \overbrace{    \left( \mbox{AnotherExpression}\right) }^{\mbox{\tiny expression contained in operation}}   }_{\mbox{\tiny Operation object}}}_{\mbox{\tiny FunctionExpression Object}}
+\end{equation}
+In order to evaluate this object expression, one proceed as follows: first one evaluate the funtion expression as explained in paragraph  \ref{par02_05}. Then one proceed exactly as in paragraph \ref{par02_01} (after the equation (\ref{eq01})) by taking $p=$function.
+
+
+
 \section{Expressing complex relations and constraints on parameters} 
 
 \subsection{The ConstraintOnGroup Object}\label{par-ConstraintsOnGroup}
@@ -236,7 +376,7 @@ This hierarchical structure composing a complex criterion could be graphically r
 \end{equation}
 where the index $1$, $i$ and $N$ are respectively for the root, the $i$ and the leaf criterion composing the structure. The term $LC_i$ denotes the {\it LogicalConnector} contained into the criterion $\mathcal{CR}_i$.\\
 As we saw in paragraphs \ref{par-IsNull} to \ref{par-DefaultValue} every couple $(\mathcal E_i, \mathcal C_i)$, $i=1,..,N$ could be evaluated (according to the concrete object involved) and leads to a boolean value $\mathcal B_i$. Thus the expression (\ref{eq-CriterionStructure01}) become
-\begin{equation}
+\begin{equation}\label{eq-CriterionStructure02}
 \mathcal B_1 \xrightarrow[{\mbox{\tiny AND/OR}}]{LC_1} 
 \mathcal B_2 \xrightarrow[{\mbox{\tiny AND/OR}}]{LC_2}
 \cdots 
@@ -247,160 +387,57 @@ As we saw in paragraphs \ref{par-IsNull} to \ref{par-DefaultValue} every couple 
 \end{equation}
 This last is a classic sequential boolean expression. It is evaluated from left to right and the operator AND takes precedence over the OR operator.\\
 
-Let us now consider complex criterions involving not only {\it Criterion} objects but also {\it ParenthesisContent} ones. In this case a graphical linear representation of the complex-criterion structure is the following:
+Let us now consider {\it ParenthesisCriterion}  criterions. A representation of such a criterion $\mathcal{CR}$ could be the following:
 \begin{equation}
+\Big \langle  (\mathcal E , \mathcal C) \xrightarrow{LC}  \mathcal{CR}_c  \Big \rangle_{\mathcal{CR}}  \xrightarrow{ELC}\,,
+\end{equation}
+where $\mathcal E$, $\mathcal C$, $LC$, $\mathcal{CR}_c$ are respectively 
+the {\it Expression}, the condition, the {\it LogicalConnector} and the criterion contained into $LC$.
+The term $ELC$ is the {\it ExternalLogicalConnector} of $\mathcal{CR}$.\\
+The criterion structure contained into $\langle \cdot \rangle_{\mathcal{CR}}$ has the highest priority and has to be evaluate before the {\it ExternalLogicalConnector} evaluation.\\
+
+In the case where $\mathcal{CR}_c$ is composed only of {\it Criterion} objects (so with no
+{\it ParenthesisCriterion}), the evaluation of the content of  $\langle \cdot \rangle_{\mathcal{CR}}$  is performed as shown before in (\ref{eq-CriterionStructure01}) and (\ref{eq-CriterionStructure02}).
+
+In the case where $\mathcal{CR}_c$ contains at least one {\it ParenthesisCriterion}, one has to go deeper in the criterion structure to find the deepest criterion $\mathcal{CR}_d$ such that $\langle \cdot \rangle_{\mathcal{CR}_d}$ contains only criterions of type {\it Criterion}.Thus one can simply evaluate the content of  $\langle \cdot \rangle_{\mathcal{CR}_d}$ as already shown.\\
+
+For illustrating by an example how to proceed, let us consider the following complex-criterion structure:
+\begin{equation}\label{eq-CriterionStructure03}
 \begin{array}{l}
-\ (\mathcal E_1, \mathcal C_1) \xrightarrow{LC_1} 
-(\mathcal E_2, \mathcal C_2) \xrightarrow{LC_2}
-\cdots 
+\displaystyle \Big \langle (\mathcal E_1, \mathcal C_1) \xrightarrow{LC_1} 
+(\mathcal E_2, \mathcal C_2) \Big \rangle_{\mathcal{CR}_1 } \xrightarrow{ELC_1} 
+\cdots \vspace{1mm}
 \\
-\hspace{2cm}(\mathcal E_{i-1}, \mathcal C_{i-1}) \xrightarrow{LC_{i-1}}
+\hspace{1.5cm} \displaystyle \Big \langle (\mathcal E_{i-1}, \mathcal C_{i-1}) \xrightarrow{LC_{i-1}}
+\Big \langle
 (\mathcal E_i, \mathcal C_i) \xrightarrow{LC_i}
-(\mathcal E_{i+1}, \mathcal C_{i+1}) \xrightarrow{LC_{i+1}}\\
- \hspace{4cm} \cdots (\mathcal E_{N-1}, \mathcal C_{N-1}) \xrightarrow{LC_{N-1}}
-(\mathcal E_N, \mathcal C_N)\\
+(\mathcal E_{i+1}, \mathcal C_{i+1}) \Big\rangle_{\mathcal{CR}_{i} }  \Big \rangle_{\mathcal{CR}_{i-1}}  \xrightarrow{ELC_{i-1}}  \vspace{1mm} \\
+ \hspace{7cm} \cdots \displaystyle \Big \langle (\mathcal E_{N-1}, \mathcal C_{N-1}) \xrightarrow{LC_{N-1}}
+(\mathcal E_N, \mathcal C_N) \Big\rangle_{\mathcal{CR}_{N-1} } \\
 \end{array}
 \end{equation}
 
-
-
-
-\section{The Expression Objects}\label{par02}
-The {\it Expression} is the more versatile component of the PDL. It occurs almost everywhere: in defining fields for {\it SingleParameters} (cf. paragraph \ref{par01}) or in defining conditions and criteria).\\
-Expression is an abstract object. In this section we are going to review all the concrete object extending and specializing expression.\\
-
-\noindent {\bf N.B.} In what follows, we will call a {\bf numerical expression} every {\it expression} involving only numerical types. This means that the evaluation of such expressions should lead to a number (or a vector number if the dimension of the expression is greater than one).\\
-
-
-\subsection{The atomic parameter expression}\label{par02_01}
-The {\it AtomicParameterExpression} (extending {\it Expression}) is the simplest expression that could be built involving a defined parameter. This object {\bf must contains} unique reference to a given parameter.\\
-
-Optional fields, valid only for numerical types, are : 
-\begin{itemize}
-\item A unique {\bf numerical} power expression;
-\item A unique operation (cf. paragraph \ref{par02_02}).\\
-\end{itemize}
-Let $p$ and $exp$ be respectively the parameter and the power expression we want to encapsulate. The composite object could be presented as follows:
-\begin{equation}\label{eq01}
- \underbrace{  p^{exp} \underbrace{  \overbrace{\left( \begin{array}{c} + \\ - \\ \ast  \\ \cdot \\ \div   \end{array} \right) }^{\mbox{\tiny Operation type}}
- \overbrace{    \left( \mbox{AnotherExpression}\right) }^{\mbox{\tiny expression contained in operation}}   }_{\mbox{\tiny Operation object}}}_{\mbox{\tiny Atomic Parameter Expression}}
-\end{equation}
-
-To evaluate a given {\it atomicParameterExpression}, one proceed as follows: 
-Let $d_p$, $d_{exp}$ and $d_{oo}$ be respectively the dimension of the parameter $p$ referenced, the dimension of the power expression and the dimension of the expression contained into the operation object.\\
-The exponent part of the expression is legal if and only if:
-\begin{itemize}
-\item $d_p=d_{exp}$. In this case $p^{exp}$ is a $d_p$-size vector expression and $\forall$ $i=1,...,d_p$ the $i$ component of this vector is equal to ${p_i}^{exp_i}$, where $p_i$ is the value of the $i$ component of vector parameter $p$ and $exp_i$ is the value obtained by interpreting the $i$ component of vector expression $exp$.
-\item $d_{exp}=1$. In this case, $\forall$ $i=1,...,d_p$ the $i$ component of the vector result is equal to ${p_i}^{exp}$, where $p_i$ is the same as defined above.\\
-\end{itemize} 
-
-Whatever the method is used, let us note $ep$ the result of this first step. Is is clear that the dimension of $ep$ 
-is always equal to $d_p$. In order to complete the evaluation of the expression, one should proceed as exposed in paragraph \ref{par02_02}, by taking there $b=ep$.
-
-\subsection{The atomic constant expression}\label{par02_03}
-The {\it AtomicConstantExpression} (extending {\it Expression}) is the simplest expression that could be built involving constants. Since this object could be used for defining constant vector expression, it {\bf must contain} 
-\begin{itemize}
-\item A unique list of String which express the value of each component of the expression. Let $d_c$ be the size of the String list. If $d_c=1$ the expression is scalar and it is a vector expression if $d_c>1$. 
-\item A unique attribute {\it constantType} of type {\it ParameterType} (cf. paragraph XYZ) which explain the nature of the constant expression. Then the admitted types are the same as in the field {\it parameterType} of the object {\it SingleParameter}. 
-\end{itemize}
-The object {\bf is legal if and only if} every element of the String list could be cast into the type expressed by the attribute {\it constantType}.\\
-
-Optional fields, valid only for numerical types, are : 
-\begin{itemize}
-\item A unique {\bf numerical} power expression;
-\item A unique operation (cf. paragraph \ref{par02_02}).
-\end{itemize}
-
-Let $s_i$ ($i=1,...,d_c$) and $exp$ be respectively the $i$ component of the String list and the power expression we want to encapsulate. The composite object could be presented as follows:
+From what we saw above, the expression (\ref{eq-CriterionStructure03}) becomes
 \begin{equation}
- \underbrace{    \overbrace{ \left( s_1  , s_2, ..., s_{d_c}\right)^{exp} }^{\mbox{\tiny List of String  to cast into the provided type}}   \underbrace{  \overbrace{\left( \begin{array}{c} + \\ - \\ \ast  \\ \cdot \\ \div   \end{array} \right) }^{\mbox{\tiny Operation type}}
- \overbrace{    \left( \mbox{AnotherExpression}\right) }^{\mbox{\tiny expression contained in operation}}   }_{\mbox{\tiny Operation object}}}_{\mbox{\tiny Atomic Constant Expression}}
+\begin{array}{l}
+\displaystyle \Big \langle \mathcal B_1 \xrightarrow{LC_1}  \mathcal B_2 \Big \rangle_{\mathcal{CR}_1} 
+\xrightarrow{ELC_1}  \cdots \\
+\displaystyle \hspace{3cm} \Big \langle \mathcal B_{i-1}  \xrightarrow{LC_{i-1}} \Big \langle \mathcal B_i 
+ \xrightarrow{LC_i} \mathcal B_{i+1} \Big \rangle_{\mathcal{CR}_i} \Big \rangle_{\mathcal{CR}_{i-1}}  \xrightarrow{ELC_{i-1}}  \\
+\displaystyle \hspace{7.5cm} \cdots  \Big \langle  \mathcal B_{N-1}   \xrightarrow{LC_{N-1}} \mathcal B_N  \Big \rangle_{\mathcal{CR}_{N-1}}
+\end{array}
 \end{equation}
-To evaluate a given {\it atomicConstantExpression}, one proceed as follows: let $d_{exp}$ and $d_{oo}$ be respectively the dimension of the parameter $p$ referenced, the dimension of the power expression and the dimension of the expression contained into the operation object.\\
-The exponent part of the expression is legal if and only if:
-\begin{itemize}
-\item $d_c = d_{exp}$. In this case $(s_1,...,s_{d_c})^{exp}$ is a $d_c$ size vector expression and $\forall i =1,...,d_c$ the $i$-th component of this vector is equal to $s_i^{exp_i}$, where $exp_i$ is the value obtained by interpreting the $i$ component of vector $exp$.
-\item $d_{exp}=1$. In this case, $\forall i =1,...,d_c$ the $i$ component of the vector result is equal to $s_i^{exp}$.\\
-\end{itemize}
-Whatever the method is used, let us note $ep$ (whose dimension is always equal to $d_c$) the result of 
-this first step.  In order to complete the evaluation of the expression, one should proceed as exposed in paragraph \ref{par02_02}, by taking there $b=ep$.
-
-
-\subsection{The parenthesis content expression}\label{par02_04}
-The {\it parenthesisContentExpression} (extending {\it Expression}) object is used to explicitly denote precedence by grouping the expressions that should be evaluated first. This object {\bf must contain} a unique {\bf numerical} object $Expression$ (noted hereafter $exp_1$).\\
-Optional fields are 
-\begin{itemize}
-\item A unique {\bf numerical} power expression (noted hereafter $exp_2$);
-\item A unique operation (cf. paragraph \ref{par02_02}).\\
-\end{itemize}
-This composite object could be presented as follows:
+and finally
 \begin{equation}
- \underbrace{    \underbrace{ \left( exp_1\right) }_{\mbox{\tiny Priority term}} ^{\hspace{15mm}exp_2} \underbrace{  \overbrace{\left( \begin{array}{c} + \\ - \\ \ast  \\ \cdot \\ \div   \end{array} \right) }^{\mbox{\tiny Operation type}}
- \overbrace{    \left( \mbox{AnotherExpression}\right) }^{\mbox{\tiny expression contained in operation}}   }_{\mbox{\tiny Operation object}}}_{\mbox{\tiny Parenthesis Expression}}
+\begin{array}{l}
+\displaystyle \Big ( \mathcal B_1 \xrightarrow[{\mbox{\tiny AND/OR}}]{LC_1}  \mathcal B_2 \Big ) \xrightarrow[{\mbox{\tiny AND/OR}}]{ELC_1}  \cdots \\
+\displaystyle \hspace{2.5cm} \Big ( \mathcal B_{i-1} \xrightarrow[{\mbox{\tiny AND/OR}}]{LC_{i-1}} \Big (
+\mathcal B_i \xrightarrow[{\mbox{\tiny AND/OR}}]{LC_i} \mathcal B_{i+1} \Big) \Big )  \xrightarrow[{\mbox{\tiny AND/OR}}]{ELC_{i-1}}  \\
+\displaystyle  \hspace{7.5cm}  \cdots \Big (   B_{N-1}   \xrightarrow[{\mbox{\tiny AND/OR}}]{LC_{N-1}} \mathcal B_N \Big ) \,. \\
+\end{array}
 \end{equation}
-In order to evaluate this object expression, one proceed as follows: first one evaluate the expression $exp_1$ that has the main priority. Then one proceed exactly as in paragraph \ref{par02_01} (after the equation (\ref{eq01})) by taking $p=exp_1$ and $exp=exp_2$.
-
-
-%Suppose we've already defined the ContainerExp  and the Contained_Expression.
-
-\subsection{The Operation object}\label{par02_02}
-The {\it Operation} object is used for expressing operations involving two {\bf numerical} expressions. This object {\bf must contain}:
-\begin{itemize}
-\item a unique attribute operationType. This attribute could take the following values: plus for the sum, minus for the difference, multiply for the standard product, scalarProduct for the scalar product and divide for the standard division. Hereafter these operators will be respectively denoted $+,-,\ast,\cdot, \div$. 
-\item a unique expression.
-\end{itemize}
-\begin{equation}\label{OperationEquation}
-\underbrace{ \overbrace{\left( \begin{array}{c} + \\ - \\ \ast  \\ \cdot \\ \div   \end{array} \right) }^{\mbox{\tiny Operation type}}
- \overbrace{    \left( \mbox{ContaindedExpression}\right) }^{\mbox{\tiny expression contained in operation}}   }_{\mbox{\tiny Operation object}}
-\end{equation}
-
-The {\it Operation} object is always contained into a {\bf numerical} {\it Expression} (cf. paragraph \ref{par02}) and could not exists alone.
-Let $a$ be the result of the evaluation of the expression object containing the operation\footnote{this came from the evaluation of parameterRef field in case of an {\it AtomicParameterExpression} cf. paragraph \ref{par02}, from the evaluation of constant field in the case of a {\it AtomicConstantExpression} (\textcolor{red}{to be extended...})} and let $b$ the result of the evaluation of the {\bf numerical} expression contained into the operation. As usual, we note $d_a$ and $d_b$ the dimensions of $a$ and $b$.\\
-
-The operation evaluation is legal if and only if:
-\begin{itemize}
-\item $d_a=d_b$ and operation type (i.e. the operator) $op \in \{ + , - , \ast , \div \}$. In this case $a \, op \, b$ is a vector expression of size $d_a$ and $\forall$ $i=1,...,d_a$ the $i$ component of this vector is equal to
-$(a_i \, op \,b_i)$ (i.e. a term by term operation).
-\item $d_a = d_b$ and operation type $op$ is "$\cdot$". In this case $a \cdot b$ is the result of the scalar product $\sum_{i =1}^{d_a} a_i \ast b_i$. It is obvious that the dimension of this result is equal to $1$.
-\item $d_b=1$ and operation type (i.e. the operator) $op \in \{ + , - , \ast , \div \}$. In this case $a \, op \, b$ is a vector expression of size $d_a$ and $\forall$ $i=1,...,d_a$ the $i$ component of this vector is equal to
-$(a_i \, op \,b)$.
-\item $d_a=1$ and operation type (i.e. the operator) $op \in \{ + , - , \ast , \div \}$. This case in symmetric to the previous one.
-\end{itemize}
-
-The type of the result is automatically induced by standard cast operation performed during the evaluations (Indeed for example a double vector added to an integer vector is a double vector).  
-
-\subsection{The Function object}\label{par02_05}
-The {\it function} object (extending {\it expression}) is used for expressing mathematical function on expressions.
-This object {\bf must contain} 
-\begin{itemize}
-\item A unique attribute {\it functionName} of type {\it functionType} (cf. paragraph XYZ) which specify the nature of the function.
-\item A unique expression (which is the function argument).\\
-\end{itemize}
-Let $exp$ be the result of the evaluation of the function argument expression and note $d_{exp}$ its dimension.
-The {\it function} object evaluation {\bf is legal if and only if}:
-\begin{itemize}
-\item $f  \in \{ \mbox{abs, sin, cos, tan, asin, acos, atan, exp, log} \}$ and the function argument is a {\bf numerical} expression. In this case the  result  is a $d_{exp}$-size vector and each component  $r_i = f(exp_i$), $\forall \, i=1,...,d_{exp}$.
-\item $f=$sum (resp. $f=$product) and the argument is a {\bf numerical} expression. In this case the result is a scalar value equal to $\sum_{i=1}^{i=d_{exp}} exp_i$ (resp. $\prod _{i=1}^{i=d_{exp}} exp_i$), where $exp_i$ is the value obtained 
-by interpreting the $i$ component of vector expression $exp$.
-\item $f=$size. In this case the result is the scalar integer value $d_{exp}$. 
-\end{itemize}
-From what we saw above, the result of the interpretation of a function object { \bf is always a number}.
-
-\subsection{The FunctionExpression object} 
-The {\it FunctionExpression} object (extending {\it Expression}) is used for building mathematical expressions involving functions.\\
-This object {\bf must contains} a unique {\it Function} object (cf. paragraph \ref{par02_05}).\\
-Optional fields, valid only for numerical types, are : 
-\begin{itemize}
-\item A unique {\bf numerical} power expression;
-\item A unique operation (cf. paragraph \ref{par02_02}).\\
-\end{itemize}
-
-This composite object could be presented as follows:
-\begin{equation}
- \underbrace{    \underbrace{ \left(\mbox{function}\right) }_{\mbox{\tiny Function object}} ^{\hspace{15mm}exp} \underbrace{  \overbrace{\left( \begin{array}{c} + \\ - \\ \ast  \\ \cdot \\ \div   \end{array} \right) }^{\mbox{\tiny Operation type}}
- \overbrace{    \left( \mbox{AnotherExpression}\right) }^{\mbox{\tiny expression contained in operation}}   }_{\mbox{\tiny Operation object}}}_{\mbox{\tiny FunctionExpression Object}}
-\end{equation}
-In order to evaluate this object expression, one proceed as follows: first one evaluate the funtion expression as explained in paragraph  \ref{par02_05}. Then one proceed exactly as in paragraph \ref{par02_01} (after the equation (\ref{eq01})) by taking $p=$function.
+This last is a classical sequential boolean expression. It is evaluated from the left to the right. The sub-expression 
+between the parenthesis must be evaluated with the highest priority and the operator AND takes precedence over the OR operator.
 
 \end{document}
 
