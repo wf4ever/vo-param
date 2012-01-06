@@ -6,7 +6,7 @@
    <xs:annotation>
       <xs:documentation> IVOA Description of the set of parameters for a service</xs:documentation>
    </xs:annotation>
-   <xs:element name="UWS_Service">
+   <xs:element name="UWSService">
       <xs:annotation>
          <xs:documentation> The base service description. A
             service in this context is simply some sort of process
@@ -20,9 +20,9 @@
                   <xs:documentation>The ivoa identifier for the service</xs:documentation>
                </xs:annotation>
             </xs:element>
-            <xs:element name="serviceName" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="ServiceName" type="xs:string" minOccurs="1" maxOccurs="1"/>
             <xs:element name="Description" type="xs:string" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="ParameterList" type="pm:ParameterList" minOccurs="1" maxOccurs="1">
+            <xs:element name="Parameters" type="pm:Parameters" minOccurs="1" maxOccurs="1">
                <xs:annotation>
                   <xs:documentation>The list of all possible parameters both input and output parameters</xs:documentation>
                </xs:annotation>
@@ -50,7 +50,7 @@
       </xs:keyref>
 
    </xs:element>
-   <xs:complexType name="ParameterList">
+   <xs:complexType name="Parameters">
       <xs:annotation>
          <xs:documentation>The list of possible parameters both input and output.</xs:documentation>
       </xs:annotation>
@@ -129,7 +129,7 @@
    </xs:simpleType>
 
 
-   <xs:simpleType name="functionType">
+   <xs:simpleType name="FunctionType">
       <xs:restriction base="xs:string">
          <xs:enumeration value="size"/>
          <xs:enumeration value="abs"/>
@@ -171,7 +171,7 @@
    <xs:complexType name="ParameterGroup">
       <xs:sequence>
          <xs:element name="Name" type="xs:string" maxOccurs="1" minOccurs="1"/>
-         <xs:element name="parameterRef" type="pm:ParameterReference" minOccurs="0"
+         <xs:element name="ParameterRef" type="pm:ParameterReference" minOccurs="0"
             maxOccurs="unbounded"> </xs:element>
          <xs:element name="ConstraintOnGroup" type="pm:ConstraintOnGroup" maxOccurs="1"
             minOccurs="0"/>
@@ -183,7 +183,7 @@
 
    <xs:complexType name="ConstraintOnGroup">
       <xs:sequence>
-         <xs:element name="conditionalStatement" type="pm:ConditionalStatement" minOccurs="0"
+         <xs:element name="ConditionalStatement" type="pm:ConditionalStatement" minOccurs="0"
             maxOccurs="unbounded"/>
       </xs:sequence>
    </xs:complexType>
@@ -212,17 +212,17 @@
 
    <xs:complexType abstract="true" name="LogicalConnector">
       <xs:sequence>
-         <xs:element name="criterion" type="pm:AbstractCriterion" minOccurs="1" maxOccurs="1"/>
+         <xs:element name="Criterion" type="pm:AbstractCriterion" minOccurs="1" maxOccurs="1"/>
       </xs:sequence>
    </xs:complexType>
 
-   <xs:complexType name="and">
+   <xs:complexType name="And">
       <xs:complexContent>
          <xs:extension base="pm:LogicalConnector"/>
       </xs:complexContent>
    </xs:complexType>
 
-   <xs:complexType name="or">
+   <xs:complexType name="Or">
       <xs:complexContent>
          <xs:extension base="pm:LogicalConnector"/>
       </xs:complexContent>
@@ -235,18 +235,18 @@
       </xs:sequence>
    </xs:complexType>
 
-   <xs:complexType name="always">
+   <xs:complexType name="Always">
       <xs:complexContent>
          <xs:extension base="pm:ConditionalClause"/>
       </xs:complexContent>
    </xs:complexType>
 
-   <xs:complexType name="if">
+   <xs:complexType name="If">
       <xs:complexContent>
          <xs:extension base="pm:ConditionalClause"/>
       </xs:complexContent>
    </xs:complexType>
-   <xs:complexType name="then">
+   <xs:complexType name="Then">
       <xs:complexContent>
          <xs:extension base="pm:ConditionalClause"/>
       </xs:complexContent>
@@ -257,17 +257,17 @@
          <xs:extension base="pm:AbstractCondition"/>
       </xs:complexContent>
    </xs:complexType>
-   <xs:complexType name="isInteger">
+   <xs:complexType name="IsInteger">
       <xs:complexContent>
          <xs:extension base="pm:AbstractCondition"> </xs:extension>
       </xs:complexContent>
    </xs:complexType>
-   <xs:complexType name="isReal">
+   <xs:complexType name="IsReal">
       <xs:complexContent>
          <xs:extension base="pm:AbstractCondition"> </xs:extension>
       </xs:complexContent>
    </xs:complexType>
-   <xs:complexType name="isRational">
+   <xs:complexType name="IsRational">
       <xs:complexContent>
          <xs:extension base="pm:AbstractCondition"> </xs:extension>
       </xs:complexContent>
@@ -332,9 +332,9 @@
 
    <xs:complexType abstract="true" name="AbstractCriterion">
       <xs:sequence>
-         <xs:element name="expression" type="pm:Expression" minOccurs="1" maxOccurs="1"> </xs:element>
-         <xs:element name="conditionType" type="pm:AbstractCondition" minOccurs="1" maxOccurs="1"/>
-         <xs:element name="logicalConnector" type="pm:LogicalConnector" maxOccurs="1" minOccurs="0"
+         <xs:element name="Expression" type="pm:Expression" minOccurs="1" maxOccurs="1"> </xs:element>
+         <xs:element name="ConditionType" type="pm:AbstractCondition" minOccurs="1" maxOccurs="1"/>
+         <xs:element name="LogicalConnector" type="pm:LogicalConnector" maxOccurs="1" minOccurs="0"
          />
       </xs:sequence>
    </xs:complexType>
@@ -351,8 +351,9 @@
       <xs:complexContent>
          <xs:extension base="pm:AbstractCriterion">
             <xs:sequence>
-               <xs:element name="ExternalLogicalConnector" type="pm:LogicalConnector" maxOccurs="1" minOccurs="0"/>
-                  
+               <xs:element name="ExternalLogicalConnector" type="pm:LogicalConnector" maxOccurs="1"
+                  minOccurs="0"/>
+
             </xs:sequence>
          </xs:extension>
       </xs:complexContent>
@@ -364,7 +365,7 @@
             <xs:sequence>
                <xs:element name="expression" type="pm:Expression"/>
             </xs:sequence>
-            <xs:attribute name="functionName" type="pm:functionType"/>
+            <xs:attribute name="functionName" type="pm:FunctionType"/>
          </xs:extension>
       </xs:complexContent>
    </xs:complexType>
@@ -423,8 +424,8 @@
       <xs:complexContent>
          <xs:extension base="pm:Expression">
             <xs:sequence>
-               <xs:element name="function" type="pm:Function" maxOccurs="1" minOccurs="1"/>
-               <xs:element name="power" type="pm:Expression" maxOccurs="1" minOccurs="0"/>
+               <xs:element name="Function" type="pm:Function" maxOccurs="1" minOccurs="1"/>
+               <xs:element name="Power" type="pm:Expression" maxOccurs="1" minOccurs="0"/>
                <xs:element name="Operation" type="pm:Operation" maxOccurs="1" minOccurs="0"/>
             </xs:sequence>
          </xs:extension>
