@@ -9,6 +9,7 @@
 \usepackage{amsmath}
 \usepackage{hyperref}
 \usepackage{color}
+\usepackage{xcolor}
 
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 
@@ -21,8 +22,75 @@
 
 \tableofcontents
 
+\newpage
+
 \section{Introduction}
-Bla Bla on PDL
+
+In the context on the {\it International Virtual Observatory Alliance} researchers would like to provide astronomical services to the community. \\
+These services could be
+\begin{itemize}
+\item  an access to an existing catalogue of images and/or data,
+\item  the entry point to a database listing the results of complex  and heavy numerical simulations,
+\item a computation code exposed online, etc... 
+\end{itemize}
+In the following we will ignore any specific feature and will use the term {\it generic service} to refer any kind of process that receive inputs parameters and produces output ones.\\
+
+Let us notice that users from community will not be able to use a new service unless they have the knowledge of what the service do (and how). 
+Moreover this new service will be even more useful if it can interact immediately and is well integrated with the other ones.\\
+
+{\bf Service description} and {\bf Interoperability} are indeed two key points for building efficient and useful services.
+
+\subsection{The service description}
+For a client starting to interact with an unknown service, its description is fundamental: in a sense it is this description that puts the service from the {\it unknown} to the {\it known} state.\\
+Since the client could be a computer system, a generic the descriptions should be machine-readable.\\
+
+There are several descriptions languages. The most known for their high expression level and their wide use are \emph{WSDL} (\href{http://www.w3.org/TR/wsdl20/}{http://www.w3.org/TR/wsdl20/}) and \textit{WADL} (\href{http://www.w3.org/Submission/wadl/}{http://www.w3.org/Submission/wadl/}).\\
+With those tools, people providing a given service could easily express what parameters the service expects and what data structures it returns. It thus serves a roughly similar purpose as a method-signature in a programming language.\\
+
+In the case of {\it generic services} for science, description needs are very specific: since we have to deal with complex physics and models, one should be able to describe for each parameter its physical meaning, its unit and precision and the range (or set) of admissible value (according to the model).\\ In mane cases, especially for theoretical simulations, parameters could be linked by complex conditions or have to verify, under given conditions, a set of constraints (that could involve mathematical properties and formulas). 
+Two examples of this high level description we would be able to provide are the following:
+
+\begin{equation}
+\mbox{Service1 }\left\{
+\begin{array}{l}
+\ \mbox{Input } \left\{
+\begin{array}{c}
+ \mbox{$\vec p_1$ is a $m/s$ vector speed and $\| \vec p_1\|<c$} \\
+ \mbox{ $p_2$ is a Kelvin temperature and $p_2>0$ }\\
+ \mbox{$p_3$ is a $kg$ mass and $p_3\geq 0$}\\
+\end{array}
+\right. \\
+\\
+\ \mbox{\hspace{1cm} Output } \left\{
+\begin{array}{l}
+ \mbox{ $p_4$ is a Joule Energy and $p_4 \geq 0$} \\
+ \end{array}
+\right.\\
+\end{array}
+\right.
+\end{equation}
+
+\begin{equation}
+\mbox{Service2 } \left\{
+\begin{array}{l}
+\ \mbox{Input } \left\{
+\begin{array}{l}
+\ \mbox{ $\mathbb R \ni p_1 >0$; $p_2 \in \mathbb N$; $p_3 \in \mathbb R$} \\
+\ \mbox{if $p_1 \in ]0,\pi/2]$ then $p_2 \in \{2;4;6\}$, $p_3 \in [-1,+1]$ and $\displaystyle \left( \left|  \sin(p_1)^{p_2} -p_3 \right| \right)^{1/2}<3/2$ } \\
+\ \mbox{if $p_1 \in ]\pi/2,\pi]$ then $0<p_2 < 10$, $p_3>\log(p_2)$ and $(p_1 \cdot p_2)$ must belong to $\mathbb N$} \\
+\end{array}
+\right. \\
+\\
+\ \mbox{\hspace{1cm} Output } \left\{
+\begin{array}{l}
+ \mbox{$\vec p_4, \, \vec p_5 \in \mathbb R^3$ } \\
+ \ \mbox{Always $\displaystyle \frac{\| \vec p_5\|}{\|\vec p_4 \|} \leq 0.01 $} \\
+ \end{array}
+\right.\\
+\end{array}
+\right.
+\end{equation}
+
 
 \section{Basic concepts and general ideas}
 
@@ -46,6 +114,8 @@ Optional fields for the {\it SingleParameter} object are:
 \item a unique precision. This field must be specified only for parameter types where precision-concepts has a sense. It has indeed no sense for integer, rational or string. It has sense, for instance, on real type. For understanding the meaning of this field, let the function $f$ be a model of a given service. If $i$ denotes the input parameter, $f(i)$ denotes the output. The precision $\delta$ is the smaller value such that $f(i+\delta) \neq f(i)$.\\ The precision is expressed using an {\it expression} (cf. paragraph \ref{par02}). The result of the expression that appears in this {\it precision}-field  {\bf must be} of the same type than (i.e. could be naturally casted to) the type appearing in the field {\it parameter type}.
 \end{itemize}
 
+{\bf NB:} The name of every {\it SingleParameter} is unique. Two parameters must indeed have different names. 
+
 \section{The ParameterGroup object}\label{par-group}
 The {\it ParameterGroup} object is used for grouping parameters according to a criterion of relevancy arbitrary chosen by users (for instance parameters may be grouped according to the physics : position-group, speed-group; thermodynamic-group).
 But  the ParameterGroup is not only a kind of parameter set. Indeed it could be used for defining complex relations and/or constraints involving the contained parameters (cf. paraghrap \ref{par-ConstraintsOnGroup}).\\
@@ -57,6 +127,8 @@ Optional fields are
 expressing the complex relations and constraints involving parameters.
 \item the objects of type {\it ParametersGroup} contained into the current root group. Indeed the {\it ParametersGroup} is a recursive object which can contain other sub-groups.
 \end{itemize}
+
+{\bf NB:} The name of every {\it ParameterGroup} is unique. Indeed two different groups must have different names.\\
 
 {\bf NB:} A given {\it SingleParameter} object could only belong to one {\it ParameterGroup}. The reasons behind this rule will be more clear in paragraph XYZ.\\
 
@@ -70,7 +142,7 @@ Expression is an abstract object. In this section we are going to review all the
 \noindent {\bf N.B.} In what follows, we will call a {\bf numerical expression} every {\it expression} involving only numerical types. This means that the evaluation of such expressions should lead to a number (or a vector number if the dimension of the expression is greater than one).\\
 
 
-\subsection{The atomic parameter expression}\label{par02_01}
+\subsection{The AtomicParameter expression}\label{par02_01}
 The {\it AtomicParameterExpression} (extending {\it Expression}) is the simplest expression that could be built involving a defined parameter. This object {\bf must contains} unique reference to a given parameter.\\
 
 Optional fields, valid only for numerical types, are : 
@@ -84,7 +156,7 @@ Let $p$ and $exp$ be respectively the parameter and the power expression we want
  \overbrace{    \left( \mbox{AnotherExpression}\right) }^{\mbox{\tiny expression contained in operation}}   }_{\mbox{\tiny Operation object}}}_{\mbox{\tiny Atomic Parameter Expression}}
 \end{equation}
 
-To evaluate a given {\it atomicParameterExpression}, one proceed as follows: 
+To evaluate a given {\it AtomicParameterExpression}, one proceed as follows: 
 Let $d_p$, $d_{exp}$ and $d_{oo}$ be respectively the dimension of the parameter $p$ referenced, the dimension of the power expression and the dimension of the expression contained into the operation object.\\
 The exponent part of the expression is legal if and only if:
 \begin{itemize}
@@ -95,7 +167,7 @@ The exponent part of the expression is legal if and only if:
 Whatever the method is used, let us note $ep$ the result of this first step. Is is clear that the dimension of $ep$ 
 is always equal to $d_p$. In order to complete the evaluation of the expression, one should proceed as exposed in paragraph \ref{par02_02}, by taking there $b=ep$.
 
-\subsection{The atomic constant expression}\label{par02_03}
+\subsection{The AtomicConstant expression}\label{par02_03}
 The {\it AtomicConstantExpression} (extending {\it Expression}) is the simplest expression that could be built involving constants. Since this object could be used for defining constant vector expression, it {\bf must contain} 
 \begin{itemize}
 \item A unique list of String which express the value of each component of the expression. Let $d_c$ be the size of the String list. If $d_c=1$ the expression is scalar and it is a vector expression if $d_c>1$. 
@@ -124,7 +196,7 @@ Whatever the method is used, let us note $ep$ (whose dimension is always equal t
 this first step.  In order to complete the evaluation of the expression, one should proceed as exposed in paragraph \ref{par02_02}, by taking there $b=ep$.
 
 
-\subsection{The parenthesis content expression}\label{par02_04}
+\subsection{The parenthesisContent expression}\label{par02_04}
 The {\it parenthesisContentExpression} (extending {\it Expression}) object is used to explicitly denote precedence by grouping the expressions that should be evaluated first. This object {\bf must contain} a unique {\bf numerical} object $Expression$ (noted hereafter $exp_1$).\\
 Optional fields are 
 \begin{itemize}
@@ -438,6 +510,35 @@ and finally
 \end{equation}
 This last is a classical sequential boolean expression. It is evaluated from the left to the right. The sub-expression 
 between the parenthesis must be evaluated with the highest priority and the operator AND takes precedence over the OR operator.
+
+
+\section{PDL and formal logic}
+We recall that PDL is a grammar and syntax framework for describing parameters and their constraints. Since the description is rigorous and unambiguous, PDL could verify if the instance of a given parameter is consistent with the provided description and related constraints. For example, consider the description
+\begin{equation}
+\left\{
+\begin{array}{l}
+p_1 \mbox{is a Kelvin temperature}\\
+\mbox{Always }  p_1 > 0 \\
+\end{array}
+\right..
+\end{equation}
+According to the description, the PDL framework could automatically verify the validity of the parameter provided by the user. 
+If he/she provide $p_1=-3$, than this value will be rejected.\\
+In any case PDL is not a formal-logic calculation tool. One could build the following description with no problem:
+\begin{equation}
+\left\{
+\begin{array}{l}
+p_1 \in \mathbb R\\
+\displaystyle \mbox{Always } \big(  (p_1 > 0) \mbox{ AND } (p_1 < 0) \big)\\
+\end{array}
+\right..
+\end{equation}
+PDL lack the capabilities to perceive the logical contradiction and will work according to its rules. In   
+this case any parameter $p_1$ provided by user will be rejected.\\
+In other words {\bf people providing descriptions of services must pay great attention to their contents.}\\
+
+{\bf Remark:} In further developments of PDL will include a formal-logic module. This will permits to track contradictions inside the descriptions. Moreover this kind of module is required for implementing the automatic computation of
+{\it a priori} interoperability graphs described in paragrah XYZ.
 
 \end{document}
 
