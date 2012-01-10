@@ -40,14 +40,14 @@ Moreover this new service will be even more useful if it can interact immediatel
 
 {\bf Service description} and {\bf Interoperability} are indeed two key points for building efficient and useful services.
 
-\subsection{The service description}
+\subsection{The service description: existing solutions and specific needs}
 For a client starting to interact with an unknown service, its description is fundamental: in a sense it is this description that puts the service from the {\it unknown} to the {\it known} state.\\
-Since the client could be a computer system, a generic the descriptions should be machine-readable.\\
+Since the client could be a computer system, a generic description should be machine-readable.\\
 
 There are several descriptions languages. The most known for their high expression level and their wide use are \emph{WSDL} (\href{http://www.w3.org/TR/wsdl20/}{http://www.w3.org/TR/wsdl20/}) and \textit{WADL} (\href{http://www.w3.org/Submission/wadl/}{http://www.w3.org/Submission/wadl/}).\\
 With those tools, people providing a given service could easily express what parameters the service expects and what data structures it returns. It thus serves a roughly similar purpose as a method-signature in a programming language.\\
 
-In the case of {\it generic services} for science, description needs are very specific: since we have to deal with complex physics and models, one should be able to describe for each parameter its physical meaning, its unit and precision and the range (or set) of admissible value (according to the model).\\ In mane cases, especially for theoretical simulations, parameters could be linked by complex conditions or have to verify, under given conditions, a set of constraints (that could involve mathematical properties and formulas). 
+In the case of {\it generic services} for science, description needs are very specific: since we have to deal with complex physics and models, one should be able to describe for each parameter its physical meaning, its unit and precision and the range (or set) of admissible value (according to the model).\\ In many cases, especially for theoretical simulations, parameters could be linked by complex conditions or have to verify, under given conditions, a set of constraints (that could involve mathematical properties and formulas). 
 Two examples of this high level description we would be able to provide are the following:
 
 \begin{equation}
@@ -76,8 +76,10 @@ Two examples of this high level description we would be able to provide are the 
 \ \mbox{Input } \left\{
 \begin{array}{l}
 \ \mbox{ $\mathbb R \ni p_1 >0$; $p_2 \in \mathbb N$; $p_3 \in \mathbb R$} \\
-\ \mbox{if $p_1 \in ]0,\pi/2]$ then $p_2 \in \{2;4;6\}$, $p_3 \in [-1,+1]$ and $\displaystyle \left( \left|  \sin(p_1)^{p_2} -p_3 \right| \right)^{1/2}<3/2$ } \\
-\ \mbox{if $p_1 \in ]\pi/2,\pi]$ then $0<p_2 < 10$, $p_3>\log(p_2)$ and $(p_1 \cdot p_2)$ must belong to $\mathbb N$} \\
+\  \bullet \mbox{ if $p_1 \in ]0,\pi/2]$ then $p_2 \in \{2;4;6\}$,}\\
+\ \mbox{$p_3 \in [-1,+1]$ and $\displaystyle \left( \left|  \sin(p_1)^{p_2} -p_3 \right| \right)^{1/2}<3/2$ } \\
+\ \bullet \mbox{ if $p_1 \in ]\pi/2,\pi]$ then $0<p_2 < 10$,}\\
+\ \mbox{$p_3>\log(p_2)$ and $(p_1 \cdot p_2)$ must belong to $\mathbb N$} \\
 \end{array}
 \right. \\
 \\
@@ -90,6 +92,55 @@ Two examples of this high level description we would be able to provide are the 
 \end{array}
 \right.
 \end{equation}
+To our knowledge, no existing description language meets these fine needs coming with scientific services.
+This leads us naturally to work on a new solution and consider about developing a new description language. 
+
+\subsection{Interoperability issues}
+Nowadays, with the massive spread and diffusion of {\it cloud} services, interoperability has become an imporrtant element for the success and usability of services. This remains true in the context of astronomy.
+For the astronomical community, the ability of systems to work together without restrictions (and without further {\it ad hoc} implementations) are a very important value: this is the ultimate goal that aims the {\it IVOA}.\\
+
+Computer scientists has developed different tools for setting up service interoperability and orchestration. The most known are
+\begin{itemize}
+\item {\it BAbel} (\href{https://computation.llnl.gov/casc/components/}{https://computation.llnl.gov/casc/components/}),
+\item {\it Taverna }Ê(\href{http://www.taverna.org.uk}{http://www.taverna.org.uk}),
+\item {\it OSGI} and {\it D-OSGI } (\href{http://www.osgi.org/}{http://www.osgi.org/}),
+\item {\it OPalm} (\href{http://www.cerfacs.fr/globc/PALM_WEB/}{http://www.cerfacs.fr/globc/PALM\_WEB/}),
+\item {\it GumTree} (\href{http://docs.codehaus.org/display/GUMTREE/}{http://docs.codehaus.org/display/GUMTREE/}).
+\end{itemize}
+In general, with those tools one could coordinate only the services written with given languages. Moreover the 
+interoperability is achieved only in a basic "computer" way: if the input of the $B$ service is a double and the output of $A$ service is a double too, thus the two services could interacts.\\
+
+Our needs are more complex than this: let us consider a service $B'$ whose inputs are a density and a temperature and a service $A'$ whose outputs are density and temperature too. \\
+The interoperability is not so straightforward: the interaction of the two services has a sense only if the two densities (resp. the two temperatures)
+\begin{itemize}
+\item has the same "computer" type (ex. double),
+\item are expressed in the same system of units,
+\item corresponds to the same physical concepts (for example, in the service $A'$ density could be an electronic density whereas in the service $B'$ the density could be a mass density)
+\end{itemize}
+But things could be more complicated, even if all the previous items are satisfied: the model behind the service $B'$ could implement an Equation of State which is valid only if the product (density$\times$temperature) is smaller than a given value.
+Thus the interoperability with $A'$ could be achieved only if the outputs of this last satisfies the condition on product.\\
+
+Again, as in case of descriptions no existing solutions could meet our needs and we are oriented towards building our own solution.
+
+\subsection{A new Parameter Description Language: a unique solutions to description and interoperability needs}
+To overcome the lack of a solution to our description and interoperability needs, it is proposed to introduce a new language.
+Our aim is to finely describe the set of parameters (inputs and outputs of give generic services) in a way that
+\begin{itemize}
+\item could be understood easily by humans,
+\item could be interpreted and handled by a computer,
+\item complex relations and constraints involving parameters could be formulated unambiguously. Indeed we would like to express
+\begin{itemize}
+\item all the possible mathematical laws/formulas,
+\item all the possible conditional sentences (provided they have a logical sense)
+\end{itemize}
+involving parameters.
+\end{itemize}
+The new language is based on a generic data model (DM). Each object of the DM corresponds to a syntactic element. Sentences are made by building objects-structures.
+Each sentence can be interpreted by a computer by parsing the sentence-related object structure.\\
+For describing the physical scientific concept or model behind a given parameter, the idea is to use {\it SKOS} concepts \href{http://www.w3.org/TR/skos-reference/}{http://www.w3.org/TR/skos-reference/} or, in more complicated cases, ontologies. 
+
+With no loss of generality and to ensure that the model could work with the largest possible number of programming languages, 
+we decided to fix it under the form of an XML schema (this choice is also convenient because there are many library and tools for handling and parsing XML documents).\\
 
 
 \section{Basic concepts and general ideas}
