@@ -137,13 +137,22 @@ involving parameters.
 \end{itemize}
 The new language is based on a generic data model (DM). Each object of the DM corresponds to a syntactic element. Sentences are made by building objects-structures.
 Each sentence can be interpreted by a computer by parsing the sentence-related object structure.\\
-For describing the physical scientific concept or model behind a given parameter, the idea is to use {\it SKOS} concepts \href{http://www.w3.org/TR/skos-reference/}{http://www.w3.org/TR/skos-reference/} or, in more complicated cases, ontologies. 
+For describing the physical scientific concept or model behind a given parameter, the idea is to use {\it SKOS} concepts (\href{http://www.w3.org/TR/skos-reference/}{http://www.w3.org/TR/skos-reference/}) or, in more complicated cases, ontologies. 
 
 With no loss of generality and to ensure that the model could work with the largest possible number of programming languages, 
 we decided to fix it under the form of an XML schema (this choice is also convenient because there are many library and tools for handling and parsing XML documents).\\
 
 
-\section{Basic concepts and general ideas}
+\section{The Service object}\label{par-service}
+The root element of the PDL description of a generic service is the object {\it Service}. This {\bf must contain}
+\begin{itemize}
+\item A unique {\it ServiceName}. This field is a String containing the name of the service.
+\item A unique {\it ServiceId}. This field is a String containing the technical Id of the service. It is introduced for a future eventual integration of PDL into the IVOA registry. Each service in the registry will be marked with its own unique id.
+\item A unique {\it Description}. This field is a String and contains a human readable description of the service. This description is not intended to be understood/parsed by a machine.
+\item A unique {\it Parameters} field which is a list of {\it SingleParameter}Êobject type (cf. paragraph \ref{par01}). This list contains the definition of all parameters (both inputs and outputs) of the service. The two following fields specifies if a given parameter is a input or an output one.
+\item A unique {\it Inputs} field of type {\it ParameterGroup} (cf. paragraph \ref{par-group}). This object contain the fine description (with constraints and conditions) of all the input parameters.
+\item A unique {\it Outputs} field of type {\it ParameterGroup}. This object contain the fine description (with constraints and conditions) of all the outputs parameters.
+\end{itemize}
 
 
 \section{The SingleParameter Object}\label{par01}
@@ -167,22 +176,26 @@ Optional fields for the {\it SingleParameter} object are:
 
 {\bf NB:} The name of every {\it SingleParameter} is unique. Two parameters must indeed have different names. 
 
+\section{The ParameterReference object}\label{par-parRef}
+This object, as its name indicates, is used to reference an existing parameter defined in the {\it Service} context (cf. paragraph 
+\ref{par-service}). It only contains a unique attribute {\it ParameterName} of type String which must corresponds to the {\it Name}
+field of an existing {\it SingleParameter} (cf. paragraph \ref {par01}).
+
+
 \section{The ParameterGroup object}\label{par-group}
 The {\it ParameterGroup} object is used for grouping parameters according to a criterion of relevancy arbitrary chosen by users (for instance parameters may be grouped according to the physics : position-group, speed-group; thermodynamic-group).
-But  the ParameterGroup is not only a kind of parameter set. Indeed it could be used for defining complex relations and/or constraints involving the contained parameters (cf. paraghrap \ref{par-ConstraintsOnGroup}).\\
+But  the ParameterGroup is not only a kind of parameter set. Indeed it could be used for defining complex relations and/or constraints involving the contained parameters (cf. paragraph \ref{par-ConstraintsOnGroup}).\\
 This object {\bf must contain} a unique Name. This name is a String and is the identification label of the ParameterGroup. Indeed two groups can not have the same Name.\\
 Optional fields are
 \begin{itemize}
-\item the references to the parameters (cf. paragraph XYZ) one want to include into the group;
-\item a unique object ConstraintOnGroup of type {\it ConstraintOnGroup} (cf. paragraph  \ref{par-ConstraintsOnGroup}). This object is used for 
-expressing the complex relations and constraints involving parameters.
+\item the references to the parameters (cf. paragraph \ref{par-parRef}) one want to include into the group;
+\item a unique object ConstraintOnGroup of type {\it ConstraintOnGroup} (cf. paragraph  \ref{par-ConstraintsOnGroup}). This object is used for expressing the complex relations and constraints involving parameters.
 \item the objects of type {\it ParametersGroup} contained into the current root group. Indeed the {\it ParametersGroup} is a recursive object which can contain other sub-groups.
 \end{itemize}
 
 {\bf NB:} The name of every {\it ParameterGroup} is unique. Indeed two different groups must have different names.\\
 
-{\bf NB:} A given {\it SingleParameter} object could only belong to one {\it ParameterGroup}. The reasons behind this rule will be more clear in paragraph XYZ.\\
-
+{\bf NB:} A given {\it SingleParameter} object could only belong to one {\it ParameterGroup}\footnote{As we will see in paragraph \ref{par-ConstraintsOnGroup}, constraints on parameters are defined at the level of the group. If a {\it SingleParameter} belongs only to one group, it will be easier to verify that there is no contradictions on conditions}. 
 {\bf NB:}  For any practical use, the number on the parameter referenced into a given group summed to the number of sub-groups of the same group must be greater than one. Otherwise the group would be a hollow shell.
 
 
@@ -212,7 +225,7 @@ Let $d_p$, $d_{exp}$ and $d_{oo}$ be respectively the dimension of the parameter
 The exponent part of the expression is legal if and only if:
 \begin{itemize}
 \item $d_p=d_{exp}$. In this case $p^{exp}$ is a $d_p$-size vector expression and $\forall$ $i=1,...,d_p$ the $i$ component of this vector is equal to ${p_i}^{exp_i}$, where $p_i$ is the value of the $i$ component of vector parameter $p$ and $exp_i$ is the value obtained by interpreting the $i$ component of vector expression $exp$.
-\item $d_{exp}=1$. In this case, $\forall$ $i=1,...,d_p$ the $i$ component of the vector result is equal to ${p_i}^{exp}$, where $p_i$ is the same as defined above.\\
+\item Or $d_{exp}=1$. In this case, $\forall$ $i=1,...,d_p$ the $i$ component of the vector result is equal to ${p_i}^{exp}$, where $p_i$ is the same as defined above.\\
 \end{itemize} 
 
 Whatever the method is used, let us note $ep$ the result of this first step. Is is clear that the dimension of $ep$ 
@@ -222,7 +235,7 @@ is always equal to $d_p$. In order to complete the evaluation of the expression,
 The {\it AtomicConstantExpression} (extending {\it Expression}) is the simplest expression that could be built involving constants. Since this object could be used for defining constant vector expression, it {\bf must contain} 
 \begin{itemize}
 \item A unique list of String which express the value of each component of the expression. Let $d_c$ be the size of the String list. If $d_c=1$ the expression is scalar and it is a vector expression if $d_c>1$. 
-\item A unique attribute {\it constantType} of type {\it ParameterType} (cf. paragraph XYZ) which explain the nature of the constant expression. Then the admitted types are the same as in the field {\it parameterType} of the object {\it SingleParameter}. 
+\item A unique attribute {\it ConstantType} of type {\it ParameterType} (cf. paragraph XYZ) which explain the nature of the constant expression. Then the admitted types are the same as in the field {\it parameterType} of the object {\it SingleParameter}. 
 \end{itemize}
 The object {\bf is legal if and only if} every element of the String list could be cast into the type expressed by the attribute {\it constantType}.\\
 
@@ -241,7 +254,7 @@ To evaluate a given {\it atomicConstantExpression}, one proceed as follows: let 
 The exponent part of the expression is legal if and only if:
 \begin{itemize}
 \item $d_c = d_{exp}$. In this case $(s_1,...,s_{d_c})^{exp}$ is a $d_c$ size vector expression and $\forall i =1,...,d_c$ the $i$-th component of this vector is equal to $s_i^{exp_i}$, where $exp_i$ is the value obtained by interpreting the $i$ component of vector $exp$.
-\item $d_{exp}=1$. In this case, $\forall i =1,...,d_c$ the $i$ component of the vector result is equal to $s_i^{exp}$.\\
+\item Or $d_{exp}=1$. In this case, $\forall i =1,...,d_c$ the $i$ component of the vector result is equal to $s_i^{exp}$.\\
 \end{itemize}
 Whatever the method is used, let us note $ep$ (whose dimension is always equal to $d_c$) the result of 
 this first step.  In order to complete the evaluation of the expression, one should proceed as exposed in paragraph \ref{par02_02}, by taking there $b=ep$.
@@ -282,10 +295,10 @@ The operation evaluation is legal if and only if:
 \begin{itemize}
 \item $d_a=d_b$ and operation type (i.e. the operator) $op \in \{ + , - , \ast , \div \}$. In this case $a \, op \, b$ is a vector expression of size $d_a$ and $\forall$ $i=1,...,d_a$ the $i$ component of this vector is equal to
 $(a_i \, op \,b_i)$ (i.e. a term by term operation).
-\item $d_a = d_b$ and operation type $op$ is "$\cdot$". In this case $a \cdot b$ is the result of the scalar product $\sum_{i =1}^{d_a} a_i \ast b_i$. It is obvious that the dimension of this result is equal to $1$.
-\item $d_b=1$ and operation type (i.e. the operator) $op \in \{ + , - , \ast , \div \}$. In this case $a \, op \, b$ is a vector expression of size $d_a$ and $\forall$ $i=1,...,d_a$ the $i$ component of this vector is equal to
+\item Or $d_a = d_b$ and operation type $op$ is "$\cdot$". In this case $a \cdot b$ is the result of the scalar product $\sum_{i =1}^{d_a} a_i \ast b_i$. It is obvious that the dimension of this result is equal to $1$.
+\item Or $d_b=1$ and operation type (i.e. the operator) $op \in \{ + , - , \ast , \div \}$. In this case $a \, op \, b$ is a vector expression of size $d_a$ and $\forall$ $i=1,...,d_a$ the $i$ component of this vector is equal to
 $(a_i \, op \,b)$.
-\item $d_a=1$ and operation type (i.e. the operator) $op \in \{ + , - , \ast , \div \}$. This case in symmetric to the previous one.
+\item Or $d_a=1$ and operation type (i.e. the operator) $op \in \{ + , - , \ast , \div \}$. This case in symmetric to the previous one.
 \end{itemize}
 
 The type of the result is automatically induced by standard cast operation performed during the evaluations (Indeed for example a double vector added to an integer vector is a double vector).  
@@ -301,9 +314,9 @@ Let $exp$ be the result of the evaluation of the function argument expression an
 The {\it function} object evaluation {\bf is legal if and only if}:
 \begin{itemize}
 \item $f  \in \{ \mbox{abs, sin, cos, tan, asin, acos, atan, exp, log} \}$ and the function argument is a {\bf numerical} expression. In this case the  result  is a $d_{exp}$-size vector and each component  $r_i = f(exp_i$), $\forall \, i=1,...,d_{exp}$.
-\item $f=$sum (resp. $f=$product) and the argument is a {\bf numerical} expression. In this case the result is a scalar value equal to $\sum_{i=1}^{i=d_{exp}} exp_i$ (resp. $\prod _{i=1}^{i=d_{exp}} exp_i$), where $exp_i$ is the value obtained 
+\item Or $f=$sum (resp. $f=$product) and the argument is a {\bf numerical} expression. In this case the result is a scalar value equal to $\sum_{i=1}^{i=d_{exp}} exp_i$ (resp. $\prod _{i=1}^{i=d_{exp}} exp_i$), where $exp_i$ is the value obtained 
 by interpreting the $i$ component of vector expression $exp$.
-\item $f=$size. In this case the result is the scalar integer value $d_{exp}$. 
+\item Or $f=$size. In this case the result is the scalar integer value $d_{exp}$. 
 \end{itemize}
 From what we saw above, the result of the interpretation of a function object { \bf is always a number}.
 
@@ -326,6 +339,7 @@ In order to evaluate this object expression, one proceed as follows: first one e
 
 
 \section{Expressing complex relations and constraints on parameters} 
+In this part of the document we will explain how PDL object could be used for building complex constraints and conditions involving input and/or output parameters.
 
 \subsection{The ConstraintOnGroup Object}\label{par-ConstraintsOnGroup}
 The {\it  ConstraintOnGroup} object is always contained into a {\it ParameterGroup} object and could not exist alone. 
@@ -413,14 +427,14 @@ defining the set of legal values. The number of {\it Values} must be greater tha
 This object is legal only if all the {\it Expressions} of the set are of the same type (e.g. they are all numerical, or all boolean or all String expressions).\\
 The couple $(\mathcal E, \mathcal C)$ leads to a TRUE boolean value if and only if 
 \begin{itemize}
-\item the expression $\mathcal E$ and the expressions composing the set are of the same type.
-\item it exists an element $\mathcal E_s$ in the set such that $\mathcal E_s = \mathcal E$.\\
+\item the expression $\mathcal E$ and the expressions composing the set are of the same type
+\item and it exists an element $\mathcal E_s$ in the set such that $\mathcal E_s = \mathcal E$.\\
 This last equality is to be unserstood in 
 the following sense: let $=_t$ be the equality operator induced by the type (for numerical type the equality is in the real number sense, for String type the equality is case sensitive and for boolean the equality is in the classic boolean sense).\\
 Two expressions are equals if and only if
 \begin{itemize}
 \item the expressions has the same size $d_{\mathcal E}$,
-\item $\mathcal E_s^i =_t \mathcal E^i$, $\forall i =1,...,d_{\mathcal E}$, where $\mathcal E_s^i$ and $ \mathcal E^i$ are respectively the result of the evaluation of the 
+\item and $\mathcal E_s^i =_t \mathcal E^i$, $\forall i =1,...,d_{\mathcal E}$, where $\mathcal E_s^i$ and $ \mathcal E^i$ are respectively the result of the evaluation of the 
 $i$ component of expressions $\mathcal E_s$ and $\mathcal E$. 
 \end{itemize}
 \end{itemize}
@@ -472,7 +486,7 @@ It {\bf must contain} a unique expression $\mathcal E_c$.\\
 Since the default value of an expression involving functions, multiple parameters, etc. has no particular sense, in the case of the present object the couple $(\mathcal E, \mathcal C)$  is legal only if 
 \begin{itemize}
 \item $\mathcal E$ is an {\it AtomicParameterExpression} (cf. paragraph. \ref{par02_01})
-\item the dimension and the type of the expression $\mathcal E_c$ are equal to the dimension and type expressed in the {\it SingleParameter} object referenced into the {\it AtomicParameterExpression}.
+\item and the dimension and the type of the expression $\mathcal E_c$ are equal to the dimension and type expressed in the {\it SingleParameter} object referenced into the {\it AtomicParameterExpression}.
 \end{itemize}
 Moreover, for having a legal {\it DefaultValue} object, the criterion $\mathcal{CR}$ containing it must be contained into 
 the {\it Always} or {\it Then}  objects (cf. paragraph \ref{par-ConditionalClause}).

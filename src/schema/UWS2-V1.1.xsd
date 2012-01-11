@@ -6,7 +6,7 @@
    <xs:annotation>
       <xs:documentation> IVOA Description of the set of parameters for a service</xs:documentation>
    </xs:annotation>
-   <xs:element name="Service">
+   <xs:element name="UWSService">
       <xs:annotation>
          <xs:documentation> The base service description. A
             service in this context is simply some sort of process
@@ -60,7 +60,7 @@
       </xs:sequence>
    </xs:complexType>
    <xs:complexType name="ParameterReference">
-      <xs:attribute name="parameterName" type="xs:string">
+      <xs:attribute name="ParameterName" type="xs:string">
          <xs:annotation>
             <xs:documentation>The name of the parameter being referred to.</xs:documentation>
          </xs:annotation>
@@ -193,8 +193,8 @@
       <xs:complexContent>
          <xs:extension base="pm:ConditionalStatement">
             <xs:sequence>
-               <xs:element name="if" type="pm:if" minOccurs="1" maxOccurs="1"/>
-               <xs:element name="then" type="pm:then" minOccurs="1" maxOccurs="1"/>
+               <xs:element name="if" type="pm:If" minOccurs="1" maxOccurs="1"/>
+               <xs:element name="then" type="pm:Then" minOccurs="1" maxOccurs="1"/>
             </xs:sequence>
          </xs:extension>
       </xs:complexContent>
@@ -203,7 +203,7 @@
       <xs:complexContent>
          <xs:extension base="pm:ConditionalStatement">
             <xs:sequence>
-               <xs:element name="always" type="pm:always" minOccurs="1" maxOccurs="1"/>
+               <xs:element name="always" type="pm:Always" minOccurs="1" maxOccurs="1"/>
             </xs:sequence>
          </xs:extension>
       </xs:complexContent>
@@ -412,11 +412,11 @@
       <xs:complexContent>
          <xs:extension base="pm:Expression">
             <xs:sequence>
-               <xs:element name="constant" type="xs:string" maxOccurs="unbounded" minOccurs="1"/>
+               <xs:element name="Constant" type="xs:string" maxOccurs="unbounded" minOccurs="1"/>
                <xs:element name="power" type="pm:Expression" maxOccurs="1" minOccurs="0"/>
                <xs:element name="Operation" type="pm:Operation" maxOccurs="1" minOccurs="0"/>
             </xs:sequence>
-            <xs:attribute name="constatType" type="pm:ParameterType"/>
+            <xs:attribute name="ConstatType" type="pm:ParameterType"/>
          </xs:extension>
       </xs:complexContent>
    </xs:complexType>
