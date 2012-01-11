@@ -137,10 +137,16 @@ involving parameters.
 \end{itemize}
 The new language is based on a generic data model (DM). Each object of the DM corresponds to a syntactic element. Sentences are made by building objects-structures.
 Each sentence can be interpreted by a computer by parsing the sentence-related object structure.\\
-For describing the physical scientific concept or model behind a given parameter, the idea is to use {\it SKOS} concepts (\href{http://www.w3.org/TR/skos-reference/}{http://www.w3.org/TR/skos-reference/}) or, in more complicated cases, ontologies. 
+For describing the physical scientific concept or model behind a given parameter, the idea is to use {\it SKOS} concepts (\href{http://www.w3.org/TR/skos-reference/}{http://www.w3.org/TR/skos-reference/}) or, in more complicated cases, ontologies.\\
+
+Since the inputs and outputs  of every service (including their constraints and complex conditions) could be described with this fine grained granularity, interoperability become possible in the {\it smart} and {\it intelligent} sense we really need: services should be able to work out if they can sensibly use their output as input for another one, by simply look at its description.\\
 
 With no loss of generality and to ensure that the model could work with the largest possible number of programming languages, 
 we decided to fix it under the form of an XML schema (this choice is also convenient because there are many library and tools for handling and parsing XML documents).\\
+
+
+{\bf Remark:} We recall that PDL is a syntactic framework for describing parameters (with related constraints) of generic services. Since a PDL description is rigorous and unambiguous, starting from it, it is possible to verify if the instance of a given parameter (i.e. the value of the parameter that a user send to the service) is consistent with the description.\\
+In what follows in this document, we will often use the terms {\it evaluate} and {\it interpret} referred to expression and/or conditions composed with PDL. By this we means that one must replace in the PDL expressions/conditions the referenced parameters  by the set of values provided to the service by user. The replacement mechanisms will be explained in details, case by case.
 
 
 \section{The Service object}\label{par-service}
@@ -181,6 +187,8 @@ This object, as its name indicates, is used to reference an existing parameter d
 \ref{par-service}). It only contains a unique attribute {\it ParameterName} of type String which must corresponds to the {\it Name}
 field of an existing {\it SingleParameter} (cf. paragraph \ref {par01}).
 
+\section{The ParameterType object}\label{par-ParameterType}
+This object is used to explain the type of a parameter (cf. paragraph \ref{par01}) or an expression (cf. paragraph \ref{par02_03}). The admitted types are : boolean, string, rational, complex, integer, real, date;
 
 \section{The ParameterGroup object}\label{par-group}
 The {\it ParameterGroup} object is used for grouping parameters according to a criterion of relevancy arbitrary chosen by users (for instance parameters may be grouped according to the physics : position-group, speed-group; thermodynamic-group).
@@ -235,7 +243,7 @@ is always equal to $d_p$. In order to complete the evaluation of the expression,
 The {\it AtomicConstantExpression} (extending {\it Expression}) is the simplest expression that could be built involving constants. Since this object could be used for defining constant vector expression, it {\bf must contain} 
 \begin{itemize}
 \item A unique list of String which express the value of each component of the expression. Let $d_c$ be the size of the String list. If $d_c=1$ the expression is scalar and it is a vector expression if $d_c>1$. 
-\item A unique attribute {\it ConstantType} of type {\it ParameterType} (cf. paragraph XYZ) which explain the nature of the constant expression. Then the admitted types are the same as in the field {\it parameterType} of the object {\it SingleParameter}. 
+\item A unique attribute {\it ConstantType} of type {\it ParameterType} (cf. paragraph \ref{par-ParameterType}) which explain the nature of the constant expression. Then the admitted types are the same as in the field {\it parameterType} of the object {\it SingleParameter}. 
 \end{itemize}
 The object {\bf is legal if and only if} every element of the String list could be cast into the type expressed by the attribute {\it constantType}.\\
 
@@ -303,11 +311,16 @@ $(a_i \, op \,b)$.
 
 The type of the result is automatically induced by standard cast operation performed during the evaluations (Indeed for example a double vector added to an integer vector is a double vector).  
 
+\subsection{The FunctionType object}\label{par-FunctionType}
+This object is used for specifying the mathematical nature of the function contained into a {\it Function} object (cf. paragraph \ref{par02_05}). The unique String field this object contain could take one of this value: 
+size, abs, sin, cos, tan, asin, acos, atan, exp, log, sum, product. In paragraph \ref{par02_05} it is explained how this different function types are used and handled.
+
+
 \subsection{The Function object}\label{par02_05}
 The {\it function} object (extending {\it expression}) is used for expressing mathematical function on expressions.
 This object {\bf must contain} 
 \begin{itemize}
-\item A unique attribute {\it functionName} of type {\it functionType} (cf. paragraph XYZ) which specify the nature of the function.
+\item A unique attribute {\it functionName} of type {\it functionType} (cf. paragraph \ref{par-FunctionType}) which specify the nature of the function.
 \item A unique expression (which is the function argument).\\
 \end{itemize}
 Let $exp$ be the result of the evaluation of the function argument expression and note $d_{exp}$ its dimension.
@@ -319,6 +332,7 @@ by interpreting the $i$ component of vector expression $exp$.
 \item Or $f=$size. In this case the result is the scalar integer value $d_{exp}$. 
 \end{itemize}
 From what we saw above, the result of the interpretation of a function object { \bf is always a number}.
+
 
 \subsection{The FunctionExpression object} 
 The {\it FunctionExpression} object (extending {\it Expression}) is used for building mathematical expressions involving functions.\\
@@ -603,7 +617,7 @@ this case any parameter $p_1$ provided by user will be rejected.\\
 In other words {\bf people providing descriptions of services must pay great attention to their contents.}\\
 
 {\bf Remark:} In further developments of PDL will include a formal-logic module. This will permits to track contradictions inside the descriptions. Moreover this kind of module is required for implementing the automatic computation of
-{\it a priori} interoperability graphs described in paragrah XYZ.
+{\it a priori} interoperability graphs %described in paragrah XYZ.
 
 \end{document}
 
