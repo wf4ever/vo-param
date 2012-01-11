@@ -6,7 +6,7 @@
    <xs:annotation>
       <xs:documentation> IVOA Description of the set of parameters for a service</xs:documentation>
    </xs:annotation>
-   <xs:element name="UWSService">
+   <xs:element name="Service">
       <xs:annotation>
          <xs:documentation> The base service description. A
             service in this context is simply some sort of process
