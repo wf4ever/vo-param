@@ -1,5 +1,6 @@
 package net.ivoa.pdl.interpreter.expression;
 
+import net.ivoa.parameter.model.AtomicConstantExpression;
 import net.ivoa.parameter.model.AtomicParameterExpression;
 import net.ivoa.parameter.model.Expression;
 
@@ -14,7 +15,10 @@ public class ExpressionParserFactory {
 	}
 
 	public ExpressionParser buildParser(Expression exp) {
-		// TODO Add the factory implementing every case
+		if(exp.getClass() == AtomicConstantExpression.class){
+			return new AtomicConstantExpressionParser((AtomicConstantExpression) exp);
+		}
+		
 		if (exp.getClass() == AtomicParameterExpression.class) {
 			return new AtomicParameterExpressionParser((AtomicParameterExpression) exp);
 		} else {

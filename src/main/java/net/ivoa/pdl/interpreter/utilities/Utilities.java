@@ -2,6 +2,8 @@ package net.ivoa.pdl.interpreter.utilities;
 
 import java.util.List;
 
+import CommonsObjects.GeneralParameter;
+
 import net.ivoa.parameter.model.ParameterReference;
 import net.ivoa.parameter.model.SingleParameter;
 
@@ -22,7 +24,7 @@ public class Utilities {
 		return null;
 	}
 	
-	public List<String>  getuserProvidedValuesForParameter(SingleParameter parameter){
+	public List<GeneralParameter>  getuserProvidedValuesForParameter(SingleParameter parameter){
 		//TODO
 		return null;
 	}

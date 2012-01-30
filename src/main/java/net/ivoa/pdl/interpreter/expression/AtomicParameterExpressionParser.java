@@ -7,8 +7,10 @@ import net.ivoa.parameter.model.AtomicParameterExpression;
 import net.ivoa.parameter.model.SingleParameter;
 import net.ivoa.pdl.interpreter.expression.exceptions.InvalidExpression;
 import net.ivoa.pdl.interpreter.utilities.Utilities;
+import CommonsObjects.GeneralParameter;
+import exeptions.InvalidParameterException;
 
-public class AtomicParameterExpressionParser extends ExpressionParser {
+public class AtomicParameterExpressionParser extends AtomicExpressionParser {
 
 	private AtomicParameterExpression exp;
 
@@ -17,38 +19,44 @@ public class AtomicParameterExpressionParser extends ExpressionParser {
 	}
 
 	@Override
-	public List<String> processExpression() throws InvalidExpression {
+	public List<GeneralParameter> processExpression() throws InvalidExpression,
+			InvalidParameterException {
 
-		List<String> toReturn = new ArrayList<String>();
+		List<GeneralParameter> toReturn = new ArrayList<GeneralParameter>();
 
 		SingleParameter parameter = Utilities.getInstance()
 				.getParameterFromReference(this.exp.getParameterRef());
 
-		List<String> power = ExpressionParserFactory.getInstance()
-				.buildParser(this.exp.getPower()).parse();
+		// Defining the list of GeneralParameter for Power expression
+		List<GeneralParameter> power=null;
+		// If the power expression is not null we parse it
+		if (null != this.exp.getPower()) {
+			power = ExpressionParserFactory.getInstance()
+					.buildParser(this.exp.getPower()).parse();
+		}
 
+		// The interpretation of the expression without the operation part
 		toReturn = withoutOperationParser(parameter, power);
 
 		if (null != this.exp.getOperation()) {
-			//List<String> operationPart = new OperationParser(
-			//		this.exp.getOperation()).processOperation();
-			
-			
-			
+			// The interpretation of the expression by considering the
+			// expression part
+			toReturn = new OperationParser(this.exp.getOperation())
+					.processOperation(toReturn);
 		}
 
 		return toReturn;
 	}
 
 	private Integer getParameterDimension(SingleParameter parameter)
-			throws InvalidExpression {
-		List<String> dimensions = ExpressionParserFactory.getInstance()
-				.buildParser(parameter.getDimension()).parse();
+			throws InvalidExpression, InvalidParameterException {
+		List<GeneralParameter> dimensions = ExpressionParserFactory
+				.getInstance().buildParser(parameter.getDimension()).parse();
 		if (dimensions.size() > 1) {
 			throw new InvalidExpression("Dimension must be a scalar value");
 		} else {
 			try {
-				return new IntegerInterpreter().interpreate(dimensions).get(0);
+				return Integer.parseInt(dimensions.get(0).getValue());
 			} catch (Exception e) {
 				throw new InvalidExpression(
 						"Dimension must be an integer scalar value");
@@ -56,10 +64,11 @@ public class AtomicParameterExpressionParser extends ExpressionParser {
 		}
 	}
 
-	private List<String> withoutOperationParser(SingleParameter parameter,
-			List<String> power) throws InvalidExpression {
+	private List<GeneralParameter> withoutOperationParser(
+			SingleParameter parameter, List<GeneralParameter> power)
+			throws InvalidExpression, InvalidParameterException {
 
-		List<String> userProvidedValue = Utilities.getInstance()
+		List<GeneralParameter> userProvidedValue = Utilities.getInstance()
 				.getuserProvidedValuesForParameter(parameter);
 
 		Integer parameterDimension = getParameterDimension(parameter);
@@ -69,29 +78,7 @@ public class AtomicParameterExpressionParser extends ExpressionParser {
 					"Incompatible user provided dimension for parameter "
 							+ parameter.getName());
 		}
-
-		List<String> toReturn = new ArrayList<String>();
-
-		if (parameterDimension == power.size()) {
-			for (int i = 0; i < power.size(); i++) {
-				toReturn.add("Math.pow(" + userProvidedValue.get(i) + ","
-						+ power.get(i) + ")");
-			}
-		}
-
-		if (parameterDimension != power.size()) {
-			if (power.size() == 1) {
-				for (int i = 0; i < power.size(); i++) {
-					toReturn.add("Math.pow(" + userProvidedValue.get(i) + ","
-							+ power.get(0) + ")");
-				}
-			} else {
-				throw new InvalidExpression(
-						"Inconsistent power operation for parameter "
-								+ parameter.getName());
-			}
-		}
-		return toReturn;
+		return this.evaluatePower(userProvidedValue, power);
 	}
 
 }
