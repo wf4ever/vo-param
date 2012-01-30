@@ -2,12 +2,9 @@ package net.ivoa.pdl.interpreter.expression;
 
 import java.util.List;
 
-import exeptions.InvalidParameterException;
-
-import CommonsObjects.GeneralParameter;
-
-import net.ivoa.parameter.model.Expression;
 import net.ivoa.pdl.interpreter.expression.exceptions.InvalidExpression;
+import CommonsObjects.GeneralParameter;
+import exeptions.InvalidParameterException;
 
 public abstract class ExpressionParser {
 	
