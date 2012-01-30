@@ -9,6 +9,13 @@ import visitors.Ivisitor;
  *         outputs of a Job Object.
  */
 public class GeneralParameter {
+	
+	private Ivisitor visitor;
+	
+	
+	public Ivisitor getVisitor() {
+		return visitor;
+	}
 
 	/**
 	 * The value attribute corresponds is the String containing the value. E.g.
@@ -46,7 +53,7 @@ public class GeneralParameter {
 		this.value = value;
 		this.type = type;
 		this.description = description;
-
+		this.visitor = visitor;
 		// Calling the verifing methods defined throw the 'visitor'
 		this.verifyParameter(visitor);
 	}
