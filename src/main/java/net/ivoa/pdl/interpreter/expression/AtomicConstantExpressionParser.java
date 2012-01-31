@@ -10,7 +10,7 @@ import visitors.GeneralParameterVisitor;
 import CommonsObjects.GeneralParameter;
 import exeptions.InvalidParameterException;
 
-public class AtomicConstantExpressionParser extends AtomicExpressionParser {
+public class AtomicConstantExpressionParser extends ExpressionWithPowerParser {
 
 	private AtomicConstantExpression exp;
 

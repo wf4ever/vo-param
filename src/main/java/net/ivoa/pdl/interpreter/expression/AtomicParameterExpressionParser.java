@@ -10,7 +10,7 @@ import net.ivoa.pdl.interpreter.utilities.Utilities;
 import CommonsObjects.GeneralParameter;
 import exeptions.InvalidParameterException;
 
-public class AtomicParameterExpressionParser extends AtomicExpressionParser {
+public class AtomicParameterExpressionParser extends ExpressionWithPowerParser {
 
 	private AtomicParameterExpression exp;
 
