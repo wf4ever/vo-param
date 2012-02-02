@@ -187,7 +187,13 @@
             maxOccurs="unbounded"/>
       </xs:sequence>
    </xs:complexType>
-   <xs:complexType abstract="true" name="ConditionalStatement"/>
+   
+   <xs:complexType abstract="true" name="ConditionalStatement">
+      <xs:sequence>
+         <xs:element name="comment" type="xs:string" minOccurs="1" maxOccurs="1"/>
+      </xs:sequence>   
+   </xs:complexType>
+   
 
    <xs:complexType name="IfThenConditionalStatement">
       <xs:complexContent>
@@ -380,6 +386,7 @@
                <xs:enumeration value="MINUS"/>
                <xs:enumeration value="MULTIPLY"/>
                <xs:enumeration value="DIVIDE"/>
+               <xs:enumeration value="SCALAR"/>
             </xs:restriction>
          </xs:simpleType>
       </xs:attribute>
