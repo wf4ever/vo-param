@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.ivoa.parameter.model.ParameterType;
-import net.ivoa.pdl.interpreter.expression.exceptions.InvalidCondition;
-import net.ivoa.pdl.interpreter.expression.exceptions.InvalidExpression;
 import visitors.GeneralParameterVisitor;
 import visitors.Ivisitor;
+import exeptions.InvalidCondition;
+import exeptions.InvalidExpression;
 import exeptions.InvalidParameterException;
 
 public class GeneralParameterAlgebra {
