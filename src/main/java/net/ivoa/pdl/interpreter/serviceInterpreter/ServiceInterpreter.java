@@ -2,13 +2,6 @@ package net.ivoa.pdl.interpreter.serviceInterpreter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
-
-import exeptions.InvalidCondition;
-import exeptions.InvalidConditionalStatement;
-import exeptions.InvalidCriterion;
-import exeptions.InvalidExpression;
-import exeptions.InvalidParameterException;
 
 import net.ivoa.parameter.model.ParameterGroup;
 import net.ivoa.parameter.model.Service;
