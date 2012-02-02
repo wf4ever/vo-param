@@ -1,9 +1,9 @@
 package net.ivoa.pdl.interpreter.criterion;
 
+import exeptions.InvalidCriterion;
 import net.ivoa.parameter.model.AbstractCriterion;
 import net.ivoa.parameter.model.Criterion;
 import net.ivoa.parameter.model.ParenthesisCriterion;
-import net.ivoa.pdl.interpreter.expression.exceptions.InvalidCriterion;
 
 public class CriterionInterpreterFactory {
 	private static final CriterionInterpreterFactory instance = new CriterionInterpreterFactory();

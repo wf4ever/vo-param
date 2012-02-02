@@ -1,11 +1,11 @@
 package net.ivoa.pdl.interpreter.criterion;
 
+import exeptions.InvalidCondition;
+import exeptions.InvalidCriterion;
+import exeptions.InvalidExpression;
 import exeptions.InvalidParameterException;
 import net.ivoa.parameter.model.Criterion;
 import net.ivoa.pdl.interpreter.condition.ConditionInterpreterFactory;
-import net.ivoa.pdl.interpreter.expression.exceptions.InvalidCondition;
-import net.ivoa.pdl.interpreter.expression.exceptions.InvalidCriterion;
-import net.ivoa.pdl.interpreter.expression.exceptions.InvalidExpression;
 
 public class CriterionInterpreter extends AbstractCriterionInterpreter {
 

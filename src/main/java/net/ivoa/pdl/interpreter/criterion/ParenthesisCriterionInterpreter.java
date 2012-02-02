@@ -2,9 +2,9 @@ package net.ivoa.pdl.interpreter.criterion;
 
 import net.ivoa.parameter.model.Criterion;
 import net.ivoa.parameter.model.ParenthesisCriterion;
-import net.ivoa.pdl.interpreter.expression.exceptions.InvalidCondition;
-import net.ivoa.pdl.interpreter.expression.exceptions.InvalidCriterion;
-import net.ivoa.pdl.interpreter.expression.exceptions.InvalidExpression;
+import exeptions.InvalidCondition;
+import exeptions.InvalidCriterion;
+import exeptions.InvalidExpression;
 import exeptions.InvalidParameterException;
 
 public class ParenthesisCriterionInterpreter extends AbstractCriterionInterpreter {

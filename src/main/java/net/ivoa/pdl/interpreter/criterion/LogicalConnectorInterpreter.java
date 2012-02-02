@@ -3,9 +3,9 @@ package net.ivoa.pdl.interpreter.criterion;
 import net.ivoa.parameter.model.And;
 import net.ivoa.parameter.model.LogicalConnector;
 import net.ivoa.parameter.model.Or;
-import net.ivoa.pdl.interpreter.expression.exceptions.InvalidCondition;
-import net.ivoa.pdl.interpreter.expression.exceptions.InvalidCriterion;
-import net.ivoa.pdl.interpreter.expression.exceptions.InvalidExpression;
+import exeptions.InvalidCondition;
+import exeptions.InvalidCriterion;
+import exeptions.InvalidExpression;
 import exeptions.InvalidParameterException;
 
 public class LogicalConnectorInterpreter {
