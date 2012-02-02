@@ -21,26 +21,22 @@ public class AlwaysConditionalStatementInterpreter extends
 
 	// tell if the statement is switched
 	private boolean isStatementSwitched;
-	
+
 	@Override
 	public boolean isStatementSwitched() {
 		return isStatementSwitched;
 	}
-	
-	// tell if the statement is valid, i.e. verified
-	private boolean isStatementValid;
 
 	@Override
 	public boolean isValidStatement() throws InvalidExpression,
 			InvalidParameterException, InvalidCondition, InvalidCriterion {
-		// The always statement is valid if the containes criterion is verified
-		this.isStatementValid = CriterionInterpreterFactory
+		// The always statement is valid if the contained criterion is verified
+
+		return CriterionInterpreterFactory
 				.getInstance()
 				.buildCriterrionInterpreter(
 						this.statement.getAlways().getCriterion())
 				.isCriterionSatisfied();
-
-		return this.isStatementValid;
 	}
 
 }
