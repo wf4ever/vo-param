@@ -54,6 +54,16 @@ public class Principale {
 				true));
 		marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, "http://www.ivoa.net/xml/Parameter/v0.1 UWS2-V1.1.xsd");
 		// Creating the object factory factory
+		Service service = buildService();
+
+		marshaller.marshal(service, new FileOutputStream("UWS_TEST.xml"));
+		
+		// Try a traversal.
+		
+
+	}
+
+	public static Service buildService() {
 		ObjectFactory factory = new ObjectFactory();
 
 		// Creating the root element of the schema : the service
@@ -75,66 +85,66 @@ public class Principale {
 		SingleParameter mass = factory.createSingleParameter();
 		mass.setName("mass");
 		mass.setParameterType(ParameterType.REAL);
-		mass.setPrecision(mkconst("0.0001"));
+		mass.setPrecision(mkconst("0.0001",ParameterType.REAL));
 		mass.setSkossConcept("SKOSS_MASS");
 		mass.setUnit("kg");
-		mass.setDimension(mkconst("1"));
+		mass.setDimension(mkconst("1",ParameterType.INTEGER));
 
 		// Creating the time parameter
 		SingleParameter time = factory.createSingleParameter();
 		time.setName("time");
 		time.setParameterType(ParameterType.REAL);
-		time.setPrecision(mkconst("0.0001"));
+		time.setPrecision(mkconst("0.0001",ParameterType.REAL));
 		time.setSkossConcept("SKOSS_TIME");
 		time.setUnit("s");
-		time.setDimension(mkconst("1"));
+		time.setDimension(mkconst("1",ParameterType.INTEGER));
 
 		// Creating the kinetic energy parameter
 		SingleParameter Kenergy = factory.createSingleParameter();
 		Kenergy.setName("E");
 		Kenergy.setParameterType(ParameterType.REAL);
-		Kenergy.setPrecision(mkconst("0.0001"));
+		Kenergy.setPrecision(mkconst("0.0001",ParameterType.REAL));
 		Kenergy.setSkossConcept("SKOSS_ENERGY");
 		Kenergy.setUnit("J");
-		Kenergy.setDimension(mkconst("1"));
+		Kenergy.setDimension(mkconst("1",ParameterType.INTEGER));
 
 		// Creating the displacement parameter
 		SingleParameter distance = factory.createSingleParameter();
 		distance.setName("distance");
 		distance.setParameterType(ParameterType.REAL);
-		distance.setPrecision(mkconst("0.0001"));
+		distance.setPrecision(mkconst("0.0001",ParameterType.REAL));
 		distance.setSkossConcept("SKOSS_LENGHT");
 		distance.setUnit("m");
-		distance.setDimension(mkconst("1"));
+		distance.setDimension(mkconst("1",ParameterType.INTEGER));
 		
 
 		// Creating the X component of speed
 		SingleParameter speedX = factory.createSingleParameter();
 		speedX.setName("speedX");
 		speedX.setParameterType(ParameterType.REAL);
-		speedX.setPrecision(mkconst("0.0001"));
+		speedX.setPrecision(mkconst("0.0001",ParameterType.REAL));
 		speedX.setSkossConcept("SKOSS_SPEED_COMPONENT");
 		speedX.setUnit("m/s");
-		speedX.setDimension(mkconst("1"));
+		speedX.setDimension(mkconst("1",ParameterType.INTEGER));
 		
 
 		// Creating the Y component of speed
 		SingleParameter speedY = factory.createSingleParameter();
 		speedY.setName("speedY");
 		speedY.setParameterType(ParameterType.REAL);
-		speedY.setPrecision(mkconst("0.0001"));
+		speedY.setPrecision(mkconst("0.0001",ParameterType.REAL));
 		speedY.setSkossConcept("SKOSS_SPEED_COMPONENT");
 		speedY.setUnit("m/s");
-		speedY.setDimension(mkconst("1"));
+		speedY.setDimension(mkconst("1",ParameterType.INTEGER));
 
 		// Creating the Z component of speed
 		SingleParameter speedZ = factory.createSingleParameter();
 		speedZ.setName("speedZ");
 		speedZ.setParameterType(ParameterType.REAL);
-		speedZ.setPrecision(mkconst("0.0001"));
+		speedZ.setPrecision(mkconst("0.0001",ParameterType.REAL));
 		speedZ.setSkossConcept("SKOSS_SPEED_COMPONENT");
 		speedZ.setUnit("m/s");
-		speedZ.setDimension(mkconst("1"));
+		speedZ.setDimension(mkconst("1",ParameterType.INTEGER));
 		
 		SingleParameter modeltype = new SingleParameter().withName("model").withParameterType(ParameterType.STRING);
 //		List<Expression> list = new ArrayList<Expression>();
@@ -144,7 +154,7 @@ public class Principale {
 //		AbstractCriterion crit = new Criterion().withConditionType(abcon);
 //		AlwaysConditionalStatement alwy = new AlwaysConditionalStatement(new Always(crit));
 //		modeltype.setConstraint(alwy);
-		modeltype.setDimension(mkconst("1"));
+		modeltype.setDimension(mkconst("1",ParameterType.INTEGER));
 		
                 Parameters parameterList = factory.createParameters();
                     
@@ -160,6 +170,7 @@ public class Principale {
                 
                 service.setParameters(parameterList);
 		ConstraintOnGroup speedConstraint = factory.createConstraintOnGroup();
+		
 
 		// Creating the expression for relativistic limit on speed vector
 		ParameterReference speedxref = new ParameterReference()
@@ -167,21 +178,21 @@ public class Principale {
 
 		AtomicParameterExpression vx2 = factory
 				.createAtomicParameterExpression().withParameterRef(speedxref)
-				.withPower(mkconst("2"));
+				.withPower(mkconst("2",ParameterType.INTEGER));
 
 		ParameterReference speedyref = new ParameterReference()
 				.withParameterName(speedY.getName());
 
 		AtomicParameterExpression vy2 = factory
 				.createAtomicParameterExpression().withParameterRef(speedyref)
-				.withPower(mkconst("2"));
+				.withPower(mkconst("2",ParameterType.INTEGER));
 
 		ParameterReference speedzref = new ParameterReference()
 				.withParameterName(speedZ.getName());
 
 		AtomicParameterExpression vz2 = factory
 				.createAtomicParameterExpression().withParameterRef(speedzref)
-				.withPower(mkconst("2"));
+				.withPower(mkconst("2",ParameterType.INTEGER));
 
 		Operation plusVZ2 = factory.createOperation().withOperationType("PLUS")
 				.withExpression(vz2);
@@ -194,15 +205,15 @@ public class Principale {
 		vx2.setOperation(plusVY2);
 
 		ParenthesisContent speedNorm = factory.createParenthesisContent()
-				.withExpression(vx2).withPower(mkconst("0.5"));
+				.withExpression(vx2).withPower(mkconst("0.5",ParameterType.REAL));
 
 		// Creating the criterion related to the relativistic speed constraint
 		Criterion speedCriterion = factory.createCriterion().withExpression(
 				speedNorm);
 
 		//example of constructor with all values set
-		ValueLargerThan vlt2 = new ValueLargerThan(mkconst("0"), true);
-		ValueSmallerThan vst2 = new ValueSmallerThan(mkconst("299792458"), false);
+		ValueLargerThan vlt2 = new ValueLargerThan(mkconst("0",ParameterType.REAL), true);
+		ValueSmallerThan vst2 = new ValueSmallerThan(mkconst("299792458",ParameterType.REAL), false);
 
 		ValueInRange vir2 = factory.createValueInRange().withInf(vlt2)
 				.withSup(vst2);
@@ -219,6 +230,7 @@ public class Principale {
 		
 		AlwaysConditionalStatement alwaysStatement = factory
 				.createAlwaysConditionalStatement().withAlways(speedCondition);
+		alwaysStatement.setComment("The norm of speed must be smaller than c and greater than 0");
 		
 		speedConstraint.getConditionalStatement().add(alwaysStatement);
 
@@ -232,7 +244,7 @@ public class Principale {
 		AtomicParameterExpression timeExpression = factory
 				.createAtomicParameterExpression().withParameterRef(timeref);
 
-		ValueLargerThan vltime = new ValueLargerThan(mkconst("0"), true);
+		ValueLargerThan vltime = new ValueLargerThan(mkconst("0",ParameterType.REAL), true);
 		Criterion timeCriterion = factory.createCriterion()
 				.withExpression(timeExpression).withConditionType(vltime);
 
@@ -243,7 +255,7 @@ public class Principale {
 				.createAtomicParameterExpression().withParameterRef(massRef);
 
 		//example of the "fluid" api
-		ValueLargerThan vlmass = factory.createValueLargerThan().withValue(mkconst("0"))
+		ValueLargerThan vlmass = factory.createValueLargerThan().withValue(mkconst("0",ParameterType.REAL))
 				.withReached(false);
 
 		Criterion massCriterion = factory.createCriterion()
@@ -269,6 +281,8 @@ public class Principale {
 				.createAlwaysConditionalStatement().withAlways(
 						massAndTimePositive);
 		
+		massAndTimeAlwaysStatement.setComment("Mass and time must always be positive (not strictly)");
+		
 		inputsConstraint.getConditionalStatement().add(
 				massAndTimeAlwaysStatement);
 
@@ -280,7 +294,7 @@ public class Principale {
 		AtomicParameterExpression kineticExpression = factory
 				.createAtomicParameterExpression().withParameterRef(KenergyRef);
 
-		ValueLargerThan vlkinetic = new ValueLargerThan(mkconst("0"), true);
+		ValueLargerThan vlkinetic = new ValueLargerThan(mkconst("0",ParameterType.REAL), true);
 				
 		Criterion kineticCriterion = factory.createCriterion()
 				.withExpression(kineticExpression).withConditionType(vlkinetic);
@@ -305,12 +319,7 @@ public class Principale {
 		// Last update on the UWS service
 		service.setInputs(inputsPG);
 		service.setOutputs(outputsPG);
-
-		marshaller.marshal(service, new FileOutputStream("UWS_TEST.xml"));
-		
-		// Try a traversal.
-		
-
+		return service;
 	}
 	
 	private static ParameterReference mkRef(SingleParameter par){
@@ -319,10 +328,11 @@ public class Principale {
             return ref ;
 	}
 	
-	private static AtomicConstantExpression mkconst(String exp){
+	private static AtomicConstantExpression mkconst(String exp, ParameterType type){
 	    List<String> sl = new ArrayList<String>();
 	    sl.add(exp);
             AtomicConstantExpression ace = new AtomicConstantExpression().withConstant(sl);
+            ace.setConstatType(type);
             
            return ace ;
 	}
