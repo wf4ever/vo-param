@@ -1,9 +1,9 @@
 package net.ivoa.pdl.interpreter.condition;
 
+import exeptions.InvalidCondition;
+import exeptions.InvalidExpression;
 import exeptions.InvalidParameterException;
 import net.ivoa.parameter.model.Expression;
-import net.ivoa.pdl.interpreter.expression.exceptions.InvalidCondition;
-import net.ivoa.pdl.interpreter.expression.exceptions.InvalidExpression;
 
 public abstract class ConditionInterpreter {
 

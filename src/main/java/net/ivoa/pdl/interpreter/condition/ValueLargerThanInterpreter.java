@@ -2,6 +2,8 @@ package net.ivoa.pdl.interpreter.condition;
 
 import java.util.List;
 
+import exeptions.InvalidCondition;
+import exeptions.InvalidExpression;
 import exeptions.InvalidParameterException;
 
 import CommonsObjects.GeneralParameter;
@@ -10,8 +12,6 @@ import CommonsObjects.GeneralParameterAlgebra;
 import net.ivoa.parameter.model.Expression;
 import net.ivoa.parameter.model.ValueLargerThan;
 import net.ivoa.pdl.interpreter.expression.ExpressionParserFactory;
-import net.ivoa.pdl.interpreter.expression.exceptions.InvalidCondition;
-import net.ivoa.pdl.interpreter.expression.exceptions.InvalidExpression;
 
 public class ValueLargerThanInterpreter extends ConditionInterpreter {
 

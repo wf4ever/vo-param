@@ -1,5 +1,6 @@
 package net.ivoa.pdl.interpreter.condition;
 
+import exeptions.InvalidCondition;
 import net.ivoa.parameter.model.AbstractCondition;
 import net.ivoa.parameter.model.BelongToSet;
 import net.ivoa.parameter.model.DefaultValue;
@@ -10,7 +11,6 @@ import net.ivoa.parameter.model.ValueDifferentOf;
 import net.ivoa.parameter.model.ValueInRange;
 import net.ivoa.parameter.model.ValueLargerThan;
 import net.ivoa.parameter.model.ValueSmallerThan;
-import net.ivoa.pdl.interpreter.expression.exceptions.InvalidCondition;
 
 public class ConditionInterpreterFactory {
 	private static final ConditionInterpreterFactory instance = new ConditionInterpreterFactory();

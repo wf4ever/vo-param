@@ -6,8 +6,8 @@ import CommonsObjects.GeneralParameter;
 import CommonsObjects.GeneralParameterAlgebra;
 import net.ivoa.parameter.model.Expression;
 import net.ivoa.pdl.interpreter.expression.ExpressionParserFactory;
-import net.ivoa.pdl.interpreter.expression.exceptions.InvalidCondition;
-import net.ivoa.pdl.interpreter.expression.exceptions.InvalidExpression;
+import exeptions.InvalidCondition;
+import exeptions.InvalidExpression;
 import exeptions.InvalidParameterException;
 
 public class IsRealInterpreter extends ConditionInterpreter {

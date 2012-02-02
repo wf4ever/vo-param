@@ -2,8 +2,8 @@ package net.ivoa.pdl.interpreter.condition;
 
 import net.ivoa.parameter.model.Expression;
 import net.ivoa.parameter.model.ValueInRange;
-import net.ivoa.pdl.interpreter.expression.exceptions.InvalidCondition;
-import net.ivoa.pdl.interpreter.expression.exceptions.InvalidExpression;
+import exeptions.InvalidCondition;
+import exeptions.InvalidExpression;
 import exeptions.InvalidParameterException;
 
 public class ValueInRangeInterpreter extends ConditionInterpreter {
