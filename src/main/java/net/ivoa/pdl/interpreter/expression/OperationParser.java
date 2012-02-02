@@ -3,6 +3,7 @@ package net.ivoa.pdl.interpreter.expression;
 import java.util.ArrayList;
 import java.util.List;
 
+import exeptions.InvalidExpression;
 import exeptions.InvalidParameterException;
 
 import CommonsObjects.GeneralParameter;
@@ -10,7 +11,6 @@ import CommonsObjects.GeneralParameterAlgebra;
 
 import net.ivoa.parameter.model.Operation;
 import net.ivoa.parameter.model.ParameterType;
-import net.ivoa.pdl.interpreter.expression.exceptions.InvalidExpression;
 
 public class OperationParser {
 

@@ -1,12 +1,12 @@
 package net.ivoa.pdl.interpreter.expression;
 
+import exeptions.InvalidExpression;
 import net.ivoa.parameter.model.AtomicConstantExpression;
 import net.ivoa.parameter.model.AtomicParameterExpression;
 import net.ivoa.parameter.model.Expression;
 import net.ivoa.parameter.model.Function;
 import net.ivoa.parameter.model.FunctionExpression;
 import net.ivoa.parameter.model.ParenthesisContent;
-import net.ivoa.pdl.interpreter.expression.exceptions.InvalidExpression;
 
 public class ExpressionParserFactory {
 	private static final ExpressionParserFactory instance = new ExpressionParserFactory();

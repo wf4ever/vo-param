@@ -3,9 +3,9 @@ package net.ivoa.pdl.interpreter.expression;
 import java.util.ArrayList;
 import java.util.List;
 
+import exeptions.InvalidExpression;
 import exeptions.InvalidParameterException;
 
-import net.ivoa.pdl.interpreter.expression.exceptions.InvalidExpression;
 
 import CommonsObjects.GeneralParameter;
 import CommonsObjects.GeneralParameterAlgebra;

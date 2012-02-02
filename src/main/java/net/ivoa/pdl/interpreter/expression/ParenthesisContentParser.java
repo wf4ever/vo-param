@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.ivoa.parameter.model.ParenthesisContent;
-import net.ivoa.pdl.interpreter.expression.exceptions.InvalidExpression;
 import CommonsObjects.GeneralParameter;
+import exeptions.InvalidExpression;
 import exeptions.InvalidParameterException;
 
 public class ParenthesisContentParser extends ExpressionWithPowerParser {

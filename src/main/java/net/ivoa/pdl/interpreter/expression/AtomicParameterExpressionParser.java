@@ -5,9 +5,9 @@ import java.util.List;
 
 import net.ivoa.parameter.model.AtomicParameterExpression;
 import net.ivoa.parameter.model.SingleParameter;
-import net.ivoa.pdl.interpreter.expression.exceptions.InvalidExpression;
 import net.ivoa.pdl.interpreter.utilities.Utilities;
 import CommonsObjects.GeneralParameter;
+import exeptions.InvalidExpression;
 import exeptions.InvalidParameterException;
 
 public class AtomicParameterExpressionParser extends ExpressionWithPowerParser {

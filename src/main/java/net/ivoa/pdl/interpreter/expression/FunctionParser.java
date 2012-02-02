@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.ivoa.parameter.model.Function;
-import net.ivoa.pdl.interpreter.expression.exceptions.InvalidExpression;
 import CommonsObjects.GeneralParameter;
 import CommonsObjects.GeneralParameterAlgebra;
+import exeptions.InvalidExpression;
 import exeptions.InvalidParameterException;
 
 public class FunctionParser extends ExpressionParser {
