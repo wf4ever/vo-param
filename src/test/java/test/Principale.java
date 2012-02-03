@@ -4,25 +4,18 @@ package test;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-import net.ivoa.parameter.model.AbstractCondition;
-import net.ivoa.parameter.model.AbstractCriterion;
 import net.ivoa.parameter.model.Always;
 import net.ivoa.parameter.model.AlwaysConditionalStatement;
 import net.ivoa.parameter.model.AtomicConstantExpression;
 import net.ivoa.parameter.model.AtomicParameterExpression;
-import net.ivoa.parameter.model.BelongToSet;
 import net.ivoa.parameter.model.ConstraintOnGroup;
 import net.ivoa.parameter.model.Criterion;
-import net.ivoa.parameter.model.Expression;
 import net.ivoa.parameter.model.LogicalConnector;
 import net.ivoa.parameter.model.ObjectFactory;
 import net.ivoa.parameter.model.Operation;
@@ -36,6 +29,11 @@ import net.ivoa.parameter.model.SingleParameter;
 import net.ivoa.parameter.model.ValueInRange;
 import net.ivoa.parameter.model.ValueLargerThan;
 import net.ivoa.parameter.model.ValueSmallerThan;
+import net.ivoa.pdl.interpreter.groupInterpreter.GroupProcessor;
+import net.ivoa.pdl.interpreter.utilities.UserMapper;
+import net.ivoa.pdl.interpreter.utilities.Utilities;
+import exeptions.InvalidExpression;
+import exeptions.InvalidParameterException;
 
 public class Principale {
 
@@ -43,24 +41,39 @@ public class Principale {
 	 * @param args
 	 * @throws JAXBException
 	 * @throws FileNotFoundException
+	 * @throws InvalidExpression 
+	 * @throws InvalidParameterException 
 	 */
 	public static void main(String[] args) throws JAXBException,
-			FileNotFoundException {
+			FileNotFoundException, InvalidExpression, InvalidParameterException {
 		// Some technical stuffs for reading the java version of the DM
 		JAXBContext jaxbContext = JAXBContext.newInstance("net.ivoa.parameter.model");
 
+		
+		
 		Marshaller marshaller = jaxbContext.createMarshaller();
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(
 				true));
 		marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, "http://www.ivoa.net/xml/Parameter/v0.1 UWS2-V1.1.xsd");
 		// Creating the object factory factory
 		Service service = buildService();
-
+		
+		// CRUCIAL!! Initialize the utilities
+		Utilities.getInstance().setService(service);
+		Utilities.getInstance().setMapper(new UserMapper());
+		
+		GroupProcessor pr = new GroupProcessor(service);
+		pr.process();
+		
+		
+		//ServiceInterpreter interpreter = new ServiceInterpreter(service);
+		//List<GroupInterpreter> inputsListe = interpreter.inputInterpreter();
+		//List<GroupInterpreter> outputsListe = interpreter.outputInterpreter();
+		
+		
 		marshaller.marshal(service, new FileOutputStream("UWS_TEST.xml"));
 		
 		// Try a traversal.
-		
-
 	}
 
 	public static Service buildService() {
@@ -333,7 +346,6 @@ public class Principale {
 	    sl.add(exp);
             AtomicConstantExpression ace = new AtomicConstantExpression().withConstant(sl);
             ace.setConstatType(type);
-            
            return ace ;
 	}
 
