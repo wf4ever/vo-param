@@ -20,7 +20,7 @@ public class FunctionExpressionParser extends ExpressionWithPowerParser{
 
 
 	@Override
-	public List<GeneralParameter> processExpression() throws InvalidExpression,
+	public List<GeneralParameter> parse() throws InvalidExpression,
 			InvalidParameterException {
 		
 		List<GeneralParameter> toReturn = new ArrayList<GeneralParameter>();
