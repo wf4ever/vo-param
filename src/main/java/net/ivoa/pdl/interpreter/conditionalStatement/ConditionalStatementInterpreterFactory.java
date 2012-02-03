@@ -22,7 +22,7 @@ public class ConditionalStatementInterpreterFactory {
 			return new IfThenConditionalStatementInterpreter((IfThenConditionalStatement)statement);
 		}
 		if (statement.getClass() == AlwaysConditionalStatement.class) {
-			new AlwaysConditionalStatementInterpreter(
+			return new AlwaysConditionalStatementInterpreter(
 					(AlwaysConditionalStatement) statement);
 		}
 		throw new InvalidConditionalStatement("Statement type non handled "

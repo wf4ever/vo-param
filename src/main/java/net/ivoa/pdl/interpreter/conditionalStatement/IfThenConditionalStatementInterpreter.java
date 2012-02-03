@@ -42,11 +42,18 @@ public class IfThenConditionalStatementInterpreter extends
 	@Override
 	public boolean isStatementSwitched() throws InvalidExpression,
 			InvalidParameterException, InvalidCondition, InvalidCriterion {
-		return CriterionInterpreterFactory
-				.getInstance()
-				.buildCriterrionInterpreter(
-						this.statement.getIf().getCriterion())
-				.isCriterionSatisfied();
+		try {
+			return CriterionInterpreterFactory
+					.getInstance()
+					.buildCriterrionInterpreter(
+							this.statement.getIf().getCriterion())
+					.isCriterionSatisfied();
+		} catch (Exception e) {
+			// If one cannot evaluate the condition, this means 
+			// that the statement is not swithced
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 }
