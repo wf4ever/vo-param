@@ -21,8 +21,16 @@ public class Utilities {
 	
 	private Service service;
 	
+	private UserMapper mapper;
 	
-	
+	public UserMapper getMapper() {
+		return mapper;
+	}
+
+	public void setMapper(UserMapper mapper) {
+		this.mapper = mapper;
+	}
+
 	public Service getService() {
 		return service;
 	}
@@ -45,7 +53,6 @@ public class Utilities {
 	
 	// THis function must send back the value submitted by user for every asked parameter
 	public List<GeneralParameter>  getuserProvidedValuesForParameter(SingleParameter parameter){
-		//TODO
-		return null;
+		return this.mapper.getuserProvidedValuesForParameter(parameter);
 	}
 }
