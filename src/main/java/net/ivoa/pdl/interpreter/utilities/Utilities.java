@@ -1,13 +1,14 @@
 package net.ivoa.pdl.interpreter.utilities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import CommonsObjects.GeneralParameter;
 
+import net.ivoa.parameter.model.ParameterGroup;
 import net.ivoa.parameter.model.ParameterReference;
 import net.ivoa.parameter.model.Service;
 import net.ivoa.parameter.model.SingleParameter;
-
 
 public class Utilities {
 	private static final Utilities instance = new Utilities();
@@ -18,11 +19,11 @@ public class Utilities {
 
 	private Utilities() {
 	}
-	
+
 	private Service service;
-	
+
 	private UserMapper mapper;
-	
+
 	public UserMapper getMapper() {
 		return mapper;
 	}
@@ -38,21 +39,36 @@ public class Utilities {
 	public void setService(Service service) {
 		this.service = service;
 	}
-	
-	
-	
-	public SingleParameter getParameterFromReference(ParameterReference ref){
-		List<SingleParameter> paraters = this.service.getParameters().getParameter();
-		for(SingleParameter param : paraters){
-			if(param.getName().equalsIgnoreCase(ref.getParameterName())){
+
+	public SingleParameter getParameterFromReference(ParameterReference ref) {
+		List<SingleParameter> paraters = this.service.getParameters()
+				.getParameter();
+		for (SingleParameter param : paraters) {
+			if (param.getName().equalsIgnoreCase(ref.getParameterName())) {
 				return param;
 			}
 		}
 		return null;
 	}
-	
-	// THis function must send back the value submitted by user for every asked parameter
-	public List<GeneralParameter>  getuserProvidedValuesForParameter(SingleParameter parameter){
+
+	// This function must send back the value submitted by user for every asked
+	// parameter
+	public List<GeneralParameter> getuserProvidedValuesForParameter(
+			SingleParameter parameter) {
 		return this.mapper.getuserProvidedValuesForParameter(parameter);
 	}
+
+	// This function provide the list of the parameters belonging to a given
+	// group
+	public List<SingleParameter> getParameterForTheGroup(ParameterGroup group) {
+		List<SingleParameter> toReturn = new ArrayList<SingleParameter>();
+
+		for (ParameterReference paramRef : group.getParameterRef()) {
+			toReturn.add(Utilities.getInstance().getParameterFromReference(
+					paramRef));
+		}
+
+		return toReturn;
+	}
+
 }
