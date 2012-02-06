@@ -3,11 +3,17 @@ package net.ivoa.pdl.interpreter.groupInterpreter;
 import java.util.List;
 
 import net.ivoa.parameter.model.ParameterGroup;
+import net.ivoa.parameter.model.SingleParameter;
 import net.ivoa.pdl.interpreter.conditionalStatement.StatementHelperContainer;
+import net.ivoa.pdl.interpreter.utilities.Utilities;
 
 public class GroupHandlerHelper {
 	
-	
+	private String fatherName;
+	private List<String> sonNames;
+	private String groupName;
+	private List<SingleParameter> singleParamsIntoThisGroup;
+	private Boolean groupValid;
 
 	public GroupHandlerHelper() {
 		super();
@@ -33,18 +39,24 @@ public class GroupHandlerHelper {
 	public void setGroup(ParameterGroup group) {
 		this.group = group;
 		this.groupName = group.getName();
+		this.singleParamsIntoThisGroup = Utilities.getInstance().getParameterForTheGroup(this.group);
 	}
 	public void setStatementHelperList(
 			List<StatementHelperContainer> statementHelperList) {
 		this.statementHelperList = statementHelperList;
 	}
-	private String fatherName;
-	private List<String> sonNames;
-	private String groupName;
+	
+	public String getGroupName() {
+		return groupName;
+	}
 	private ParameterGroup group;
+	
+	public List<SingleParameter> getSingleParamIntoThisGroup() {
+		return singleParamsIntoThisGroup;
+	}
 	private List<StatementHelperContainer> statementHelperList;
 	
-	private Boolean groupValid;
+	
 
 	public Boolean getGroupValid() {
 		return groupValid;
