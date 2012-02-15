@@ -15,26 +15,21 @@ import javax.swing.tree.TreeSelectionModel;
 
 import net.ivoa.pdl.interpreter.groupInterpreter.GroupHandlerHelper;
 
-public class PDLTree extends JPanel implements TreeSelectionListener {
+public class PDLTree extends JPanel {
 	
 	private static final long serialVersionUID = 1L;
 	private JTree tree;
 	private List<DefaultMutableTreeNode> nodeList;
-	private GroupPanel activeGroupPanel;
-
-	public GroupPanel getActiveGroupPanel() {
-		return activeGroupPanel;
-	}
-
-	public PDLTree(List<GroupHandlerHelper> groupsHandler) {
+	
+	public PDLTree(List<GroupHandlerHelper> groupsHandler,TreeSelectionListener treeListener) {
 
 		super(new GridLayout(1, 0));
 		
-		this.activeGroupPanel = new GroupPanel();
-		
 		this.updateTree(groupsHandler);
 		
-
+		// Listen for when the selection changes.
+		tree.addTreeSelectionListener(treeListener);
+		
 		// Create the scroll pane and add the tree to it.
 		JScrollPane treeView = new JScrollPane(tree);
 
@@ -43,6 +38,7 @@ public class PDLTree extends JPanel implements TreeSelectionListener {
 
 		// Add the split pane to this panel.
 		add(treeView);
+		
 	}
 	
 	public void updateTree(List<GroupHandlerHelper> groupsHandler){
@@ -55,19 +51,9 @@ public class PDLTree extends JPanel implements TreeSelectionListener {
 		tree = new JTree(root);
 		tree.getSelectionModel().setSelectionMode(
 				TreeSelectionModel.SINGLE_TREE_SELECTION);
-
-		// Listen for when the selection changes.
-		tree.addTreeSelectionListener(this);
 	}
 
-	/** Required by TreeSelectionListener interface. */
-	public void valueChanged(TreeSelectionEvent e) {
-		DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree
-				.getLastSelectedPathComponent();
-		
-		GroupHandlerHelper helper = (GroupHandlerHelper) node.getUserObject();
-		this.activeGroupPanel.updateGroupPanel(helper);
-	}
+	
 
 	private DefaultMutableTreeNode createNodes(
 			List<GroupHandlerHelper> groupsHandler) {

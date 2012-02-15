@@ -27,8 +27,8 @@ public class GuiTest extends JFrame {
 		// Creating the mass parameter
 		SingleParameter mass = new SingleParameter();
 		mass.setName("mass");
-		mass.setParameterType(ParameterType.REAL);
-		mass.setPrecision("0.0001");
+		mass.setParameterType(ParameterType.INTEGER);
+//		mass.setPrecision("0.0001");
 		mass.setSkossConcept("SKOSS_MASS");
 		mass.setUnit("kg");
 
@@ -36,7 +36,7 @@ public class GuiTest extends JFrame {
 		SingleParameter time = new SingleParameter();
 		time.setName("time");
 		time.setParameterType(ParameterType.REAL);
-		time.setPrecision("0.0001");
+//		time.setPrecision("0.0001");
 		time.setSkossConcept("SKOSS_TIME");
 		time.setUnit("s");
 
@@ -44,7 +44,7 @@ public class GuiTest extends JFrame {
 		SingleParameter Kenergy = new SingleParameter();
 		Kenergy.setName("E");
 		Kenergy.setParameterType(ParameterType.REAL);
-		Kenergy.setPrecision("0.0001");
+//		Kenergy.setPrecision("0.0001");
 		Kenergy.setSkossConcept("SKOSS_ENERGY");
 		Kenergy.setUnit("J");
 
@@ -52,7 +52,7 @@ public class GuiTest extends JFrame {
 		SingleParameter distance = new SingleParameter();
 		distance.setName("distance");
 		distance.setParameterType(ParameterType.REAL);
-		distance.setPrecision("0.0001");
+//		distance.setPrecision("0.0001");
 		distance.setSkossConcept("SKOSS_LENGHT");
 		distance.setUnit("m");
 
@@ -60,7 +60,7 @@ public class GuiTest extends JFrame {
 		SingleParameter speedX = new SingleParameter();
 		speedX.setName("speedX");
 		speedX.setParameterType(ParameterType.REAL);
-		speedX.setPrecision("0.0001");
+//		speedX.setPrecision("0.0001");
 		speedX.setSkossConcept("SKOSS_SPEED_COMPONENT");
 		speedX.setUnit("m/s");
 
@@ -68,7 +68,7 @@ public class GuiTest extends JFrame {
 		SingleParameter speedY = new SingleParameter();
 		speedY.setName("speedY");
 		speedY.setParameterType(ParameterType.REAL);
-		speedY.setPrecision("0.0001");
+//		speedY.setPrecision("0.0001");
 		speedY.setSkossConcept("SKOSS_SPEED_COMPONENT");
 		speedY.setUnit("m/s");
 
@@ -76,7 +76,7 @@ public class GuiTest extends JFrame {
 		SingleParameter speedZ = new SingleParameter();
 		speedZ.setName("speedZ");
 		speedZ.setParameterType(ParameterType.REAL);
-		speedZ.setPrecision("0.0001");
+	//	speedZ.setPrecision("0.0001");
 		speedZ.setSkossConcept("SKOSS_SPEED_COMPONENT");
 		speedZ.setUnit("m/s");
 
