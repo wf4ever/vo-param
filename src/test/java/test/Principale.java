@@ -65,11 +65,12 @@ public class Principale {
 		GroupProcessor pr = new GroupProcessor(service);
 		pr.process();
 		
+		IntelligentGUI gui = new IntelligentGUI(service.getServiceName(), pr.getGroupsHandler());
+		gui.createAndShowGUI();
 		
 		//ServiceInterpreter interpreter = new ServiceInterpreter(service);
 		//List<GroupInterpreter> inputsListe = interpreter.inputInterpreter();
 		//List<GroupInterpreter> outputsListe = interpreter.outputInterpreter();
-		
 		
 		marshaller.marshal(service, new FileOutputStream("UWS_TEST.xml"));
 		
