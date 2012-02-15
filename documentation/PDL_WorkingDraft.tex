@@ -1,4 +1,4 @@
-\documentclass[a4paper,11pt] {article}
+\documentclass[a4paper,11pt] {ivoa}
 \usepackage{geometry}                % See geometry.pdf to learn the layout
 % options. There are lots.
 \geometry{a4paper}                   % ... or a4paper or a5paper or ...
@@ -13,17 +13,44 @@
 \usepackage{color}
 \usepackage{xcolor}
 
-
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 
-\title{PDL:  \\ The Parameter Description Language}
-
+\title{PDL: The Parameter Description Language}
+% Give author list: separate different authors with \\ 
+% You can add email addresses with links \url{mailto:yourname@ivoa.net}
 \author{Carlo Maria Zw\"olf, Paul Harrison and Franck Le Petit}
-% \date{}                                           % Activate to display a
-% given date or no date
+\newcommand{\pdlversion}{0.1}
+\newcommand{\pdldate}{\today}
+
+% Give date and version number
+\date{\pdldate}
+
+% Choose one document type from below
+%\ivoatype{IVOA Note}
+\ivoatype{IVOA Working Draft}
+%\ivoatype{IVOA Proposed Recommendation}
+%\ivoatype{IVOA Recommendation}
+\ivoagroup{Theory}
+\version{\pdlversion}
+\def\SVN$#1: #2 ${\expandafter\def\csname SVN#1\endcsname{#2}}
+\SVN$Rev: 53 $
+
+\urlthisversion{\pdlversion:  \pdldate\ (SVN Revision \SVNRev)}
+\urllastversion{N/A}
+\previousversion{
+}
 
 \begin{document}
 \maketitle
+\section*{Abstract}
+This document discusses a Paramter Definition Language (PDL)
+\section{Status of this document}
+This document has been produced by the by the Theory and Grid Working Groups. It is still a draft.
+ 
+\section*{Acknowledgements}
+TBD
+
+\clearpage
 
 \tableofcontents
 
@@ -42,8 +69,8 @@ These services could be
 In the following we will ignore any specific feature and will use the term {\it generic service} to
 refer to any kind of process that receives inputs parameters and produces output ones.\\
 
-Let us notice that users from community will not be able to use a new service unless they have the
-knowledge of what the service does (and how).
+Let us notice that users from the community will not be able to use a new service unless they have
+the knowledge of what the service does (and how).
 Moreover this new service will be even more useful if it can interact immediately and is well
 integrated with the other ones.\\
 
@@ -657,7 +684,7 @@ If the condition contained into the {\it If} object is valid, the condition cont
 \end{center}
 \end{figure}
 The {\it ConditionalClause} object (see figure \ref{Pic-ConditionalClause}) is abstract. It {\bf
-must contain} a unique Criterium object of type {\it AbstractCriterion} (cf. paragraph
+must contain} a unique Criterion object of type {\it AbstractCriterion} (cf. paragraph
 \ref{par-AbstractCriterion}).\\
 The three concrete objects extending the abstract {\it ConditionalClause} are (see figure
 \ref{Pic-ConcreteClause}):
@@ -673,7 +700,7 @@ The three concrete objects extending the abstract {\it ConditionalClause} are (s
 \label{Pic-ConcreteClause}
 \end{center}
 \end{figure}
-The Criterium contained into a {\it Always} object must always be valid (cf paragraph
+The Criterion contained into a {\it Always} object must always be valid (cf paragraph
 \label{par-AlwaysConditionalStatement}).\\
 The {\it If} and {\it Then} objects work as a couple by composing the  {\it
 IfThenConditionalStatement} (cf. paragraph
@@ -702,7 +729,7 @@ An optional field is a unique {\it LogicalConnector} object (cf. paragraph
 \ref{par-LogicalConnector}) used for building logical expressions.\\
 The two concrete objects extending  {\it AbstractCriterion}  are {\it Criterion} and {\it
 ParenthesisCriterion}.  The difference between these two objects is in the priority they induce for
-interpreting and linking the criterions (cf. paragraph \ref{par-EvalCriterions}).
+interpreting and linking the criteria (cf. paragraph \ref{par-EvalCriteria}).
 
 \subsubsection{The Criterion object}
 \begin{figure}[htbp]
@@ -725,10 +752,10 @@ specializing it. It is indeed just a concrete version of the abstract type.
 \end{figure}
 This object (see figure \ref{Pic-ParenthesisCriterion}) extends and specialize the  {\it
 AbstractCriterion}. It is used for defining arbitrary priority in interpreting boolean expression
-based on criterions.
+based on criteria.
 The optional field of {\it ParenthesisCriterion} is a unique {\it ExternalLogicalConnector} object
-of type {\it LogicalConnector}. It is used for linking other criterions, out of the priority
-perimeter defined by the parenthesis (cf.  paragraph \ref{par-EvalCriterions}).
+of type {\it LogicalConnector}. It is used for linking other criteria, out of the priority
+perimeter defined by the parenthesis (cf.  paragraph \ref{par-EvalCriteria}).
 
 \subsection{The LogicalConnector object}\label{par-LogicalConnector}
 \begin{figure}[htbp]
@@ -744,9 +771,9 @@ of type {\it AbstractCriterion} (cf. paragraph \ref{par-AbstractCriterion}).\\
 The two concrete objects extending {\it LogicalConnector} are:
 \begin{itemize}
 \item the {\it And} object used for introducing the logical AND operator between two
-criterions;\footnote{The first criterion is the one containing the {\it LogicalConnector} and the
+criteria;\footnote{The first criterion is the one containing the {\it LogicalConnector} and the
 second is the criterion contained into the connector itself.}
-\item the {\it Or} object used for introducing the logical OR operator between two criterions.
+\item the {\it Or} object used for introducing the logical OR operator between two criteria.
 \end{itemize}
 
 \subsection{The AbstractCondition object}\label{par-ConditionType}
@@ -917,7 +944,7 @@ expressed in the {\it SingleParameter} object referenced into the {\it AtomicPar
 Moreover, for having a legal {\it DefaultValue} object, the criterion $\mathcal{CR}$ containing it must be contained into 
 the {\it Always} or {\it Then}  objects (cf. paragraph \ref{par-ConditionalClause}).
 
-\subsection{Evaluating and interpreting criterions objects}\label{par-EvalCriterions}
+\subsection{Evaluating and interpreting criteria objects}\label{par-EvalCriteria}
 The evaluation of the criterion type objects (cf. paragraph \ref{par-AbstractCriterion}) always
 leads to a boolean value (the only exception is what we saw in paragraph \ref{par-DefaultValue},
 where the criterion contains a {\it DefaultValue} condition).\\
@@ -929,10 +956,10 @@ straightforward :
 the result is equal to the boolean-evaluation of the couple $(\mathcal E, \mathcal C)$. This couple
 is evaluated according to the concrete class involved, as explained in paragraphs \ref{par-IsNull}
 to \ref{par-DefaultValue} \\
-It is a bit more complex when criterions contains {\it LogicalConnectors}. Let us see how to
+It is a bit more complex when criteria contains {\it LogicalConnectors}. Let us see how to
 proceed.\\
 To begin with, let us consider only {\it Criterion} concrete objects:\\
-As we saw in the previous paragraphs, criterions object are (with the help of {\it
+As we saw in the previous paragraphs, criteria object are (with the help of {\it
 LogicalConnectors} object) recursive and hierarchical objects.\\
 This hierarchical structure composing a complex criterion could be graphically represented as
 follows.
@@ -963,7 +990,7 @@ to a boolean value $\mathcal B_i$. Thus the expression (\ref{eq-CriterionStructu
 This last is a classic sequential boolean expression. It is evaluated from left to right and the
 operator AND takes precedence over the OR operator.\\
 
-Let us now consider {\it ParenthesisCriterion}  criterions. A representation of such a criterion
+Let us now consider {\it ParenthesisCriterion}  criteria. A representation of such a criterion
 $\mathcal{CR}$ could be the following:
 \begin{equation}
 \Big \langle  (\mathcal E , \mathcal C) \xrightarrow{LC}  \mathcal{CR}_c  \Big \rangle_{\mathcal{CR}}  \xrightarrow{ELC}\,,
@@ -981,7 +1008,7 @@ In the case where $\mathcal{CR}_c$ is composed only of {\it Criterion} objects (
 
 In the case where $\mathcal{CR}_c$ contains at least one {\it ParenthesisCriterion}, one has to go
 deeper in the criterion structure to find the deepest criterion $\mathcal{CR}_d$ such that $\langle
-\cdot \rangle_{\mathcal{CR}_d}$ contains only criterions of type {\it Criterion}.Thus one can simply
+\cdot \rangle_{\mathcal{CR}_d}$ contains only criteria of type {\it Criterion}.Thus one can simply
 evaluate the content of  $\langle \cdot \rangle_{\mathcal{CR}_d}$ as already shown.\\
 
 For illustrating how to proceed, let us consider the following complex-criterion structure:
@@ -1039,7 +1066,7 @@ p_1 \mbox{is a Kelvin temperature}\\
 \end{equation}
 According to the description, the PDL framework could automatically verify the validity of the
 parameter provided by the user.
-If he/she provide $p_1=-3$, than this value will be rejected.\\
+If he/she provides $p_1=-3$, then this value will be rejected.\\
 In any case PDL is not a formal-logic calculation tool. One could build the following description
 with no problem:
 \begin{equation}
@@ -1050,7 +1077,7 @@ p_1 \in \mathbb R\\
 \end{array}
 \right..
 \end{equation}
-PDL lacks the capabilities to perceive the logical contradiction and will work according to its
+PDL lacks the capabilwities to perceive the logical contradiction and will work according to its
 rules. In this case any parameter $p_1$ provided by user will be rejected.\\
 In other words {\bf people providing descriptions of services must pay great attention to their
 contents.}\\
