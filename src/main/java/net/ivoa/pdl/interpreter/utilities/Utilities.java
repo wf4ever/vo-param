@@ -57,6 +57,14 @@ public class Utilities {
 			SingleParameter parameter) {
 		return this.mapper.getuserProvidedValuesForParameter(parameter);
 	}
+	
+	// This function must send back the value submitted by user for every asked
+	// parameter name
+	public List<GeneralParameter> getuserProvidedValuesForParame(
+			String paramName) {
+		return this.mapper.getUserProvidedValuesForParam(paramName);
+	}
+	
 
 	// This function provide the list of the parameters belonging to a given
 	// group

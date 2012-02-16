@@ -48,13 +48,14 @@ public class IntelligentGUI implements TreeSelectionListener {
 		this.frameGR.setVisible(true);
 		
 		frame.add(this.groupTree);
-		frame.setSize(1000, 1000);
+		frame.setSize(250, 300);
 		
-		frameGR.pack();
+		
 		frameGR.setVisible(true);
+		frameGR.setSize(450, 450);
 
 		// Display the window.
-		frame.pack();
+		
 		frame.setVisible(true);
 	}
 	
@@ -69,7 +70,6 @@ public class IntelligentGUI implements TreeSelectionListener {
 		this.groupPanel.updateGroupPanel(helper);
 		this.groupPanel.repaint();
 
-	//	this.activeGroupPanel.updateGroupPanel(helper);
 	}
 
 }

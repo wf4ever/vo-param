@@ -33,6 +33,10 @@ public class UserMapper {
 		return makeListFromSingle(this.map.get(parameter.getName()));
 	}
 	
+	public List<GeneralParameter> getUserProvidedValuesForParam(String paramName){
+		return makeListFromSingle(this.map.get(paramName));
+	}
+	
 	
 	List<GeneralParameter> makeListFromSingle(GeneralParameter a){
 		List<GeneralParameter> toReturn = new ArrayList<GeneralParameter>();
