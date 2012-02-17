@@ -83,9 +83,10 @@ public class GroupPanel extends JPanel {
 			String paramName = paramsList.get(i).getName();
 			String paramUnit = paramsList.get(i).getUnit();
 			String paramType = paramsList.get(i).getParameterType().toString();
+			String skosConcept = paramsList.get(i).getSkossConcept();
 			String paramDimension = null;
 			this.paramsPanels.add(new PDLParamPanel(paramName, paramUnit,
-					paramType, paramDimension));
+					paramType, paramDimension,skosConcept));
 		}
 
 	}

@@ -1,23 +1,34 @@
 package test;
 
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import visitors.GeneralParameterVisitor;
 
 import net.ivoa.parameter.model.SingleParameter;
 import net.ivoa.pdl.interpreter.utilities.Utilities;
 
 import CommonsObjects.GeneralParameter;
 
-public class PDLParamPanel extends JPanel {
+public class PDLParamPanel extends JPanel implements FocusListener {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5425016803025275974L;
+	private static final String SEPARATOR = ";";
 
 	public JLabel getParamName() {
 		return paramLabel;
@@ -32,12 +43,13 @@ public class PDLParamPanel extends JPanel {
 	}
 
 	public PDLParamPanel(String paramName, String paramUnit, String paramType,
-			String paramDimension) {
+			String paramDimension, String skosConcept) {
 		super();
 		this.paramName = paramName;
 		this.paramUnit = paramUnit;
 		this.paramType = paramType;
 		this.paramDimension = paramDimension;
+		this.skossConcept = skosConcept;
 
 		this.setLayout(new GridLayout(1, 2));
 		this.paramValue = new JTextField(10);
@@ -47,7 +59,7 @@ public class PDLParamPanel extends JPanel {
 		this.paramLabel = new JLabel(this.buildLabelText());
 		this.add(paramLabel);
 		this.add(this.paramValue);
-
+		this.paramValue.addFocusListener(this);
 	}
 
 	private String buildParamValue() {
@@ -83,12 +95,44 @@ public class PDLParamPanel extends JPanel {
 	private String paramUnit;
 	private String paramType;
 	private String paramDimension;
+	private String skossConcept;
 
-	public GeneralParameter verify() {
-		// GeneralParameter gp = new GeneralParameter(this.paramValue.getText(),
-		// this.param.getParameterType().name(), this.param.getSkossConcept(),
-		// new GeneralParameterVisitor());
-		// return gp;
-		return null;
+	public void verify() {
+		String userProvidedString = this.paramValue.getText();
+
+		String[] vectorExpression = userProvidedString.split(SEPARATOR);
+
+		// TODO put the verification of size dimension
+
+		List<GeneralParameter> generalParamList = new ArrayList<GeneralParameter>();
+
+		for (int i = 0; i < vectorExpression.length; i++) {
+			try {
+				GeneralParameter gp = new GeneralParameter(vectorExpression[i],
+						this.paramType, this.paramName,
+						new GeneralParameterVisitor());
+				generalParamList.add(gp);
+			} catch (Exception e) {
+
+				JOptionPane.showMessageDialog(this, vectorExpression[i]
+						+ " is an incorrect value for " + this.paramName
+						+ " (composant " + (i+1) + ")  of type "
+						+ this.paramType, "Error on parameter "
+						+ this.paramName, JOptionPane.ERROR_MESSAGE);
+			}
+
+		}
+
 	}
+
+	public void focusGained(FocusEvent arg0) {
+		System.out.println("focus gained " + this.paramValue.getText());
+	}
+
+	public void focusLost(FocusEvent arg0) {
+		System.out.println("focus lost " + this.paramValue.getText());
+		this.verify();
+
+	}
+
 }
