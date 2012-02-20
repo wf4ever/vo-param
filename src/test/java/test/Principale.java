@@ -62,10 +62,7 @@ public class Principale {
 		Utilities.getInstance().setService(service);
 		Utilities.getInstance().setMapper(new UserMapper());
 		
-		GroupProcessor pr = new GroupProcessor(service);
-		pr.process();
-		
-		IntelligentGUI gui = new IntelligentGUI(service.getServiceName(), pr.getGroupsHandler());
+		IntelligentGUI gui = new IntelligentGUI(service);
 		gui.createAndShowGUI();
 		
 		//ServiceInterpreter interpreter = new ServiceInterpreter(service);
