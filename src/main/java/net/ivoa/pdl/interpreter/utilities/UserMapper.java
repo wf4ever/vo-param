@@ -14,27 +14,35 @@ import CommonsObjects.GeneralParameter;
 
 public class UserMapper {
 	
-	private HashMap<String,GeneralParameter> map;
+	private HashMap<String,List<GeneralParameter>> map;
 	
-	public UserMapper(){
-		this.map = new HashMap<String, GeneralParameter>();
-		GeneralParameterVisitor visitor = new GeneralParameterVisitor();
-		this.map.put("mass", new GeneralParameter("3.0", ParameterType.REAL.toString(), "speed", visitor));
-		this.map.put("time", new GeneralParameter("2.3", ParameterType.REAL.toString(), "time", visitor));
-		this.map.put("E", new GeneralParameter("33", ParameterType.REAL.toString(), "E", visitor));
-		this.map.put("distance", new GeneralParameter("1.1", ParameterType.REAL.toString(), "distance", visitor));
-		this.map.put("speedX",  new GeneralParameter("10", ParameterType.REAL.toString(), "speedX", visitor));
-		this.map.put("speedY",  new GeneralParameter("20", ParameterType.REAL.toString(), "speedY", visitor));
-		this.map.put("speedZ",  new GeneralParameter("30", ParameterType.REAL.toString(), "speedZ", visitor));
+	public HashMap<String, List<GeneralParameter>> getMap() {
+		return map;
 	}
+
+
+
+	public UserMapper(){
+		this.map = new HashMap<String, List<GeneralParameter>>();
+//		GeneralParameterVisitor visitor = new GeneralParameterVisitor();
+//		this.map.put("mass", this.makeListFromSingle(new GeneralParameter("3.0", ParameterType.REAL.toString(), "speed", visitor)));
+//		this.map.put("time", this.makeListFromSingle(new GeneralParameter("2.3", ParameterType.REAL.toString(), "time", visitor)));
+//		this.map.put("E", this.makeListFromSingle(new GeneralParameter("33", ParameterType.REAL.toString(), "E", visitor)));
+//		this.map.put("distance", this.makeListFromSingle(new GeneralParameter("1.1", ParameterType.REAL.toString(), "distance", visitor)));
+//		this.map.put("speedX",  this.makeListFromSingle(new GeneralParameter("10", ParameterType.REAL.toString(), "speedX", visitor)));
+//		this.map.put("speedY",  this.makeListFromSingle(new GeneralParameter("20", ParameterType.REAL.toString(), "speedY", visitor)));
+//		this.map.put("speedZ",  this.makeListFromSingle(new GeneralParameter("30", ParameterType.REAL.toString(), "speedZ", visitor)));
+	}
+	
+
 	
 	public List<GeneralParameter> getuserProvidedValuesForParameter(
 			SingleParameter parameter) {
-		return makeListFromSingle(this.map.get(parameter.getName()));
+		return this.map.get(parameter.getName());
 	}
 	
 	public List<GeneralParameter> getUserProvidedValuesForParam(String paramName){
-		return makeListFromSingle(this.map.get(paramName));
+		return this.map.get(paramName);
 	}
 	
 	

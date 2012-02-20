@@ -68,15 +68,17 @@ public class PDLParamPanel extends JPanel implements FocusListener {
 
 		List<GeneralParameter> paramValues = Utilities.getInstance()
 				.getuserProvidedValuesForParame(this.paramName);
-
-		for (int i = 0; i < paramValues.size(); i++) {
-			if (null != paramValues.get(i)) {
-				toReturn = toReturn + paramValues.get(i).getValue();
-				if (i < paramValues.size() - 1) {
-					toReturn = toReturn + " ; ";
+		if (null != paramValues) {
+			for (int i = 0; i < paramValues.size(); i++) {
+				if (null != paramValues.get(i)) {
+					toReturn = toReturn + paramValues.get(i).getValue();
+					if (i < paramValues.size() - 1) {
+						toReturn = toReturn + " ; ";
+					}
 				}
 			}
 		}
+
 		return toReturn;
 	}
 
@@ -114,6 +116,7 @@ public class PDLParamPanel extends JPanel implements FocusListener {
 						this.paramType, this.paramName,
 						new GeneralParameterVisitor());
 				generalParamList.add(gp);
+
 			} catch (Exception e) {
 
 				JOptionPane.showMessageDialog(this, vectorExpression[i]
@@ -122,7 +125,9 @@ public class PDLParamPanel extends JPanel implements FocusListener {
 						+ this.paramType, "Error on parameter "
 						+ this.paramName, JOptionPane.ERROR_MESSAGE);
 			}
-
+			// Updating the parameters with the new provided value
+			Utilities.getInstance().getMapper().getMap()
+					.put(this.paramName, generalParamList);
 		}
 
 	}

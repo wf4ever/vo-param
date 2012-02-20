@@ -2,9 +2,11 @@ package test;
 
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import net.ivoa.parameter.model.SingleParameter;
@@ -17,9 +19,12 @@ public class GroupPanel extends JPanel {
 	private JPanel statementPanel;
 	private List<PDLParamPanel> paramsPanels;
 	private List<PDLStatementPanel> statementsPanelList;
+	private JButton validateButton;
 
-	public GroupPanel() {
-		super(new FlowLayout());
+	public GroupPanel(ActionListener listener) {
+		super();
+		this.validateButton = new JButton("validate");
+		this.validateButton.addActionListener(listener);
 	}
 
 	public void updateGroupPanel(GroupHandlerHelper ghh) {
@@ -37,13 +42,15 @@ public class GroupPanel extends JPanel {
 		addParamsToContainedPanel();
 
 		buildStatementPanel(ghh);
-		
+
 		this.containedPanel.add(this.statementPanel);
 
 		this.containedPanel.setVisible(true);
 
 		this.add(this.containedPanel);
-
+		
+		this.setLayout(new GridLayout());
+		
 		this.setVisible(true);
 		this.revalidate();
 
@@ -52,20 +59,21 @@ public class GroupPanel extends JPanel {
 	private void buildStatementPanel(GroupHandlerHelper ghh) {
 		this.statementPanel = new JPanel();
 		List<StatementHelperContainer> shc = ghh.getStatementHelperList();
-		this.statementsPanelList = new ArrayList<PDLStatementPanel>(
-				shc.size());
-		for(int i=0;i<shc.size();i++){
+		this.statementsPanelList = new ArrayList<PDLStatementPanel>(shc.size());
+		for (int i = 0; i < shc.size(); i++) {
 			String comment = shc.get(i).getStatementComment();
 			Boolean isActivated = shc.get(i).isStatementSwitched();
 			Boolean isValid = shc.get(i).isStatementValid();
-			PDLStatementPanel temp = new PDLStatementPanel(comment, isActivated, isValid);
+			PDLStatementPanel temp = new PDLStatementPanel(comment,
+					isActivated, isValid);
 			this.statementsPanelList.add(temp);
 			temp.setVisible(true);
 			this.statementPanel.add(temp);
 		}
-		this.statementPanel.setLayout(new GridLayout(shc.size(),1));
+		this.statementPanel.add(this.validateButton);
 		
-		
+		this.statementPanel.setLayout(new GridLayout(shc.size()+3, 1));
+
 	}
 
 	private void addParamsToContainedPanel() {
@@ -86,7 +94,7 @@ public class GroupPanel extends JPanel {
 			String skosConcept = paramsList.get(i).getSkossConcept();
 			String paramDimension = null;
 			this.paramsPanels.add(new PDLParamPanel(paramName, paramUnit,
-					paramType, paramDimension,skosConcept));
+					paramType, paramDimension, skosConcept));
 		}
 
 	}

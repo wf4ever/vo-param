@@ -1,5 +1,7 @@
 package test;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -11,21 +13,17 @@ import net.ivoa.parameter.model.Service;
 import net.ivoa.pdl.interpreter.groupInterpreter.GroupHandlerHelper;
 import net.ivoa.pdl.interpreter.groupInterpreter.GroupProcessor;
 
-public class IntelligentGUI implements TreeSelectionListener {
+public class IntelligentGUI implements TreeSelectionListener, ActionListener {
 
 	public IntelligentGUI(Service service) {
 		super();
 		this.gp = new GroupProcessor(service);
 		this.gp.process();
 		this.serviceName = service.getServiceName();
-		this.handlerList = this.gp.getGroupsHandler();
-
 	}
 
-	
 	private GroupProcessor gp;
 	private String serviceName;
-	private List<GroupHandlerHelper> handlerList;
 	private PDLTree groupTree;
 	private GroupPanel groupPanel;
 
@@ -46,13 +44,13 @@ public class IntelligentGUI implements TreeSelectionListener {
 
 		// Add content to the window.
 
-		this.groupTree = new PDLTree(this.handlerList, this);
-		this.groupPanel = new GroupPanel();
+		this.groupTree = new PDLTree(this.gp.getGroupsHandler(), this);
+		this.groupPanel = new GroupPanel(this);
 
 		this.frameGR = new JFrame("Group detail");
 
 		this.frameGR.add(this.groupPanel);
-		this.frameGR.setVisible(true);
+		this.groupPanel.setSize(450, 450);
 
 		frame.add(this.groupTree);
 		frame.setSize(250, 300);
@@ -67,19 +65,32 @@ public class IntelligentGUI implements TreeSelectionListener {
 
 	/** Required by TreeSelectionListener interface. */
 	public void valueChanged(TreeSelectionEvent e) {
-		
+
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) e
 				.getNewLeadSelectionPath().getLastPathComponent();
-		
 		this.activeNodeName = node.toString();
-		
-		node = this.groupTree.getNodeFromName(this.activeNodeName);
+		this.updateGroupPanel();
 
+	}
+
+	private void updateGroupPanel() {
+		DefaultMutableTreeNode node = this.groupTree
+				.getNodeFromName(this.activeNodeName);
 		GroupHandlerHelper helper = (GroupHandlerHelper) node.getUserObject();
-
 		this.groupPanel.updateGroupPanel(helper);
+		this.groupPanel.setSize(450, 450);
 		this.groupPanel.repaint();
+	}
 
+	public void actionPerformed(ActionEvent e) {
+		System.out.println("VALIDATION");
+		this.gp.process();
+		this.refreshTree();
+		this.updateGroupPanel();
+	}
+
+	private void refreshTree() {
+		this.groupTree = new PDLTree(this.gp.getGroupsHandler(), this);
 	}
 
 }
