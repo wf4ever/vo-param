@@ -21,7 +21,8 @@ public class PDLTree extends JPanel {
 	private List<DefaultMutableTreeNode> nodeList;
 	
 	public PDLTree(List<GroupHandlerHelper> groupsHandler,TreeSelectionListener treeListener) {
-
+		
+		
 		super(new GridLayout(1, 0));
 		
 		this.updateTree(groupsHandler);
@@ -38,6 +39,15 @@ public class PDLTree extends JPanel {
 		// Add the split pane to this panel.
 		add(treeView);
 		
+	}
+	
+	public DefaultMutableTreeNode getNodeFromName(String nodeName){
+		for(DefaultMutableTreeNode currentNode : this.nodeList){
+			if(currentNode.toString().equals(nodeName)){
+				return currentNode;
+			}
+		}
+		return null;
 	}
 	
 	public void updateTree(List<GroupHandlerHelper> groupsHandler){
@@ -88,6 +98,8 @@ public class PDLTree extends JPanel {
 				} else {
 					// In the opposite case we add the node to the parent
 					parentNode.add(currentNode);
+					// We add the node just created to the list of existing nodes
+					this.nodeList.add(currentNode);
 					// We remove the handler related to the placed node from the
 					// list of nodes to create
 					toConvertIntoNodes.remove(i);

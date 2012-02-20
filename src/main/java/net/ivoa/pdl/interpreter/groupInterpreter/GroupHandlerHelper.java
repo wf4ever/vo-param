@@ -65,5 +65,9 @@ public class GroupHandlerHelper {
 		this.groupValid = groupValid;
 	}
 	
+	public String toString() {
+        return this.groupName;
+    }
+	
 	
 }

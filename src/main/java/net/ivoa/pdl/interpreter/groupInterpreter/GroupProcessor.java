@@ -20,6 +20,10 @@ public class GroupProcessor {
 	private Service service;
 	private List<GroupHandlerHelper> groupsHandler;
 
+	public List<GroupHandlerHelper> getGroupsHandler() {
+		return groupsHandler;
+	}
+
 	public void process() {
 		this.groupsHandler = buildGroupListFromService();
 		this.processStatementsOfGroups();

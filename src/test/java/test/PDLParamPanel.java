@@ -57,6 +57,7 @@ public class PDLParamPanel extends JPanel implements FocusListener {
 		this.paramValue.setText(this.buildParamValue());
 
 		this.paramLabel = new JLabel(this.buildLabelText());
+		this.paramValue.setToolTipText(this.skossConcept);
 		this.add(paramLabel);
 		this.add(this.paramValue);
 		this.paramValue.addFocusListener(this);
@@ -69,12 +70,13 @@ public class PDLParamPanel extends JPanel implements FocusListener {
 				.getuserProvidedValuesForParame(this.paramName);
 
 		for (int i = 0; i < paramValues.size(); i++) {
-			toReturn = toReturn + paramValues.get(i).getValue();
-			if (i < paramValues.size() - 1) {
-				toReturn = toReturn + " ; ";
+			if (null != paramValues.get(i)) {
+				toReturn = toReturn + paramValues.get(i).getValue();
+				if (i < paramValues.size() - 1) {
+					toReturn = toReturn + " ; ";
+				}
 			}
 		}
-
 		return toReturn;
 	}
 
@@ -116,7 +118,7 @@ public class PDLParamPanel extends JPanel implements FocusListener {
 
 				JOptionPane.showMessageDialog(this, vectorExpression[i]
 						+ " is an incorrect value for " + this.paramName
-						+ " (composant " + (i+1) + ")  of type "
+						+ " (composant " + (i + 1) + ")  of type "
 						+ this.paramType, "Error on parameter "
 						+ this.paramName, JOptionPane.ERROR_MESSAGE);
 			}
