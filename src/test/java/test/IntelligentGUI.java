@@ -25,11 +25,13 @@ public class IntelligentGUI implements TreeSelectionListener, ActionListener {
 	private String serviceName;
 	private PDLTree groupTree;
 	private GroupPanel groupPanel;
+	private PDLSummaryPanel serverPanel;
 
 	private String activeNodeName;
 
 	private JFrame frame;
 	private JFrame frameGR;
+	private JFrame frameServer;
 
 	/**
 	 * Create the GUI and show it. For thread safety, this method should be
@@ -45,17 +47,26 @@ public class IntelligentGUI implements TreeSelectionListener, ActionListener {
 
 		this.groupTree = new PDLTree(this.gp.getGroupsHandler(), this);
 		this.groupPanel = new GroupPanel(this);
-
+		
+		this.serverPanel = new PDLSummaryPanel(this.gp);
+		
 		this.frameGR = new JFrame("Group detail");
-
+		
+		this.frameServer = new JFrame("Summary and server communication");
+		
 		this.frameGR.add(this.groupPanel);
-		this.groupPanel.setSize(450, 450);
-
+		
+		
 		frame.add(this.groupTree);
 		frame.setSize(250, 300);
 
 		frameGR.setVisible(true);
 		frameGR.setSize(450, 450);
+		
+		frameServer.add(this.serverPanel);
+		frameServer.setSize(250, 350);
+		frameServer.setVisible(true);
+		
 
 		// Display the window.
 
@@ -86,6 +97,12 @@ public class IntelligentGUI implements TreeSelectionListener, ActionListener {
 		this.gp.process();
 		this.refreshTree();
 		this.updateGroupPanel();
+		
+		this.serverPanel.updateSummary();
+		this.serverPanel.revalidate();
+		this.frameServer.repaint();
+		
+		
 	}
 
 	private void refreshTree() {
