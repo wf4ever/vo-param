@@ -49,9 +49,8 @@ public class PDLSummaryPanel extends JPanel {
 	private List<String> getGroupsToComplete() {
 		List<GroupHandlerHelper> handler = this.groupProcessor
 				.getGroupsHandler();
-
 		List<String> toReturn = new ArrayList<String>();
-
+		
 		// Loop for every group
 		for (int i = 0; i < handler.size(); i++) {
 			String currentGroupName = handler.get(i).getGroupName();
@@ -163,16 +162,33 @@ public class PDLSummaryPanel extends JPanel {
 		JScrollPane scroll1 = new JScrollPane(textArea1);
 		scroll1.setVisible(true);
 		sum1.add(scroll1);
+		if(infosOnGroups.get(0).equalsIgnoreCase("")){
+			sum1.setVisible(false);
+		}else{
+			sum1.setVisible(true);
+		}
+		
 		
 		JTextArea textArea2 = new JTextArea(infosOnGroups.get(1),4,7);
 		textArea2.setBackground(Color.RED);
 		JScrollPane scroll2 = new JScrollPane(textArea2);
 		sum2.add(scroll2);
+		if(infosOnGroups.get(1).equalsIgnoreCase("")){
+			sum2.setVisible(false);
+		}else{
+			sum2.setVisible(true);
+		}
+		
 		
 		JTextArea textArea3 = new JTextArea(infosOnGroups.get(2),4,7);
 		textArea3.setBackground(Color.GREEN);
 		JScrollPane scroll3 = new JScrollPane(textArea3);
 		sum3.add(scroll3);
+		if(infosOnGroups.get(2).equalsIgnoreCase("")){
+			sum3.setVisible(false);
+		}else{
+			sum3.setVisible(true);
+		}
 
 		this.containedPanel.add(sum1, BorderLayout.NORTH);
 		this.containedPanel.add(sum2, BorderLayout.CENTER);

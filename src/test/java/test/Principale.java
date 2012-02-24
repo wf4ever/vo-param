@@ -297,6 +297,7 @@ public class Principale {
 		inputsConstraint.getConditionalStatement().add(
 				massAndTimeAlwaysStatement);
 
+//To comment the following line for tests
 		inputsPG.setConstraintOnGroup(inputsConstraint);
 
 		// Defining constraint on kinetic energy (must be positive)

@@ -58,21 +58,23 @@ public class GroupPanel extends JPanel {
 	private void buildStatementPanel(GroupHandlerHelper ghh) {
 		this.statementPanel = new JPanel();
 		List<StatementHelperContainer> shc = ghh.getStatementHelperList();
-		this.statementsPanelList = new ArrayList<PDLStatementPanel>(shc.size());
-		for (int i = 0; i < shc.size(); i++) {
-			String comment = shc.get(i).getStatementComment();
-			Boolean isActivated = shc.get(i).isStatementSwitched();
-			Boolean isValid = shc.get(i).isStatementValid();
-			PDLStatementPanel temp = new PDLStatementPanel(comment,
-					isActivated, isValid);
-			this.statementsPanelList.add(temp);
-			temp.setVisible(true);
-			this.statementPanel.add(temp);
+		if(null!=shc){
+			this.statementsPanelList = new ArrayList<PDLStatementPanel>(shc.size());
+			for (int i = 0; i < shc.size(); i++) {
+				String comment = shc.get(i).getStatementComment();
+				Boolean isActivated = shc.get(i).isStatementSwitched();
+				Boolean isValid = shc.get(i).isStatementValid();
+				PDLStatementPanel temp = new PDLStatementPanel(comment,
+						isActivated, isValid);
+				this.statementsPanelList.add(temp);
+				temp.setVisible(true);
+				this.statementPanel.add(temp);
+			}
+			this.statementPanel.add(this.validateButton);
+			
+			this.statementPanel.setLayout(new GridLayout(shc.size()+3, 1));
 		}
-		this.statementPanel.add(this.validateButton);
 		
-		this.statementPanel.setLayout(new GridLayout(shc.size()+3, 1));
-
 	}
 
 	private void addParamsToContainedPanel() {

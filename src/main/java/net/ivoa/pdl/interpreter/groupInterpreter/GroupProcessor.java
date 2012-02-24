@@ -38,6 +38,12 @@ public class GroupProcessor {
 				ParameterGroup currentGroup = this.groupsHandler.get(i)
 						.getGroup();
 
+				// Handling the case where there is no constraint on a group
+				if (null == currentGroup.getConstraintOnGroup()) {
+					return;
+				}
+				// In the case where there is a constraint on group...
+				
 				// Building the list of statement of the current group
 				List<ConditionalStatement> statementList = currentGroup
 						.getConstraintOnGroup().getConditionalStatement();

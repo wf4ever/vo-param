@@ -59,14 +59,16 @@ public class IntelligentGUI implements TreeSelectionListener, ActionListener {
 		
 		frame.add(this.groupTree);
 		frame.setSize(250, 300);
+		frame.setLocation(145, 0);
 
 		frameGR.setVisible(true);
 		frameGR.setSize(450, 450);
+		frameGR.setLocation(400,0);
 		
 		frameServer.add(this.serverPanel);
-		frameServer.setSize(250, 350);
+		frameServer.setSize(350, 350);
 		frameServer.setVisible(true);
-		
+		frameServer.setLocation(40, 330);
 
 		// Display the window.
 
