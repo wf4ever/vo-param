@@ -16,6 +16,7 @@ import net.ivoa.parameter.model.AtomicConstantExpression;
 import net.ivoa.parameter.model.AtomicParameterExpression;
 import net.ivoa.parameter.model.ConstraintOnGroup;
 import net.ivoa.parameter.model.Criterion;
+import net.ivoa.parameter.model.DefaultValue;
 import net.ivoa.parameter.model.LogicalConnector;
 import net.ivoa.parameter.model.ObjectFactory;
 import net.ivoa.parameter.model.Operation;
@@ -256,7 +257,8 @@ public class Principale {
 		AtomicParameterExpression timeExpression = factory
 				.createAtomicParameterExpression().withParameterRef(timeref);
 
-		ValueLargerThan vltime = new ValueLargerThan(mkconst("0",ParameterType.REAL), true);
+		//ValueLargerThan vltime = new ValueLargerThan(mkconst("0",ParameterType.REAL), true);
+		DefaultValue vltime = new DefaultValue().withValue(mkconst("1000",ParameterType.REAL));
 		Criterion timeCriterion = factory.createCriterion()
 				.withExpression(timeExpression).withConditionType(vltime);
 

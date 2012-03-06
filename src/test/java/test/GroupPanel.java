@@ -8,6 +8,10 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import dynamicLabel.PDLBaseParamPanel;
+import dynamicLabel.PDLParamPanelFactory;
+import dynamicLabel.PDLTextParamPanel;
+
 import net.ivoa.parameter.model.SingleParameter;
 import net.ivoa.pdl.interpreter.conditionalStatement.StatementHelperContainer;
 import net.ivoa.pdl.interpreter.groupInterpreter.GroupHandlerHelper;
@@ -16,7 +20,7 @@ public class GroupPanel extends JPanel {
 
 	private JPanel containedPanel;
 	private JPanel statementPanel;
-	private List<PDLParamPanel> paramsPanels;
+	private List<PDLBaseParamPanel> paramsPanels;
 	private List<PDLStatementPanel> statementsPanelList;
 	private JButton validateButton;
 
@@ -47,9 +51,9 @@ public class GroupPanel extends JPanel {
 		this.containedPanel.setVisible(true);
 
 		this.add(this.containedPanel);
-		
+
 		this.setLayout(new GridLayout());
-		
+
 		this.setVisible(true);
 		this.revalidate();
 
@@ -58,8 +62,9 @@ public class GroupPanel extends JPanel {
 	private void buildStatementPanel(GroupHandlerHelper ghh) {
 		this.statementPanel = new JPanel();
 		List<StatementHelperContainer> shc = ghh.getStatementHelperList();
-		if(null!=shc){
-			this.statementsPanelList = new ArrayList<PDLStatementPanel>(shc.size());
+		if (null != shc) {
+			this.statementsPanelList = new ArrayList<PDLStatementPanel>(
+					shc.size());
 			for (int i = 0; i < shc.size(); i++) {
 				String comment = shc.get(i).getStatementComment();
 				Boolean isActivated = shc.get(i).isStatementSwitched();
@@ -71,14 +76,14 @@ public class GroupPanel extends JPanel {
 				this.statementPanel.add(temp);
 			}
 			this.statementPanel.add(this.validateButton);
-			
-			this.statementPanel.setLayout(new GridLayout(shc.size()+3, 1));
+
+			this.statementPanel.setLayout(new GridLayout(shc.size() + 3, 1));
 		}
-		
+
 	}
 
 	private void addParamsToContainedPanel() {
-		for (PDLParamPanel currentParamPanel : this.paramsPanels) {
+		for (PDLBaseParamPanel currentParamPanel : this.paramsPanels) {
 			this.containedPanel.add(currentParamPanel);
 			currentParamPanel.setVisible(true);
 		}
@@ -86,16 +91,11 @@ public class GroupPanel extends JPanel {
 
 	private void buildListPanel(GroupHandlerHelper ghh) {
 		List<SingleParameter> paramsList = ghh.getSingleParamIntoThisGroup();
-		this.paramsPanels = new ArrayList<PDLParamPanel>(paramsList.size());
+		this.paramsPanels = new ArrayList<PDLBaseParamPanel>(paramsList.size());
 
 		for (int i = 0; i < paramsList.size(); i++) {
-			String paramName = paramsList.get(i).getName();
-			String paramUnit = paramsList.get(i).getUnit();
-			String paramType = paramsList.get(i).getParameterType().toString();
-			String skosConcept = paramsList.get(i).getSkossConcept();
-			String paramDimension = null;
-			this.paramsPanels.add(new PDLParamPanel(paramName, paramUnit,
-					paramType, paramDimension, skosConcept));
+			this.paramsPanels.add(PDLParamPanelFactory.getInstance()
+					.paramBuilder(ghh, paramsList.get(i)));
 		}
 
 	}

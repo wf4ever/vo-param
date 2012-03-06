@@ -1,4 +1,4 @@
-package test;
+package dynamicLabel;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -8,6 +8,7 @@ import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -18,70 +19,62 @@ import javax.swing.event.DocumentListener;
 import visitors.GeneralParameterVisitor;
 
 import net.ivoa.parameter.model.SingleParameter;
+import net.ivoa.pdl.interpreter.expression.ExpressionParserFactory;
 import net.ivoa.pdl.interpreter.utilities.Utilities;
 
 import CommonsObjects.GeneralParameter;
 
-public class PDLParamPanel extends JPanel implements FocusListener {
+public abstract class PDLBaseParamPanel extends JPanel implements FocusListener {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5425016803025275974L;
 	private static final String SEPARATOR = ";";
+	
 
 	public JLabel getParamName() {
 		return paramLabel;
 	}
-
-	public JTextField getParamValue() {
-		return paramValue;
-	}
-
-	public void setParamValue(JTextField paramValue) {
-		this.paramValue = paramValue;
-	}
-
-	public PDLParamPanel(String paramName, String paramUnit, String paramType,
-			String paramDimension, String skosConcept) {
+	
+	protected abstract JComponent getComponent();
+	
+	public PDLBaseParamPanel(SingleParameter parameter) {
 		super();
-		this.paramName = paramName;
-		this.paramUnit = paramUnit;
-		this.paramType = paramType;
-		this.paramDimension = paramDimension;
-		this.skossConcept = skosConcept;
-
-		this.setLayout(new GridLayout(1, 2));
-		this.paramValue = new JTextField(10);
-
-		this.paramValue.setText(this.buildParamValue());
-
-		this.paramLabel = new JLabel(this.buildLabelText());
-		this.paramValue.setToolTipText(this.skossConcept);
-		this.add(paramLabel);
-		this.add(this.paramValue);
-		this.paramValue.addFocusListener(this);
-	}
-
-	private String buildParamValue() {
-		String toReturn = "";
-
-		List<GeneralParameter> paramValues = Utilities.getInstance()
-				.getuserProvidedValuesForParame(this.paramName);
-		if (null != paramValues) {
-			for (int i = 0; i < paramValues.size(); i++) {
-				if (null != paramValues.get(i)) {
-					toReturn = toReturn + paramValues.get(i).getValue();
-					if (i < paramValues.size() - 1) {
-						toReturn = toReturn + " ; ";
-					}
-				}
-			}
+		this.paramName = parameter.getName();
+		this.paramUnit = parameter.getUnit();
+		this.paramType = parameter.getParameterType().toString();
+		this.skossConcept = parameter.getSkossConcept();
+		this.paramDimension = null;
+		try {
+			this.paramDimension = ExpressionParserFactory.getInstance()
+					.buildParser(parameter.getDimension()).parse()
+					.get(0).getValue();
+		} catch (Exception e) {
+			// do nothing and dimension is null
 		}
+		this.setLayout(new GridLayout(1, 2));
+		
+		this.paramLabel = new JLabel(this.buildLabelText());
+		
 
-		return toReturn;
 	}
 
+	protected void initializeComponent() {
+		this.getComponent().setToolTipText(this.skossConcept);
+		this.add(paramLabel);
+		this.add(this.getComponent());
+		this.setComponentValue();
+		this.getComponent().addFocusListener(this);
+		
+	}
+
+	protected abstract String getUserProvidedValue();
+
+	
+	protected abstract void setComponentValue();
+	
+	
 	private String buildLabelText() {
 		String toReturn = this.paramName + " ( " + this.paramUnit + "; "
 				+ this.paramType;
@@ -94,15 +87,14 @@ public class PDLParamPanel extends JPanel implements FocusListener {
 	}
 
 	private JLabel paramLabel;
-	private JTextField paramValue;
-	private String paramName;
+	protected String paramName;
 	private String paramUnit;
 	private String paramType;
 	private String paramDimension;
 	private String skossConcept;
 
 	public void verify() {
-		String userProvidedString = this.paramValue.getText();
+		String userProvidedString = getUserProvidedValue();
 
 		String[] vectorExpression = userProvidedString.split(SEPARATOR);
 
@@ -131,15 +123,4 @@ public class PDLParamPanel extends JPanel implements FocusListener {
 		}
 
 	}
-
-	public void focusGained(FocusEvent arg0) {
-		System.out.println("focus gained " + this.paramValue.getText());
-	}
-
-	public void focusLost(FocusEvent arg0) {
-		System.out.println("focus lost " + this.paramValue.getText());
-		this.verify();
-
-	}
-
 }

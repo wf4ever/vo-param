@@ -40,7 +40,9 @@ public class GroupProcessor {
 
 				// Handling the case where there is no constraint on a group
 				if (null == currentGroup.getConstraintOnGroup()) {
-					return;
+					// There is no constraint on the group, than it is valid
+					this.groupsHandler.get(i).setGroupValid(true);
+					continue;
 				}
 				// In the case where there is a constraint on group...
 				
