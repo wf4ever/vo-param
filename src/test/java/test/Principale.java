@@ -19,6 +19,7 @@ import net.ivoa.parameter.model.Criterion;
 import net.ivoa.parameter.model.LogicalConnector;
 import net.ivoa.parameter.model.ObjectFactory;
 import net.ivoa.parameter.model.Operation;
+import net.ivoa.parameter.model.OperationType;
 import net.ivoa.parameter.model.ParameterGroup;
 import net.ivoa.parameter.model.ParameterReference;
 import net.ivoa.parameter.model.ParameterType;
@@ -205,12 +206,12 @@ public class Principale {
 				.createAtomicParameterExpression().withParameterRef(speedzref)
 				.withPower(mkconst("2",ParameterType.INTEGER));
 
-		Operation plusVZ2 = factory.createOperation().withOperationType("PLUS")
+		Operation plusVZ2 = factory.createOperation().withOperationType(OperationType.PLUS)
 				.withExpression(vz2);
 
 		vy2.setOperation(plusVZ2);
 
-		Operation plusVY2 = factory.createOperation().withOperationType("PLUS")
+		Operation plusVY2 = factory.createOperation().withOperationType(OperationType.PLUS)
 				.withExpression(vy2);
 
 		vx2.setOperation(plusVY2);

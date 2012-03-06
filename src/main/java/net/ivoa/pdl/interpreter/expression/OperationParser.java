@@ -10,6 +10,7 @@ import CommonsObjects.GeneralParameter;
 import CommonsObjects.GeneralParameterAlgebra;
 
 import net.ivoa.parameter.model.Operation;
+import net.ivoa.parameter.model.OperationType;
 import net.ivoa.parameter.model.ParameterType;
 
 public class OperationParser {
@@ -33,7 +34,7 @@ public class OperationParser {
 
 		if (firstOperand.size() == secondOperand.size()) {
 			// If the operation is the scalar product
-			if (this.operation.getOperationType().equalsIgnoreCase("SCALAR")) {
+			if (this.operation.getOperationType() == OperationType.SCALAR) {
 				// The variable used for storing the scalar product
 				GeneralParameter scalarProductResult = new GeneralParameter(
 						"0", ParameterType.INTEGER.toString(),
@@ -55,13 +56,10 @@ public class OperationParser {
 
 			// if the operation is a multiplication, a division, a sum or
 			// difference
-			if (this.operation.getOperationType().equalsIgnoreCase("PLUS")
-					|| this.operation.getOperationType().equalsIgnoreCase(
-							"MINUS")
-					|| this.operation.getOperationType().equalsIgnoreCase(
-							"MULTIPLY")
-					|| this.operation.getOperationType().equalsIgnoreCase(
-							"DIVIDE")) {
+			if (this.operation.getOperationType() == OperationType.PLUS
+					|| this.operation.getOperationType() == OperationType.MINUS
+					|| this.operation.getOperationType() == OperationType.MULTIPLY
+					|| this.operation.getOperationType() == OperationType.DIVIDE) {
 				for (int i = 0; i < firstOperand.size(); i++) {
 					toReturn.add(getResultAccordingToOperationType(
 							firstOperand.get(i), secondOperand.get(i),
@@ -96,21 +94,24 @@ public class OperationParser {
 
 	
 	private GeneralParameter getResultAccordingToOperationType(
-			GeneralParameter a, GeneralParameter b, String operationType)
+			GeneralParameter a, GeneralParameter b, OperationType operationType)
 			throws InvalidExpression, InvalidParameterException {
-		if (operationType.equalsIgnoreCase("PLUS")) {
-			return GeneralParameterAlgebra.getInstance().sum(a, b);
-		}
-		if (operationType.equalsIgnoreCase("MINUS")) {
-			return GeneralParameterAlgebra.getInstance().substraction(a, b);
-		}
-		if (operationType.equalsIgnoreCase("MULTIPLY")) {
-			return GeneralParameterAlgebra.getInstance().multiplication(a, b);
-		}
-		if (operationType.equalsIgnoreCase("DIVIDE")) {
-			return GeneralParameterAlgebra.getInstance().division(a, b);
-		}
-		throw new InvalidExpression("Invalid Operation");
+	    switch (operationType ){
+	    case PLUS:
+	        return GeneralParameterAlgebra.getInstance().sum(a, b);
+
+	    case MINUS:
+	        return GeneralParameterAlgebra.getInstance().substraction(a, b);
+
+	    case MULTIPLY:
+	        return GeneralParameterAlgebra.getInstance().multiplication(a, b);
+
+	    case DIVIDE:
+	        return GeneralParameterAlgebra.getInstance().division(a, b);
+
+	    default:
+	        throw new InvalidExpression("Invalid Operation");
+	       }
 	}
 
 }

@@ -26,6 +26,7 @@ import net.ivoa.parameter.model.IfThenConditionalStatement;
 import net.ivoa.parameter.model.IsInteger;
 import net.ivoa.parameter.model.ObjectFactory;
 import net.ivoa.parameter.model.Operation;
+import net.ivoa.parameter.model.OperationType;
 import net.ivoa.parameter.model.ParameterGroup;
 import net.ivoa.parameter.model.ParameterReference;
 import net.ivoa.parameter.model.ParameterType;
@@ -193,7 +194,7 @@ public class ExampleInteropPune02 {
                         .withPower(new AtomicParameterExpression().withParameterRef(p2ref)
                                 .withOperation(
                                         new Operation(new AtomicParameterExpression()
-                                        .withParameterRef(p3ref), "MINUS")));
+                                        .withParameterRef(p3ref), OperationType.MINUS)));
 
         FunctionExpression finalExression = new FunctionExpression()
         .withFunction(
@@ -230,7 +231,7 @@ public class ExampleInteropPune02 {
         .withParameterRef(p3ref)
         .withOperation(
                 new Operation()
-                .withOperationType("MINUS")
+                .withOperationType(OperationType.MINUS)
                 .withExpression(
                         new FunctionExpression()
                         .withFunction(new Function()
@@ -259,7 +260,7 @@ public class ExampleInteropPune02 {
                 .withParameterRef(p1ref)
                 .withOperation(
                         new Operation()
-                        .withOperationType("MULTIPLY")
+                        .withOperationType(OperationType.MULTIPLY)
                         .withExpression(
                                 new AtomicParameterExpression()
                                 .withParameterRef(p2ref))))
@@ -297,7 +298,7 @@ public class ExampleInteropPune02 {
                 .withPower(mkconst("2"))
                 .withOperation(
                         new Operation()
-                        .withOperationType("PLUS")
+                        .withOperationType(OperationType.PLUS)
                         .withExpression(
                                 new AtomicParameterExpression()
                                 .withParameterRef(
@@ -306,7 +307,7 @@ public class ExampleInteropPune02 {
                                         .withOperation(
                                                 new Operation()
                                                 .withOperationType(
-                                                        "PLUS")
+                                                        OperationType.PLUS)
                                                         .withExpression(
                                                                 new AtomicParameterExpression()
                                                                 .withParameterRef(
@@ -322,7 +323,7 @@ public class ExampleInteropPune02 {
                 .withPower(mkconst("2"))
                 .withOperation(
                         new Operation()
-                        .withOperationType("PLUS")
+                        .withOperationType(OperationType.PLUS)
                         .withExpression(
                                 new AtomicParameterExpression()
                                 .withParameterRef(
@@ -331,7 +332,7 @@ public class ExampleInteropPune02 {
                                         .withOperation(
                                                 new Operation()
                                                 .withOperationType(
-                                                        "PLUS")
+                                                        OperationType.PLUS)
                                                         .withExpression(
                                                                 new AtomicParameterExpression()
                                                                 .withParameterRef(
@@ -342,12 +343,12 @@ public class ExampleInteropPune02 {
 
         Expression fraction = new ParenthesisContent()
         .withExpression(numerator).withOperation(
-                new Operation().withOperationType("DIVIDE")
+                new Operation().withOperationType(OperationType.DIVIDE)
                 .withExpression(denominator));
 
         Expression express = new ParenthesisContent().withExpression(fraction)
                 .withOperation(
-                        new Operation().withOperationType("MINUS")
+                        new Operation().withOperationType(OperationType.MINUS)
                         .withExpression(
                                 new AtomicConstantExpression()
                                 .withConstant("0.01")));

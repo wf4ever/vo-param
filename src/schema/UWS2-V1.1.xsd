@@ -146,6 +146,16 @@
       </xs:restriction>
    </xs:simpleType>
 
+     <xs:simpleType name="OperationType">
+            <xs:restriction base="xs:string">
+               <xs:enumeration value="PLUS"/>
+               <xs:enumeration value="MINUS"/>
+               <xs:enumeration value="MULTIPLY"/>
+               <xs:enumeration value="DIVIDE"/>
+               <xs:enumeration value="SCALAR"/>
+            </xs:restriction>
+         </xs:simpleType>
+  
 
    <xs:complexType name="SingleParameter">
       <xs:sequence>
@@ -187,7 +197,7 @@
             maxOccurs="unbounded"/>
       </xs:sequence>
    </xs:complexType>
-   
+
    <xs:complexType abstract="true" name="ConditionalStatement">
       <xs:sequence>
          <xs:element name="comment" type="xs:string" minOccurs="1" maxOccurs="1"/>
@@ -279,7 +289,7 @@
       </xs:complexContent>
    </xs:complexType>
    <xs:complexType name="BelongToSet">
-      <xs:complexContent>
+        <xs:complexContent>
          <xs:extension base="pm:AbstractCondition">
             <xs:sequence>
                <xs:element name="Value" type="pm:Expression" minOccurs="1" maxOccurs="unbounded"/>
@@ -379,16 +389,7 @@
       <xs:sequence>
          <xs:element name="expression" type="pm:Expression" maxOccurs="1" minOccurs="1"/>
       </xs:sequence>
-      <xs:attribute name="operationType">
-         <xs:simpleType>
-            <xs:restriction base="xs:string">
-               <xs:enumeration value="PLUS"/>
-               <xs:enumeration value="MINUS"/>
-               <xs:enumeration value="MULTIPLY"/>
-               <xs:enumeration value="DIVIDE"/>
-               <xs:enumeration value="SCALAR"/>
-            </xs:restriction>
-         </xs:simpleType>
+      <xs:attribute name="operationType" type="pm:OperationType">
       </xs:attribute>
    </xs:complexType>
    <xs:complexType abstract="true" name="Expression"> </xs:complexType>
