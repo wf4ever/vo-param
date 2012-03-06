@@ -6,17 +6,17 @@ import CommonsObjects.GeneralParameter;
 import CommonsObjects.GeneralParameterAlgebra;
 
 import net.ivoa.parameter.model.Expression;
-import net.ivoa.parameter.model.ValueDifferentOf;
+import net.ivoa.parameter.model.ValueDifferentFrom;
 import net.ivoa.pdl.interpreter.expression.ExpressionParserFactory;
 import exeptions.InvalidCondition;
 import exeptions.InvalidExpression;
 import exeptions.InvalidParameterException;
 
-public class ValueDifferentOfInterpreter extends ConditionInterpreter {
+public class ValueDifferentFromInterpreter extends ConditionInterpreter {
 
-	private ValueDifferentOf condition;
+	private ValueDifferentFrom condition;
 
-	public ValueDifferentOfInterpreter(ValueDifferentOf condition) {
+	public ValueDifferentFromInterpreter(ValueDifferentFrom condition) {
 		super();
 		this.condition = condition;
 	}

@@ -327,7 +327,7 @@
          </xs:extension>
       </xs:complexContent>
    </xs:complexType>
-   <xs:complexType name="ValueDifferentOf">
+   <xs:complexType name="ValueDifferentFrom">
       <xs:complexContent>
          <xs:extension base="pm:AbstractCondition">
             <xs:sequence>
@@ -424,7 +424,7 @@
                <xs:element name="power" type="pm:Expression" maxOccurs="1" minOccurs="0"/>
                <xs:element name="Operation" type="pm:Operation" maxOccurs="1" minOccurs="0"/>
             </xs:sequence>
-            <xs:attribute name="ConstatType" type="pm:ParameterType"/>
+            <xs:attribute name="ConstantType" type="pm:ParameterType"/>
          </xs:extension>
       </xs:complexContent>
    </xs:complexType>

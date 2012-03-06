@@ -378,7 +378,7 @@ public class ExampleInteropPune02 {
         List<String> sl = new ArrayList<String>();
         sl.add(exp);
         AtomicConstantExpression ace = new AtomicConstantExpression().withConstant(sl);
-        ace.setConstatType(ParameterType.REAL);
+        ace.setConstantType(ParameterType.REAL);
         return ace ;
     }
 

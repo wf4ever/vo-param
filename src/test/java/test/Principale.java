@@ -347,7 +347,7 @@ public class Principale {
 	    List<String> sl = new ArrayList<String>();
 	    sl.add(exp);
             AtomicConstantExpression ace = new AtomicConstantExpression().withConstant(sl);
-            ace.setConstatType(type);
+            ace.setConstantType(type);
            return ace ;
 	}
 

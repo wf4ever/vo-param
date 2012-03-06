@@ -7,7 +7,7 @@ import net.ivoa.parameter.model.DefaultValue;
 import net.ivoa.parameter.model.IsInteger;
 import net.ivoa.parameter.model.IsNull;
 import net.ivoa.parameter.model.IsReal;
-import net.ivoa.parameter.model.ValueDifferentOf;
+import net.ivoa.parameter.model.ValueDifferentFrom;
 import net.ivoa.parameter.model.ValueInRange;
 import net.ivoa.parameter.model.ValueLargerThan;
 import net.ivoa.parameter.model.ValueSmallerThan;
@@ -33,8 +33,8 @@ public class ConditionInterpreterFactory {
 		if (condition.getClass() == ValueInRange.class) {
 			return new ValueInRangeInterpreter((ValueInRange) condition);
 		}
-		if (condition.getClass() == ValueDifferentOf.class) {
-			return new ValueDifferentOfInterpreter((ValueDifferentOf) condition);
+		if (condition.getClass() == ValueDifferentFrom.class) {
+			return new ValueDifferentFromInterpreter((ValueDifferentFrom) condition);
 		}
 		if (condition.getClass() == BelongToSet.class) {
 			return new BelongToSetInterpreter((BelongToSet) condition);
