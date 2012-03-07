@@ -1,4 +1,4 @@
-package dynamicLabel;
+package net.ivoa.gui.dynamicLabel;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -31,14 +31,13 @@ public abstract class PDLBaseParamPanel extends JPanel implements FocusListener 
 	 */
 	private static final long serialVersionUID = -5425016803025275974L;
 	private static final String SEPARATOR = ";";
-	
 
 	public JLabel getParamName() {
 		return paramLabel;
 	}
-	
+
 	protected abstract JComponent getComponent();
-	
+
 	public PDLBaseParamPanel(SingleParameter parameter) {
 		super();
 		this.paramName = parameter.getName();
@@ -48,15 +47,14 @@ public abstract class PDLBaseParamPanel extends JPanel implements FocusListener 
 		this.paramDimension = null;
 		try {
 			this.paramDimension = ExpressionParserFactory.getInstance()
-					.buildParser(parameter.getDimension()).parse()
-					.get(0).getValue();
+					.buildParser(parameter.getDimension()).parse().get(0)
+					.getValue();
 		} catch (Exception e) {
 			// do nothing and dimension is null
 		}
 		this.setLayout(new GridLayout(1, 2));
-		
+
 		this.paramLabel = new JLabel(this.buildLabelText());
-		
 
 	}
 
@@ -66,15 +64,13 @@ public abstract class PDLBaseParamPanel extends JPanel implements FocusListener 
 		this.add(this.getComponent());
 		this.setComponentValue();
 		this.getComponent().addFocusListener(this);
-		
+
 	}
 
 	protected abstract String getUserProvidedValue();
 
-	
 	protected abstract void setComponentValue();
-	
-	
+
 	private String buildLabelText() {
 		String toReturn = this.paramName + " ( " + this.paramUnit + "; "
 				+ this.paramType;
@@ -98,7 +94,20 @@ public abstract class PDLBaseParamPanel extends JPanel implements FocusListener 
 
 		String[] vectorExpression = userProvidedString.split(SEPARATOR);
 
-		// TODO put the verification of size dimension
+		// Performing the verification of size dimension
+		try {
+			Integer dimension = Integer.parseInt(this.paramDimension);
+			if (dimension != vectorExpression.length) {
+				JOptionPane.showMessageDialog(this,
+						"Invalid vector size, exmpected == " + dimension,
+						"Error on parameter " + this.paramName,
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+		} catch (Exception e) {
+			// No verification possible since the dimension could not be
+			// evaluated
+		}
 
 		List<GeneralParameter> generalParamList = new ArrayList<GeneralParameter>();
 
@@ -122,5 +131,22 @@ public abstract class PDLBaseParamPanel extends JPanel implements FocusListener 
 					.put(this.paramName, generalParamList);
 		}
 
+	}
+
+	protected String convertToStringProvidedValues(
+			List<GeneralParameter> paramValues) {
+		String toReturn = "";
+		if (null != paramValues) {
+			for (int i = 0; i < paramValues.size(); i++) {
+				if (null != paramValues.get(i)) {
+					toReturn = toReturn + paramValues.get(i).getValue();
+					if (i < paramValues.size() - 1) {
+						toReturn = toReturn + " ; ";
+					}
+				}
+			}
+		}
+
+		return toReturn;
 	}
 }

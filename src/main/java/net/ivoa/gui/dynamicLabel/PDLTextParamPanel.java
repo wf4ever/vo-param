@@ -1,4 +1,4 @@
-package dynamicLabel;
+package net.ivoa.gui.dynamicLabel;
 
 import java.awt.event.FocusEvent;
 import java.util.List;
@@ -59,24 +59,11 @@ public class PDLTextParamPanel extends PDLBaseParamPanel {
 
 
 	private String buildParamValue() {
-		String toReturn = "";
-	
 		List<GeneralParameter> paramValues = Utilities.getInstance()
 				.getuserProvidedValuesForParame(this.paramName);
-		if (null != paramValues) {
-			for (int i = 0; i < paramValues.size(); i++) {
-				if (null != paramValues.get(i)) {
-					toReturn = toReturn + paramValues.get(i).getValue();
-					if (i < paramValues.size() - 1) {
-						toReturn = toReturn + " ; ";
-					}
-				}
-			}
-		}
-	
-		return toReturn;
+		return convertToStringProvidedValues(paramValues);
 	}
-
+	
 	@Override
 	protected void setComponentValue() {
 		this.textField.setText(this.buildParamValue());
