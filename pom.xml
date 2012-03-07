@@ -67,7 +67,7 @@
                <extension>true</extension>
                <schemaDirectory> ${basedir}/src/schema </schemaDirectory>
                <schemaIncludes>
-                  <value>UWS2-V1.1.xsd</value>
+                  <value>PDL-V1.0.xsd</value>
                </schemaIncludes>
                <generateDirectory>src/generated</generateDirectory>
                <bindingDirectory>src/build</bindingDirectory>

@@ -1,4 +1,4 @@
-package test;
+package net.ivoa.gui;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
@@ -8,10 +8,10 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import dynamicLabel.PDLBaseParamPanel;
-import dynamicLabel.PDLParamPanelFactory;
-import dynamicLabel.PDLTextParamPanel;
 
+import net.ivoa.gui.dynamicLabel.PDLBaseParamPanel;
+import net.ivoa.gui.dynamicLabel.PDLParamPanelFactory;
+import net.ivoa.gui.dynamicLabel.PDLTextParamPanel;
 import net.ivoa.parameter.model.SingleParameter;
 import net.ivoa.pdl.interpreter.conditionalStatement.StatementHelperContainer;
 import net.ivoa.pdl.interpreter.groupInterpreter.GroupHandlerHelper;
@@ -85,7 +85,6 @@ public class GroupPanel extends JPanel {
 	private void addParamsToContainedPanel() {
 		for (PDLBaseParamPanel currentParamPanel : this.paramsPanels) {
 			this.containedPanel.add(currentParamPanel);
-			currentParamPanel.setVisible(true);
 		}
 	}
 

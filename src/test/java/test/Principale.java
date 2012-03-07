@@ -10,13 +10,17 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import net.ivoa.gui.IntelligentGUI;
 import net.ivoa.parameter.model.Always;
 import net.ivoa.parameter.model.AlwaysConditionalStatement;
 import net.ivoa.parameter.model.AtomicConstantExpression;
 import net.ivoa.parameter.model.AtomicParameterExpression;
+import net.ivoa.parameter.model.BelongToSet;
 import net.ivoa.parameter.model.ConstraintOnGroup;
 import net.ivoa.parameter.model.Criterion;
 import net.ivoa.parameter.model.DefaultValue;
+import net.ivoa.parameter.model.Expression;
+import net.ivoa.parameter.model.IsNull;
 import net.ivoa.parameter.model.LogicalConnector;
 import net.ivoa.parameter.model.ObjectFactory;
 import net.ivoa.parameter.model.Operation;
@@ -56,24 +60,12 @@ public class Principale {
 		Marshaller marshaller = jaxbContext.createMarshaller();
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(
 				true));
-		marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, "http://www.ivoa.net/xml/Parameter/v0.1 UWS2-V1.1.xsd");
+		marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION, "http://www.ivoa.net/xml/Parameter/v0.1 PDL-V1.0.xsd");
 		// Creating the object factory factory
 		Service service = buildService();
 		
-		// CRUCIAL!! Initialize the utilities
-		Utilities.getInstance().setService(service);
-		Utilities.getInstance().setMapper(new UserMapper());
+		marshaller.marshal(service, new FileOutputStream("PDL-Description.xml"));
 		
-		IntelligentGUI gui = new IntelligentGUI(service);
-		gui.createAndShowGUI();
-		
-		//ServiceInterpreter interpreter = new ServiceInterpreter(service);
-		//List<GroupInterpreter> inputsListe = interpreter.inputInterpreter();
-		//List<GroupInterpreter> outputsListe = interpreter.outputInterpreter();
-		
-		marshaller.marshal(service, new FileOutputStream("UWS_TEST.xml"));
-		
-		// Try a traversal.
 	}
 
 	public static Service buildService() {
@@ -106,11 +98,11 @@ public class Principale {
 		// Creating the time parameter
 		SingleParameter time = factory.createSingleParameter();
 		time.setName("time");
-		time.setParameterType(ParameterType.REAL);
+		time.setParameterType(ParameterType.BOOLEAN);
 		time.setPrecision(mkconst("0.0001",ParameterType.REAL));
 		time.setSkossConcept("SKOSS_TIME");
 		time.setUnit("s");
-		time.setDimension(mkconst("1",ParameterType.INTEGER));
+		time.setDimension(mkconst("2",ParameterType.INTEGER));
 
 		// Creating the kinetic energy parameter
 		SingleParameter Kenergy = factory.createSingleParameter();
@@ -257,8 +249,26 @@ public class Principale {
 		AtomicParameterExpression timeExpression = factory
 				.createAtomicParameterExpression().withParameterRef(timeref);
 
-		//ValueLargerThan vltime = new ValueLargerThan(mkconst("0",ParameterType.REAL), true);
-		DefaultValue vltime = new DefaultValue().withValue(mkconst("1000",ParameterType.REAL));
+	//	ValueLargerThan vltime = new ValueLargerThan(mkconst("0",ParameterType.REAL), true);
+		
+	//	List<Expression> listeExp = new ArrayList<Expression>();
+	//	listeExp.add(mkconst("true",ParameterType.BOOLEAN));
+	//	listeExp.add(mkconst("false",ParameterType.BOOLEAN));
+	//	BelongToSet vltime = new BelongToSet().withValue(listeExp);
+		
+	//	DefaultValue vltime = new DefaultValue().withValue(mkconst("10",ParameterType.REAL));
+		
+		List<String> values = new ArrayList<String>();
+		values.add("true");
+		values.add("true");
+		
+		
+		DefaultValue vltime = new DefaultValue().withValue(mkVectorConstant(values, ParameterType.BOOLEAN));
+		
+		
+	//	IsNull vltime = new IsNull();
+		
+		
 		Criterion timeCriterion = factory.createCriterion()
 				.withExpression(timeExpression).withConditionType(vltime);
 
@@ -349,6 +359,16 @@ public class Principale {
             AtomicConstantExpression ace = new AtomicConstantExpression().withConstant(sl);
             ace.setConstantType(type);
            return ace ;
+	}
+	
+	private static AtomicConstantExpression mkVectorConstant(List<String> exp, ParameterType type){
+		List<String> sl = new ArrayList<String>();
+		for(String temp:exp){
+			sl.add(temp);
+		}
+		AtomicConstantExpression ace = new AtomicConstantExpression().withConstant(sl);
+        ace.setConstantType(type);
+       return ace ;
 	}
 
 }

@@ -8,7 +8,6 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import test.GroupPanel;
 
 import net.ivoa.parameter.model.Service;
 import net.ivoa.pdl.interpreter.groupInterpreter.GroupHandlerHelper;
