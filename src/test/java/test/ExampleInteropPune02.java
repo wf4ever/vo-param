@@ -1,13 +1,10 @@
 package test;
 
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 
 import net.ivoa.parameter.model.Always;
 import net.ivoa.parameter.model.AlwaysConditionalStatement;
@@ -24,7 +21,6 @@ import net.ivoa.parameter.model.FunctionType;
 import net.ivoa.parameter.model.If;
 import net.ivoa.parameter.model.IfThenConditionalStatement;
 import net.ivoa.parameter.model.IsInteger;
-import net.ivoa.parameter.model.ObjectFactory;
 import net.ivoa.parameter.model.Operation;
 import net.ivoa.parameter.model.OperationType;
 import net.ivoa.parameter.model.ParameterGroup;
@@ -39,7 +35,7 @@ import net.ivoa.parameter.model.ValueInRange;
 import net.ivoa.parameter.model.ValueLargerThan;
 import net.ivoa.parameter.model.ValueSmallerThan;
 
-public class ExampleInteropPune02 {
+public class ExampleInteropPune02 extends BaseExample {
 
     /**
      * @param args
@@ -48,17 +44,12 @@ public class ExampleInteropPune02 {
      */
     public static void main(String[] args) throws JAXBException,
     FileNotFoundException {
-        JAXBContext jaxbContext = JAXBContext
-                .newInstance("net.ivoa.parameter.model");
+        
+        BaseExample example = new ExampleInteropPune02();
+        example.marshall();
+    }
 
-        Marshaller marshaller = jaxbContext.createMarshaller();
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(
-                true));
-        marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION,
-                "http://www.ivoa.net/xml/Parameter/v0.1 UWS2-V1.1.xsd");
-        // Creating the object factory factory
-        ObjectFactory factory = new ObjectFactory();
-
+    protected Service buildService() {
         // Creating the root element of the schema : the service
         Service service = factory.createService()
                 .withServiceId("CMZ_ex01")
@@ -369,9 +360,7 @@ public class ExampleInteropPune02 {
         // Last update on the UWS service
         service.setInputs(inputsPG);
         service.setOutputs(outputsPG);
-
-        marshaller.marshal(service, new FileOutputStream(
-                "ZZZ.xml"));
+        return service;
     }
 
     private static AtomicConstantExpression mkconst(String exp){

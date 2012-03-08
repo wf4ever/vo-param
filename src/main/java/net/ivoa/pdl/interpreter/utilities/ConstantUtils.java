@@ -35,13 +35,13 @@ public class ConstantUtils {
         AtomicConstantExpression ace = new AtomicConstantExpression().withConstant(sl);
         return ace;
     }
-    public static AtomicConstantExpression mkconst(double... values){
+    public static AtomicConstantExpression mkconst(Double... values){
         AtomicConstantExpression ace = pmkconst(values);
         ace.setConstantType(ParameterType.REAL);
         return ace;
     }
-    //overloading will not work with ints for some reason....
-     public static AtomicConstantExpression mkiconst(int... values){
+   
+     public static AtomicConstantExpression mkconst(Integer... values){
         AtomicConstantExpression ace = pmkconst(values);
         ace.setConstantType(ParameterType.INTEGER);
         return ace;
@@ -53,11 +53,30 @@ public class ConstantUtils {
          return ace;
      }
      
-     public static AtomicConstantExpression mkconst(boolean... values){
+     public static AtomicConstantExpression mkconst(Boolean... values){
          AtomicConstantExpression ace = pmkconst(values);
          ace.setConstantType(ParameterType.BOOLEAN);
          return ace;
      }
+
+     public static  AtomicConstantExpression mktconst(String exp, ParameterType type) {
+         List<String> sl = new ArrayList<String>();
+         sl.add(exp);
+         AtomicConstantExpression ace = new AtomicConstantExpression().withConstant(sl);
+         ace.setConstantType(type);
+        return ace ;
+     }
+
+     public static  AtomicConstantExpression mkVectorConstant(List<String> exp, ParameterType type) {
+                 List<String> sl = new ArrayList<String>();
+                 for(String temp:exp){
+                         sl.add(temp);
+                 }
+                 AtomicConstantExpression ace = new AtomicConstantExpression().withConstant(sl);
+         ace.setConstantType(type);
+        return ace ;
+         }
+
 
 
 }

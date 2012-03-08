@@ -1,11 +1,10 @@
 package test;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 
-import javax.xml.bind.JAXBContext;
+import java.io.FileNotFoundException;
+
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
+import javax.xml.bind.PropertyException;
 
 import net.ivoa.parameter.model.Always;
 import net.ivoa.parameter.model.AlwaysConditionalStatement;
@@ -14,11 +13,9 @@ import net.ivoa.parameter.model.AtomicParameterExpression;
 import net.ivoa.parameter.model.BelongToSet;
 import net.ivoa.parameter.model.ConstraintOnGroup;
 import net.ivoa.parameter.model.Criterion;
-import net.ivoa.parameter.model.Expression;
 import net.ivoa.parameter.model.If;
 import net.ivoa.parameter.model.IfThenConditionalStatement;
 import net.ivoa.parameter.model.IsNull;
-import net.ivoa.parameter.model.ObjectFactory;
 import net.ivoa.parameter.model.Or;
 import net.ivoa.parameter.model.ParameterGroup;
 import net.ivoa.parameter.model.ParameterReference;
@@ -34,26 +31,19 @@ import net.ivoa.parameter.model.ValueSmallerThan;
 
 import static net.ivoa.pdl.interpreter.utilities.ConstantUtils.*;
 
-public class PDRExample {
+public class PDRExample extends BaseExample {
 
-    /**
-     * @param args
-     * @throws JAXBException
-     * @throws "
+    
+    public static void main(String[] args) throws PropertyException, FileNotFoundException, JAXBException {
+        PDRExample example = new PDRExample();
+        example.marshall();
+    }
+
+    /* (non-Javadoc)
+     * @see test.BaseExample#buildService()
      */
-    public static void main(String[] args) throws JAXBException,
-    FileNotFoundException {
-        JAXBContext jaxbContext = JAXBContext
-                .newInstance("net.ivoa.parameter.model");
-
-        Marshaller marshaller = jaxbContext.createMarshaller();
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(
-                true));
-        marshaller.setProperty(Marshaller.JAXB_SCHEMA_LOCATION,
-                "http://www.ivoa.net/xml/Parameter/v0.1 UWS2-V1.1.xsd");
-        // Creating the object factory factory
-        ObjectFactory factory = new ObjectFactory();
-
+    @Override
+    protected Service buildService() {
         // Creating the root element of the schema : the service
         Service service = factory.createService()
                 .withServiceId("PDR_ONLINE").withServiceName("PDR-1D");
@@ -169,7 +159,7 @@ public class PDRExample {
                 new AtomicParameterExpression()
                 .withParameterRef(F_ISRFREF))
                 .withConditionType(
-                        new BelongToSet().withValue(mkiconst(1),mkiconst(2)))));
+                        new BelongToSet().withValue(mkconst(1),mkconst(2)))));
 
         AlwaysConditionalStatement always2 = new AlwaysConditionalStatement()
         .withAlways(new Always().withCriterion(new Criterion()
@@ -179,7 +169,7 @@ public class PDRExample {
                 .withConditionType(
                         new ValueInRange().withInf(
                                 new ValueLargerThan().withReached(true)
-                                .withValue(mkiconst(0))).withSup(
+                                .withValue(mkconst(0))).withSup(
                                         new ValueSmallerThan()
                                         .withReached(true).withValue(
                                                 mkconst(1e8))))));
@@ -192,7 +182,7 @@ public class PDRExample {
                 .withConditionType(
                         new ValueInRange().withInf(
                                 new ValueLargerThan().withReached(true)
-                                .withValue(mkiconst(0))).withSup(
+                                .withValue(mkconst(0))).withSup(
                                         new ValueSmallerThan()
                                         .withReached(true).withValue(mkconst(
                                                 1E8))))));
@@ -201,7 +191,7 @@ public class PDRExample {
         .withIf(new If().withCriterion(new Criterion().withExpression(
                 new AtomicParameterExpression()
                 .withParameterRef(d_sourRef))
-                .withConditionType(new BelongToSet().withValue(mkiconst(0)))))
+                .withConditionType(new BelongToSet().withValue(mkconst(0)))))
                 .withThen(
                         new Then().withCriterion(new Criterion()
                         .withExpression(
@@ -239,7 +229,7 @@ public class PDRExample {
                 new AtomicParameterExpression()
                 .withParameterRef(d_sourRef))
                 .withConditionType(
-                        new ValueDifferentFrom().withValue(mkiconst(0)))
+                        new ValueDifferentFrom().withValue(mkconst(0)))
                         .withLogicalConnector(
                                 new And()
                                 .withCriterion(new Criterion()
@@ -286,7 +276,7 @@ public class PDRExample {
                 new AtomicParameterExpression()
                 .withParameterRef(ieqthRef))
                 .withConditionType(
-                        new BelongToSet().withValue(mkiconst(0)).withValue(mkiconst(1)))));
+                        new BelongToSet().withValue(mkconst(0)).withValue(mkconst(1)))));
 
         AlwaysConditionalStatement always2eos = new AlwaysConditionalStatement()
         .withAlways(new Always().withCriterion(new Criterion()
@@ -294,14 +284,14 @@ public class PDRExample {
                 new AtomicParameterExpression()
                 .withParameterRef(ifisobRef))
                 .withConditionType(
-                        new BelongToSet().withValue(mkiconst(0)).withValue(mkiconst(1))
-                        .withValue(mkiconst(2)))));
+                        new BelongToSet().withValue(mkconst(0)).withValue(mkconst(1))
+                        .withValue(mkconst(2)))));
 
         IfThenConditionalStatement ifthenEOS1 = new IfThenConditionalStatement()
         .withIf(new If().withCriterion(new Criterion().withExpression(
                 new AtomicParameterExpression()
                 .withParameterRef(ieqthRef)).withConditionType(
-                        new BelongToSet().withValue(mkiconst(0)))))
+                        new BelongToSet().withValue(mkconst(0)))))
                         .withThen(
                                 new Then().withCriterion(new Criterion()
                                 .withExpression(
@@ -326,13 +316,13 @@ public class PDRExample {
                                                                                                 .withParameterRef(ifisobRef))
                                                                                                 .withConditionType(
                                                                                                         new BelongToSet()
-                                                                                                        .withValue(mkiconst(1)))))));
+                                                                                                        .withValue(mkconst(1)))))));
 
         IfThenConditionalStatement ifthenEOS2 = new IfThenConditionalStatement()
         .withIf(new If().withCriterion(new Criterion().withExpression(
                 new AtomicParameterExpression()
                 .withParameterRef(ieqthRef)).withConditionType(
-                        new ValueDifferentFrom().withValue(mkiconst(0))))).withThen(
+                        new ValueDifferentFrom().withValue(mkconst(0))))).withThen(
                                 new Then().withCriterion(new Criterion()
                                 .withExpression(
                                         new AtomicParameterExpression()
@@ -343,7 +333,7 @@ public class PDRExample {
         .withIf(new If().withCriterion(new Criterion().withExpression(
                 new AtomicParameterExpression()
                 .withParameterRef(ifisobRef))
-                .withConditionType(new BelongToSet().withValue(mkiconst(0)))))
+                .withConditionType(new BelongToSet().withValue(mkconst(0)))))
                 .withThen(
                         new Then().withCriterion(new Criterion()
                         .withExpression(
@@ -368,7 +358,7 @@ public class PDRExample {
                 new AtomicParameterExpression()
                 .withParameterRef(ifisobRef))
                 .withConditionType(
-                        new ValueDifferentFrom().withValue(mkiconst(0)))))
+                        new ValueDifferentFrom().withValue(mkconst(0)))))
                         .withThen(
                                 new Then().withCriterion(new Criterion()
                                 .withExpression(
@@ -450,9 +440,6 @@ public class PDRExample {
         // Last update on the UWS service
         service.setInputs(inputsPG);
         service.setOutputs(outputsPG);
-
-        marshaller.marshal(service, new FileOutputStream(
-                "/Users/zwolf/Desktop/ZZZ.xml"));
-
+        return service;
     }
 }
