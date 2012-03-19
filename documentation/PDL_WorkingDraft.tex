@@ -12,6 +12,7 @@
 \usepackage{hyperref}
 \usepackage{color}
 \usepackage{xcolor}
+\usepackage{listings}
 
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
 
@@ -109,14 +110,15 @@ Two examples of this high level description we would be able to provide are the 
 \ \mbox{Input } \left\{
 \begin{array}{c}
  \mbox{$\vec p_1$ is a $m/s$ vector speed and $\| \vec p_1\|<c$} \\
- \mbox{ $p_2$ is a Kelvin temperature and $p_2>0$ }\\
- \mbox{$p_3$ is a $kg$ mass and $p_3\geq 0$}\\
+ \mbox{ $p_2$ is time (in second) and $p_2 \geq 0$ }\\
+ \mbox{$p_3$ is a $kg$ mass and $p_3 > 0$}\\
 \end{array}
 \right. \\
 \\
 \ \mbox{\hspace{1cm} Output } \left\{
 \begin{array}{l}
- \mbox{ $p_4$ is a Joule Energy and $p_4 \geq 0$} \\
+ \mbox{ $p_4$ is a Joule Kinetic Energy and $p_4 \geq 0$} \\
+ \mbox{ $p_5$ is a distance (in meter) }\\
  \end{array}
 \right.\\
 \end{array}
@@ -147,7 +149,10 @@ Two examples of this high level description we would be able to provide are the 
 \end{equation}
 To our knowledge, no existing description language meets these fine needs coming with scientific
 services. This leads us naturally to work on a new solution and consider about developing a new
-description language.
+description language.\\
+
+\noindent {\bf Remark: } The PDL descriptions for the two examples above are online:  \href{http://vo-param.googlecode.com/svn/trunk/model/documentation/PDL-Description_example01.xml}{Example 1} and \href{http://vo-param.googlecode.com/svn/trunk/model/documentation/PDL-Description_Example02.xml}{Example 2}.
+
 
 \subsection{Interoperability issues}
 Nowadays, with the massive spread and diffusion of {\it cloud} services, interoperability has become
@@ -1094,7 +1099,18 @@ finding contradictions inside the descriptions. Moreover this kind of module is 
 implementing the automatic computation of
 {\it a priori} interoperability graphs %described in paragrah XYZ.
 
+\section{Description Examples}
+
+
+\lstset{language=XML}
+
+
+
+
+
 \end{document}
+
+
 
 
 
