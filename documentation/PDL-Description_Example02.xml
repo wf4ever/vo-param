@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Service xmlns="http://www.ivoa.net/xml/Parameter/v0.1"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.ivoa.net/xml/Parameter/v0.1 PDL-V1.0.xsd">
+	<ServiceId>PDLExample02</ServiceId>
+	<ServiceName>MySuperService</ServiceName>
+	<Description>Description corresponding to the second example in the PDL
+		documentation</Description>
+	<Parameters>
+		<parameter>
+			<Name>p1</Name>
+			<ParameterType>real</ParameterType>
+			<SkossConcept>SKOS_REAL</SkossConcept>
+			<Precision xsi:type="AtomicConstantExpression"
+				ConstantType="real">
+				<Constant>0.0001</Constant>
+			</Precision>
+			<Dimension xsi:type="AtomicConstantExpression"
+				ConstantType="integer">
+				<Constant>1</Constant>
+			</Dimension>
+		</parameter>
+		<parameter>
+			<Name>p2</Name>
+			<ParameterType>integer</ParameterType>
+			<SkossConcept>SKOS_INTEGER</SkossConcept>
+			<Precision xsi:type="AtomicConstantExpression"
+				ConstantType="real">
+				<Constant>0</Constant>
+			</Precision>
+		</parameter>
+		<parameter>
+			<Name>p3</Name>
+			<ParameterType>real</ParameterType>
+			<SkossConcept>SKOS_REAL</SkossConcept>
+			<Precision xsi:type="AtomicConstantExpression"
+				ConstantType="real">
+				<Constant>0.0001</Constant>
+			</Precision>
+			<Dimension xsi:type="AtomicConstantExpression"
+				ConstantType="integer">
+				<Constant>1</Constant>
+			</Dimension>
+		</parameter>
+		<parameter>
+			<Name>p4</Name>
+			<ParameterType>real</ParameterType>
+			<SkossConcept>SKOS_REAL_VECTOR</SkossConcept>
+			<Precision xsi:type="AtomicConstantExpression"
+				ConstantType="real">
+				<Constant>0.0001</Constant>
+			</Precision>
+			<Dimension xsi:type="AtomicConstantExpression"
+				ConstantType="integer">
+				<Constant>3</Constant>
+			</Dimension>
+		</parameter>
+		<parameter>
+			<Name>p5</Name>
+			<ParameterType>real</ParameterType>
+			<SkossConcept>SKOS_REAL_VECTOR</SkossConcept>
+			<Precision xsi:type="AtomicConstantExpression"
+				ConstantType="real">
+				<Constant>0.0001</Constant>
+			</Precision>
+			<Dimension xsi:type="AtomicConstantExpression"
+				ConstantType="integer">
+				<Constant>3</Constant>
+			</Dimension>
+		</parameter>
+	</Parameters>
+	<Inputs>
+		<Name>inputs</Name>
+		<ParameterRef ParameterName="p1" />
+		<ParameterRef ParameterName="p2" />
+		<ParameterRef ParameterName="p3" />
+		<ConstraintOnGroup>
+			<ConditionalStatement xsi:type="IfThenConditionalStatement">
+				<if>
+					<Criterion xsi:type="Criterion">
+						<Expression xsi:type="AtomicParameterExpression">
+							<parameterRef ParameterName="p1" />
+						</Expression>
+						<ConditionType xsi:type="ValueInRange">
+							<Sup reached="true">
+								<Value xsi:type="AtomicConstantExpression" ConstantType="real">
+									<Constant>1.5707963</Constant>
+								</Value>
+							</Sup>
+							<Inf reached="false">
+								<Value xsi:type="AtomicConstantExpression" ConstantType="real">
+									<Constant>0</Constant>
+								</Value>
+							</Inf>
+						</ConditionType>
+					</Criterion>
+				</if>
+				<then>
+					<Criterion xsi:type="Criterion">
+						<Expression xsi:type="AtomicParameterExpression">
+							<parameterRef ParameterName="p2" />
+						</Expression>
+						<ConditionType xsi:type="BelongToSet">
+							<Value xsi:type="AtomicConstantExpression" ConstantType="integer">
+								<Constant>2</Constant>
+							</Value>
+							<Value xsi:type="AtomicConstantExpression" ConstantType="integer">
+								<Constant>4</Constant>
+							</Value>
+							<Value xsi:type="AtomicConstantExpression" ConstantType="integer">
+								<Constant>6</Constant>
+							</Value>
+						</ConditionType>
+						<LogicalConnector xsi:type="And">
+							<Criterion xsi:type="Criterion">
+								<Expression xsi:type="AtomicParameterExpression">
+									<parameterRef ParameterName="p3" />
+								</Expression>
+								<ConditionType xsi:type="ValueInRange">
+									<Sup reached="true">
+										<Value xsi:type="AtomicConstantExpression" ConstantType="real">
+											<Constant>1</Constant>
+										</Value>
+									</Sup>
+									<Inf reached="true">
+										<Value xsi:type="AtomicConstantExpression" ConstantType="real">
+											<Constant>-1</Constant>
+										</Value>
+									</Inf>
+								</ConditionType>
+								<LogicalConnector xsi:type="And">
+									<Criterion xsi:type="Criterion">
+										<Expression xsi:type="FunctionExpression">
+											<Function functionName="abs">
+												<expression xsi:type="FunctionExpression">
+													<Function functionName="sin">
+														<expression xsi:type="AtomicParameterExpression">
+															<parameterRef ParameterName="p1" />
+														</expression>
+													</Function>
+													<Power xsi:type="AtomicParameterExpression">
+														<parameterRef ParameterName="p2" />
+													</Power>
+													<Operation operationType="MINUS">
+														<expression xsi:type="AtomicParameterExpression">
+															<parameterRef ParameterName="p3" />
+														</expression>
+													</Operation>
+												</expression>
+											</Function>
+											<Power xsi:type="AtomicConstantExpression"
+												ConstantType="real">
+												<Constant>0.5</Constant>
+											</Power>
+											<Operation operationType="MINUS">
+												<expression xsi:type="AtomicConstantExpression"
+													ConstantType="real">
+													<Constant>1.5</Constant>
+												</expression>
+											</Operation>
+										</Expression>
+										<ConditionType xsi:type="ValueSmallerThan"
+											reached="false">
+											<Value xsi:type="AtomicConstantExpression"
+												ConstantType="real">
+												<Constant>0</Constant>
+											</Value>
+										</ConditionType>
+									</Criterion>
+								</LogicalConnector>
+							</Criterion>
+						</LogicalConnector>
+					</Criterion>
+				</then>
+			</ConditionalStatement>
+			<ConditionalStatement xsi:type="IfThenConditionalStatement">
+				<if>
+					<Criterion xsi:type="Criterion">
+						<Expression xsi:type="AtomicParameterExpression">
+							<parameterRef ParameterName="p1" />
+						</Expression>
+						<ConditionType xsi:type="ValueInRange">
+							<Sup reached="true">
+								<Value xsi:type="AtomicConstantExpression" ConstantType="real">
+									<Constant>3.1415927</Constant>
+								</Value>
+							</Sup>
+							<Inf reached="false">
+								<Value xsi:type="AtomicConstantExpression" ConstantType="real">
+									<Constant>1.5707963</Constant>
+								</Value>
+							</Inf>
+						</ConditionType>
+					</Criterion>
+				</if>
+				<then>
+					<Criterion xsi:type="Criterion">
+						<Expression xsi:type="AtomicParameterExpression">
+							<parameterRef ParameterName="p2" />
+						</Expression>
+						<ConditionType xsi:type="ValueInRange">
+							<Sup reached="false">
+								<Value xsi:type="AtomicConstantExpression" ConstantType="integer">
+									<Constant>10</Constant>
+								</Value>
+							</Sup>
+							<Inf reached="false">
+								<Value xsi:type="AtomicConstantExpression" ConstantType="integer">
+									<Constant>0</Constant>
+								</Value>
+							</Inf>
+						</ConditionType>
+						<LogicalConnector xsi:type="And">
+							<Criterion xsi:type="Criterion">
+								<Expression xsi:type="FunctionExpression">
+									<Function functionName="log">
+										<expression xsi:type="AtomicParameterExpression">
+											<parameterRef ParameterName="p2" />
+										</expression>
+									</Function>
+									<Operation operationType="MINUS">
+										<expression xsi:type="AtomicParameterExpression">
+											<parameterRef ParameterName="p3" />
+										</expression>
+									</Operation>
+								</Expression>
+								<ConditionType xsi:type="ValueSmallerThan"
+									reached="false">
+									<Value xsi:type="AtomicConstantExpression" ConstantType="real">
+										<Constant>0</Constant>
+									</Value>
+								</ConditionType>
+								<LogicalConnector xsi:type="And">
+									<Criterion xsi:type="Criterion">
+										<Expression xsi:type="ParenthesisContent">
+											<expression xsi:type="AtomicParameterExpression">
+												<parameterRef ParameterName="p1" />
+											</expression>
+											<Operation operationType="MULTIPLY">
+												<expression xsi:type="AtomicParameterExpression">
+													<parameterRef ParameterName="p2" />
+												</expression>
+											</Operation>
+										</Expression>
+										<ConditionType xsi:type="IsInteger" />
+									</Criterion>
+								</LogicalConnector>
+							</Criterion>
+						</LogicalConnector>
+					</Criterion>
+				</then>
+			</ConditionalStatement>
+		</ConstraintOnGroup>
+	</Inputs>
+	<Outputs>
+		<Name>outputs</Name>
+		<ParameterRef ParameterName="p4" />
+		<ParameterRef ParameterName="p5" />
+		<ConstraintOnGroup>
+			<ConditionalStatement xsi:type="AlwaysConditionalStatement">
+				<always>
+					<Criterion xsi:type="Criterion">
+						<Expression xsi:type="ParenthesisContent">
+							<expression xsi:type="ParenthesisContent">
+								<expression xsi:type="AtomicParameterExpression">
+									<parameterRef ParameterName="p5" />
+								</expression>
+								<Operation operationType="SCALAR">
+									<expression xsi:type="AtomicParameterExpression">
+										<parameterRef ParameterName="p5" />
+									</expression>
+								</Operation>
+							</expression>
+							<Operation operationType="DIVIDE">
+								<expression xsi:type="ParenthesisContent">
+									<expression xsi:type="AtomicParameterExpression">
+										<parameterRef ParameterName="p4" />
+									</expression>
+									<Operation operationType="SCALAR">
+										<expression xsi:type="AtomicParameterExpression">
+											<parameterRef ParameterName="p4" />
+										</expression>
+									</Operation>
+								</expression>
+							</Operation>
+						</Expression>
+						<ConditionType xsi:type="ValueSmallerThan" reached="false">
+							<Value xsi:type="AtomicConstantExpression" ConstantType="real">
+								<Constant>0.01</Constant>
+							</Value>
+						</ConditionType>
+					</Criterion>
+				</always>
+			</ConditionalStatement>
+		</ConstraintOnGroup>
+	</Outputs>
+</Service>
