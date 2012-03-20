@@ -1,9 +1,6 @@
 package net.ivoa.gui.dynamicLabel;
 
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,16 +9,11 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
-import visitors.GeneralParameterVisitor;
 
 import net.ivoa.parameter.model.SingleParameter;
 import net.ivoa.pdl.interpreter.expression.ExpressionParserFactory;
 import net.ivoa.pdl.interpreter.utilities.Utilities;
-
+import visitors.GeneralParameterVisitor;
 import CommonsObjects.GeneralParameter;
 
 public abstract class PDLBaseParamPanel extends JPanel implements FocusListener {
@@ -72,11 +64,11 @@ public abstract class PDLBaseParamPanel extends JPanel implements FocusListener 
 	protected abstract void setComponentValue();
 
 	private String buildLabelText() {
-		String toReturn = this.paramName + " ( " + this.paramUnit + "; "
+		String toReturn = " "+this.paramName + " ( " + this.paramUnit + "; "
 				+ this.paramType;
 
 		if (null != paramDimension) {
-			toReturn = toReturn + " " + this.paramDimension;
+			toReturn = toReturn + " ; " + this.paramDimension;
 		}
 		toReturn = toReturn + ")";
 		return toReturn;

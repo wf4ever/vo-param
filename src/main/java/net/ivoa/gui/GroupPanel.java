@@ -1,5 +1,7 @@
 package net.ivoa.gui;
 
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -31,28 +33,31 @@ public class GroupPanel extends JPanel {
 	}
 
 	public void updateGroupPanel(GroupHandlerHelper ghh) {
-
+		this.removeAll();
+		
 		if (null != this.containedPanel) {
 			this.remove(this.containedPanel);
 		}
 
 		this.containedPanel = new JPanel();
+		
 
 		// build the list of panel for each parameter in this group
 		this.buildListPanel(ghh);
-		this.setLayout(this.computeGoodLayout());
+		this.setLayout(new GridLayout(2,1));
 		// Adding the params panel to the containedPanel
 		addParamsToContainedPanel();
 
 		buildStatementPanel(ghh);
 
-		this.containedPanel.add(this.statementPanel);
+		
+		
+		this.containedPanel.setLayout(this.computeGoodLayout(ghh));
 
 		this.containedPanel.setVisible(true);
 
 		this.add(this.containedPanel);
-
-		this.setLayout(new GridLayout());
+		this.add(this.statementPanel);
 
 		this.setVisible(true);
 		this.revalidate();
@@ -65,6 +70,7 @@ public class GroupPanel extends JPanel {
 		if (null != shc) {
 			this.statementsPanelList = new ArrayList<PDLStatementPanel>(
 					shc.size());
+			this.statementPanel.setLayout(new GridLayout(shc.size() + 3, 1));
 			for (int i = 0; i < shc.size(); i++) {
 				String comment = shc.get(i).getStatementComment();
 				Boolean isActivated = shc.get(i).isStatementSwitched();
@@ -77,7 +83,7 @@ public class GroupPanel extends JPanel {
 			}
 			this.statementPanel.add(this.validateButton);
 
-			this.statementPanel.setLayout(new GridLayout(shc.size() + 3, 1));
+			
 		}
 
 	}
@@ -99,8 +105,9 @@ public class GroupPanel extends JPanel {
 
 	}
 
-	private GridLayout computeGoodLayout() {
-		return new GridLayout(this.paramsPanels.size(), 1);
+	private GridLayout computeGoodLayout(GroupHandlerHelper ghh) {
+		List<SingleParameter> paramsList = ghh.getSingleParamIntoThisGroup();
+		return new GridLayout(paramsList.size(),1);
 	}
 
 }
