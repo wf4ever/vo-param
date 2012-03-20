@@ -1,14 +1,18 @@
 package net.ivoa.pdl.interpreter.utilities;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import CommonsObjects.GeneralParameter;
 
 import net.ivoa.parameter.model.ParameterGroup;
 import net.ivoa.parameter.model.ParameterReference;
 import net.ivoa.parameter.model.Service;
 import net.ivoa.parameter.model.SingleParameter;
+import net.ivoa.pdl.servicecaller.IserviceCaller;
+import net.ivoa.pdl.servicecaller.ServiceCallerFactory;
+import CommonsObjects.GeneralParameter;
 
 public class Utilities {
 	private static final Utilities instance = new Utilities();
@@ -57,14 +61,13 @@ public class Utilities {
 			SingleParameter parameter) {
 		return this.mapper.getuserProvidedValuesForParameter(parameter);
 	}
-	
+
 	// This function must send back the value submitted by user for every asked
 	// parameter name
 	public List<GeneralParameter> getuserProvidedValuesForParame(
 			String paramName) {
 		return this.mapper.getUserProvidedValuesForParam(paramName);
 	}
-	
 
 	// This function provide the list of the parameters belonging to a given
 	// group
@@ -77,6 +80,13 @@ public class Utilities {
 		}
 
 		return toReturn;
+	}
+
+	public void callService() {
+		IserviceCaller serviceCaller = ServiceCallerFactory.getInstance()
+				.buildCaller(this.service);
+		serviceCaller.callService();
+
 	}
 
 }

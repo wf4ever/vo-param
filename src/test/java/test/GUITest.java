@@ -17,21 +17,21 @@ public class GUITest {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		 Service service = buildService();
-         
-         // CRUCIAL!! Initialize the utilities
-         Utilities.getInstance().setService(service);
-         Utilities.getInstance().setMapper(new UserMapper());
-         
-         IntelligentGUI gui = new IntelligentGUI(service);
-         gui.createAndShowGUI();
+		Service service = buildService();
+
+		// CRUCIAL!! Initialize the utilities
+		Utilities.getInstance().setService(service);
+		Utilities.getInstance().setMapper(new UserMapper());
+
+		IntelligentGUI gui = new IntelligentGUI(service);
+		gui.createAndShowGUI();
 	}
 
 	private static Service buildService() {
-		Service service=null;
+		Service service = null;
 		try {
 			JAXBContext jaxbContext = JAXBContext
-			.newInstance("net.ivoa.parameter.model");
+					.newInstance("net.ivoa.parameter.model");
 			Unmarshaller u = jaxbContext.createUnmarshaller();
 			service = (Service) u.unmarshal(new File("PDL-Description.xml"));
 		} catch (JAXBException e) {

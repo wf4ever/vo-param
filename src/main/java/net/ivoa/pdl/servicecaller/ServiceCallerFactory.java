@@ -1,0 +1,30 @@
+package net.ivoa.pdl.servicecaller;
+
+import net.ivoa.parameter.model.Service;
+
+public class ServiceCallerFactory {
+
+	private static final String BroadServiceName = "Lerma-Broadening-Service";
+
+	private static final ServiceCallerFactory instance = new ServiceCallerFactory();
+
+	private static final String OpacityServiceName = "Lerma-Opacity-Service";
+
+	public static ServiceCallerFactory getInstance() {
+		return instance;
+	}
+
+	private ServiceCallerFactory() {
+	}
+
+	public IserviceCaller buildCaller(Service service){
+		if(service.getServiceName().equalsIgnoreCase(BroadServiceName)){
+			return new BroadServiceCaller();
+		}
+		
+		if(service.getServiceName().equalsIgnoreCase(OpacityServiceName)){
+			return new OpacityServiceCaller();
+		}
+		return null;
+	}
+}

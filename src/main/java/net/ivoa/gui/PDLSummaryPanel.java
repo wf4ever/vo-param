@@ -3,9 +3,12 @@ package net.ivoa.gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -14,8 +17,9 @@ import javax.swing.JTextArea;
 import net.ivoa.pdl.interpreter.conditionalStatement.StatementHelperContainer;
 import net.ivoa.pdl.interpreter.groupInterpreter.GroupHandlerHelper;
 import net.ivoa.pdl.interpreter.groupInterpreter.GroupProcessor;
+import net.ivoa.pdl.interpreter.utilities.Utilities;
 
-public class PDLSummaryPanel extends JPanel {
+public class PDLSummaryPanel extends JPanel implements ActionListener{
 
 	private GroupProcessor groupProcessor;
 
@@ -164,6 +168,12 @@ public class PDLSummaryPanel extends JPanel {
 		JLabel lab3 = new JLabel("Valid");
 
 		List<String> infosOnGroups = this.getInfosOnGroups();
+		JButton serverButton = new JButton("Launch computation");
+		if ((infosOnGroups.get(0) == null || infosOnGroups.get(0).equalsIgnoreCase(""))
+				&& (infosOnGroups.get(1) == null || infosOnGroups.get(1).equalsIgnoreCase(""))) {	
+			serverButton.addActionListener(this);
+			this.containedPanel.add(serverButton, BorderLayout.EAST);
+		}
 
 		sum1.add(lab1);
 		sum2.add(lab2);
@@ -210,6 +220,11 @@ public class PDLSummaryPanel extends JPanel {
 		this.add(containedPanel);
 		this.setVisible(true);
 		this.revalidate();
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		Utilities.getInstance().callService();
+		
 	}
 
 }
