@@ -68,6 +68,7 @@
                <schemaDirectory> ${basedir}/src/schema </schemaDirectory>
                <schemaIncludes>
                   <value>PDL-V1.0.xsd</value>
+                  <value>PDLServer.xsd</value>
                </schemaIncludes>
                <generateDirectory>src/generated</generateDirectory>
                <bindingDirectory>src/build</bindingDirectory>
