@@ -69,6 +69,9 @@ public class PDLSummaryPanel extends JPanel implements ActionListener{
 						} else {
 							isGroupToComplete = true;
 						}
+					}else{
+						//In the case where the statement is not switched
+						isGroupToComplete = !currentStatement.isStatementValid();
 					}
 				}
 				if (isGroupToComplete) {
