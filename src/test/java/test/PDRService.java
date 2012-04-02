@@ -284,7 +284,7 @@ public class PDRService extends BaseExample {
 		AlwaysConditionalStatement choices = new AlwaysConditionalStatement()
 				.withAlways(new Always().withCriterion(ifisobCriterion))
 				.withComment(
-						"First make choices for fixing EOS choice, and press valid button");
+						"First make choices for fixing EOS choice, than press the 'valid' button");
 
 		Criterion ifisobEqualDensity = new Criterion()
 				.withExpression(ifisobExp).withConditionType(
