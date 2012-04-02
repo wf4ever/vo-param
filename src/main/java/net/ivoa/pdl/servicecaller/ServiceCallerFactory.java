@@ -10,6 +10,9 @@ public class ServiceCallerFactory {
 
 	private static final String OpacityServiceName = "Lerma-Opacity-Service";
 
+	private static final String PDRServiceName = "Meudon-PDR-Service";
+	
+	
 	public static ServiceCallerFactory getInstance() {
 		return instance;
 	}
@@ -24,6 +27,10 @@ public class ServiceCallerFactory {
 		
 		if(service.getServiceName().equalsIgnoreCase(OpacityServiceName)){
 			return new OpacityServiceCaller();
+		}
+		
+		if(service.getServiceName().equalsIgnoreCase(PDRServiceName)){
+			return new PDRServiceCaller();
 		}
 		return null;
 	}
