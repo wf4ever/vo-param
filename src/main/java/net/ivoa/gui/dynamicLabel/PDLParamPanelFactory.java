@@ -34,26 +34,31 @@ public class PDLParamPanelFactory {
 
 	public PDLBaseParamPanel paramBuilder(GroupHandlerHelper ghh,
 			SingleParameter parameter) {
+		List<StatementHelperContainer> helperList = ghh
+				.getStatementHelperList();
 
-		for (StatementHelperContainer localHelper : ghh
-				.getStatementHelperList()) {
-			PDLBaseParamPanel panel = test(localHelper, parameter);
-			if (null != panel) {
-				return panel;
+		if (null == helperList) {
+			return buildBasicPanel(parameter);
+		} else {
+			for (StatementHelperContainer localHelper : helperList) {
+				PDLBaseParamPanel panel = test(localHelper, parameter);
+				if (null != panel) {
+					return panel;
+				}
 			}
+			return buildBasicPanel(parameter);
 		}
-		return buildBasicPanel(parameter);
+
 	}
-	
-	
-	private PDLBaseParamPanel buildBasicPanel(SingleParameter parameter){
+
+	private PDLBaseParamPanel buildBasicPanel(SingleParameter parameter) {
 		if (parameter.getParameterType() == ParameterType.BOOLEAN) {
 			return new PDLBooleanParamPanel(parameter);
 		} else {
 			return new PDLTextParamPanel(parameter);
 		}
 	}
-	
+
 	private PDLBaseParamPanel test(StatementHelperContainer statementHelp,
 			SingleParameter parameter) {
 
@@ -122,7 +127,7 @@ public class PDLParamPanelFactory {
 			}
 
 		}
-		return buildBasicPanel(parameter);
+		return null;
 	}
 
 	private AbstractCriterion getCriterionFromStatement(
