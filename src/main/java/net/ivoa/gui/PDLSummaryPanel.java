@@ -58,23 +58,24 @@ public class PDLSummaryPanel extends JPanel implements ActionListener{
 		// Loop for every group
 		for (int i = 0; i < handler.size(); i++) {
 			String currentGroupName = handler.get(i).getGroupName();
-			Boolean isGroupToComplete = true;
+			Boolean isGroupCompleted = true;
+			
 			// For every statement in the current group
 			if (null != handler.get(i).getStatementHelperList()) {
 				for (StatementHelperContainer currentStatement : handler.get(i)
 						.getStatementHelperList()) {
 					if (currentStatement.isStatementSwitched()) {
 						if (null != currentStatement.isStatementValid()) {
-							isGroupToComplete = false;
+							isGroupCompleted = isGroupCompleted && true;
 						} else {
-							isGroupToComplete = true;
+							isGroupCompleted = isGroupCompleted && false;
 						}
 					}else{
 						//In the case where the statement is not switched
-						isGroupToComplete = !currentStatement.isStatementValid();
+						isGroupCompleted = isGroupCompleted && currentStatement.isStatementValid();
 					}
 				}
-				if (isGroupToComplete) {
+				if (!isGroupCompleted) {
 					toReturn.add(currentGroupName);
 				}
 			}
