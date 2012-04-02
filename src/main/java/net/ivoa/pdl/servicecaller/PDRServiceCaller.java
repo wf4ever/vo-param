@@ -16,17 +16,21 @@ public class PDRServiceCaller implements IserviceCaller {
 		String serviceUrl = "http://opacity-cs.obspm.fr:8080/pdr/pdr?";
 		List<SingleParameter> paramList = Utilities.getInstance().getService()
 				.getParameters().getParameter();
+		
+		int j=0;
 		for (int i = 0; i < paramList.size(); i++) {
 			SingleParameter p = paramList.get(i);
-			String character = "";
-			if (i > 0) {
-				character = "&";
-			}
+			
 
 			List<GeneralParameter> currentParam = Utilities.getInstance()
 					.getuserProvidedValuesForParameter(p);
 
 			if (null != currentParam) {
+				String character = "";
+				if (j > 0) {
+					character = "&";
+				}
+				j++;
 				serviceUrl = serviceUrl + character + p.getName() + "="
 						+ currentParam.get(0).getValue();
 			}
