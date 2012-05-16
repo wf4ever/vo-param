@@ -11,7 +11,7 @@ import net.ivoa.pdl.interpreter.utilities.Utilities;
 public class BroadServiceCaller implements IserviceCaller {
 
 	public void callService() {
-		String serviceUrl = "http://vm-calc-lerma01:8080/broadening/Broadening?";
+		String serviceUrl = "http://opacity-cs.obspm.fr:8080/broadening/Broadening?";
 		List<SingleParameter> paramList = Utilities.getInstance().getService()
 				.getParameters().getParameter();
 		for (int i = 0; i < paramList.size(); i++) {
