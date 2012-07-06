@@ -1,0 +1,127 @@
+\documentclass[a4paper,11pt] {ivoa}
+\usepackage{geometry}                % See geometry.pdf to learn the layout
+% options. There are lots.
+\geometry{a4paper}                   % ... or a4paper or a5paper or ...
+% \geometry{landscape}                % Activate for for rotated page geometry
+% \usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty
+% line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{listings}
+
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\title{Implementing Note of the Framework built around PDL}
+% Give author list: separate different authors with \\ 
+% You can add email addresses with links \url{mailto:yourname@ivoa.net}
+\author{Carlo Maria Zw\"olf}
+\newcommand{\pdlversion}{0.1}
+\newcommand{\pdldate}{\today}
+
+%I have marked sections which I am unsure of with this
+\newcommand{\tocheck}[1]{{\color{red} #1}}
+
+% Give date and version number
+\date{\pdldate}
+
+% Choose one document type from below
+%\ivoatype{IVOA Note}
+\ivoatype{IVOA Working Draft}
+%\ivoatype{IVOA Proposed Recommendation}
+%\ivoatype{IVOA Recommendation}
+\ivoagroup{GWS / Theory}
+\version{\pdlversion}
+\def\SVN$#1: #2 ${\expandafter\def\csname SVN#1\endcsname{#2}}
+\SVN$Rev: 123 $
+
+\urlthisversion{\pdlversion:  \pdldate\ (SVN Revision \SVNRev)}
+\urllastversion{N/A}
+\previousversion{
+}
+
+\begin{document}
+\maketitle
+
+\tableofcontents
+
+\section{Introduction}
+BLA BLA
+
+\section{The package structure}
+
+\section{The CommonsObject package}
+This package contains the classes 
+\begin{itemize}
+\item GeneralParameter.java
+\item GeneralPatameterAlgebra.jaba
+\end{itemize}
+
+\subsection{The  GeneralParameter.java class }
+This class is the core PDL and is used for handling all the parameters. It is a way for encapsulating the usual basic types (integer, double, boolean, string) into an object. Moreover the modular design of this class allow users to easily define new types.\\
+
+This attributes of this class are
+\begin{itemize}
+\item a field {\it value} of String type,\\
+\item a field {\it type} of String type,\\
+\item a field {\it description} of String type,\\
+\item a field {\it visitor} of Ivisitor type (cf. paragraph XXX for the definition of this interface).\\ 
+\end{itemize}
+
+The constructor of this class takes as arguments the quadruplet  {\it  value, type, description, visitor} and invoke the method {\it visit(GeneralParameter)} on the object we are creating. If all the test contained in the visitor (typically this methods verify if the value provided could be cast to the type contained into the {\it type} field) pass with no problem, then the object is created. If a problem is encountered, the constructor throws an {\it InvalidParameterException } exception explaining the reasons of the problem.\\
+
+With this mechanisms, the validation of a GeneralParameter is automatically performed at its own construction. All the existing instances of GeneralParameter are natively validated. Moreover, just by modifying the content of the visitor class passed as arguments, developers could easily add support for new types. 
+
+\subsection{The GeneralParameterAlgebra.java class}  
+This class is implemented using the singleton pattern. In the following, let $g_i$ be a family of GeneralParameter instances.
+This class  contains the methods for computing:
+\begin{itemize}
+\item  the sum $g_r = g_i + g_j$;\\
+\item the multiplication $g_r = g_i \cdot g_j$;\\
+\item the difference of $g_r = g_i - g_j$. ;\\
+For these last three items, if the both $g_i$ and $g_j$ are integer, the resulting GeneralParameter will be of integer type too. If one of the two is a real, then the result will be a real (this is internally hold using double types).\\
+\item the power $g_r = g_i^{g_j}$. Since the native Java Math.pow method provide a double, the result will always 
+be a GeneralParameter of real type;\\
+\item the absolute value $|g_r|$. Since the native Math.abs method provide a double, the result will always be a GeneralParameter of real type;\\
+\item the function $f(g_i)$, $\displaystyle f() \in \left\{ \sin() , \cos(), \tan(), \sin^{-1}(), \cos^{-1}(), \tan^{-1}(),  \exp(), \log() \right\}$. The result wil be a GeneralParamter of real type;
+\item the sum of all the components $g_{i,j}$ of a vector of general parameters $\vec g_i$ : $g_r = \sum_j g_{i,j}$. By the choice of our implementation, the result is a GeneralParameter of real type;
+\item the product of all the components $g_{i,j}$ of a vector of general parameters $\vec g_i$ : $g_r = \prod_j g_{i,j}$. By the choice of our implementation, the result is a GeneralParameter of real type;
+\item the size of a vector $\vec g_i$. In this case the result is a generalParameter of type Intger and the incapsulated value will be the size of the vector.\\ 
+\end{itemize} 
+All  these operations (excepted the last one) are performed only if  $g_i$ (and $g_j$ too when it appears) is (are) numerical. In the other cases, this method will throw an InvalidExpression exception explaining the reasons of the problem;\\
+
+\noindent Moreover this class contains methods for characterizing  instances of GeneralParameter:
+\begin{itemize}
+\item {\it areGeneralParameterEqual} takes $g_i$ and $g_j$ and return a boolean. This last is true if 
+\begin{itemize}
+\item both $g_i$, $g_j$ are numerical and the difference of the values $v(g_i)$ and $v(g_j)$ encapsulated in these objects is smaller than $\epsilon = 0.0000001$ ($v(g_i)-v(g_j)<\epsilon$), or 
+\item the type of $g_i$  is equal (in the Java equalsIgnoreCase String sense) to the type of $g_j$ and the value if $g_i$ is equal (again, in the Java equalsIgnoreCase String sense) to the value of $g_j$.
+\end{itemize} 
+\item {\it isFirstGreaterThanSecond} takes $g_i$, $g_j$ and a boolean $r$. The result is true if 
+\begin{itemize}
+\item $r$ is true and $v(g_i) \geq v(g_j)$, or
+\item $r$ is false and $v(g_i) > v(g_j)$.
+\end{itemize}
+\item {\it isFirstSmallerThanSecond} takes $g_i$, $g_j$ and a boolean $r$. The result is true if 
+\begin{itemize}
+\item $r$ is true and $v(g_i) \leq v(g_j)$, or
+\item $r$ is false and $v(g_i) < v(g_j)$.
+\end{itemize}
+\item {\it isGeneralParameterInteger} takes $g_i$ and returns a boolean. This last is true if $v(g_i) \in \mathbb N$.
+\item {\it isGeneralParameterReal} takes $g_i$ and returns a boolean. This last is true if $v(g_i) \in \mathbb R$.
+\end{itemize}
+ 
+ \section{The visitors package}
+ 
+ 
+\end{document}
+
+
+
+
+
+ 
