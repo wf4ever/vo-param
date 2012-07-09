@@ -49,19 +49,19 @@
 
 \tableofcontents
 
-\section{Introduction}
+\section{Introduction}\label{intro}
 BLA BLA
 
 \section{The package structure}
 
-\section{The CommonsObject package}
+\section{The CommonsObject package}\label{commons}
 This package contains the classes 
 \begin{itemize}
 \item GeneralParameter.java
 \item GeneralPatameterAlgebra.jaba
 \end{itemize}
 
-\subsection{The  GeneralParameter.java class }
+\subsection{The  GeneralParameter.java class }\label{generalParameter}
 This class is the core PDL and is used for handling all the parameters. It is a way for encapsulating the usual basic types (integer, double, boolean, string) into an object. Moreover the modular design of this class allow users to easily define new types.\\
 
 This attributes of this class are
@@ -69,7 +69,7 @@ This attributes of this class are
 \item a field {\it value} of String type,\\
 \item a field {\it type} of String type,\\
 \item a field {\it description} of String type,\\
-\item a field {\it visitor} of Ivisitor type (cf. paragraph XXX for the definition of this interface).\\ 
+\item a field {\it visitor} of Ivisitor type (cf. paragraph \ref{visitor} for the definition of this interface).\\ 
 \end{itemize}
 
 The constructor of this class takes as arguments the quadruplet  {\it  value, type, description, visitor} and invoke the method {\it visit(GeneralParameter)} on the object we are creating. If all the test contained in the visitor (typically this methods verify if the value provided could be cast to the type contained into the {\it type} field) pass with no problem, then the object is created. If a problem is encountered, the constructor throws an {\it InvalidParameterException } exception explaining the reasons of the problem.\\
@@ -115,9 +115,48 @@ All  these operations (excepted the last one) are performed only if  $g_i$ (and 
 \item {\it isGeneralParameterReal} takes $g_i$ and returns a boolean. This last is true if $v(g_i) \in \mathbb R$.
 \end{itemize}
  
- \section{The visitors package}
- 
- 
+ \section{The visitors package}\label{visitor}
+This package contains the visitors classes used by the {\it GeneralParameter} class constructor (cf. paragraph \ref{generalParameter}).\\
+
+\subsection{The visitors objects}
+The interface {\it Ivisitor} describe the method {\it visit} which takes as argument the {\it GeneralParameter} instance to inspect.\\
+The abstract {\it AbstractVisitor} class implements the {\it Ivisitor} interface. It defines 
+\begin{itemize}
+\item the abstract method {\it buildCriteriaList} which return a list of {\it Icriteria} (cf. par. \ref{criteria}). Developer has to implement this function in order to define his own list of criteria. By default, we provide the {\it GeneralParameterVisitor} class (cf. the end of this paragraph).
+\item the {\it visit} function: the previous method is invoked and, for every {Icriteria} object returned, we verify if the couple (type, value) of the {\it GeneralParameter} instance passed as argument verify the criterion. If at least one criterion is satisfied, than the visit methods end positevely. If no criterion is satisfied, the methods throws an {\it InvalidParameterException} explaining the reasons of the problem.
+\end{itemize}
+The {\it GeneralParameterVisitor} class is the concrete implementation of {\it AbstractVisitor}. It defines the method {\it buildCriteriaList}. The list returned contains a {\it RealCriteria}, an {\it IntegerCriteria}, a {\it BooleanCriteria} and a {\it StringCriteria} (cf. par. \ref{criteria}).  
+
+\subsection{The criteria objects}\label{criteria}
+All the criteria we are going to define implements the {\it Icriteria} interface. This last describe the methods:
+\begin{itemize}
+\item {\it getAuthorizedCriteriaType}, which returns the String containing the type authorized by the concrete criterion implementing the interface.
+\item {\it verifyCriteria}, which takes as argument a couple (type,value) characterizing a {\it GeneralParameter}. It returns the boolean true if the criterion is satisfied and false in the other case.
+\end{itemize}
+This interface is implemented by {\it RealCriteria}, an {\it IntegerCriteria}, a {\it BooleanCriteria} and a {\it StringCriteria}.
+
+\subsubsection{The RealCriteria}
+In this class, the method {\it getAuthorizedCriteriaType} returns the String ('real') {\bf used in the PDL grammar} for specifying that a parameter is of real type.\\
+The {\it VerifyCriteria} method returns the boolean true if the type of the {\it GeneralParameter} is 'real' and if the value of the same  {\it GeneralParameter} could be cast to a double type with no errors. If the type of the  {\it GeneralParameter} is not 'real', this methods return false. Finally if the type of the {\it GeneralParameter} is 'real' and the value cannot be casted to a double, this method throws an {\it InvalidParameterException} explaining the reasons of the problem.
+
+\subsubsection{The IntegerCriteria}
+In this class, the method {\it getAuthorizedCriteriaType} returns the String ('Integer') {\bf used in the PDL grammar} for specifying that a parameter is of Integer type.\\
+The {\it VerifyCriteria} method returns the boolean true if the type of the {\it GeneralParameter} is 'Integer' and if the value of the same  {\it GeneralParameter} could be cast to an Integer type with no errors. If the type of the  {\it GeneralParameter} is not 'Integer', this methods return false. Finally if the type of the {\it GeneralParameter} is 'Integer' and the value cannot be casted to an Integer, this method throws an {\it InvalidParameterException} explaining the reasons of the problem.
+
+\subsubsection{The BooleanCriteria}
+In this class, the method {\it getAuthorizedCriteriaType} returns the String ('Boolean') {\bf used in the PDL grammar} for specifying that a parameter is of Boolean type.\\
+The {\it VerifyCriteria} method returns the boolean true if the type of the {\it GeneralParameter} is 'Boolean' and if the value of the same  {\it GeneralParameter} is equal to 'true' or 'false'. If the type of the  {\it GeneralParameter} is not 'Boolean', this methods return false. Finally if the type of the {\it GeneralParameter} is 'Boolean' and the value is not 'true' or 'false', this method throws an {\it InvalidParameterException} explaining the reasons of the problem.
+
+\subsubsection{The StringCriteria}
+In this class, the method {\it getAuthorizedCriteriaType} returns the String ('String') {\bf used in the PDL grammar} for specifying that a parameter is of String type.\\
+The {\it VerifyCriteria} method returns the boolean true if the type of the {\it GeneralParameter} is 'String' and the boolean false in the other cases.
+
+\section{The pdl.interpreter.expression package}
+In this package are contained all the classes for interpreting and parsing PDL expressions.\\
+The entry point for understanding the expression interpreting mechanism is the abstract class {\it ExpressionParser}. It describe the abstract method {\it parse}...
+
+
+
 \end{document}
 
 
