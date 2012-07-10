@@ -187,17 +187,65 @@ and the other for the exponent (let us note $g_i^{exp}$ its elements). This meth
 \end{itemize}
 In the other cases, the  {\it evaluatePower} method throws and {\it InvalidExpression} exception, specifying the reasons of the problem.
 
-\subsection{The AtomicConstantExpressionParser}
+\subsection{The AtomicParameterExpressionParser class}
 This class implements the {\it ExpressionWithPowerParser} and is used for interpreting the PDL {AtomicParameterExpression} instances. Indeed this class has an attribute of type {\it AtomicParameterExpression} whose value is initialized by the class constructor.\\
 In the overridden method {\it parse}, the following actions are performed:
 \begin{itemize}
 \item the instance of the SingleParameter referenced by the expression, is retrieved using the {\it Utilities} class methods.
 \item if the power of the expression is not null, then we convert the power expression into a List of {\it GeneralParameter} by building (using the {\it ExpressionParserFactory}) the had hoc parser and invoking its {\it parse} method.
 \item The expression (without the operation part) is evaluated: Using the {\it Utilities} class we get the list of {\it GeneralParameter} corresponding to the user provided input vector for the SingleParameter contained into the AtomicConstantExpression. We verify that the dimension of that list corresponds to the value put in the dimension field of the SingleParameter. If this test is negative we throws an {\it InvalidExpression} exception. If the test is positive, we invoke the method {\it evaluatePower} inherited from the {\it ExpressionWithPowerParser} superclass. 
-\item If the {\it Operation} contained into the {\it AtomicParameterExpression} is not null, we evaluate the results of this operation (cf XXX, the result of the expression without the operation is in this case our first operand).
-\item Finally, the methods returns the list of {\it GeneralParameter} corresponding to the passage through the previous stages.  
+\item If the {\it Operation} contained into the {\it AtomicParameterExpression} is not null, we evaluate the results of this operation (cf \ref{operationParser}, the result of the expression without the operation is in this case our first operand).
+\item Finally, the methods returns the list of {\it GeneralParameter} resulting from the previous stages.  
 \end{itemize}
 
+\subsection{The AtomicConstantExpressionParser class}
+This class implements the {\it ExpressionWithPowerParser} and is used for interpreting the PDL {AtomicConstantExpression} instances. Indeed this class has an attribute of type {\it AtomicConstantExpression} whose value is initialized by the class constructor.\\
+In the overridden method {\it parse}, the following actions are performed:
+\begin{itemize}
+\item If the power of the expression is not null, then we convert the power expression into a List of {\it GeneralParameter} by building (using the {\it ExpressionParserFactory}) the had hoc parser and invoking its {\it parse} method.
+\item The expression (without the operation part) is evaluated: first we recover the set of constant values provided in the description of  the AtomicConstantExpression. Then we try to instantiate a list of {\it GeneralParameter} whose values are the previously retrieved and the type is the one contained into the ConstantType attribute (of type ParameterType) contained into the AtomicConstantExpression. If no exception is thrown during this process, the method {\it evaluatePower} (inherited from the {\it ExpressionWithPowerParser} superclass) is invoked.
+\item If the {\it Operation} contained into the {\it AtomicConstantExpression} is not null, we evaluate the results of this operation (cf \ref{operationParser}, the result of the expression without the operation is in this case the first operand).
+\item Finally, the methods returns the list of {\it GeneralParameter} resulting from the previous stages.
+\end{itemize}
+
+\subsection{The ParenthesisContentParser class}
+This class implements the {\it ExpressionWithPowerParser} and is used for interpreting the PDL {\it  ParenthesisContent} expression instances. This class has an attribute of type {\it ParenthesisContent} whose value is initialized by the class constructor.\\
+In the overridden method {\it parse}, the following actions are performed:
+\begin{itemize}
+\item The expression 'contained into the parenthesis', i.e. with the highest priority, is first evaluated by calling the {\it ExpressionParserFactory} and invoking on its returned object the method {\it parse}.
+\item  If the power of the expression is not null, then we convert the power expression into a List of {\it GeneralParameter} by building (using the {\it ExpressionParserFactory}) the had hoc parser and invoking its {\it parse} method.
+\item The expression (without the operation part) is evaluated:  the method {\it evaluatePower} (inherited from the {\it ExpressionWithPowerParser} superclass) is invoked using as base the list of {\it GeneralParameter} corresponding to the expression contained into the parenthesis and as exponent the list of {\it GeneralParameter} corresponding to the power.
+\item  If the {\it Operation} contained into the {\it ParenthesisContent}  is not null, we evaluate the results of this operation (cf \ref{operationParser}, the result of the expression without the operation is in this case the first operand).
+\item Finally, the methods returns the list of {\it GeneralParameter} resulting from the previous stages.
+\end{itemize}
+
+\subsection{The FunctionParser class}
+This class implements the {\it ExpressionParser} and is used for interpreting PDL {\it Function} expressions.\\
+This class has an attribute of type {\it Function} whose value is initialized by the class constructor.\\
+In the overridden method {\it parse}, the following actions are performed:
+\begin{itemize}
+\item The argument of the function is interpreted by invoking by calling the {\it ExpressionParserFactory} and invoking on its returned object the method {\it parse};
+\item According to the function type contained in the attribute {\it functionName} of the {\it Function} object, we invoke the good correspondent method contained into the {GeneralParameterAlgebra} class (cf. \ref{gpalgebra})  passing the list of {\it GeneralParameter} (built during the previous step) as argument. The result of this invocation is returned by the function.
+\end{itemize}
+
+\subsection{The FunctionExpressionParser class}
+This class implements the {\it ExpressionWithPowerParser} and is used for interpreting the PDL {\it  FunctionExpression} expression instances. This class has indeed an attribute of type {\it FunctionExpression} whose value is initialized by the class constructor.\\
+In the overridden method {\it parse}, the following actions are performed:
+\begin{itemize}
+\item The {\it Function} contained into the FunctionExpression is interpreted by calling the {\it ExpressionParserFactory} and invoking on its returned object the method {\it parse};
+\item  If the power of the expression is not null, then we convert the power expression into a List of {\it GeneralParameter} by building (using the {\it ExpressionParserFactory}) the had hoc parser and invoking its {\it parse} method.
+\item The expression (without the operation part) is evaluated:  the method {\it evaluatePower} (inherited from the {\it ExpressionWithPowerParser} superclass) is invoked using as base the list of {\it GeneralParameter} corresponding to the {\it Function} expression contained into the {\it FunctionExpression} expression  and as exponent the list of {\it GeneralParameter} corresponding to the power.
+\item  If the {\it Operation} contained into the {\it ParenthesisContent}  is not null, we evaluate the results of this operation (cf \ref{operationParser}, the result of the expression without the operation is in this case the first operand).
+\item Finally, the methods returns the list of {\it GeneralParameter} resulting from the previous stages.
+\end{itemize}
+
+\subsection{The OperationParser class}\label{operationParser}
+This class is used for interpreting the results of operations expressed in PDL syntax. 
+This class has indeed an attribute of {\it Operation} type, whose value is initialized by the class constructor. The only method of this class is {\it processOperation}, which takes as argument a list of {\it GeneralParameter} representing the first operand of the operation. In this last method, the following operations are performed:
+\begin{itemize}
+\item The second operand of the operation (i.e. the {\it Expression} instance contained into the {\it Operation} object) is interpreted by calling the {\it ExpressionParserFactory} and invoking on its returned object the method {\it parse};
+\item We get the {\it OperationType} from the  {\it Operation} object and invoke the good corresponding method contained into the {GeneralParameterAlgebra} class (cf. \ref{gpalgebra})  passing the {\it GeneralParameter} list corresponding to the first and second operands as arguments. The function returns the result of this last invokation.
+\end{itemize}
 
 
 \end{document}
