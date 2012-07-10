@@ -54,11 +54,15 @@ BLA BLA
 
 \section{The package structure}
 
+\section{Java Objects corresponding to the PDL data Model}
+They are all generated using JAX-B on the PDL XML schema. The generated classes corresponds to the PDL 
+
+
 \section{The CommonsObject package}\label{commons}
 This package contains the classes 
 \begin{itemize}
 \item GeneralParameter.java
-\item GeneralPatameterAlgebra.jaba
+\item GeneralPatameterAlgebra.java
 \end{itemize}
 
 \subsection{The  GeneralParameter.java class }\label{generalParameter}
@@ -76,7 +80,7 @@ The constructor of this class takes as arguments the quadruplet  {\it  value, ty
 
 With this mechanisms, the validation of a GeneralParameter is automatically performed at its own construction. All the existing instances of GeneralParameter are natively validated. Moreover, just by modifying the content of the visitor class passed as arguments, developers could easily add support for new types. 
 
-\subsection{The GeneralParameterAlgebra.java class}  
+\subsection{The GeneralParameterAlgebra.java class}\label{gpalgebra}
 This class is implemented using the singleton pattern. In the following, let $g_i$ be a family of GeneralParameter instances.
 This class  contains the methods for computing:
 \begin{itemize}
@@ -153,7 +157,46 @@ The {\it VerifyCriteria} method returns the boolean true if the type of the {\it
 
 \section{The pdl.interpreter.expression package}
 In this package are contained all the classes for interpreting and parsing PDL expressions.\\
-The entry point for understanding the expression interpreting mechanism is the abstract class {\it ExpressionParser}. It describe the abstract method {\it parse}...
+The entry point for understanding the expression interpreting mechanism is the abstract class {\it ExpressionParser}. 
+It describes the abstract method {\it parse}, which interprets the expression invoking the method. The result of this method is a list of {\it GeneralParameter} instances. Since in PDL expressions are vectorial, the $i$-th element of that list corresponds to the result of the interpretation of $i$-th component of the vector expression.
+The abstract class {\it ExpressionParser} is used, jointly with the polymorphism mechanism for building the {\it ExpressionParserFactory}
+
+\subsection{The ExpressionParserFactory class}
+This class is built by implementing the {\it singleton} pattern and is, as its name indicates, an implementation of the {\it factory} pattern.\\
+The method {\it buildParser} takes as argument an instance of the PDL {\it Expression} object and returns an {\it ExpressionParser}.
+More precisely, using introspection, this function analyze the instance of the PDL Expression:
+\begin{itemize}
+\item if the {\it Expression} is an instance of {\it AtomicConstantExpression} then the methods returns a {\it AtomicConstantExpressionParser};
+\item if the {\it Expression} is an instance of {\it AtomicParameterExpression} then the methods returns a {\it AtomicParameterExpressionParser};
+\item if the {\it Expression} is an instance of {\it FunctionExpression} then the methods returns a {\it FunctionExpressionParser};
+\item if the {\it Expression} is an instance of {\it Function} then the methods returns a {\it FunctionParser};
+\item if the {\it Expression} is an instance of {\it ParenthesisContent} then the methods returns a {\it ParenthesisContentParser};
+\end{itemize} 
+It is important to note that, since in PDL expressions are recursive, this factory will be invoked inside every concrete class implementing {\it ExpressionParser}.\\
+In what follows, we are going to describe all these concrete classes returned by the  {\it buildParser} method (and implementing the {\it ExpressionParser}).
+
+
+\subsection{The ExpressionWithPowerParser class}
+This abstract class inherits from {\it ExpressionParser} and is used for factoring the code of all the classes interpreting PDL expressions involving powers. 
+It specifies the method {\it evaluatePower} which takes as arguments two lists of {\it GeneralParameter}, one list for the base (let us note $g_i^{base}$ its elements) 
+and the other for the exponent (let us note $g_i^{exp}$ its elements). This method returns:
+\begin{itemize}
+\item the base list of $g_i^{base}$, if the expos ant list is null;\\
+\item the list whose elements are $\displaystyle \left(g_i^{base}\right)^{g_i^{exp}}$, if both lists have the same size. The power operation is performed in the {\it GeneralParameter} sense, using the methods described in paragraph \ref{gpalgebra}.
+\item the list whose elements are  $\displaystyle \left(g_i^{base}\right)^{g_0^{exp}}$, if the exponent list contains only one element $g_0^{exp}$.
+\end{itemize}
+In the other cases, the  {\it evaluatePower} method throws and {\it InvalidExpression} exception, specifying the reasons of the problem.
+
+\subsection{The AtomicConstantExpressionParser}
+This class implements the {\it ExpressionWithPowerParser} and is used for interpreting the PDL {AtomicParameterExpression} instances. Indeed this class has an attribute of type {\it AtomicParameterExpression} whose value is initialized by the class constructor.\\
+In the overridden method {\it parse}, the following actions are performed:
+\begin{itemize}
+\item the instance of the SingleParameter referenced by the expression, is retrieved using the {\it Utilities} class methods.
+\item if the power of the expression is not null, then we convert the power expression into a List of {\it GeneralParameter} by building (using the {\it ExpressionParserFactory}) the had hoc parser and invoking its {\it parse} method.
+\item The expression (without the operation part) is evaluated: Using the {\it Utilities} class we get the list of {\it GeneralParameter} corresponding to the user provided input vector for the SingleParameter contained into the AtomicConstantExpression. We verify that the dimension of that list corresponds to the value put in the dimension field of the SingleParameter. If this test is negative we throws an {\it InvalidExpression} exception. If the test is positive, we invoke the method {\it evaluatePower} inherited from the {\it ExpressionWithPowerParser} superclass. 
+\item If the {\it Operation} contained into the {\it AtomicParameterExpression} is not null, we evaluate the results of this operation (cf XXX, the result of the expression without the operation is in this case our first operand).
+\item Finally, the methods returns the list of {\it GeneralParameter} corresponding to the passage through the previous stages.  
+\end{itemize}
 
 
 
