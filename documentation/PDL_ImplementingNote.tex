@@ -47,7 +47,11 @@
 \begin{document}
 \maketitle
 
+\newpage
+
 \tableofcontents
+
+\newpage
 
 \section{Introduction}\label{intro}
 BLA BLA
@@ -171,6 +175,7 @@ More precisely, using introspection, this function analyze the instance of the P
 \item if the {\it Expression} is an instance of {\it FunctionExpression} then the methods returns a {\it FunctionExpressionParser};
 \item if the {\it Expression} is an instance of {\it Function} then the methods returns a {\it FunctionParser};
 \item if the {\it Expression} is an instance of {\it ParenthesisContent} then the methods returns a {\it ParenthesisContentParser};
+\item if the {\it Expression} is not an instance of what seen in the previous items, the function throws an {\it InvalidExpression} exception.
 \end{itemize} 
 It is important to note that, since in PDL expressions are recursive, this factory will be invoked inside every concrete class implementing {\it ExpressionParser}.\\
 In what follows, we are going to describe all these concrete classes returned by the  {\it buildParser} method (and implementing the {\it ExpressionParser}).
@@ -246,6 +251,52 @@ This class has indeed an attribute of {\it Operation} type, whose value is initi
 \item The second operand of the operation (i.e. the {\it Expression} instance contained into the {\it Operation} object) is interpreted by calling the {\it ExpressionParserFactory} and invoking on its returned object the method {\it parse};
 \item We get the {\it OperationType} from the  {\it Operation} object and invoke the good corresponding method contained into the {GeneralParameterAlgebra} class (cf. \ref{gpalgebra})  passing the {\it GeneralParameter} list corresponding to the first and second operands as arguments. The function returns the result of this last invokation.
 \end{itemize}
+
+\section{The pdl.interpreter.condition package}
+In this package we put all the classes used for interpreting the instances of all the PDL objects deriving from {\it AbstractCondition}.\\
+The entry point for understanding the mechanisms of this package is the abstract class {\it ConditionInterpreter}. This last describe the abstract method
+{\it isConditionVerified} and returns a boolean value. True id the condition is verified, false in the opposite case. This method could throws three kind of exceptions: {\it InvalidExpression,  InvalidParameterException, InvalidCondition}.\\
+The abstract class {\it ConditionInterpreter} is used, jointly with the polymorphism mechanism for building the {\it ConditionInterpreterFactory}
+
+\subsection{The ConditionInterpreterFactory class}
+This class is built by implementing the {\it singleton} pattern and is, as its name indicates, an implementation of the {\it factory} pattern.\\
+The method {\it buildConditionInterpreter} takes as argument an instance of the PDL {\it AbstractCondition} object and returns a {\it ConditionInterpreter}.
+More precisely, using introspection, this function analyze the instance of the PDL Expression:
+\begin{itemize}
+\item if the {\it AbstractCondition} is an instance of {\it ValueLargerThan} then the methods returns a {\it ValueLargerThanInterpreter};
+\item if the {\it AbstractCondition} is an instance of {\it ValueSmallerThan} then the methods returns a {\it ValueSmallerThanInterpreter};
+\item if the {\it AbstractCondition} is an instance of {\it ValueInRange} then the methods returns a {\it ValueInRangeInterpreter};
+\item if the {\it AbstractCondition} is an instance of {\it ValueDifferentFrom} then the methods returns a {\it ValueDifferentFromInterpreter};
+\item if the {\it AbstractCondition} is an instance of {\it BelongToSet} then the methods returns a {\it BelongToSetInterpreter};
+\item if the {\it AbstractCondition} is an instance of {\it DefaultValue} then the methods returns a {\it DefaultValueInterpreter};
+\item if the {\it AbstractCondition} is an instance of {\it IsInteger} then the methods returns a {\it IsIntegerInterpreter};
+\item if the {\it AbstractCondition} is an instance of {\it IsReal} then the methods returns a {\it IsRealInterpreter};
+\item if the {\it AbstractCondition} is an instance of {\it IsNull} then the methods returns a {\it IsNullInterpreter};
+\item if the {\it AbstractCondition} is not an instance of what seen in the previous items, the function throws an {\it InvalidCondition} exception, explaining the origin of the problem.
+\end{itemize} 
+In what follows, we are going to describe all these concrete classes returned by the  {\it buildConditionInterpreter} method (and implementing the {\it ConditionInterpreter}).
+
+\subsection{The ValueLargerThanInterpreter class}
+This class implements the  {\it ConditionInterpreter} and is used for interpreting the {\it ValueLargerThan} PDL condition. Indeed this class has an attribute of type {\it ValueLargerThan} whose value is initialized by the class constructor. \\
+In the overridden {\it isConditionVerified} method, the following actions are performed:
+\begin{itemize}
+\item We build $\vec g^{exp}$, the list of {\it GeneralParameter} resulting from the interpretation of the {\it Expression} passed as argument to the function (by calling the {\it ExpressionParserFactory} and invoking on its returned object the method {\it parse}).
+\item We build $\vec g^{cond}$, the list of {\it GeneralParameter} resulting from the interpretation of the {\it Expression} contained into the field {\it Value} of the {\it ValueLargerThan} condition.
+\item If the lists built during the two previous steps has different sizes, we throw a {\it InvalidCondition} expression expelling the problem origin. 
+\item For every couple $(g_i^{exp}, g_i^{cond})$ we call the method  {\it isFirstGreaterThanSecond} of {\it GeneralParameterAlgebra} (by setting the boolean field reached according to the value contained in the attribute {\it reached} in the  {\it ValueLargerThan} condition, cf. paragraph \ref{gpalgebra}). The method returns the true boolean value if and only if all the results of this calls are true for all the couples. It returns false otherwise. 
+\end{itemize}
+
+\subsection{The ValueSmallerThanInterpreter class}
+This class implements the  {\it ConditionInterpreter} and is used for interpreting the {\it ValueSmallerThan} PDL condition. Indeed this class has an attribute of type {\it ValueSmallerThan} whose value is initialized by the class constructor. \\
+In the overridden {\it isConditionVerified} method, the following actions are performed:
+\begin{itemize}
+\item We build $\vec g^{exp}$, the list of {\it GeneralParameter} resulting from the interpretation of the {\it Expression} passed as argument to the function (by calling the {\it ExpressionParserFactory} and invoking on its returned object the method {\it parse}).
+\item We build $\vec g^{cond}$, the list of {\it GeneralParameter} resulting from the interpretation of the {\it Expression} contained into the field {\it Value} of the {\it ValueLargerThan} condition.
+\item If the lists built during the two previous steps has different sizes, we throw a {\it InvalidCondition} expression expelling the problem origin. 
+\item For every couple $(g_i^{exp}, g_i^{cond})$ we call the method  {\it isFirstSmallerThanSecond} of {\it GeneralParameterAlgebra} (by setting the boolean field reached according to the value contained in the attribute {\it reached} in the  {\it ValueSmallerThan} condition, cf. paragraph \ref{gpalgebra}). The method returns the true boolean value if and only if all the results of this calls are true for all the couples. It returns false otherwise. 
+\end{itemize}
+
+
 
 
 \end{document}
