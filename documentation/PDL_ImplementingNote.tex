@@ -276,7 +276,7 @@ More precisely, using introspection, this function analyze the instance of the P
 \end{itemize} 
 In what follows, we are going to describe all these concrete classes returned by the  {\it buildConditionInterpreter} method (and implementing the {\it ConditionInterpreter}).
 
-\subsection{The ValueLargerThanInterpreter class}
+\subsection{The ValueLargerThanInterpreter class}\label{VLT}
 This class implements the  {\it ConditionInterpreter} and is used for interpreting the {\it ValueLargerThan} PDL condition. Indeed this class has an attribute of type {\it ValueLargerThan} whose value is initialized by the class constructor. \\
 In the overridden {\it isConditionVerified} method, the following actions are performed:
 \begin{itemize}
@@ -286,7 +286,7 @@ In the overridden {\it isConditionVerified} method, the following actions are pe
 \item For every couple $(g_i^{exp}, g_i^{cond})$ we call the method  {\it isFirstGreaterThanSecond} of {\it GeneralParameterAlgebra} (by setting the boolean field reached according to the value contained in the attribute {\it reached} in the  {\it ValueLargerThan} condition, cf. paragraph \ref{gpalgebra}). The method returns the true boolean value if and only if all the results of this calls are true for all the couples. It returns false otherwise. 
 \end{itemize}
 
-\subsection{The ValueSmallerThanInterpreter class}
+\subsection{The ValueSmallerThanInterpreter class}\label{VST}
 This class implements the  {\it ConditionInterpreter} and is used for interpreting the {\it ValueSmallerThan} PDL condition. Indeed this class has an attribute of type {\it ValueSmallerThan} whose value is initialized by the class constructor. \\
 In the overridden {\it isConditionVerified} method, the following actions are performed:
 \begin{itemize}
@@ -296,8 +296,63 @@ In the overridden {\it isConditionVerified} method, the following actions are pe
 \item For every couple $(g_i^{exp}, g_i^{cond})$ we call the method  {\it isFirstSmallerThanSecond} of {\it GeneralParameterAlgebra} (by setting the boolean field reached according to the value contained in the attribute {\it reached} in the  {\it ValueSmallerThan} condition, cf. paragraph \ref{gpalgebra}). The method returns the true boolean value if and only if all the results of this calls are true for all the couples. It returns false otherwise. 
 \end{itemize}
 
+\subsection{The ValueInRangeInterpreter class}
+This class implements the  {\it ConditionInterpreter} and is used for interpreting the {\it ValueInRange} PDL condition. Indeed this class has an attribute of type {\it ValueSmallerThan} whose value is initialized by the class constructor. \\
+In the overridden {\it isConditionVerified} method, the following actions are performed:
+\begin{itemize}
+\item We interpret the {\it Sup} field of the  {\it ValueInRange}, which is of type {\it ValueSmallerThan} (cf. par. \ref{VST})
+\item We interpret the {\it Inf} field of the  {\it ValueInRange}, which is of type {\it ValueLargerThan} (cf. par. \ref{VLT})
+\item We returns true if both the previous interpretations returned true, false otherwise.
+\end{itemize}
 
+\subsection{The BelongToSetInterpreter class}
+This class implements the  {\it ConditionInterpreter} and is used for interpreting the {\it BelongToSet} PDL condition. Indeed this class has an attribute of type {\it BelongToSet} whose value is initialized by the class constructor. \\
+In the overridden {\it isConditionVerified} method, the following actions are performed:
+\begin{itemize}
+\item We build $\vec g^{exp}$, the list of {\it GeneralParameter} resulting from the interpretation of the {\it Expression} passed as argument to the function (by calling the {\it ExpressionParserFactory} and invoking on its returned object the method {\it parse}).
+\item For every expression $value_j$ appearing in the field {\it Value} of the {\it BelongToSet} object
+\begin{itemize}
+\item  We interpret $value_j$, by calling the {\it ExpressionParserFactory} and invoking on its returned object the method {\it parse}. Let $\vec g^{value_j}$ be this result.
+\item If the list $\vec g^{value_j}$ resulting from this interpretation is equal to $\vec g^{exp}$ (i.e. $\forall i$, $g_i^{exp}=g_i^{value_j}$ in the sense defined by the method {\it areGeneralParameterEqual} of {\it GeneralParameterAlgebra}, cf. par. \ref{gpalgebra} ), then the function returns true. False otherwise. 
+\end{itemize}
+\end{itemize}
 
+\subsection{The ValueDifferentFromInterpreter class}
+This class  implements the  {\it ConditionInterpreter} and is used for interpreting the {\it ValueDifferentFrom} PDL condition. Indeed this class has an attribute of type {\it ValueDifferentFrom} whose value is initialized by the class constructor. \\
+In the overridden {\it isConditionVerified} method, the following actions are performed:
+\begin{itemize}
+\item We build $\vec g^{exp}$, the list of {\it GeneralParameter} resulting from the interpretation of the {\it Expression} passed as argument to the function (by calling the {\it ExpressionParserFactory} and invoking on its returned object the method {\it parse}). 
+\item We build $\vec g^{value}$, the list of  {\it GeneralParameter} resulting from the interpretation of the {\it Expression} contained into the field {\it Value} of the  {\it ValueDifferentFrom} object.
+\item The methods return the boolean true if, at least for a given of $i$, we have $g_i^{exp} \neq g_i^{value}$.
+\end{itemize}
+
+\subsection{The IsRealInterpreter class}
+This class  implements the  {\it ConditionInterpreter} and is used for interpreting the {\it IsReal} PDL condition. In the overridden {\it isConditionVerified} method, the following actions are performed:
+\begin{itemize}
+\item We build $\vec g^{exp}$, the list of {\it GeneralParameter} resulting from the interpretation of the {\it Expression} passed as argument to the function (by calling the {\it ExpressionParserFactory} and invoking on its returned object the method {\it parse}). 
+\item The method returns the boolean true if for all $i$, $g_i^{exp}$ is real (the test is performed by calling the method {\it isGeneralParameterReal} of the {\it GeneralParameterAlgebra} class, cf. par. \ref{gpalgebra}).
+\end{itemize}
+
+\subsection{The IsIntegerInterpreter class}
+This class  implements the  {\it ConditionInterpreter} and is used for interpreting the {\it IsInteger} PDL condition. In the overridden {\it isConditionVerified} method, the following actions are performed:
+\begin{itemize}
+\item We build $\vec g^{exp}$, the list of {\it GeneralParameter} resulting from the interpretation of the {\it Expression} passed as argument to the function (by calling the {\it ExpressionParserFactory} and invoking on its returned object the method {\it parse}). 
+\item The method returns the boolean true if for all $i$, $g_i^{exp}$ is integer (the test is performed by calling the method {\it isGeneralParameterInteger} of the {\it GeneralParameterAlgebra} class, cf. par. \ref{gpalgebra}).
+\end{itemize}
+
+\subsection{The IsNullInterpreter class}
+This class  implements the  {\it ConditionInterpreter} and is used for interpreting the {\it IsNull} PDL condition. \\
+It is important to remark that, due to the signification of the {\it IsNull} condition, this last could be applied only on {\it AtomicParameterExpression} (because it has sense to say parameter $p_1$ is null, but has no sense to say $(p_1 \cdot p_2 / p_3)$ is null.\\
+In the overridden {\it isConditionVerified} method, the following actions are performed:
+\begin{itemize}
+\item If the {\it Expression} passed as parameter is not an {\it AtomicParameterExpression} we throw an {\it InvalidCondition} exception, explaining the problem source.
+\item We get the {\it SingleParameter} instance from the {\it ParameterReference} contained into the {\it Expression}.
+\item We look\footnote{by calling the {\it getuserProvidedValuesForParameter} of the {\it Utilities} class} for the value (or values for vector Parameter cases) provided by user for the {\it SingleParameter}. If no value is provided, the method return true. Otherwise, it returns false.
+\end{itemize}
+
+\subsection{The DefaultValueInterpreter class}
+This class implements the {\it ConditionInterpreter} and is used in association {\it DefaultValue} PDL condition. \\
+Since this particular condition don't need to be interpreted as the previous ones (it is used only for saying that the default value of a parameter is a given value) the overridden method  {\it isConditionVerified}  always returns true.
 
 \end{document}
 
