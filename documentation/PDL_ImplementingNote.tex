@@ -253,7 +253,7 @@ This class has indeed an attribute of {\it Operation} type, whose value is initi
 \end{itemize}
 
 \section{The pdl.interpreter.condition package}
-In this package we put all the classes used for interpreting the instances of all the PDL objects deriving from {\it AbstractCondition}.\\
+In this package we put all the classes used for interpreting the instances of all the PDL objects implementing {\it AbstractCondition}.\\
 The entry point for understanding the mechanisms of this package is the abstract class {\it ConditionInterpreter}. This last describe the abstract method
 {\it isConditionVerified} and returns a boolean value. True id the condition is verified, false in the opposite case. This method could throws three kind of exceptions: {\it InvalidExpression,  InvalidParameterException, InvalidCondition}.\\
 The abstract class {\it ConditionInterpreter} is used, jointly with the polymorphism mechanism for building the {\it ConditionInterpreterFactory}
@@ -353,6 +353,25 @@ In the overridden {\it isConditionVerified} method, the following actions are pe
 \subsection{The DefaultValueInterpreter class}
 This class implements the {\it ConditionInterpreter} and is used in association {\it DefaultValue} PDL condition. \\
 Since this particular condition don't need to be interpreted as the previous ones (it is used only for saying that the default value of a parameter is a given value) the overridden method  {\it isConditionVerified}  always returns true.
+
+\section{The pdl.interpreter.criterion package}
+In this package we put all the classes used for interpreting instances of all the PDL objects implementing {\it AbstractCriterion}.
+The entry point for understanding the mechanism of this package is the abstract class {\it AbstractCriterionInterpreter}.
+This last describe the abstract method {\it isCriterionSatisfied} and returns a boolean value: true if the criterion is satisfied, false in the opposite case. This method could throw four kind of exceptions: {\it InvalidExpression, InvalidParameterException, InvalidCondition, InvalidCriterion}.\\
+The class  {\it AbstractCriterionInterpreter} is used, jointly with the polymorphism mechanism for building the {\it CriterionInterpreterFactory}.
+
+\subsection{The CriterionInterpreterFactory class}
+This class is built by implementing the {\it singleton} pattern and is, as its name indicates, an implementation of the {\it factory} pattern.\\
+The method {\it buildCriterrionInterpreter} takes as argument an instance of the PDL {\it AbstractCriterion} object and returns a {\it AbstractCriterionInterpreter}.
+More precisely, using introspection, this function analyze the instance of the PDL Expression:
+\begin{itemize}
+\item if the {\it AbstractCriterion} is an instance of {\it Criterion} then the methods returns a {\it CriterionInterpreter};
+\item if the {\it AbstractCriterion} is an instance of {\it ParenthesisCriterion} then the methods returns a {\it ParenthesisCriterion};
+\item if the {\it AbstractCriterion} is not an instance of what seen in the previous items, the function throws an {\it InvalidCriterion} exception, explaining the origin of the problem.
+\end{itemize} 
+In what follows, we are going to describe these two concrete classes returned by the  {\it buildCriterrionInterpreter} method (and implementing the {\it AbstractCriterionInterpreter}).
+
+
 
 \end{document}
 
