@@ -255,7 +255,7 @@ This class has indeed an attribute of {\it Operation} type, whose value is initi
 \section{The pdl.interpreter.condition package}\label{conditionInterpreters}
 In this package we put all the classes used for interpreting the instances of all the PDL objects implementing {\it AbstractCondition}.\\
 The entry point for understanding the mechanisms of this package is the abstract class {\it ConditionInterpreter}. This last describe the abstract method
-{\it isConditionVerified} and returns a boolean value. True id the condition is verified, false in the opposite case. This method could throws three kind of exceptions: {\it InvalidExpression,  InvalidParameterException, InvalidCondition}.\\
+{\it isConditionVerified}  which a boolean value. True id the condition is verified, false in the opposite case. This method could throws three kind of exceptions: {\it InvalidExpression,  InvalidParameterException, InvalidCondition}.\\
 The abstract class {\it ConditionInterpreter} is used, jointly with the polymorphism mechanism for building the {\it ConditionInterpreterFactory}
 
 \subsection{The ConditionInterpreterFactory class}\label{conditionInterpreterFactory}
@@ -357,7 +357,7 @@ Since this particular condition don't need to be interpreted as the previous one
 \section{The pdl.interpreter.criterion package}
 In this package we put all the classes used for interpreting instances of all the PDL objects implementing {\it AbstractCriterion}.
 The entry point for understanding the mechanism of this package is the abstract class {\it AbstractCriterionInterpreter}.
-This last describe the abstract method {\it isCriterionSatisfied} and returns a boolean value: true if the criterion is satisfied, false in the opposite case. This method could throw four kind of exceptions: {\it InvalidExpression, InvalidParameterException, InvalidCondition, InvalidCriterion}.\\
+This last describe the abstract method {\it isCriterionSatisfied} which returns a boolean value: true if the criterion is satisfied, false in the opposite case. This method could throw four kind of exceptions: {\it InvalidExpression, InvalidParameterException, InvalidCondition, InvalidCriterion}.\\
 The class  {\it AbstractCriterionInterpreter} is used, jointly with the polymorphism mechanism for building the {\it CriterionInterpreterFactory}.
 
 \subsection{The CriterionInterpreterFactory class}\label{criterionFactory}
@@ -399,6 +399,30 @@ The method {\it interpret} takes as argument a boolean value $b_1$ (which is  ty
 \item If the instance of {\it LogicalConnector} is of type {\it And}, the boolean $(b_1 \mbox{ and } b_2)$ is returned.
 \item If the instance of {\it LogicalConnector} is of type {\it Or}, the boolean $(b_1 \mbox{ or } b_2)$ is returned.
 \end{itemize}
+
+\section{The pdl.interpreter.conditionalStatement package}
+In this package we put all the classes used for interpreting the instances of all the PDL objects implementing {\it ConditionalStatement}.\\
+The entry point for understanding the mechanisms of this package is the abstract class {\it ConditionalStatementInterpreter}. This last describe two abstract methods
+\begin{itemize}
+\item {\it isStatementSwitched} which returns a boolean value: true if the statement is switched (i.e. if we are in a case where the statement has to be considered), false otherwise.
+\item {\it isValidStatement} which returns a boolean value: true if the statement is valid, false otherwise.
+\end{itemize}
+The abstract class {\it ConditionalStatementInterpreter} is used, jointly with the polymorphism mechanism for building the {\it ConditionalStatementInterpreterFactory}.
+
+\subsection{The ConditionalStatementInterpreterFactory class}\label{statementFactory}
+This class is built by implementing the {\it singleton} pattern and is, as its name indicates, an implementation of the {\it factory} pattern.\\
+The method {\it buildInterpreter} takes as argument an instance of the PDL {\it ConditionalStatement} object and returns a {\it ConditionalStatementInterpreter}.
+More precisely, using introspection, this function analyze the instance of the PDL Expression:
+\begin{itemize}
+\item if the {\it ConditionalStatement} is an instance of {\it AlwaysConditionalStatement} then the methods returns a {\it AlwaysConditionalStatementInterpreter};
+\item if the {\it ConditionalStatement} is an instance of {\it IfThenConditionalStatement} then the methods returns a {\it IfThenConditionalStatementInterpreter};
+\item if the {\it ConditionalStatement} is not an instance of what seen in the previous items, the function throws an {\it InvalidConditionalStatement} exception, explaining the origin of the problem.
+\end{itemize} 
+In what follows, we are going to describe these two concrete classes returned by the  {\it buildInterpreter} method (and implementing the {\it ConditionalStatementInterpreter}).
+
+\subsection{The AlwaysConditionalStatementInterpreter class}
+
+\subsection{The IfThenConditionalStatementInterpreter class}
 
 \end{document}
 
