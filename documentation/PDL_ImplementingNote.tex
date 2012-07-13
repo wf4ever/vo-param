@@ -252,13 +252,13 @@ This class has indeed an attribute of {\it Operation} type, whose value is initi
 \item We get the {\it OperationType} from the  {\it Operation} object and invoke the good corresponding method contained into the {GeneralParameterAlgebra} class (cf. \ref{gpalgebra})  passing the {\it GeneralParameter} list corresponding to the first and second operands as arguments. The function returns the result of this last invokation.
 \end{itemize}
 
-\section{The pdl.interpreter.condition package}
+\section{The pdl.interpreter.condition package}\label{conditionInterpreters}
 In this package we put all the classes used for interpreting the instances of all the PDL objects implementing {\it AbstractCondition}.\\
 The entry point for understanding the mechanisms of this package is the abstract class {\it ConditionInterpreter}. This last describe the abstract method
 {\it isConditionVerified} and returns a boolean value. True id the condition is verified, false in the opposite case. This method could throws three kind of exceptions: {\it InvalidExpression,  InvalidParameterException, InvalidCondition}.\\
 The abstract class {\it ConditionInterpreter} is used, jointly with the polymorphism mechanism for building the {\it ConditionInterpreterFactory}
 
-\subsection{The ConditionInterpreterFactory class}
+\subsection{The ConditionInterpreterFactory class}\label{conditionInterpreterFactory}
 This class is built by implementing the {\it singleton} pattern and is, as its name indicates, an implementation of the {\it factory} pattern.\\
 The method {\it buildConditionInterpreter} takes as argument an instance of the PDL {\it AbstractCondition} object and returns a {\it ConditionInterpreter}.
 More precisely, using introspection, this function analyze the instance of the PDL Expression:
@@ -360,7 +360,7 @@ The entry point for understanding the mechanism of this package is the abstract 
 This last describe the abstract method {\it isCriterionSatisfied} and returns a boolean value: true if the criterion is satisfied, false in the opposite case. This method could throw four kind of exceptions: {\it InvalidExpression, InvalidParameterException, InvalidCondition, InvalidCriterion}.\\
 The class  {\it AbstractCriterionInterpreter} is used, jointly with the polymorphism mechanism for building the {\it CriterionInterpreterFactory}.
 
-\subsection{The CriterionInterpreterFactory class}
+\subsection{The CriterionInterpreterFactory class}\label{criterionFactory}
 This class is built by implementing the {\it singleton} pattern and is, as its name indicates, an implementation of the {\it factory} pattern.\\
 The method {\it buildCriterrionInterpreter} takes as argument an instance of the PDL {\it AbstractCriterion} object and returns a {\it AbstractCriterionInterpreter}.
 More precisely, using introspection, this function analyze the instance of the PDL Expression:
@@ -371,7 +371,34 @@ More precisely, using introspection, this function analyze the instance of the P
 \end{itemize} 
 In what follows, we are going to describe these two concrete classes returned by the  {\it buildCriterrionInterpreter} method (and implementing the {\it AbstractCriterionInterpreter}).
 
+\subsection{The CriterionInterpreter class}
+This class  implements the  {\it AbstractCriterionInterpreter} and is used for interpreting the {\it Criterion} PDL criterion. \\
+Indeed this class has an attribute of type {\it Criterion} whose value is initialized by the class constructor. \\
+In the overridden {\it isCriterionSatisfied} method, the following actions are performed:
+\begin{itemize}
+\item We interpret the condition {\it ConditionType} contained into the {\it Criterion} object.
+For this we call the method {\it buildConditionInterpreter} of  {\it ConditionInterpreterFactory} (cf. par \ref{conditionInterpreterFactory}). We call the method {\it isConditionVerified} (cf. par. \ref{conditionInterpreters}) contained in the object returned by {\it buildConditionInterpreter} by passing as argument the {\it Expression} contained into the {\it Criterion} object. This returns the boolean value $b_1$.
+\item If the {\it Criterion} object has no {\it LogicalConnector}, we return the boolean obtained at the previous item. 
+\item If the {\it Criterion} object has a {\it LogicalConnector}, we interpret it (as explained in paragraph \ref{logicalConnectorInt}), by passing to the method {\it interpret} of {\it LogicalConnectorInterpreter}  $b_1$ as parameter. Then the method returns the result of this last interpretation.
+\end{itemize}
 
+\subsection{The ParenthesisCriterionInterpreter class}
+This class implements the {\it AbstractCriterionInterpreter} and is used for interpreting the {\it ParenthesisCriterion} PDL object. Indeed it contains an attribute of type {\it ParenthesisCriterion} whose value is initialized by the class constructor. We recall that in PDL syntax, the {\it ParenthesisCriterion} are used for defining complex criteria, with arbitrary evaluation priority fixed by the user. \\
+In the overridden method {\it isCriterionSatisfied} the following actions are performed:
+\begin{itemize}
+\item The {\it AbstractCriterion} contained into the {\it ParenthesisCriterion} is interpreted  by calling the method {\it isCriterionSatisfied} contained into the object returned by the method {\it buildCriterionInterpreter} (of the class {\it CriterionInterpreterFactory}, cf. par. \ref{criterionFactory}). Let $b_1$ be the boolean result of this interpretation.
+\item If the {\it ParenthesisCriterion} has no {\it ExternalLogicalCriterion}, the method returns $b_1$.
+\item If the {\it ParenthesisCriterion} has no {\it ExternalLogicalCriterion}, the methods return the boolean resulting from the call of the method 
+\end{itemize}
+
+\subsection{The LogicalConnectorInterpreter class}\label{logicalConnectorInt}
+This class is used for interpreting the abstract {\it LogicalConnector} objects. Indeed, it contains an attribute of {\it LogicalConnector} type. We recall that the two concrete classes implementing {\it LogicalConnector} are {\it And} and {\it Or}.\\
+The method {\it interpret} takes as argument a boolean value $b_1$ (which is  typically the result of the interpretation of a first Criterion, which contains the {\it LogicalConnector} we are trying to interpret) and returns a boolean value. The following actions are performed inside this method:
+\begin{itemize}
+\item The second criterion (i.e. the criterion contained into the {LogicalConnector} instance) is interpreted by calling the method {\it isCriterionSatisfied} contained into the object returned by the method {\it buildCriterionInterpreter} (of the class {\it CriterionInterpreterFactory}, cf. par. \ref{criterionFactory}). Let $b_2$ be the result of this interpretation.
+\item If the instance of {\it LogicalConnector} is of type {\it And}, the boolean $(b_1 \mbox{ and } b_2)$ is returned.
+\item If the instance of {\it LogicalConnector} is of type {\it Or}, the boolean $(b_1 \mbox{ or } b_2)$ is returned.
+\end{itemize}
 
 \end{document}
 
