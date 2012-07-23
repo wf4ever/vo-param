@@ -1,0 +1,50 @@
+\contentsline {section}{\numberline {1}Introduction}{4}{section.1}
+\contentsline {section}{\numberline {2}The package structure}{4}{section.2}
+\contentsline {section}{\numberline {3}Java Objects corresponding to the PDL data Model}{4}{section.3}
+\contentsline {section}{\numberline {4}The CommonsObject package}{4}{section.4}
+\contentsline {subsection}{\numberline {4.1}The GeneralParameter.java class }{4}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}The GeneralParameterAlgebra.java class}{5}{subsection.4.2}
+\contentsline {section}{\numberline {5}The visitors package}{6}{section.5}
+\contentsline {subsection}{\numberline {5.1}The visitors objects}{6}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}The criteria objects}{7}{subsection.5.2}
+\contentsline {subsubsection}{\numberline {5.2.1}The RealCriteria}{7}{subsubsection.5.2.1}
+\contentsline {subsubsection}{\numberline {5.2.2}The IntegerCriteria}{7}{subsubsection.5.2.2}
+\contentsline {subsubsection}{\numberline {5.2.3}The BooleanCriteria}{7}{subsubsection.5.2.3}
+\contentsline {subsubsection}{\numberline {5.2.4}The StringCriteria}{8}{subsubsection.5.2.4}
+\contentsline {section}{\numberline {6}The pdl.interpreter.expression package}{8}{section.6}
+\contentsline {subsection}{\numberline {6.1}The ExpressionParserFactory class}{8}{subsection.6.1}
+\contentsline {subsection}{\numberline {6.2}The ExpressionWithPowerParser class}{9}{subsection.6.2}
+\contentsline {subsection}{\numberline {6.3}The AtomicParameterExpressionParser class}{9}{subsection.6.3}
+\contentsline {subsection}{\numberline {6.4}The AtomicConstantExpressionParser class}{10}{subsection.6.4}
+\contentsline {subsection}{\numberline {6.5}The ParenthesisContentParser class}{10}{subsection.6.5}
+\contentsline {subsection}{\numberline {6.6}The FunctionParser class}{11}{subsection.6.6}
+\contentsline {subsection}{\numberline {6.7}The FunctionExpressionParser class}{11}{subsection.6.7}
+\contentsline {subsection}{\numberline {6.8}The OperationParser class}{11}{subsection.6.8}
+\contentsline {section}{\numberline {7}The pdl.interpreter.condition package}{12}{section.7}
+\contentsline {subsection}{\numberline {7.1}The ConditionInterpreterFactory class}{12}{subsection.7.1}
+\contentsline {subsection}{\numberline {7.2}The ValueLargerThanInterpreter class}{13}{subsection.7.2}
+\contentsline {subsection}{\numberline {7.3}The ValueSmallerThanInterpreter class}{13}{subsection.7.3}
+\contentsline {subsection}{\numberline {7.4}The ValueInRangeInterpreter class}{14}{subsection.7.4}
+\contentsline {subsection}{\numberline {7.5}The BelongToSetInterpreter class}{14}{subsection.7.5}
+\contentsline {subsection}{\numberline {7.6}The ValueDifferentFromInterpreter class}{14}{subsection.7.6}
+\contentsline {subsection}{\numberline {7.7}The IsRealInterpreter class}{15}{subsection.7.7}
+\contentsline {subsection}{\numberline {7.8}The IsIntegerInterpreter class}{15}{subsection.7.8}
+\contentsline {subsection}{\numberline {7.9}The IsNullInterpreter class}{15}{subsection.7.9}
+\contentsline {subsection}{\numberline {7.10}The DefaultValueInterpreter class}{16}{subsection.7.10}
+\contentsline {section}{\numberline {8}The pdl.interpreter.criterion package}{16}{section.8}
+\contentsline {subsection}{\numberline {8.1}The CriterionInterpreterFactory class}{16}{subsection.8.1}
+\contentsline {subsection}{\numberline {8.2}The CriterionInterpreter class}{17}{subsection.8.2}
+\contentsline {subsection}{\numberline {8.3}The ParenthesisCriterionInterpreter class}{17}{subsection.8.3}
+\contentsline {subsection}{\numberline {8.4}The LogicalConnectorInterpreter class}{17}{subsection.8.4}
+\contentsline {section}{\numberline {9}The pdl.interpreter.conditionalStatement package}{18}{section.9}
+\contentsline {subsection}{\numberline {9.1}The ConditionalStatementInterpreterFactory class}{18}{subsection.9.1}
+\contentsline {subsection}{\numberline {9.2}The AlwaysConditionalStatementInterpreter class}{18}{subsection.9.2}
+\contentsline {subsection}{\numberline {9.3}The IfThenConditionalStatementInterpreter class}{19}{subsection.9.3}
+\contentsline {subsection}{\numberline {9.4}The StatementHelperContanier class}{20}{subsection.9.4}
+\contentsline {section}{\numberline {10}The pdl.interpreter.groupInterpreter package}{20}{section.10}
+\contentsline {subsection}{\numberline {10.1}The GroupHandlerHelper class}{20}{subsection.10.1}
+\contentsline {subsection}{\numberline {10.2}The GroupProcessor class}{21}{subsection.10.2}
+\contentsline {subsubsection}{\numberline {10.2.1}The process method}{21}{subsubsection.10.2.1}
+\contentsline {subsubsection}{\numberline {10.2.2}The buildGroupListFromService method}{21}{subsubsection.10.2.2}
+\contentsline {subsubsection}{\numberline {10.2.3}The addGroups method}{22}{subsubsection.10.2.3}
+\contentsline {subsubsection}{\numberline {10.2.4}The processStatementsOfGroups method}{22}{subsubsection.10.2.4}
