@@ -421,8 +421,137 @@ More precisely, using introspection, this function analyze the instance of the P
 In what follows, we are going to describe these two concrete classes returned by the  {\it buildInterpreter} method (and implementing the {\it ConditionalStatementInterpreter}).
 
 \subsection{The AlwaysConditionalStatementInterpreter class}
+This class implements the {\it ConditionalStatementInterpreter} and is used for interpreting the {\it AlwaysConditionalStatement} PDL objects. Indeed this class has an attribute of {\it AlwaysConditionalStatement} type, whose value is initialized by the class constructor. Moreover it contains a boolean attribute {\it isStatementSwitched} which is set to true by the class constructor, since as the name indicates an {\it AlwaysConditionalStatement} is always valid and has no conditions to be verified.\\
+\begin{itemize}
+\item The overridden method {\it isStatementSwitched} is a getter on the  {\it isStatementSwitched} and always returns true.
+\item The overridden method {\it isValidStatement} calls the method {\it buildCriterionInterpreter} of the factory class {\it CriterionInterpreterFactory} (cf. par. \ref{criterionFactory}) by passing as argument the PDL {\it Criterion} object contained into the {\it Always} PDL object\footnote{implementing the PDL abstract class {\it ConditionalClause}}, which is in turn contained into the {\it AlwaysConditionalStatement} class attribute. The function returns the result of the method {\it isCriterionSatisfied} owned by the object returned by the {\it buildCriterionInterpreter} method.
+\end{itemize}
 
 \subsection{The IfThenConditionalStatementInterpreter class}
+This class implements the {\it ConditionalStatementInterpreter} and is used for interpreting the {\it IfThenConditionalStatement} PDL objects. Indeed this class has an attribute of {\it IfThenConditionalStatement} type, whose value is initialized by the class constructor. Moreover it contains a boolean attribute {\it isStatementSwitched} whose value is computed by the method {\it isStatementSwitched}.\\
+\begin{itemize}
+\item In the overridden method {\it isStatementSwitched} the following actions are performed:
+\begin{itemize}
+\item We call the method {\it buildCriterionInterpreter} of the factory class {\it CriterionInterpreterFactory} (cf. par. \ref{criterionFactory}) by passing as argument the PDL {\it Criterion} object contained into the {\it If} PDL object (which is in turn contained into the {\it IfThenConditionalStatement} class attribute). If no exception is detected, the function returns the result of the method {\it isCriterionSatisfied} owned by the object returned by the {\it buildCriterionInterpreter} method.
+\item In case of exception, we are not able to evaluate the condition, this means that the statement is not switched: the function return the boolean false.\\
+\end{itemize}
+\item In the overridden method the following actions are performed:
+\begin{itemize}
+\item The class attribute {\it isStatementSwitched} is set with the value returned by the  {\it isStatementSwitched} method.
+\item If the statement is not switched, the function returns true: indeed if the statement is not switched it is always valid, since the contained condition has no matter.
+\item If the the statement is switched, it is valid only if the criterion contained into the {\it Then} PDL condition (which is in turn contained into the class attribute of type {\it IfThenConditionalStatement}) is valid. Indeed the function calls the method {\it buildCriterionInterpreter} of the factory class {\it CriterionInterpreterFactory} (cf. par. \ref{criterionFactory}) by passing as argument the PDL {\it Criterion} object contained into the {\it Then} PDL object . The function returns the result of the method {\it isCriterionSatisfied} owned by the object returned by the {\it buildCriterionInterpreter} method.
+\end{itemize}
+\end{itemize}
+
+\subsection{The StatementHelperContanier class}\label{StatementHelperContainer}
+This class is a Java Bean used for easily handling the properties of the {\it ConditionalStatement} objects. It is used for facilitating communications between the logical layers we explained into the previous paragraphs and the IHM layer. It contains the 
+\begin{itemize}
+\item {\it StatementComment} String attribute. It is used for storing the comments contained into the attribute {\it comment} of all {\it ConditionalStatement} objects.
+\item {\it statementSwitched} boolean attribute,
+\item {\it statementValid} boolean attribute,
+\item {\it statement} attribute of type {\it ConditionalStatement},
+\end{itemize}
+and their related getters and setters.
+
+\section{The pdl.interpreter.groupInterpreter package}
+In this package we put all the classes used for interpreting the {\it ParameterGroup} objects.\\
+This package contains two classes
+\begin{itemize}
+\item {\it GroupHandlerHelper} which plays a role analogous to the {\it StatementHelperContainer} class (cf. par. \ref{StatementHelperContainer}).
+\item {\it GroupProcessor} which implements the business logic for processing all the group of a given PDL service.
+\end{itemize}
+
+\subsection{The GroupHandlerHelper class}\label{GroupHandlerHelper}
+This class is used for easily handling properties of {\it ParameterGroup} objects. It contains the following attributes
+\begin{itemize}
+\item the String {\it fatherName} which indicates the name of the direct ancestor of the current group,
+\item the List of String {\it sonNames} which indicates the name of the direct offsprings of the current group,
+\item the String {\it groupName} which indicates the name of the current group,
+\item the {\it ParameterGroup} {\it group} which is the current group,
+\item the List of {\it SingleParameter} objects {\it singleParamsIntoThisGroup} which indicates the {\it SingleParameter} instances contained into the current group, 
+\item the boolean {\it groupValid} which indicates if all the {\it ConditionalStatement} contained into the {\it ConstraintOnGroup} object of the current group are valid,
+\item the List of {\it StatementHelperContainer} objects {\it statementHelperList}, which associates to any {\it ConditionalStatement} contained into the {\it ConstraintOnGroup} object of the current group, the corresponding  {\it StatementHelperContainer}.
+\end{itemize}
+With the exception of {\it setGroup} method, all the getters and setters associated to these attributes are usual.\\ 
+In {\it setGroup}, first we set the attribute {\it group} according to the value passed as argument. Then we set  the {\it groupName} and, by invoking the method {\it getParameterForTheGroup} of  the {\it Utilities} class, the attribute {\it singleParamsIntoThisGroup}.
+
+\subsection{The GroupProcessor class}
+As already mentioned, this class implements the logic for processing the groups of a given PDL service.\\
+This class has two attributes 
+\begin{itemize}
+\item {\it service} of type the PDL {\it Service},
+\item {\it groupsHandler} which is a List of {\it GroupHandlerHelper} objects  (cf. par. \ref{GroupHandlerHelper}), one for every {\it ParameterGroup} of the {\it service},
+\end{itemize}
+two public methods
+\begin{itemize}
+\item {\it getGroupsHandler}, an usual getter on the {\it groupsHandler} attribute,
+\item  {\it process} which process the groups of parameters composing the service, 
+\end{itemize}
+and three private methods
+\begin{itemize}
+\item {\it buildGroupListFromService}, which build the group structure from the PDL {\it Service},
+\item {\it addGroups}, which add a particular group to the  {\it groupsHandler} List,
+\item {\it processStatementsOfGroups}, which process and interoperate all the {\it ConditionalStatment} contained into the {\it ConstraintOnGroup} object all the groups composing the service.
+\end{itemize}
+In the following we are going to explain in details the actions performed in these methods.
+
+\subsubsection{The process method}\label{process}
+This void method, which takes no argument, initializes the value of the attribute {\it groupsHandler} by calling the method 
+{\it buildGroupListFromService} (cf. par. \ref{buildGroupListFromService}) then call the method {\it processStatementsOfGroups} (cf. par. \ref{processStatementsOfGroups}).
+ 
+\subsubsection{The buildGroupListFromService method}\label{buildGroupListFromService}
+This method, which takes no argument, returns a List of {\it GroupHandlerHelper} objects. After initializing the list to be returned, it calls the 
+{\it addGroups} method\footnote{Pay attention: the method {\it addGroups} will modify the list it receives as argument} (cf. par. \ref{addGroups}), by passing as arguments 
+\begin{itemize}
+\item the list that will be returned, 
+\item the {\it Input} object of type {\it ParameterGroup} contained into the PDL {\it Service},
+\item the String 'root'.
+\end{itemize}
+
+\subsubsection{The addGroups method}\label{addGroups}
+This void method has a recursive structure. It takes as arguments 
+\begin{itemize}
+\item a List of {\it GroupHandlerHelper} (this list will be modified by the function),
+\item a {\it ParameterGroup} PDL object,
+\item a String containing the name of the father of this {\it ParameterGroup}.
+\end{itemize}
+In this method, the following actions are performed:
+\begin{itemize}
+\item A temporary {\it GroupHandlerHelper} is created. Its attribute {\it group} is set to the value passed as second argument and its attribute {\it fatherName} is set to the value passed as third argument.
+\item If the current group (i.e. the {\it ParameterGroup} passed as first argument) does not contain other {\it ParameterGroup} instances, we set the attribute {\it sonNames} of the temporary object to 'null' and we add the temporary object to the List of {\it GroupHandlerHelper} received as first argument. Then the method ends.
+\item If the current group contains other {\it ParameterGroup} instances, we build the List containing the names of all the direct offsprings of the current group and we copy this List into the attribute {\it sonNames} of the temporary object. Then for every 'son' of the current group, we call the method {\it addGroups} by passing as arguments
+\begin{itemize}
+\item the list that will be returned (i.e. the list received as first argument),
+\item the current 'son' group,
+\item the name of the current group, which is the 'father' of the current 'son' group.
+\end{itemize}
+\end{itemize}
+
+\subsubsection{The processStatementsOfGroups method}\label{processStatementsOfGroups}
+This method, which takes no argument and returns no value, is always called by  {\it process}  (cf. par. \ref{process}) and its invocation is always preceded by the call of {\it buildGroupListFromService}  method (cf. par. \ref{buildGroupListFromService}). Indeed when one call {\it processStatementsOfGroups} 
+the attribute {\it groupsHandler} of the {\it GroupProcessor} class is always well initialized and defined.\\
+In this method, the following actions are performed:
+\begin{itemize}
+\item If the attribute List {\it groupsHandler} has no elements, the method does nothing.
+\item If the attribute List {\it groupsHandler} has elements, we loop on them and for every {\it GroupHandlerHelper} object of the list
+\begin{itemize}
+\item We get the current {\it ParameterGroup} instance associated to the {\it GroupHandlerHelper} object,
+\item If the {\it ParameterGroup} instance contains no constraint, we set the attribute {\it groupValid} of the current  {\it GroupHandlerHelper} to true,
+\item We build the List {\it statementList} of the {\it ConditionalStatement} PDL objects contained into the {\it ConstraintOnGroup} field of the current {\it ParameterGroup}.
+\item If the List {\it statementList}  is empty, we set the attribute {\it groupValid} of the current  {\it GroupHandlerHelper} to true,
+\item If the List {\it statementList}  is not empty, we initialize a List of {\it StatementHelperContainer} and we loop on the elements of {\it statementList}. For every statement in the list
+\begin{itemize}
+\item We build a {\it ConditionalStatementInterpreter} by calling the method buildInterpreter (with the current statement as argument) of the {\it ConditionalStatementInterpreterFactory} (cf. par. \ref{statementFactory}).
+\item We define a temporary {\it StatementHelperContainer} objects and
+\item We set its {\it statement} attribute to the current statement, 
+\item We set its attribute {\it setStatementComment} to the comment contained into the current statement, 
+\item We set its {\it statementSwitched} attribute to the value returned by method {\it isStatementSwitched} owned by the previously built {\it ConditionalStatementInterpreter}. \item We set its {\it statementValid} attribute to the value returned by the method {\it isStatementValid} owned by the previously built {\it ConditionalStatementInterpreter}. 
+\item If an exception occurs during the previous procedures, the {\it statementValid} attribute is set to the 'null' value, because we cannot determine the statement validity.
+\item We add the temporary  {\it StatementHelperContainer} to the previously created List of {\it StatementHelperContainer}
+\end{itemize}  
+\item We set the attribute {\it statementHelperList} of the current {\it GroupHandlerHelper} to the List of {\it StatementHelperContainer} previously built.
+\end{itemize}
+\end{itemize}
 
 \end{document}
 
