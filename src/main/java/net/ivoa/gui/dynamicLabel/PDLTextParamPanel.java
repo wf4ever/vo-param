@@ -28,15 +28,6 @@ public class PDLTextParamPanel extends PDLBaseParamPanel {
 		initializeComponent();
 	}
 
-	private JTextField paramValue;
-
-	public JTextField getParamValue() {
-		return paramValue;
-	}
-
-	public void setParamValue(JTextField paramValue) {
-		this.paramValue = paramValue;
-	}
 
 	public void focusGained(FocusEvent arg0) {
 		
