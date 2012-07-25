@@ -159,7 +159,7 @@ The {\it VerifyCriteria} method returns the boolean true if the type of the {\it
 In this class, the method {\it getAuthorizedCriteriaType} returns the String ('String') {\bf used in the PDL grammar} for specifying that a parameter is of String type.\\
 The {\it VerifyCriteria} method returns the boolean true if the type of the {\it GeneralParameter} is 'String' and the boolean false in the other cases.
 
-\section{The pdl.interpreter.expression package}
+\section{The pdl.interpreter.expression package}\label{pdl.interpreter.expression}
 In this package are contained all the classes for interpreting and parsing PDL expressions.\\
 The entry point for understanding the expression interpreting mechanism is the abstract class {\it ExpressionParser}. 
 It describes the abstract method {\it parse}, which interprets the expression invoking the method. The result of this method is a list of {\it GeneralParameter} instances. Since in PDL expressions are vectorial, the $i$-th element of that list corresponds to the result of the interpretation of $i$-th component of the vector expression.
@@ -193,7 +193,7 @@ and the other for the exponent (let us note $g_i^{exp}$ its elements). This meth
 In the other cases, the  {\it evaluatePower} method throws and {\it InvalidExpression} exception, specifying the reasons of the problem.
 
 \subsection{The AtomicParameterExpressionParser class}
-This class implements the {\it ExpressionWithPowerParser} and is used for interpreting the PDL {AtomicParameterExpression} instances. Indeed this class has an attribute of type {\it AtomicParameterExpression} whose value is initialized by the class constructor.\\
+This class extends the {\it ExpressionWithPowerParser} and is used for interpreting the PDL {AtomicParameterExpression} instances. Indeed this class has an attribute of type {\it AtomicParameterExpression} whose value is initialized by the class constructor.\\
 In the overridden method {\it parse}, the following actions are performed:
 \begin{itemize}
 \item the instance of the SingleParameter referenced by the expression, is retrieved using the {\it Utilities} class methods.
@@ -204,7 +204,7 @@ In the overridden method {\it parse}, the following actions are performed:
 \end{itemize}
 
 \subsection{The AtomicConstantExpressionParser class}
-This class implements the {\it ExpressionWithPowerParser} and is used for interpreting the PDL {AtomicConstantExpression} instances. Indeed this class has an attribute of type {\it AtomicConstantExpression} whose value is initialized by the class constructor.\\
+This class extends the {\it ExpressionWithPowerParser} and is used for interpreting the PDL {AtomicConstantExpression} instances. Indeed this class has an attribute of type {\it AtomicConstantExpression} whose value is initialized by the class constructor.\\
 In the overridden method {\it parse}, the following actions are performed:
 \begin{itemize}
 \item If the power of the expression is not null, then we convert the power expression into a List of {\it GeneralParameter} by building (using the {\it ExpressionParserFactory}) the had hoc parser and invoking its {\it parse} method.
@@ -214,7 +214,7 @@ In the overridden method {\it parse}, the following actions are performed:
 \end{itemize}
 
 \subsection{The ParenthesisContentParser class}
-This class implements the {\it ExpressionWithPowerParser} and is used for interpreting the PDL {\it  ParenthesisContent} expression instances. This class has an attribute of type {\it ParenthesisContent} whose value is initialized by the class constructor.\\
+This class extends the {\it ExpressionWithPowerParser} and is used for interpreting the PDL {\it  ParenthesisContent} expression instances. This class has an attribute of type {\it ParenthesisContent} whose value is initialized by the class constructor.\\
 In the overridden method {\it parse}, the following actions are performed:
 \begin{itemize}
 \item The expression 'contained into the parenthesis', i.e. with the highest priority, is first evaluated by calling the {\it ExpressionParserFactory} and invoking on its returned object the method {\it parse}.
@@ -225,7 +225,7 @@ In the overridden method {\it parse}, the following actions are performed:
 \end{itemize}
 
 \subsection{The FunctionParser class}
-This class implements the {\it ExpressionParser} and is used for interpreting PDL {\it Function} expressions.\\
+This class extends the {\it ExpressionParser} and is used for interpreting PDL {\it Function} expressions.\\
 This class has an attribute of type {\it Function} whose value is initialized by the class constructor.\\
 In the overridden method {\it parse}, the following actions are performed:
 \begin{itemize}
@@ -234,7 +234,7 @@ In the overridden method {\it parse}, the following actions are performed:
 \end{itemize}
 
 \subsection{The FunctionExpressionParser class}
-This class implements the {\it ExpressionWithPowerParser} and is used for interpreting the PDL {\it  FunctionExpression} expression instances. This class has indeed an attribute of type {\it FunctionExpression} whose value is initialized by the class constructor.\\
+This class extends the {\it ExpressionWithPowerParser} and is used for interpreting the PDL {\it  FunctionExpression} expression instances. This class has indeed an attribute of type {\it FunctionExpression} whose value is initialized by the class constructor.\\
 In the overridden method {\it parse}, the following actions are performed:
 \begin{itemize}
 \item The {\it Function} contained into the FunctionExpression is interpreted by calling the {\it ExpressionParserFactory} and invoking on its returned object the method {\it parse};
@@ -277,7 +277,7 @@ More precisely, using introspection, this function analyze the instance of the P
 In what follows, we are going to describe all these concrete classes returned by the  {\it buildConditionInterpreter} method (and implementing the {\it ConditionInterpreter}).
 
 \subsection{The ValueLargerThanInterpreter class}\label{VLT}
-This class implements the  {\it ConditionInterpreter} and is used for interpreting the {\it ValueLargerThan} PDL condition. Indeed this class has an attribute of type {\it ValueLargerThan} whose value is initialized by the class constructor. \\
+This class extends the  {\it ConditionInterpreter} and is used for interpreting the {\it ValueLargerThan} PDL condition. Indeed this class has an attribute of type {\it ValueLargerThan} whose value is initialized by the class constructor. \\
 In the overridden {\it isConditionVerified} method, the following actions are performed:
 \begin{itemize}
 \item We build $\vec g^{exp}$, the list of {\it GeneralParameter} resulting from the interpretation of the {\it Expression} passed as argument to the function (by calling the {\it ExpressionParserFactory} and invoking on its returned object the method {\it parse}).
@@ -287,7 +287,7 @@ In the overridden {\it isConditionVerified} method, the following actions are pe
 \end{itemize}
 
 \subsection{The ValueSmallerThanInterpreter class}\label{VST}
-This class implements the  {\it ConditionInterpreter} and is used for interpreting the {\it ValueSmallerThan} PDL condition. Indeed this class has an attribute of type {\it ValueSmallerThan} whose value is initialized by the class constructor. \\
+This class extends the  {\it ConditionInterpreter} and is used for interpreting the {\it ValueSmallerThan} PDL condition. Indeed this class has an attribute of type {\it ValueSmallerThan} whose value is initialized by the class constructor. \\
 In the overridden {\it isConditionVerified} method, the following actions are performed:
 \begin{itemize}
 \item We build $\vec g^{exp}$, the list of {\it GeneralParameter} resulting from the interpretation of the {\it Expression} passed as argument to the function (by calling the {\it ExpressionParserFactory} and invoking on its returned object the method {\it parse}).
@@ -297,7 +297,7 @@ In the overridden {\it isConditionVerified} method, the following actions are pe
 \end{itemize}
 
 \subsection{The ValueInRangeInterpreter class}
-This class implements the  {\it ConditionInterpreter} and is used for interpreting the {\it ValueInRange} PDL condition. Indeed this class has an attribute of type {\it ValueSmallerThan} whose value is initialized by the class constructor. \\
+This class extends the  {\it ConditionInterpreter} and is used for interpreting the {\it ValueInRange} PDL condition. Indeed this class has an attribute of type {\it ValueSmallerThan} whose value is initialized by the class constructor. \\
 In the overridden {\it isConditionVerified} method, the following actions are performed:
 \begin{itemize}
 \item We interpret the {\it Sup} field of the  {\it ValueInRange}, which is of type {\it ValueSmallerThan} (cf. par. \ref{VST})
@@ -306,7 +306,7 @@ In the overridden {\it isConditionVerified} method, the following actions are pe
 \end{itemize}
 
 \subsection{The BelongToSetInterpreter class}
-This class implements the  {\it ConditionInterpreter} and is used for interpreting the {\it BelongToSet} PDL condition. Indeed this class has an attribute of type {\it BelongToSet} whose value is initialized by the class constructor. \\
+This class extends the  {\it ConditionInterpreter} and is used for interpreting the {\it BelongToSet} PDL condition. Indeed this class has an attribute of type {\it BelongToSet} whose value is initialized by the class constructor. \\
 In the overridden {\it isConditionVerified} method, the following actions are performed:
 \begin{itemize}
 \item We build $\vec g^{exp}$, the list of {\it GeneralParameter} resulting from the interpretation of the {\it Expression} passed as argument to the function (by calling the {\it ExpressionParserFactory} and invoking on its returned object the method {\it parse}).
@@ -318,7 +318,7 @@ In the overridden {\it isConditionVerified} method, the following actions are pe
 \end{itemize}
 
 \subsection{The ValueDifferentFromInterpreter class}
-This class  implements the  {\it ConditionInterpreter} and is used for interpreting the {\it ValueDifferentFrom} PDL condition. Indeed this class has an attribute of type {\it ValueDifferentFrom} whose value is initialized by the class constructor. \\
+This class  extends the  {\it ConditionInterpreter} and is used for interpreting the {\it ValueDifferentFrom} PDL condition. Indeed this class has an attribute of type {\it ValueDifferentFrom} whose value is initialized by the class constructor. \\
 In the overridden {\it isConditionVerified} method, the following actions are performed:
 \begin{itemize}
 \item We build $\vec g^{exp}$, the list of {\it GeneralParameter} resulting from the interpretation of the {\it Expression} passed as argument to the function (by calling the {\it ExpressionParserFactory} and invoking on its returned object the method {\it parse}). 
@@ -327,21 +327,21 @@ In the overridden {\it isConditionVerified} method, the following actions are pe
 \end{itemize}
 
 \subsection{The IsRealInterpreter class}
-This class  implements the  {\it ConditionInterpreter} and is used for interpreting the {\it IsReal} PDL condition. In the overridden {\it isConditionVerified} method, the following actions are performed:
+This class  extends the  {\it ConditionInterpreter} and is used for interpreting the {\it IsReal} PDL condition. In the overridden {\it isConditionVerified} method, the following actions are performed:
 \begin{itemize}
 \item We build $\vec g^{exp}$, the list of {\it GeneralParameter} resulting from the interpretation of the {\it Expression} passed as argument to the function (by calling the {\it ExpressionParserFactory} and invoking on its returned object the method {\it parse}). 
 \item The method returns the boolean true if for all $i$, $g_i^{exp}$ is real (the test is performed by calling the method {\it isGeneralParameterReal} of the {\it GeneralParameterAlgebra} class, cf. par. \ref{gpalgebra}).
 \end{itemize}
 
 \subsection{The IsIntegerInterpreter class}
-This class  implements the  {\it ConditionInterpreter} and is used for interpreting the {\it IsInteger} PDL condition. In the overridden {\it isConditionVerified} method, the following actions are performed:
+This class  extends the  {\it ConditionInterpreter} and is used for interpreting the {\it IsInteger} PDL condition. In the overridden {\it isConditionVerified} method, the following actions are performed:
 \begin{itemize}
 \item We build $\vec g^{exp}$, the list of {\it GeneralParameter} resulting from the interpretation of the {\it Expression} passed as argument to the function (by calling the {\it ExpressionParserFactory} and invoking on its returned object the method {\it parse}). 
 \item The method returns the boolean true if for all $i$, $g_i^{exp}$ is integer (the test is performed by calling the method {\it isGeneralParameterInteger} of the {\it GeneralParameterAlgebra} class, cf. par. \ref{gpalgebra}).
 \end{itemize}
 
 \subsection{The IsNullInterpreter class}
-This class  implements the  {\it ConditionInterpreter} and is used for interpreting the {\it IsNull} PDL condition. \\
+This class  extends the  {\it ConditionInterpreter} and is used for interpreting the {\it IsNull} PDL condition. \\
 It is important to remark that, due to the signification of the {\it IsNull} condition, this last could be applied only on {\it AtomicParameterExpression} (because it has sense to say parameter $p_1$ is null, but has no sense to say $(p_1 \cdot p_2 / p_3)$ is null.\\
 In the overridden {\it isConditionVerified} method, the following actions are performed:
 \begin{itemize}
@@ -351,7 +351,7 @@ In the overridden {\it isConditionVerified} method, the following actions are pe
 \end{itemize}
 
 \subsection{The DefaultValueInterpreter class}
-This class implements the {\it ConditionInterpreter} and is used in association {\it DefaultValue} PDL condition. \\
+This class extends the {\it ConditionInterpreter} and is used in association {\it DefaultValue} PDL condition. \\
 Since this particular condition don't need to be interpreted as the previous ones (it is used only for saying that the default value of a parameter is a given value) the overridden method  {\it isConditionVerified}  always returns true.
 
 \section{The pdl.interpreter.criterion package}
@@ -372,7 +372,7 @@ More precisely, using introspection, this function analyze the instance of the P
 In what follows, we are going to describe these two concrete classes returned by the  {\it buildCriterrionInterpreter} method (and implementing the {\it AbstractCriterionInterpreter}).
 
 \subsection{The CriterionInterpreter class}
-This class  implements the  {\it AbstractCriterionInterpreter} and is used for interpreting the {\it Criterion} PDL criterion. \\
+This class  extends the  {\it AbstractCriterionInterpreter} and is used for interpreting the {\it Criterion} PDL criterion. \\
 Indeed this class has an attribute of type {\it Criterion} whose value is initialized by the class constructor. \\
 In the overridden {\it isCriterionSatisfied} method, the following actions are performed:
 \begin{itemize}
@@ -383,7 +383,7 @@ For this we call the method {\it buildConditionInterpreter} of  {\it ConditionIn
 \end{itemize}
 
 \subsection{The ParenthesisCriterionInterpreter class}
-This class implements the {\it AbstractCriterionInterpreter} and is used for interpreting the {\it ParenthesisCriterion} PDL object. Indeed it contains an attribute of type {\it ParenthesisCriterion} whose value is initialized by the class constructor. We recall that in PDL syntax, the {\it ParenthesisCriterion} are used for defining complex criteria, with arbitrary evaluation priority fixed by the user. \\
+This class extends the {\it AbstractCriterionInterpreter} and is used for interpreting the {\it ParenthesisCriterion} PDL object. Indeed it contains an attribute of type {\it ParenthesisCriterion} whose value is initialized by the class constructor. We recall that in PDL syntax, the {\it ParenthesisCriterion} are used for defining complex criteria, with arbitrary evaluation priority fixed by the user. \\
 In the overridden method {\it isCriterionSatisfied} the following actions are performed:
 \begin{itemize}
 \item The {\it AbstractCriterion} contained into the {\it ParenthesisCriterion} is interpreted  by calling the method {\it isCriterionSatisfied} contained into the object returned by the method {\it buildCriterionInterpreter} (of the class {\it CriterionInterpreterFactory}, cf. par. \ref{criterionFactory}). Let $b_1$ be the boolean result of this interpretation.
@@ -421,14 +421,14 @@ More precisely, using introspection, this function analyze the instance of the P
 In what follows, we are going to describe these two concrete classes returned by the  {\it buildInterpreter} method (and implementing the {\it ConditionalStatementInterpreter}).
 
 \subsection{The AlwaysConditionalStatementInterpreter class}
-This class implements the {\it ConditionalStatementInterpreter} and is used for interpreting the {\it AlwaysConditionalStatement} PDL objects. Indeed this class has an attribute of {\it AlwaysConditionalStatement} type, whose value is initialized by the class constructor. Moreover it contains a boolean attribute {\it isStatementSwitched} which is set to true by the class constructor, since as the name indicates an {\it AlwaysConditionalStatement} is always valid and has no conditions to be verified.\\
+This class extends the {\it ConditionalStatementInterpreter} and is used for interpreting the {\it AlwaysConditionalStatement} PDL objects. Indeed this class has an attribute of {\it AlwaysConditionalStatement} type, whose value is initialized by the class constructor. Moreover it contains a boolean attribute {\it isStatementSwitched} which is set to true by the class constructor, since as the name indicates an {\it AlwaysConditionalStatement} is always valid and has no conditions to be verified.\\
 \begin{itemize}
 \item The overridden method {\it isStatementSwitched} is a getter on the  {\it isStatementSwitched} and always returns true.
 \item The overridden method {\it isValidStatement} calls the method {\it buildCriterionInterpreter} of the factory class {\it CriterionInterpreterFactory} (cf. par. \ref{criterionFactory}) by passing as argument the PDL {\it Criterion} object contained into the {\it Always} PDL object\footnote{implementing the PDL abstract class {\it ConditionalClause}}, which is in turn contained into the {\it AlwaysConditionalStatement} class attribute. The function returns the result of the method {\it isCriterionSatisfied} owned by the object returned by the {\it buildCriterionInterpreter} method.
 \end{itemize}
 
 \subsection{The IfThenConditionalStatementInterpreter class}
-This class implements the {\it ConditionalStatementInterpreter} and is used for interpreting the {\it IfThenConditionalStatement} PDL objects. Indeed this class has an attribute of {\it IfThenConditionalStatement} type, whose value is initialized by the class constructor. Moreover it contains a boolean attribute {\it isStatementSwitched} whose value is computed by the method {\it isStatementSwitched}.\\
+This class extends the {\it ConditionalStatementInterpreter} and is used for interpreting the {\it IfThenConditionalStatement} PDL objects. Indeed this class has an attribute of {\it IfThenConditionalStatement} type, whose value is initialized by the class constructor. Moreover it contains a boolean attribute {\it isStatementSwitched} whose value is computed by the method {\it isStatementSwitched}.\\
 \begin{itemize}
 \item In the overridden method {\it isStatementSwitched} the following actions are performed:
 \begin{itemize}
@@ -475,7 +475,7 @@ This class is used for easily handling properties of {\it ParameterGroup} object
 With the exception of {\it setGroup} method, all the getters and setters associated to these attributes are usual.\\ 
 In {\it setGroup}, first we set the attribute {\it group} according to the value passed as argument. Then we set  the {\it groupName} and, by invoking the method {\it getParameterForTheGroup} of  the {\it Utilities} class, the attribute {\it singleParamsIntoThisGroup}.
 
-\subsection{The GroupProcessor class}
+\subsection{The GroupProcessor class}\label{groupProcessor}
 As already mentioned, this class implements the logic for processing the groups of a given PDL service.\\
 This class has two attributes 
 \begin{itemize}
@@ -489,8 +489,8 @@ two public methods
 \end{itemize}
 and three private methods
 \begin{itemize}
-\item {\it buildGroupListFromService}, which build the group structure from the PDL {\it Service},
-\item {\it addGroups}, which add a particular group to the  {\it groupsHandler} List,
+\item {\it buildGroupListFromService}, which builds the group structure from the PDL {\it Service},
+\item {\it addGroups}, which adds a particular group to the  {\it groupsHandler} List,
 \item {\it processStatementsOfGroups}, which process and interoperate all the {\it ConditionalStatment} contained into the {\it ConstraintOnGroup} object all the groups composing the service.
 \end{itemize}
 In the following we are going to explain in details the actions performed in these methods.
@@ -552,6 +552,221 @@ In this method, the following actions are performed:
 \item We set the attribute {\it statementHelperList} of the current {\it GroupHandlerHelper} to the List of {\it StatementHelperContainer} previously built.
 \end{itemize}
 \end{itemize}
+
+\section{The gui.dynamicLabel package}
+With the mechanisms we exposed int the previous paragraphs, the framework can automatically check (by invoking the {\it process} method of the {\it GroupProcessor} class, cf. respectively  par.  \ref{process} and \ref{groupProcessor}) if all the parameters provided by the user for a given PDL Service are consistent with the expressed description and related constraints. But this is not sufficient for building a dynamic GUI.\\
+Let explore this point with a little example: consider the following description/constraint (where $p_i$ are parameters):\\
+\begin{center}
+if $p_1>0$ then $p_2 \in \{2; 3; 4; 5; 8\}$
+\end{center}
+The program is indeed able to verify if a couple $(p_1,p_2)$ conforms the constraint: e.g. $(-1,1)$, $(0,-3)$, $(1,3)$, $(1,5)$ will be accepted whereas $(1,1)$, $(1,7)$, $(1,10)$ will be refused. But we still don't have a mechanism for tell to user, in case he/she/it (in case user is another computer system) provide only $p_1>0$ (and no value for $P_2$) that this parameter $p_2$  must be in the set of values $\{2; 3; 4; 5; 8\}$.\\
+In this package we put all the classes that will provide this missing functionality.\\
+The entry point for understanding the mechanism of this package, is the abstract class {\it PDLBaseParamPanel}.
+The class PDLBaseParamPanel is used, jointly with the polymorphism mechanism for building the {\it PDLParamPanelFactory} (cf. par. \ref{PDLBaseParamPanel}).
+
+
+\subsection{The PDLBaseParamPanel class}\label{PDLBaseParamPanel}
+This abstract class extends {\it Jpanel} and extends {\it FocusListener}. It is used for 
+\begin{itemize}
+\item displaying in the GUI the information of a given parameter 
+\item set/modify the value(s) of this parameter.\\
+\end{itemize}
+The class contains the attributes
+\begin{itemize}
+\item {\it paramLabel} of type {\it Jlabel}, which is the label used in the GUI for describing the parameter,
+\item {\it paramName} of type String, used for storing the name of the parameter,
+\item {\it paramUnit} of type String, used for storing the unit of the parameter,
+\item {\it paramType} of type String, used for storing the type of the parameter,
+\item {\it paramDimension} of type String, used for storing the dimension (we recall PDL handle vector parameters) of the parameter,
+\item {\it skossConcept} of type String, used for storing the SKOS concept of the parameter.
+\end{itemize}
+has three public methods
+\begin{itemize}
+\item {\it getParamName} an usual getter on the {\it paramLabel} attribute.
+\item {\it PDLBaseParamPanel} a constructor which will be invoked (with the super() syntax) by all the classes implementing this abstract one. 
+\item {\it verify} which performs some basic validation on the values provided by the user for the parameter,
+\end{itemize}
+five protected methods
+\begin{itemize}
+\item {\it getComponent} which is abstract and returns a {\it JComponent} instances,
+\item {\it setComponentValue} which is abstract and sets the value of the {\it JComponent} returned by the previous method,
+\item {\it initializeComponent} which initializes the component handled by the two previous methods,
+\item {\it getUserProvidedValue} which is abstract and returns the String corresponding to the values entered by the user for the parameter,
+\item {\it convertToStringProvidedValues} which convert the parameter already provided by the user into a String that could be displayed into the GUI.
+\end{itemize}
+and one private method {\it buildLabelText} which builds the text to put into the label used for describing the parameter.\\
+{\bf Remark:} All the abstract methods appearing in the previous items will be detailed in paragraphs \ref{PDLTextParamPanel}, \ref{PDLBooleanParamPanel} and \ref{PDLChoseBoxParamPanel} , where we will describe the concrete classes extending the abstract {\it PDLBaseParamPanel}.
+
+\subsubsection{The PDLBaseParamPanel method}\label{PDLBaseParamPanel}
+This constructor, which takes as argument a {\it SingleParameter} instance, will be invoked (with the super() syntax) by all the classes implementing this abstract one. The following actions are performed:
+\begin{itemize}
+\item The attributes {\it paramName},  {\it paramUnit},  {\it paramType},  {\it skossConcept} and  {\it paramDimension} are initialized starting from the {\it SingleParameter} received as argument. We pay attention to the  {\it paramDimension}: since this last is a PDL {\it Expression} it interpretation could leas to exception. In this case this attribute is set to 'null'.
+\item We set the Layout of this component to a GridLayout.
+\item We affect to the attribute {\it paramLabel} the value of a new {JLabel} whose text is initialized by calling the private method {\it buildLabelText} (cf. par. \ref{buildLabelText}).
+\end{itemize}
+
+\subsubsection{The verify method}
+This method performs an atomic validation of the parameter (i.e. only on the parameter, without considering the constraints where it is involved). It takes no arguments and returns no value. The following actions are performed
+\begin{itemize}
+\item By calling the method {\it getUserProvidedValue} we get the set of values provided by the user for the parameter (by convention, for providing a $N$-size vector $\vec v$, user will provide the String '$v_1; v_2;...;v_N$'). \item If the dimension of the current parameter could be evaluated with no exception, we compare the dimension of vector $\vec v$ with the expected dimension.  If these two number are different, a message dialog window is shown notifying this error,
+\item We loop on every element of $\vec v$: for every value $v_i$ we try to build the corresponding {\it GeneralParameter} $g_i$ (by providing to the {\it GeneralParameter} constructor the triplet ($v_i$, the type of the current parameter, an instance of {\it GeneralParameterVisitor})). If an exemption is intercepted during this procedure, we show a message dialog window notifying the origin of the problem. If no exemption is detected, every $g_i$ is added to a vector $\vec g$ which is the {\it GeneralParameter} representation of the values entered by the user. 
+\item The vector $\vec g$ associated to the parameter is updated into the internal representation system (cf. Mapper XXX) using the Utilities class (cf. \ref{utilities}). 
+\end{itemize}
+
+\subsubsection{The initializeComponent method}
+This method is used for initializing the graphic component represented by this class (which we recall extends JPanel). It takes no arguments and returns no value.
+The following actions are performed:
+\begin{itemize}
+\item We set the attribute {\it skossConcept} as a tooltip for the instance of {\it JComponent} returned by {\it getComponent}. This component is added to the current instance of {\it PDLBaseParamPanel},
+\item We add to the the current instance of {\it PDLBaseParamPanel} the attribute {\it paramLabel}.
+\item We call the {\it setComponentValue} method
+\item We add the the current instance of {\it PDLBaseParamPanel} as a FocusListener to the the instance of {\it JComponent} returned by {\it getComponent}.
+\end{itemize}
+
+\subsubsection{The convertToStringProvidedValues method}
+This method takes as argument a $N$-size vector  $\vec g$ of {\it GeneralParameter} corresponding to a given parameter and returns a String that will be displayed into the GUI. This String will be equal to '$v_1; \, v_2; \,  ...\, ;\, v_N$', where $v_i$ is the value contained into the {\it GeneralParameter} $g_i$, $\forall i \in [1,N]$.
+
+\subsubsection{The buildLabelText method}\label{buildLabelText}
+This method builds the String label that will inform the user about the nature of the current parameter. It takes no argument and returns the built String. This last is built as follows: the attribute {\it paramName} is followed by a parenthesis containing  the attributes  {\it paramUnit}, {\it paramType} and {\it paramDimension}.
+
+\subsection{The PDLParamPanelFactory class}
+This class is built by implementing the {\it singleton} pattern and is, as its name indicates, an implementation of the {\it factory} pattern.\\
+The public method {\it paramBuilder} takes as arguments an instance of {\it GroupHandlerHelper} and a {\it SingleParameter} instance. It returns a {\it PDLBaseParamPanel}. 
+Four private methods are used (directly or indirectly) by  {\it paramBuilder}: {\it buildBasicPanel}, {\it getCriterionWhereParamIsInvolved}, {\it getCriterionFromStatement} and {\it test}.
+
+\subsubsection{The buildBasicPanel method}
+This private method takes as argument an instance of {\it SingleParameter} $s$ and returns a {\it PDLBaseParamPanel} (cf. par. \ref{PDLBaseParamPanel}). If $s$ is a boolean the function returns a {\it PDLBooleanParamPanel} (cf. par PDLBooleanParamPanel). It returns a {\it PDLTextParamPanel} (cf. par PDLTextParamPanel) otherwise.
+
+\subsubsection{The getCriterionFromStatement method}
+This private method takes as argument an instance of {\it StatementHelperContainer} (cf. par. \ref{StatementHelperContainer}) and returns a PDL {\it AbstractCriterion}. If the {\it Statement} into the {\it StatementHelperContainer} is a {\it AlwaysConditionalStatement} the function returns the {\it Criterion} contained into the {\it Always} object (which, we recall, is in turn contained into the {\it AlwaysConditionalStatement}). If the {\it Statement} into the {\it StatementHelperContainer} is a {\it IfThenConditionalStatement} the function returns the {\it Criterion} contained into the {\it Then} object (which, we recall, is in turn contained into the {\it IfThenConditionalStatement}). In all the other cases, the function return 'null'.
+
+\subsubsection{The getCriterionWhereParamIsInvolved method}
+The aim of this private method is to return the {\it Criterion} related to a given {\it SingleParameter} (i.e. the {\it Criterion} involving the specific {\it SingleParameter}). It takes indeed as argument a {\it SingleParameter} $s$ and an {\it AbstractCriterion} $\mathcal A$ and returns an {\it AbstractCriterion}.
+But things are not so trivial as their could appear, since the {\it Criterion} involving the {\it SingleParameter} could be deeply located into the tree structure of the {\it AbstractCriterion} passed as argument. For this, this method has an recursive bahaviour. The following actions are performed:
+\begin{itemize}
+\item If $\mathcal A$ is 'null' the method returns 'null',
+\item If the {\it Expression} contained into $\mathcal A$ is an {\it AtomicParameterExpression} then
+\begin{itemize}
+\item If $s$ is the parameter referenced into the {\it AtomicParameterExpression} contained in $\mathcal A$, we returns $\mathcal A$.
+\item if $s$ is not the parameter referenced into the {\it AtomicParameterExpression} contained in $\mathcal A$ and this last contains a {\it LogicalConnector}, we call the method {\it getCriterionWhereParamIsInvolved} by passing as arguments the parameter $s$ and the {\it AbstractCriterion} contained into the {\it LogicalConnector} of $\mathcal A$.
+\end{itemize}
+\item If the {\it Expression} contained into $\mathcal A$ is not an {\it AtomicParameterExpression}, then we call the method  {\it getCriterionWhereParamIsInvolved} by passing as arguments the parameter $s$ and the {\it AbstractCriterion} contained into the {\it LogicalConnector} of $\mathcal A$.\\
+\end{itemize}
+{\bf Remark}: The test of the second item is very important, because  we handle only {\it AtomicParameterExpression}. It is straightforward to understand the reasons of this conditions while building a dynamic GUI: one could represent on the GUI the condition $p_1 \in \{2; 3; 4; 5; 8\}$, but what would mean (and how to represent with standard graphic components) a condition such $(p_1 + p_2) \in \{2; 3; 4; 5; 8\}$? (This last condition has a PDL sense and could be verified by our framework, but not represented in the dynamic GUI).
+
+\subsubsection{The test method}
+This private method takes as arguments a {\it StatementHelperContainer} $\mathcal S$, a {\it SingleParameter} $s$ and returns a  {\it PDLBaseParamPanel}. In this method the following actions are performed:
+\begin{itemize}
+\item If the {\it ConditionalStatement} contained into $\mathcal S$ is switched and involves the parameter $s$ (these two aspects are respectively verified by calling the {\it getCriterionWhereParamIsInvolved}  and {\it getCriterionFromStatement} methods), let $\mathcal A$ be the {\it AbstractCriterion} involving $s$ and $\mathcal C$ the {\it AbstractCondition} contained into $\mathcal A$,
+\begin{itemize}
+\item If $\mathcal C$ is a {\it DefaultValue} instance, then we put into the internal representation system (the Mapper, cf. par XXX) the vector $\vec g$ of {\it GeneralParameter} built by interpreting (cf. section. \ref{pdl.interpreter.expression}) the {\it Expression} contained into the {\it DefaultValue} object which, we recall, explicits this vector default value for the vector parameter $s$. The function calls the {\it buildBasicPanel} method by passing $s$ as argument and returns the value it receives from {\it buildBasicPanel} .
+\item If $\mathcal C$ is a {\it BelongToSet} instance, then we build a List of vectors $\vec g_j$, where every element $j$ is a vector of {\it GeneralParameter} and comes from the interpretation (cf. section. \ref{pdl.interpreter.expression}) of the  $j^{th}$ {\it Expression} contained into the {\it BelongToSet} object. The function return a {\it PDLChoseBoxParamPanel} build by passing as argument to the constructor the parameter $s$ and the List of vectors $\vec g_j$.
+\item If  $\mathcal C$ is a {\it IsNull} instance, we create a new {\it PDLTextParamPanel} by passing as argument to the constructor the parameter $s$, we set the visibility of this  {\it PDLTextParamPanel} graphic component to false, and return it.
+\end{itemize}
+\item If the method reaches this point, it returns ''null'.
+\end{itemize}
+
+\subsubsection{The paramBuilder method}
+This public class takes as argument a {\it GroupHandlerHelper} $\mathcal G$ and a {\it SingleParameter} $s$. It returns a {\it PDLBaseParamPanel}. In this method the following actions are performed:
+\begin{itemize}
+\item if the List of {\it StatementHelperContainer} contained into $\mathcal G$ is  'null' we call {\it buildBasicPanel} by passing $s$ as parameter and return its returned value.
+\item if the List of {\it StatementHelperContainer} contained into $\mathcal G$ is  not 'null', we loop on every {\it StatementHelperContainer} $\mathcal S_i$ element and
+\begin{itemize}
+\item we call the method {\it test} by passing as argument the couple$(\mathcal S, s)$. If the returned panel is not null, we return it.
+\end{itemize}
+\item if the method reaches this point,  we call {\it buildBasicPanel} by passing $s$ as parameter and return its returned value.
+\end{itemize}
+
+\subsection{The PDLTextParamPanel class}\label{PDLTextParamPanel}
+This class extends {\it PDLBaseParamPanel} (cf.par \ref{PDLBaseParamPanel}). It is used for interacting with the values of a given parameter through an editable {\it JTextField}. This class has a {\it JtextField} attributes {\it textField}, which comes with usual getter and setter.
+\begin{itemize}
+\item The class constructor, which takes as argument an instance $s$ of {\it SingleParameter} call the constructor of the super class by passing $s$ as argument, initialize the attribute and call the inherited  {\it initializeComponent} method.
+\item The overridden method {\it getComponent} returns the {\it textField} attribute.
+\item The overridden method {\it setComponentValue} sets the text contained into {\it textField} to the value returned by the private method {\it buildParamValue}.
+\item The private method {\it buildParamValue} build the List of {\it GeneralParameter} representing  the values already provided for the parameter $s$. Then it return the String returned by the inherited method {\it convertToStringProvidedValues} invoked passing the previously built List as parameter.
+\item The overridden method {\it getUserProvidedValue} returns the text contained into {\it textField} (which has previously been set by {\it  {\it setComponentValue} }.
+\item The method {\it focusGained} does nothing.
+\item The method  {\it focusLost} call the inherited method {\it verify}.
+\end{itemize}
+
+\subsection{The PDLBooleanParamPanel class}\label{PDLBooleanParamPanel}
+This class extends {\it PDLBaseParamPanel} (cf.par \ref{PDLBaseParamPanel}). It is used for interacting with boolean parameter using an  {\it JCheckBoxes}. This class has three attributes:
+\begin{itemize}
+\item {\it boxList} a List of {\it JCheckBox}, that will appears into the GUI.
+\item {\it checkPanel} of type  {\it JPanel}, that will contains all the JCheckBoxes.
+\item {\it parameter} of type {\it SingleParameter}.
+\end{itemize}
+Moreover, 
+\begin{itemize}
+\item the class constructor, which takes as argument an instance $s$ of {\it SingleParameter} call the constructor of the super class by passing $s$ as argument, initialize the attributes, set the {\it parameter} attribute equal to $s$ and call the inherited  {\it initializeComponent} method.
+\item The {\it getComponent} method is a usual getter on the attribute {\it checkPanel}.
+\item The private method {\it getPreEnteredValues} takes no argument and return a List of Booleans. This method first get (by calling the method {\it getuserProvidedValuesForParame} of the {\it Utilities} class, cf. par \ref{utilities}) the vector $\vec g$ of {\it GeneralParameter} representing the values already provided for the actual parameter $s$, which we recall is to type boolean. We return the vector of boolean $\vec b$ defined $\forall i$, $b_i = value(g_i)$. 
+\item The overridden method {\it setComponentValue} try to get the dimension of the {\it parameter} attribute. If an error occurs during this phase, the dimension is set to 1. Then we will generate a number equal to dimension of {\it JCheckBox}. The set of the boolean values of this vector of {\it JCheckBox} is initialized with the vector returned by the call of {\it getPreEnteredValues} method and the actual instance of {\it PDLBooleanParamPanel} is added to every component of the {\it JCheckBox} vector  as {\it ActionListener}. Finally we add every element of this {\it JCheckBox} vector to the attribute {\it boxList} and to the attribute {\it checkPanel}.
+\item The overridden {\it getUserProvidedValue} takes no argument and return a String. From the attribute {\it boxList} we build a vector of boolean values $\vec b$, where the component $b_i$ is equal to 'true' if the $i^{th} $ {\it JCheckBox} is selected and is equal to 'false' otherwise. The String returned by the method is '$b_1;b_2;...;b_N$', where $N$ is the size of vector $\vec b$.
+\item The {\it focusGained} method does nothing.
+\item The {\it focusLost} and {\it actionPerformed} calls the inherited {\it verify} method.
+\end{itemize}
+
+\subsection{The PDLChoseBoxParamPanel class}\label{PDLChoseBoxParamPanel}
+This class extends the {\it PDLBaseParamPanel} (cf.par \ref{PDLBaseParamPanel}). It is used for interacting with parameter (appearing into {\it BelongToSet}) through a {\it JComboBox}.\\
+This class has two attributes 
+\begin{itemize}
+\item {\it comboBox} of type {\it JComboBox}. This JComboBox will be displayed in the GUI.
+\item {\it setOfValues}: a List of List of {GeneralParameter}. In other words this attribute is a set of vector $\{\vec g_i\}$, where $i=1,...,N$, this last being the number of values contained into the set. Every element $\vec g_i$ is indeed the result of the interpretation of the $i^{th}$ {\it Expression} contained into a given {\it BelongToSet} object.
+\end{itemize}
+Moreover, 
+\begin{itemize}
+\item the class constructor takes as arguments an instance of {\it SingleParameter} $s$ and a List of List of {\it GeneralParameter} $\{\vec g_i\}$. It sets the two attribute with the values received as parameters and calls the inherited method {\it initializeComponent}.
+\item The overridden method {\it getComponent} is an usual getter on the attribute {\it comboBox}.
+\item In the overridden method {\it setComponentValue} the following actions are performed:
+\begin{itemize}
+\item First we try to get the List of {\it GeneralParameter} corresponding to an already selected value of the set and convert it into a String by calling the inherited method {\it convertToStringProvidedValues}. This String will be our pre-selected value label.
+\item If no particular value of the set has been pre-selected, we convert into a String the List of {\it GeneralParameter} corresponding to the first element of the {\it setOfValues}. This String will be our pre-selected value label.
+\item We loop on the element of {\it setOfValues} and for every element $e_j$
+\begin{itemize}
+\item We convert $e_j$ into a String by calling the inherited method {\it convertToStringProvidedValues}.
+\item We add this last String to the items of the {\it comboBox}.
+\item If this String is equal to the pre-selected value label, then we store the index $i$.
+\end{itemize}
+\item We set the selected index of the attribute {\it comboBox} to the index value $i$ previously retained.
+\end{itemize}
+\item In the {\it focusGained} method no action is performed.
+\item In the {\it focusLost} method, the inherited {\it verify} method is called. 
+\end{itemize}
+
+\section{The pdl.interpreter.utilities}\label{utilities}
+This package contains three utilities classes used transversally through the code. 
+\begin{itemize}
+\item The {\it ConstantUtils} class is only used for building the instances of PDL descriptions using JAX-B: it is not necessary to explore it for understudying how works the PDL framework starting from an existing description.
+\item The {\it UserMapper} is the class used for the local internal representation of the parameter whose values are already provided by the user. It contains the attribute {\it map} of type {\tt HashMap<String, List<GeneralParameter>>} . The key of this map is the String name of the parameter and the value is the List of {\it GeneralParameter} constituting the values provided by the user for this parameter.\\
+Moreover,
+\begin{itemize}
+\item the class constructor takes no argument and initialize the unique attribute by defining a new {\it HashMap}.
+\item The method {\it getuserProvidedValuesForParameter} takes as argument a {\it SingleParameter} instance $s$ and returns the List of {\it GeneralParameter} associated to that parameter (of course the {\it map} is used for this operation).
+\item The method {\it getUserProvidedValuesForParam} takes as argument the String name of a parameter and returns the List of {\it GeneralParameter} associated to that parameter (again the {\it  map} mechanism is used).
+\item The {\it makeListFromSingle} method is a facility method used for easily handling scalar parameters. This method automatically create a List of {\it GeneralParameter} containing only a single element from the {\it GeneralParameter} it receive as argument.
+\end{itemize}
+\item The {\it Utilities} class is implemented using the singleton pattern. It contains to attributes {\it service} of PDL {\it Service} type and {\it mapper} of type {\it UserMapper}. These two attributes come with usual getters and setters. Moreover
+\begin{itemize}
+\item the method {\it getParameterFromReference} takes a {\it ParameterReference} (i.e. the reference on a parameter) and returns the referenced {\it SingleParameter} instance.
+\item The method {\it getuserProvidedValuesForParameter} takes as argument an instance of {\it SingleParameter} $s$ and returns the result of the invocation of the method {\it getuserProvidedValuesForParameter} owned by the attribute {\it mapper}.
+\item The method {\it getuserProvidedValuesForParame} takes as argument the String name of a {\it SingleParameter} and returns the result of the invocation of the method {\it getUserProvidedValuesForParam} owned by the attribute {\it mapper}.
+\item The method {\it getParameterForTheGroup} takes as argument an instance of {\it ParameterGroup} and returns the List of all the {\it SingleParameer} contained into this group.
+\item The void method {\it callService} (which takes no argument) is used for passing to the remote service the values entered by the user through the dynamic GUI. The following actions are performed:
+\begin{itemize}
+\item An instance of {\it IserviceCaller} (cf. par. \ref{serviceCaller}) is created by calling the {\it buildCaller} method of the  {\it ServiceCallerFactory} and passing the {\it service} attribute as argument. The method {\it callService} owned by the {\it IserviceCaller} instance is then called.
+\end{itemize}
+\end{itemize}
+\end{itemize}
+
+\section{ The pdl.serviceCaller package}\label{serviceCaller}
+In this package we define the interface classes for communicating with the remote processing engine and services (which are exposed by providing a PDL description). This package contains the interface {\it IserviceCaller} which describe  the method void {\it callService} which takes no arguments.\\
+In their method {\it callService} all the classes implementing the interface has to pass the set of value entered by the used (and stored into the {\it mapper} attribute of the {\it Utilities} class (cf. par. \ref{utilities}) to the remote service.\\
+With the actual design one has to implement a class for every service and integrate its construction/particular case in the {\it ServiceCallerFactory} class\footnote{This part should quickly evolve and I think I'm going to introduce a dispatcher which will works for all the service calls}. At the moment we have three classes implementing {\it IserviceCaller}, one for every service we exposed (this service are exposed via usual Java servlet, so we invoke the service pointing to the ad hoc URL, built using the user provided values).\\
+
+\noindent The {\it ServiceCallerFactory} implements the singleton patterns. The method {\it buildCaller} takes as argument an instance of {\it PDL} service and, according to the service name return, if it known, the {\it ad hoc} class implementing {\it IserviceCaller}.
+
+
 
 \end{document}
 
