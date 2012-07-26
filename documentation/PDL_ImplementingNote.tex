@@ -766,6 +766,24 @@ With the actual design one has to implement a class for every service and integr
 
 \noindent The {\it ServiceCallerFactory} implements the singleton patterns. The method {\it buildCaller} takes as argument an instance of {\it PDL} service and, according to the service name return, if it known, the {\it ad hoc} class implementing {\it IserviceCaller}.
 
+\section{The gui package}
+\begin{figure}[htbp]
+\begin{center}
+\hspace{-1cm}\includegraphics[width=1.2\textwidth]{pictures/PDLGui.jpg} 
+\caption{PDL GUI with highlights of the macro graphical components corresponding to the classes of the present package}
+\label{PDLGui.jpg}
+\end{center}
+\end{figure}
+\noindent Every class in this package corresponds to a different (macro) part of the GUI, as it is shown if figure \ref{PDLGui.jpg}. \\
+\noindent Since all the complexity deriving from PDL is handled in the previously exposed packages, the code contained into this one is less PDL-tricky and is really an usual Java Swing interface, coming with its set of (heavy!) listeners and actions. For this reason, the presentation of this package is less detailed than the previous ones.\\
+The classes composing this package are :
+\begin{itemize}
+\item {\it PDLTree}, which is used for presenting into the GUI the hierarchy of groups composing the input of a given service using a tree structure (a JTree object). The label of every node is the name of the group (constituting the node itself) and a change in the selected node will force the refresh of the {\it GroupPanel}.
+\item {\it PDLSummaryPanel}, which is used for presenting a quick summary of the service. In this panel are indeed displayed the groups to complete (i.e. all the the groups where at least a parameter is not provided by user), the groups in error (i.e. all the groups where at least a constraint is not satisfied) and the valid groups (i.e. all the groups where all the parameter are provided by user and all the constraints are satisfied). When all the groups composing the services belongs to this last category, in this panel is shown a button for launching the computation on the remote system.
+\item 
+\end{itemize}
+
+
 
 
 \end{document}
