@@ -54,12 +54,16 @@
 \newpage
 
 \section{Introduction}\label{intro}
-BLA BLA
+This document is a detailed and structured description (by this I means it is more user friendly than a JavaDoc) of the framework around PDL. In particular I explain how, starting from a PDL description, are implemented the automatic generation of validator algorithms and the dynamic Graphic User Interface (GUI). 
 
 \section{The package structure}
+I'm looking for a tool for generating a nice package dependency graph starting from the Eclipse project. If you have the solution, it is welcome...
 
-\section{Java Objects corresponding to the PDL data Model}
-They are all generated using JAX-B on the PDL XML schema. The generated classes corresponds to the PDL 
+\section{Java Objects corresponding to the PDL data Model}\label{Java_Objects}
+These object 
+
+
+are all generated using JAX-B on the PDL XML schema. The generated classes corresponds to the PDL 
 
 
 \section{The CommonsObject package}\label{commons}
@@ -610,7 +614,7 @@ This method performs an atomic validation of the parameter (i.e. only on the par
 \begin{itemize}
 \item By calling the method {\it getUserProvidedValue} we get the set of values provided by the user for the parameter (by convention, for providing a $N$-size vector $\vec v$, user will provide the String '$v_1; v_2;...;v_N$'). \item If the dimension of the current parameter could be evaluated with no exception, we compare the dimension of vector $\vec v$ with the expected dimension.  If these two number are different, a message dialog window is shown notifying this error,
 \item We loop on every element of $\vec v$: for every value $v_i$ we try to build the corresponding {\it GeneralParameter} $g_i$ (by providing to the {\it GeneralParameter} constructor the triplet ($v_i$, the type of the current parameter, an instance of {\it GeneralParameterVisitor})). If an exemption is intercepted during this procedure, we show a message dialog window notifying the origin of the problem. If no exemption is detected, every $g_i$ is added to a vector $\vec g$ which is the {\it GeneralParameter} representation of the values entered by the user. 
-\item The vector $\vec g$ associated to the parameter is updated into the internal representation system (cf. Mapper XXX) using the Utilities class (cf. \ref{utilities}). 
+\item The vector $\vec g$ associated to the parameter is updated into the internal representation system (the Mapper, cf. \ref{utilities}) using the Utilities class (cf. \ref{utilities}). 
 \end{itemize}
 
 \subsubsection{The initializeComponent method}
@@ -629,7 +633,7 @@ This method takes as argument a $N$-size vector  $\vec g$ of {\it GeneralParamet
 \subsubsection{The buildLabelText method}\label{buildLabelText}
 This method builds the String label that will inform the user about the nature of the current parameter. It takes no argument and returns the built String. This last is built as follows: the attribute {\it paramName} is followed by a parenthesis containing  the attributes  {\it paramUnit}, {\it paramType} and {\it paramDimension}.
 
-\subsection{The PDLParamPanelFactory class}
+\subsection{The PDLParamPanelFactory class}\label{PDLParamPanelFactory}
 This class is built by implementing the {\it singleton} pattern and is, as its name indicates, an implementation of the {\it factory} pattern.\\
 The public method {\it paramBuilder} takes as arguments an instance of {\it GroupHandlerHelper} and a {\it SingleParameter} instance. It returns a {\it PDLBaseParamPanel}. 
 Four private methods are used (directly or indirectly) by  {\it paramBuilder}: {\it buildBasicPanel}, {\it getCriterionWhereParamIsInvolved}, {\it getCriterionFromStatement} and {\it test}.
@@ -659,7 +663,7 @@ This private method takes as arguments a {\it StatementHelperContainer} $\mathca
 \begin{itemize}
 \item If the {\it ConditionalStatement} contained into $\mathcal S$ is switched and involves the parameter $s$ (these two aspects are respectively verified by calling the {\it getCriterionWhereParamIsInvolved}  and {\it getCriterionFromStatement} methods), let $\mathcal A$ be the {\it AbstractCriterion} involving $s$ and $\mathcal C$ the {\it AbstractCondition} contained into $\mathcal A$,
 \begin{itemize}
-\item If $\mathcal C$ is a {\it DefaultValue} instance, then we put into the internal representation system (the Mapper, cf. par XXX) the vector $\vec g$ of {\it GeneralParameter} built by interpreting (cf. section. \ref{pdl.interpreter.expression}) the {\it Expression} contained into the {\it DefaultValue} object which, we recall, explicits this vector default value for the vector parameter $s$. The function calls the {\it buildBasicPanel} method by passing $s$ as argument and returns the value it receives from {\it buildBasicPanel} .
+\item If $\mathcal C$ is a {\it DefaultValue} instance, then we put into the internal representation system (the Mapper, cf. par \ref{utilities}) the vector $\vec g$ of {\it GeneralParameter} built by interpreting (cf. section. \ref{pdl.interpreter.expression}) the {\it Expression} contained into the {\it DefaultValue} object which, we recall, explicits this vector default value for the vector parameter $s$. The function calls the {\it buildBasicPanel} method by passing $s$ as argument and returns the value it receives from {\it buildBasicPanel} .
 \item If $\mathcal C$ is a {\it BelongToSet} instance, then we build a List of vectors $\vec g_j$, where every element $j$ is a vector of {\it GeneralParameter} and comes from the interpretation (cf. section. \ref{pdl.interpreter.expression}) of the  $j^{th}$ {\it Expression} contained into the {\it BelongToSet} object. The function return a {\it PDLChoseBoxParamPanel} build by passing as argument to the constructor the parameter $s$ and the List of vectors $\vec g_j$.
 \item If  $\mathcal C$ is a {\it IsNull} instance, we create a new {\it PDLTextParamPanel} by passing as argument to the constructor the parameter $s$, we set the visibility of this  {\it PDLTextParamPanel} graphic component to false, and return it.
 \end{itemize}
@@ -767,6 +771,19 @@ With the actual design one has to implement a class for every service and integr
 \noindent The {\it ServiceCallerFactory} implements the singleton patterns. The method {\it buildCaller} takes as argument an instance of {\it PDL} service and, according to the service name return, if it known, the {\it ad hoc} class implementing {\it IserviceCaller}.
 
 \section{The gui package}
+\noindent Every class in this package corresponds to a different (macro) part of the GUI, as it is shown if figure \ref{PDLGui.jpg}. \\
+\noindent Since all the complexity deriving from PDL is handled in the previously exposed packages, the code contained into this one is less PDL-tricky and is really an usual Java Swing interface, coming with its set of (heavy!) listeners and actions. For this reason, the presentation of this package is less detailed than the previous ones.\\
+The classes composing this package are:
+\begin{itemize}
+\item {\it PDLTree}, which is used for presenting into the GUI the hierarchy of groups composing the input of a given service using a tree structure (a JTree object). The label of every node is the name of the group (constituting the node itself) and a change in the selected node will force the refresh of the {\it GroupPanel}.
+\item {\it PDLSummaryPanel}, which is used for presenting a quick summary of the service. In this panel are indeed displayed the groups to complete (i.e. all the the groups where at least a parameter is not provided by user), the groups in error (i.e. all the groups where at least a constraint is not satisfied) and the valid groups (i.e. all the groups where all the parameter are provided by user and all the constraints are satisfied). When all the groups composing the services belongs to this last category, in this panel is shown a button for launching the computation on the remote system.
+\item {\it PDLStatementPanel} represent informations about a given statement and inform user about the statement validity, the switched/off statement character and display the String comment of the statement.\\
+A set of {\it PDLStatementPanel} is contained into {\it GroupPanel}: we have a {\it PDLStatementPanel} for every statement attached to the current group (i.e. the group whose node is selected into the {\it PDLTree} and which is current displayed in the {\it GroupPanel}.
+\item {\it GroupPanel} which is used for presenting into the GUI all the parameters attached to the current group and the {\it PDLStatementPanel} of all the statement attached to the current group.\\
+For every {\it SingleParameter} in the current group this panel build and display a {\it PDLBaseParamPanel}Ê (cf. par. \ref{PDLBaseParamPanel}) by invoking the method {\it buildBasicPanel} of {\it PDLParamPanelFactory} class (cf. par. \ref{PDLParamPanelFactory}).\\
+This panel also display the set of {\it PDLStatementPanel} associated to all the statement attached to the current group.
+\item {\it IntelligentGUI} which coordinates and build all the previous graphic elements and handle their internal communications based on the action and listener mechanism. 
+\end{itemize}
 \begin{figure}[htbp]
 \begin{center}
 \hspace{-1cm}\includegraphics[width=1.2\textwidth]{pictures/PDLGui.jpg} 
@@ -774,17 +791,11 @@ With the actual design one has to implement a class for every service and integr
 \label{PDLGui.jpg}
 \end{center}
 \end{figure}
-\noindent Every class in this package corresponds to a different (macro) part of the GUI, as it is shown if figure \ref{PDLGui.jpg}. \\
-\noindent Since all the complexity deriving from PDL is handled in the previously exposed packages, the code contained into this one is less PDL-tricky and is really an usual Java Swing interface, coming with its set of (heavy!) listeners and actions. For this reason, the presentation of this package is less detailed than the previous ones.\\
-The classes composing this package are :
-\begin{itemize}
-\item {\it PDLTree}, which is used for presenting into the GUI the hierarchy of groups composing the input of a given service using a tree structure (a JTree object). The label of every node is the name of the group (constituting the node itself) and a change in the selected node will force the refresh of the {\it GroupPanel}.
-\item {\it PDLSummaryPanel}, which is used for presenting a quick summary of the service. In this panel are indeed displayed the groups to complete (i.e. all the the groups where at least a parameter is not provided by user), the groups in error (i.e. all the groups where at least a constraint is not satisfied) and the valid groups (i.e. all the groups where all the parameter are provided by user and all the constraints are satisfied). When all the groups composing the services belongs to this last category, in this panel is shown a button for launching the computation on the remote system.
-\item 
-\end{itemize}
 
+\section{The test package}
+The class {\it BaseExample} and the classing inheriting from it (BroadeningExample, Example02, ExampleInteropPune02, OpacityExample, PDRExample, PDRService, Principale) are used only for generating using the Jax-B framework the instances of the PDL descriptions that will be interpreted by the dynamic GUI. Indeed they are {\it a priori} with respect to the mechanisms we have exposed in this document.\\
 
-
+\noindent Starting from an instance of  PDL service description (contained into the file named PDL-Description.xml), the {\it buildService} method of the class {\it GUITest} (which takes no argument) uses the Jax-B framework and return a{\it Service} object containing the Java object structure corresponding to the transposition of the XML into Java objects (cf. par. \ref{Java_Objects}). This method is called by the {\it main} function of {\it GUITest} which, after this invocation,  will initialize the instance of {UserMapper} that will be used in all the application and will build an instance of {\it IntelligentGUI}  that will display the graphical interface.
 
 \end{document}
 
