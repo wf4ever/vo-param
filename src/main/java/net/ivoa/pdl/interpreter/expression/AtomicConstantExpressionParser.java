@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.ivoa.parameter.model.AtomicConstantExpression;
-import net.ivoa.parameter.model.ParameterType;
 import visitors.GeneralParameterVisitor;
 import CommonsObjects.GeneralParameter;
 import exeptions.InvalidExpression;
