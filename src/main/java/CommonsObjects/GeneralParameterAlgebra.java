@@ -22,7 +22,7 @@ public class GeneralParameterAlgebra {
 	 * This parameter express the sense of the equality for numerical types :
 	 * two numbers a and b are considered equals if |a-b|<epsilon
 	 */
-	public static double epsilon = 0.0000001;
+	public static double epsilon = 0.00001;//0.0000001;
 
 	private GeneralParameterAlgebra() {
 	}
