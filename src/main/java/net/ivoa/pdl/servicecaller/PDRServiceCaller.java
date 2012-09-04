@@ -13,30 +13,30 @@ import net.ivoa.pdl.interpreter.utilities.Utilities;
 public class PDRServiceCaller implements IserviceCaller {
 
 	public void callService() {
-		String serviceUrl = "http://opacity-cs.obspm.fr:8080/pdr/pdr?";
-		List<SingleParameter> paramList = Utilities.getInstance().getService()
-				.getParameters().getParameter();
-		
-		int j=0;
-		for (int i = 0; i < paramList.size(); i++) {
-			SingleParameter p = paramList.get(i);
-			
+		String serviceUrl = "http://opacity-cs.obspm.fr:8080/pdr/PDR?";
+		// List<SingleParameter> paramList =
+		// Utilities.getInstance().getService()
+		// .getParameters().getParameter();
 
-			List<GeneralParameter> currentParam = Utilities.getInstance()
-					.getuserProvidedValuesForParameter(p);
+		// int j=0;
+		// for (int i = 0; i < paramList.size(); i++) {
+		// SingleParameter p = paramList.get(i);
 
-			if (null != currentParam) {
-				String character = "";
-				if (j > 0) {
-					character = "&";
-				}
-				j++;
-				serviceUrl = serviceUrl + character + p.getName() + "="
-						+ currentParam.get(0).getValue();
-			}
-		}
-		System.out.println(serviceUrl);
+		// List<GeneralParameter> currentParam = Utilities.getInstance()
+		// .getuserProvidedValuesForParameter(p);
 
+		// if (null != currentParam) {
+		// String character = "";
+		// if (j > 0) {
+		// character = "&";
+		// }
+		// j++;
+		// serviceUrl = serviceUrl + character + p.getName() + "="
+		// + currentParam.get(0).getValue();
+		// }
+		// }
+		// System.out.println(serviceUrl);
+		serviceUrl = "http://opacity-cs.obspm.fr:8080/pdr/PDR?email=cmzwolf@gmail.com&dens=100&EOSChoice=density&thermalBalance=isothermal&radiationFieldIntensity=1&radiationSource=Galaxy&cloudSize=0.5";
 		try {
 
 			BufferedReader bufferedReader = new BufferedReader(
