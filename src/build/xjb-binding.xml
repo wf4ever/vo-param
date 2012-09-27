@@ -16,7 +16,7 @@
        </jxb:globalBindings>
      </jxb:bindings>   
  -->
-     <jxb:bindings schemaLocation="../schema/UWS2-V1.1.xsd"
+     <jxb:bindings schemaLocation="../schema/PDL-V1.0.xsd"
       node="/xs:schema"
    >
    <!-- 
