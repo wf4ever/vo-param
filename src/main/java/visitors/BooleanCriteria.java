@@ -3,7 +3,7 @@ package visitors;
 import java.security.InvalidParameterException;
 
 /**
- * @author Carlo Maria Zwölf, Lerma/ObsPM 
+ * @author Carlo Maria Zw√∂lf, Lerma/ObsPM 
  * 
  * Implementation of interface Icreteria for testing Boolean parameter type
  *

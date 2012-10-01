@@ -3,7 +3,7 @@ package visitors;
 import CommonsObjects.GeneralParameter;
 
 /**
- * @author Carlo Maria Zwšlf, Lerma/ObsPM
+ * @author Carlo Maria Zwlf, Lerma/ObsPM
  * 
  *         General interface for implementing the visitor design pattern
  */

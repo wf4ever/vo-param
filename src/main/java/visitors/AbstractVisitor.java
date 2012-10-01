@@ -5,7 +5,6 @@ import java.util.List;
 import CommonsObjects.GeneralParameter;
 
 /**
- * @author Carlo Maria Zwšlf, Lerma/ObsPM
  * 
  *         Abstract class implementing the Ivisitor interface. In this class
  *         only the function buildCriteriaList is abstract. The function visit

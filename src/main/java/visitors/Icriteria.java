@@ -1,7 +1,7 @@
 package visitors;
 
 /**
- * @author Carlo Maria Zwšlf, Lerma/ObsPM 
+ * @author Carlo Maria Zwlf, Lerma/ObsPM 
  * 
  * General Interface for Criteria. A given Criteria is composed of a set of properties
  * that a parameter must satisfy to be valid 

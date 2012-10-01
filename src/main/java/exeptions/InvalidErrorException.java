@@ -1,7 +1,7 @@
 package exeptions;
 
 /**
- * @author Carlo Maria Zwšlf, Lerma/ObsPM
+ * @author Carlo Maria Zwlf, Lerma/ObsPM
  * Class describing the exception to be trown when 
  * a Error object instance is invalid
  */

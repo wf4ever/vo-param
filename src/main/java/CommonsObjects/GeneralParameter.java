@@ -3,7 +3,7 @@ package CommonsObjects;
 import visitors.Ivisitor;
 
 /**
- * @author Carlo Maria Zwšlf, Lerma/ObsPM
+ * @author Carlo Maria Zwlf, Lerma/ObsPM
  * 
  *         Class describing general parameters wich may be both input and
  *         outputs of a Job Object.

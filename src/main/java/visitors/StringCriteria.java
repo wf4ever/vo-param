@@ -1,7 +1,7 @@
 package visitors;
 
 /**
- * @author Carlo Maria Zwšlf, Lerma/ObsPM 
+ * @author Carlo Maria Zwlf, Lerma/ObsPM 
  * 
  * Implementation of interface Icreteria for testing String parameter type
  *
