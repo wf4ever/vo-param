@@ -7,6 +7,9 @@
    <version>0.0.1-SNAPSHOT</version>
    <name>param</name>
    <description>Parameter Model</description>
+   <properties>
+     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+   </properties>
    <repositories>
       <repository>
          <id>googlecode.jaxb-visitor.repo</id>
@@ -70,7 +73,7 @@
                   <value>PDL-V1.0.xsd</value>
                   <value>PDLServer.xsd</value>
                </schemaIncludes>
-               <generateDirectory>src/generated</generateDirectory>
+               <generateDirectory>target/generated-sources/jaxb</generateDirectory>
                <bindingDirectory>src/build</bindingDirectory>
                <bindingIncludes>
                   <include>*.xml</include>
@@ -145,7 +148,6 @@
             </rulesets>
         </configuration>
       </plugin>     
-      
     </plugins>
   </reporting>
   
