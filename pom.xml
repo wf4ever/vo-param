@@ -155,5 +155,18 @@
    <developer><id>cmzwolf</id><name>Carlo Maria Zwölf</name></developer>
    <developer><id>harripa</id><name>Paul Harrison</name></developer>
   </developers>
-   
+	<repositories>
+		<repository>
+			<releases />
+			<snapshots />
+			<id>astrotaverna</id>
+			<name>AstroTaverna repository</name>
+			<url>http://wf4ever.github.com/astrotaverna/</url>
+		</repository>
+	</repositories>
+   <scm>
+  	<url>https://github.com/wf4ever/vo-param</url>
+  	<connection>scm:git:git://github.com/wf4ever/vo-param.git</connection>
+  	<developerConnection>scm:git:git@github.com:wf4ever/vo-param.git</developerConnection>
+  </scm> 
 </project>
