@@ -15,6 +15,13 @@
          <id>googlecode.jaxb-visitor.repo</id>
          <url>https://jaxb-visitor.googlecode.com/svn/maven-repository/</url>
       </repository>
+		<repository>
+			<releases />
+			<snapshots />
+			<id>astrotaverna</id>
+			<name>AstroTaverna repository</name>
+			<url>http://wf4ever.github.com/astrotaverna/</url>
+		</repository>
    </repositories>
    <dependencies>
       <dependency>
@@ -155,7 +162,13 @@
    <developer><id>cmzwolf</id><name>Carlo Maria Zwölf</name></developer>
    <developer><id>harripa</id><name>Paul Harrison</name></developer>
   </developers>
-	<repositories>
+   <scm>
+  	<url>https://github.com/wf4ever/vo-param</url>
+  	<connection>scm:git:git://github.com/wf4ever/vo-param.git</connection>
+  	<developerConnection>scm:git:git@github.com:wf4ever/vo-param.git</developerConnection>
+  </scm> 
+  <distributionManagement>
+ 	<repositories>
 		<repository>
 			<releases />
 			<snapshots />
@@ -163,10 +176,7 @@
 			<name>AstroTaverna repository</name>
 			<url>http://wf4ever.github.com/astrotaverna/</url>
 		</repository>
-	</repositories>
-   <scm>
-  	<url>https://github.com/wf4ever/vo-param</url>
-  	<connection>scm:git:git://github.com/wf4ever/vo-param.git</connection>
-  	<developerConnection>scm:git:git@github.com:wf4ever/vo-param.git</developerConnection>
-  </scm> 
+ 	</repositories>
+  </distributionManagement>
+
 </project>
