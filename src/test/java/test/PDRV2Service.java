@@ -34,7 +34,7 @@ public class PDRV2Service extends BaseExample {
 	@Override
 	protected Service buildService() {
 		Service service = factory.createService()
-				.withServiceId("Meudon-PDR-Service")
+				.withServiceId("http://vm-calc-lerma02:8080/pdl/OnlineCode")
 				.withServiceName("Meudon-PDR-Service");
 		service.setDescription("The Meudon PDR code computes the atomic and molecular structure of interstellar clouds.");
 
