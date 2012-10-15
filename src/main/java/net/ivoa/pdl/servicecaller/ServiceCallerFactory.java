@@ -29,9 +29,6 @@ public class ServiceCallerFactory {
 			return new OpacityServiceCaller();
 		}
 		
-		if(service.getServiceName().equalsIgnoreCase(PDRServiceName)){
-			return new PDRServiceCaller();
-		}
-		return null;
+		return new DefaultServiceCaller();
 	}
 }
