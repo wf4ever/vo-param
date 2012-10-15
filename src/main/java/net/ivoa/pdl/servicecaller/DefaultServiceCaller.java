@@ -1,0 +1,56 @@
+package net.ivoa.pdl.servicecaller;
+
+import java.util.List;
+
+import net.ivoa.parameter.model.SingleParameter;
+import net.ivoa.pdl.interpreter.utilities.Utilities;
+
+public class DefaultServiceCaller implements IserviceCaller {
+
+	public void callService() {
+		String serviceUrl = Utilities.getInstance().getService().getServiceId()
+				+ "?";
+		
+		
+		List<SingleParameter> paramList = Utilities.getInstance().getService()
+				.getParameters().getParameter();
+		
+		for (int i = 0; i < paramList.size(); i++) {
+			try{
+			
+			SingleParameter p = paramList.get(i);
+			String character = "";
+			if (i > 0) {
+				character = "&";
+			}
+			serviceUrl = serviceUrl
+					+ character
+					+ p.getName()
+					+ "="
+					+ Utilities.getInstance()
+							.getuserProvidedValuesForParameter(p).get(0)
+							.getValue();
+			}catch (Exception e) {
+				// TODO: do nothing
+			}
+		}
+		System.out.println(serviceUrl);
+
+	/*	try {
+
+			BufferedReader bufferedReader = new BufferedReader(
+					new InputStreamReader(new URL(serviceUrl).openConnection()
+							.getInputStream()));
+			StringBuilder sb = new StringBuilder();
+			String line = null;
+			while ((line = bufferedReader.readLine()) != null) {
+				sb.append(line);
+				sb.append("\n");
+			}
+			bufferedReader.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+*/
+	}
+}
