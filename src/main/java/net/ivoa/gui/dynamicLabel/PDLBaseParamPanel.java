@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 
 import net.ivoa.parameter.model.SingleParameter;
 import net.ivoa.pdl.interpreter.expression.ExpressionParserFactory;
+import net.ivoa.pdl.interpreter.utilities.SkossConverter;
 import net.ivoa.pdl.interpreter.utilities.Utilities;
 import visitors.GeneralParameterVisitor;
 import CommonsObjects.GeneralParameter;
@@ -51,7 +52,7 @@ public abstract class PDLBaseParamPanel extends JPanel implements FocusListener 
 	}
 
 	protected void initializeComponent() {
-		this.getComponent().setToolTipText(this.skossConcept);
+		this.getComponent().setToolTipText(SkossConverter.getInstance().getSkosDescriptionBySkosURI(this.skossConcept));
 		this.add(paramLabel);
 		this.add(this.getComponent());
 		this.setComponentValue();
