@@ -1,13 +1,16 @@
 package net.ivoa.pdl.servicecaller;
 
 import java.util.List;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
 
 import net.ivoa.parameter.model.SingleParameter;
 import net.ivoa.pdl.interpreter.utilities.Utilities;
 
 public class DefaultServiceCaller implements IserviceCaller {
 
-	public void callService() {
+	public String callService() {
 		String serviceUrl = Utilities.getInstance().getService().getServiceId()
 				+ "?";
 		
@@ -35,12 +38,12 @@ public class DefaultServiceCaller implements IserviceCaller {
 			}
 		}
 		System.out.println(serviceUrl);
-
-	/*	try {
-
+		try {
+			
 			BufferedReader bufferedReader = new BufferedReader(
 					new InputStreamReader(new URL(serviceUrl).openConnection()
 							.getInputStream()));
+			
 			StringBuilder sb = new StringBuilder();
 			String line = null;
 			while ((line = bufferedReader.readLine()) != null) {
@@ -48,9 +51,10 @@ public class DefaultServiceCaller implements IserviceCaller {
 				sb.append("\n");
 			}
 			bufferedReader.close();
+			return sb.toString();
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "errors";
 		}
-*/
 	}
 }

@@ -1,8 +1,5 @@
 package net.ivoa.pdl.interpreter.utilities;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,10 +79,10 @@ public class Utilities {
 		return toReturn;
 	}
 
-	public void callService() {
+	public String callService() {
 		IserviceCaller serviceCaller = ServiceCallerFactory.getInstance()
 				.buildCaller(this.service);
-		serviceCaller.callService();
+		return serviceCaller.callService();
 
 	}
 

@@ -69,6 +69,7 @@ public class SkossConverter {
 		} catch (Exception e) {
 			//e.printStackTrace();
 			System.out.println("error retriving "+skosUrl);
+			toReturn = skosUrl;
 		}
 		return toReturn;
 	}

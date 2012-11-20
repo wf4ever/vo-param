@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -227,8 +228,14 @@ public class PDLSummaryPanel extends JPanel implements ActionListener{
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		Utilities.getInstance().callService();
-		
+		String message = Utilities.getInstance().callService();
+		String text;
+		if(message.equalsIgnoreCase("ok")){
+			text = "the job have been correctly sent to server";
+		}else{
+			text = "error in submitting jobs. Please verify your data and try again";
+		}
+		JOptionPane.showMessageDialog(this, text);
 	}
 
 }
