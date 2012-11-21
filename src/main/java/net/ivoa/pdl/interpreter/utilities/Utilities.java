@@ -82,8 +82,7 @@ public class Utilities {
 	public String callService() {
 		IserviceCaller serviceCaller = ServiceCallerFactory.getInstance()
 				.buildCaller(this.service);
-		return serviceCaller.callService();
-
+		return  serviceCaller.callService();
 	}
 
 }
