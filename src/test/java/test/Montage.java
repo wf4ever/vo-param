@@ -40,7 +40,7 @@ public class Montage extends BaseExample {
 		Service service = factory
 				.createService()
 				.withServiceId(
-						"http://pdl-calc.obspm.fr:8082/montage/OnlineCode")
+						"http://pdl-calc.obspm.fr:8081/montage/OnlineCode")
 				.withServiceName("Image Mosaicing Service");
 		service.setDescription("Prototype of a service to build and assemble reprojected astronomical images with Montage software tasks");
 
