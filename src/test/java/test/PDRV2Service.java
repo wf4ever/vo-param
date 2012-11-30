@@ -372,7 +372,7 @@ public class PDRV2Service extends BaseExample {
 		los_ext.setName("los_ext");
 		los_ext.setParameterType(ParameterType.STRING);
 		los_ext.setSkossConcept("los_ext");
-		los_ext.setUnit(" ");
+		los_ext.setUnit("no unit");
 		los_ext.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(los_ext.getName(), los_ext);
 		this.addParameterToGroupMap(los_ext.getName(), "Grains");
@@ -381,7 +381,7 @@ public class PDRV2Service extends BaseExample {
 		NPresse.setName("NPresse");
 		NPresse.setParameterType(ParameterType.INTEGER);
 		NPresse.setSkossConcept("NPresse");
-		NPresse.setUnit("K cm-3");
+		NPresse.setUnit("no unit");
 		NPresse.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(NPresse.getName(), NPresse);
 		this.addParameterToGroupMap(NPresse.getName(), "EquationOfState");
@@ -408,7 +408,7 @@ public class PDRV2Service extends BaseExample {
 		presseVariationMethod.setName("presseVariationMethod");
 		presseVariationMethod.setParameterType(ParameterType.STRING);
 		presseVariationMethod.setSkossConcept("presseVariationMethod");
-		presseVariationMethod.setUnit(" ");
+		presseVariationMethod.setUnit("no unit");
 		presseVariationMethod
 				.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(presseVariationMethod.getName(),
@@ -420,7 +420,7 @@ public class PDRV2Service extends BaseExample {
 		Nradm.setName("Nradm");
 		Nradm.setParameterType(ParameterType.INTEGER);
 		Nradm.setSkossConcept("Nradm");
-		Nradm.setUnit(" ");
+		Nradm.setUnit("no unit");
 		Nradm.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(Nradm.getName(), Nradm);
 		this.addParameterToGroupMap(Nradm.getName(), "RadiationField");
@@ -458,7 +458,7 @@ public class PDRV2Service extends BaseExample {
 		Nradp.setName("Nradp");
 		Nradp.setParameterType(ParameterType.INTEGER);
 		Nradp.setSkossConcept("Nradp");
-		Nradp.setUnit(" ");
+		Nradp.setUnit("no unit");
 		Nradp.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(Nradp.getName(), Nradp);
 		this.addParameterToGroupMap(Nradp.getName(), "RadiationField");
@@ -514,7 +514,7 @@ public class PDRV2Service extends BaseExample {
 		srcpp.setName("srcpp");
 		srcpp.setParameterType(ParameterType.STRING);
 		srcpp.setSkossConcept("srcpp");
-		srcpp.setUnit(" ");
+		srcpp.setUnit("no unit");
 		srcpp.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(srcpp.getName(), srcpp);
 		this.addParameterToGroupMap(srcpp.getName(), "RadiationField");
@@ -538,10 +538,10 @@ public class PDRV2Service extends BaseExample {
 		this.addParameterToGroupMap(deltaTgaz.getName(), "EquationOfState");
 
 		SingleParameter NT = factory.createSingleParameter();
-		NT.setName("NT");
+		NT.setName("NTgaz");
 		NT.setParameterType(ParameterType.INTEGER);
 		NT.setSkossConcept("NT");
-		NT.setUnit(" ");
+		NT.setUnit("no unit");
 		NT.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(NT.getName(), NT);
 		this.addParameterToGroupMap(NT.getName(), "EquationOfState");

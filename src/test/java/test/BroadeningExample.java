@@ -39,7 +39,7 @@ public class BroadeningExample extends BaseExample {
 	protected Service buildService() {
 
 		Service service = factory.createService()
-				.withServiceId("Lerma-Broadening-Service")
+				.withServiceId("http://vm-calc-lerma02:8081/broadening")
 				.withServiceName("Lerma-Broadening-Service");
 		service.setDescription("Hydrogen Stark broadening calculation for astrophysical applications");
 
@@ -50,35 +50,35 @@ public class BroadeningExample extends BaseExample {
 				"outputs");
 
 		SingleParameter mail = factory.createSingleParameter();
-		mail.setName("email");
+		mail.setName("mail");
 		mail.setParameterType(ParameterType.STRING);
 		mail.setSkossConcept("SKOS_MAIL");
-		mail.setUnit("e-mail");
+		mail.setUnit("none");
 		mail.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter initialLevel = factory.createSingleParameter();
-		initialLevel.setName("initiallevel");
+		initialLevel.setName("InitialLevel");
 		initialLevel.setParameterType(ParameterType.INTEGER);
 		initialLevel.setSkossConcept("SKOS_INITIAL_LEVEL");
 		initialLevel.setUnit("number");
 		initialLevel.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter finaleLevel = factory.createSingleParameter();
-		finaleLevel.setName("finallevel");
+		finaleLevel.setName("FinalLevel");
 		finaleLevel.setParameterType(ParameterType.INTEGER);
 		finaleLevel.setSkossConcept("SKOS_INITIAL_LEVEL");
 		finaleLevel.setUnit("number");
 		finaleLevel.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter temperature = factory.createSingleParameter();
-		temperature.setName("temperature");
+		temperature.setName("Temperature");
 		temperature.setParameterType(ParameterType.REAL);
 		temperature.setSkossConcept("SKOS_TEMPERATURE");
 		temperature.setUnit("K");
 		temperature.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter density = factory.createSingleParameter();
-		density.setName("density");
+		density.setName("Density");
 		density.setParameterType(ParameterType.REAL);
 		density.setSkossConcept("SKOS_DENSITY");
 		density.setUnit("cm^-3");

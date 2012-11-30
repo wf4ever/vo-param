@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Service xmlns="http://www.ivoa.net/xml/Parameter/v0.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ivoa.net/xml/Parameter/v0.1 PDL-V1.0.xsd">
+    <ServiceId>http://vm-calc-lerma02:8080/pdl/OnlineCode</ServiceId>
+    <ServiceName>Meudon-PDR-Service</ServiceName>
+    <Description>The Meudon PDR code computes the atomic and molecular structure of interstellar clouds.</Description>
+    <Parameters>
+        <parameter>
+            <Name>TgazInf</Name>
+            <ParameterType>real</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/TgazInf</SkossConcept>
+            <Unit>K</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>densh</Name>
+            <ParameterType>real</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/densh</SkossConcept>
+            <Unit>cm-3</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>FmrcInf</Name>
+            <ParameterType>real</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/fmrcInf</SkossConcept>
+            <Unit>?</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>istic</Name>
+            <ParameterType>integer</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/istic</SkossConcept>
+            <Unit>no unit</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>NPresse</Name>
+            <ParameterType>integer</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/NPresse</SkossConcept>
+            <Unit>K cm-3</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>deltaAvmax</Name>
+            <ParameterType>real</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/deltaAvmax</SkossConcept>
+            <Unit>magnitude</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>FmrcVariationMethod</Name>
+            <ParameterType>string</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/fmrcVatiationMethod</SkossConcept>
+            <Unit>?</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>vturb</Name>
+            <ParameterType>real</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/vturb</SkossConcept>
+            <Unit>km s^-1</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>RadmInf</Name>
+            <ParameterType>real</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/radmInf</SkossConcept>
+            <Unit>?</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>ifisob</Name>
+            <ParameterType>integer</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/ifisob</SkossConcept>
+            <Unit>no unit</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>NAvmax</Name>
+            <ParameterType>integer</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/NAvmax</SkossConcept>
+            <Unit>no unit</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>ifafm</Name>
+            <ParameterType>integer</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/ifafm</SkossConcept>
+            <Unit> </Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>NRadm</Name>
+            <ParameterType>integer</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/Nradm</SkossConcept>
+            <Unit>no unit</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>deltaRadp</Name>
+            <ParameterType>real</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/deltaRadp</SkossConcept>
+            <Unit>?</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>deltaPresse</Name>
+            <ParameterType>real</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/deltaPresse</SkossConcept>
+            <Unit>K cm-3 </Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>alpgr</Name>
+            <ParameterType>real</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/alpgr</SkossConcept>
+            <Unit>?</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>deltaRadm</Name>
+            <ParameterType>real</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/deltaRadm</SkossConcept>
+            <Unit>?</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>NRadp</Name>
+            <ParameterType>integer</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/Nradp</SkossConcept>
+            <Unit>no unit</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>RadpVariationMethod</Name>
+            <ParameterType>string</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/radpVariationMethod</SkossConcept>
+            <Unit>no unit</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>NFmrc</Name>
+            <ParameterType>integer</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/Nfmrc</SkossConcept>
+            <Unit>no unit</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>mail</Name>
+            <ParameterType>string</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/UserEmail</SkossConcept>
+            <Unit>no unit</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>F_dustem</Name>
+            <ParameterType>integer</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/F_dustem</SkossConcept>
+            <Unit>no unit</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>RadpInf</Name>
+            <ParameterType>real</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/radpInf</SkossConcept>
+            <Unit>?</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>deltaFmrc</Name>
+            <ParameterType>real</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/deltaFmrc</SkossConcept>
+            <Unit>?</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>ieqth</Name>
+            <ParameterType>integer</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/ieqth</SkossConcept>
+            <Unit>no unit</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>srcpp</Name>
+            <ParameterType>string</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/srcpp</SkossConcept>
+            <Unit>no unit</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>deltaTgaz</Name>
+            <ParameterType>real</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/deltaTgaz</SkossConcept>
+            <Unit>K</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>PresseVariationMethod</Name>
+            <ParameterType>string</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/presseVariationMethod</SkossConcept>
+            <Unit>no unit</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>PresseInf</Name>
+            <ParameterType>real</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/presseInf</SkossConcept>
+            <Unit>K cm-3 </Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>rgmin</Name>
+            <ParameterType>real</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/rgrmin</SkossConcept>
+            <Unit>cm</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>jfg1kh2</Name>
+            <ParameterType>real</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/jfgkh2</SkossConcept>
+            <Unit>?</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>iforh2</Name>
+            <ParameterType>integer</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/iforh2</SkossConcept>
+            <Unit>no unit</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>itrfer</Name>
+            <ParameterType>integer</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/itrfer</SkossConcept>
+            <Unit>no unit</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>NTgaz</Name>
+            <ParameterType>integer</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/NT</SkossConcept>
+            <Unit>no unit</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>gratio</Name>
+            <ParameterType>real</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/gratio</SkossConcept>
+            <Unit>?</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>rgrmax</Name>
+            <ParameterType>real</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/rgrmax</SkossConcept>
+            <Unit>cm</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>AvmaxVariationMethod</Name>
+            <ParameterType>string</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/AvmaxVariationMethod</SkossConcept>
+            <Unit>no unit</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>TgazVariationMethod</Name>
+            <ParameterType>string</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/tgazVariationMethod</SkossConcept>
+            <Unit>no unit</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>cdunit</Name>
+            <ParameterType>real</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/cdunit</SkossConcept>
+            <Unit>?</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>AvmaxInf</Name>
+            <ParameterType>real</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/AvmaxInf</SkossConcept>
+            <Unit>magnitude</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>los_ext</Name>
+            <ParameterType>string</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/los_ext</SkossConcept>
+            <Unit>no unit</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>Fisrf</Name>
+            <ParameterType>integer</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/F_ISRF</SkossConcept>
+            <Unit>no unit</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>Chimie</Name>
+            <ParameterType>string</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/Chimie</SkossConcept>
+            <Unit>no unit</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>ichh2</Name>
+            <ParameterType>integer</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/ichh2</SkossConcept>
+            <Unit>?</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>RadmVariationMethod</Name>
+            <ParameterType>string</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/radmVariationMethod</SkossConcept>
+            <Unit>no unit</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>dsour</Name>
+            <ParameterType>real</ParameterType>
+            <SkossConcept>http://purl.org/astronomy/vocab/PDRInputParameters/d_sour</SkossConcept>
+            <Unit>paresec</Unit>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+    </Parameters>
+    <Inputs>
+        <Name>inputs</Name>
+        <ParameterGroup>
+            <Name>TechnicalParameters</Name>
+            <ParameterRef ParameterName="mail"/>
+        </ParameterGroup>
+        <ParameterGroup>
+            <Name>RadiationField</Name>
+            <ParameterRef ParameterName="AvmaxInf"/>
+            <ParameterRef ParameterName="NAvmax"/>
+            <ParameterRef ParameterName="deltaAvmax"/>
+            <ParameterRef ParameterName="AvmaxVariationMethod"/>
+            <ParameterRef ParameterName="FmrcInf"/>
+            <ParameterRef ParameterName="NFmrc"/>
+            <ParameterRef ParameterName="deltaFmrc"/>
+            <ParameterRef ParameterName="FmrcVariationMethod"/>
+            <ParameterRef ParameterName="RadmInf"/>
+            <ParameterRef ParameterName="NRadm"/>
+            <ParameterRef ParameterName="deltaRadm"/>
+            <ParameterRef ParameterName="RadmVariationMethod"/>
+            <ParameterRef ParameterName="RadpInf"/>
+            <ParameterRef ParameterName="NRadp"/>
+            <ParameterRef ParameterName="deltaRadp"/>
+            <ParameterRef ParameterName="RadpVariationMethod"/>
+            <ParameterRef ParameterName="srcpp"/>
+            <ParameterRef ParameterName="dsour"/>
+        </ParameterGroup>
+        <ParameterGroup>
+            <Name>Chemistry</Name>
+            <ParameterRef ParameterName="Chimie"/>
+            <ParameterRef ParameterName="Fisrf"/>
+            <ParameterRef ParameterName="densh"/>
+            <ParameterRef ParameterName="ichh2"/>
+        </ParameterGroup>
+        <ParameterGroup>
+            <Name>Grains</Name>
+            <ParameterRef ParameterName="F_dustem"/>
+            <ParameterRef ParameterName="F_dustem"/>
+            <ParameterRef ParameterName="alpgr"/>
+            <ParameterRef ParameterName="gratio"/>
+            <ParameterRef ParameterName="iforh2"/>
+            <ParameterRef ParameterName="istic"/>
+            <ParameterRef ParameterName="los_ext"/>
+            <ParameterRef ParameterName="rgrmax"/>
+            <ParameterRef ParameterName="rgmin"/>
+        </ParameterGroup>
+        <ParameterGroup>
+            <Name>EquationOfState</Name>
+            <ParameterRef ParameterName="ieqth"/>
+            <ParameterRef ParameterName="ifisob"/>
+            <ParameterRef ParameterName="ifisob"/>
+            <ParameterRef ParameterName="PresseInf"/>
+            <ParameterRef ParameterName="NPresse"/>
+            <ParameterRef ParameterName="deltaPresse"/>
+            <ParameterRef ParameterName="PresseVariationMethod"/>
+            <ParameterRef ParameterName="TgazInf"/>
+            <ParameterRef ParameterName="NTgaz"/>
+            <ParameterRef ParameterName="deltaTgaz"/>
+            <ParameterRef ParameterName="TgazVariationMethod"/>
+            <ParameterRef ParameterName="vturb"/>
+        </ParameterGroup>
+        <ParameterGroup>
+            <Name>Algorithms</Name>
+            <ParameterRef ParameterName="cdunit"/>
+            <ParameterRef ParameterName="ifafm"/>
+            <ParameterRef ParameterName="itrfer"/>
+            <ParameterRef ParameterName="jfg1kh2"/>
+        </ParameterGroup>
+    </Inputs>
+</Service>

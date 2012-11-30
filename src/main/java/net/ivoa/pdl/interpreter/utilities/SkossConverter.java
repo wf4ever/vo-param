@@ -29,6 +29,7 @@ public class SkossConverter {
 		urlSkossDescription = new HashMap<String, String>();
 		List<SingleParameter> parameterList = Utilities.getInstance().getService().getParameters().getParameter();
 		for(SingleParameter currentParam : parameterList){
+			System.out.println("retriving skos for parameter "+currentParam.getName());
 			urlSkossDescription.put(currentParam.getSkossConcept(), getDescriptionBySkos(currentParam.getSkossConcept()));
 		}
 	}

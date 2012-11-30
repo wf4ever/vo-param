@@ -1,0 +1,40 @@
+\BOOKMARK [1][-]{section.1}{Status of this document}{}% 1
+\BOOKMARK [1][-]{section.2}{Introduction}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{The service description: existing solutions and specific needs}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Interoperability issues}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{A new Parameter Description Language: a unique solutions to description and interoperability needs}{section.2}% 5
+\BOOKMARK [1][-]{section.3}{The Service object}{}% 6
+\BOOKMARK [1][-]{section.4}{The SingleParameter Object}{}% 7
+\BOOKMARK [1][-]{section.5}{The ParameterReference object}{}% 8
+\BOOKMARK [1][-]{section.6}{The ParameterType object}{}% 9
+\BOOKMARK [1][-]{section.7}{The ParameterGroup object}{}% 10
+\BOOKMARK [1][-]{section.8}{The Expression Objects}{}% 11
+\BOOKMARK [2][-]{subsection.8.1}{The AtomicParameter expression}{section.8}% 12
+\BOOKMARK [2][-]{subsection.8.2}{The AtomicConstant expression}{section.8}% 13
+\BOOKMARK [2][-]{subsection.8.3}{The parenthesisContent expression}{section.8}% 14
+\BOOKMARK [2][-]{subsection.8.4}{The Operation object}{section.8}% 15
+\BOOKMARK [2][-]{subsection.8.5}{The FunctionType object}{section.8}% 16
+\BOOKMARK [2][-]{subsection.8.6}{The Function object}{section.8}% 17
+\BOOKMARK [2][-]{subsection.8.7}{The FunctionExpression object}{section.8}% 18
+\BOOKMARK [1][-]{section.9}{Expressing complex relations and constraints on parameters}{}% 19
+\BOOKMARK [2][-]{subsection.9.1}{The ConstraintOnGroup Object}{section.9}% 20
+\BOOKMARK [2][-]{subsection.9.2}{The ConditionalStatement object}{section.9}% 21
+\BOOKMARK [3][-]{subsubsection.9.2.1}{The AlwaysConditionalStatement}{subsection.9.2}% 22
+\BOOKMARK [3][-]{subsubsection.9.2.2}{The IfThenConditionalStatement}{subsection.9.2}% 23
+\BOOKMARK [2][-]{subsection.9.3}{The ConditionalClause object}{section.9}% 24
+\BOOKMARK [2][-]{subsection.9.4}{The AbstractCriterion object}{section.9}% 25
+\BOOKMARK [3][-]{subsubsection.9.4.1}{The Criterion object}{subsection.9.4}% 26
+\BOOKMARK [3][-]{subsubsection.9.4.2}{The ParenthesisCriterion object}{subsection.9.4}% 27
+\BOOKMARK [2][-]{subsection.9.5}{The LogicalConnector object}{section.9}% 28
+\BOOKMARK [2][-]{subsection.9.6}{The AbstractCondition object}{section.9}% 29
+\BOOKMARK [3][-]{subsubsection.9.6.1}{The IsNull condition}{subsection.9.6}% 30
+\BOOKMARK [3][-]{subsubsection.9.6.2}{The "numerical-type" conditions}{subsection.9.6}% 31
+\BOOKMARK [3][-]{subsubsection.9.6.3}{The BelongToSet condition}{subsection.9.6}% 32
+\BOOKMARK [3][-]{subsubsection.9.6.4}{The ValueLargerThan object}{subsection.9.6}% 33
+\BOOKMARK [3][-]{subsubsection.9.6.5}{The ValueSmallerThan object}{subsection.9.6}% 34
+\BOOKMARK [3][-]{subsubsection.9.6.6}{The ValueInRange object}{subsection.9.6}% 35
+\BOOKMARK [3][-]{subsubsection.9.6.7}{red The ValueDifferentOf object}{subsection.9.6}% 36
+\BOOKMARK [3][-]{subsubsection.9.6.8}{The DefaultValue object}{subsection.9.6}% 37
+\BOOKMARK [2][-]{subsection.9.7}{Evaluating and interpreting criteria objects}{section.9}% 38
+\BOOKMARK [1][-]{section.10}{PDL and formal logic}{}% 39
+\BOOKMARK [1][-]{section.11}{Description Examples}{}% 40

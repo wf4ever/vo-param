@@ -7,7 +7,8 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="User" type="pm:User" maxOccurs="1" minOccurs="1"/>
-                <xs:element name="PDLServices" type="pm:PDLService" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="PDLServices" type="pm:PDLService" minOccurs="0"
+                    maxOccurs="unbounded"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -30,6 +31,9 @@
             <xs:element name="IdJob" type="xs:string"/>
             <xs:element name="UserDescription" type="xs:string"/>
             <xs:element name="Phase" type="xs:string"/>
+            <xs:element name="CreationTime" type="xs:string"/>
+            <xs:element name="LastChangeTime" type="xs:string"/>
+            <xs:element name="Modifiable" type="xs:string"/>
             <xs:element name="Parameters" type="pm:Parameter" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="Results" type="pm:Result" minOccurs="0" maxOccurs="unbounded"/>
             <xs:element name="Errors" type="pm:Error" minOccurs="0" maxOccurs="unbounded"/>
