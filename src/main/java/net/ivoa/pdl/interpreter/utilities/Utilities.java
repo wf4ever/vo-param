@@ -12,7 +12,7 @@ import net.ivoa.pdl.servicecaller.ServiceCallerFactory;
 import CommonsObjects.GeneralParameter;
 
 public class Utilities {
-	private static final ThreadLocal<Utilities> instance = new ThreadLocal<Utilities>(){
+	/*private static final ThreadLocal<Utilities> instance = new ThreadLocal<Utilities>(){
 		protected Utilities initialValue() {
 			return new Utilities();
 		};
@@ -20,8 +20,14 @@ public class Utilities {
 
 	public static Utilities getInstance() {
 		return instance.get();
-	}
+	}*/
 
+	private static final Utilities  instance= new Utilities();
+	
+	public static Utilities getInstance(){
+		return instance;
+	}
+	
 	private Utilities() {
 	}
 
