@@ -66,7 +66,6 @@ public class Montage extends BaseExample {
 		NAXIS1.setPrecision(mkconst(0.0));
 		NAXIS1.setUnit("None");
 		NAXIS1.setDimension(mktconst("1", ParameterType.INTEGER));
-		parameterList.getParameter().add(mail);
 		parameterList.getParameter().add(NAXIS1);
 		ParameterReference NAXIS1_REF = new ParameterReference()
 				.withParameterName(NAXIS1.getName());

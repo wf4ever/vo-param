@@ -63,7 +63,7 @@ public class IntelligentGUI implements TreeSelectionListener, ActionListener {
 		frame.setLocation(145, 0);
 
 		frameGR.setVisible(true);
-		frameGR.setSize(450, 450);
+		frameGR.setSize(600, 600);
 		frameGR.setLocation(400,0);
 		
 		frameServer.add(this.serverPanel);
@@ -74,11 +74,14 @@ public class IntelligentGUI implements TreeSelectionListener, ActionListener {
 		// Display the window.
 
 		frame.setVisible(true);
+		System.out.println(Thread.currentThread()+" is the current tread");
 	}
 
 	/** Required by TreeSelectionListener interface. */
 	public void valueChanged(TreeSelectionEvent e) {
-
+		
+		System.out.println(Thread.currentThread()+" is the current tread");
+		
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) e
 				.getNewLeadSelectionPath().getLastPathComponent();
 		this.activeNodeName = node.toString();

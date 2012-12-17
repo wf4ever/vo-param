@@ -33,6 +33,7 @@ public abstract class PDLBaseParamPanel extends JPanel implements FocusListener 
 
 	public PDLBaseParamPanel(SingleParameter parameter) {
 		super();
+		System.out.println(Thread.currentThread()+" is the current tread");
 		this.paramName = parameter.getName();
 		this.paramUnit = parameter.getUnit();
 		this.paramType = parameter.getParameterType().toString();

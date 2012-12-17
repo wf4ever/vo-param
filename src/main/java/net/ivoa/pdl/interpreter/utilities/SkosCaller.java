@@ -20,7 +20,6 @@ public class SkosCaller implements Runnable{
 	}
 	
 	public void run() {
-		System.out.println(Thread.currentThread() +" retriving skos for parameter "+skosUrl);
 		String serverResponse = "";
 		try {
 			String requestResult;

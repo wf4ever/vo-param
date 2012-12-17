@@ -54,28 +54,40 @@ public class PDRV3Description extends BaseExample {
 		ParameterGroup algo = factory.createParameterGroup().withName("Algorithms");
 		ParameterGroup technical = factory.createParameterGroup().withName("TechnicalParameters");
 		
+		ParameterGroup avmax = factory.createParameterGroup().withName("Avmax");
+		ParameterGroup fmrc = factory.createParameterGroup().withName("Fmrc");
+		ParameterGroup radm = factory.createParameterGroup().withName("Radm");
+		ParameterGroup radp = factory.createParameterGroup().withName("Radp");
+		
+		ParameterGroup presse = factory.createParameterGroup().withName("Presse");
+		ParameterGroup tgaz = factory.createParameterGroup().withName("Tgaz");
+		
 		
 		technical.withParameterRef(parameterRefMap.get("mail"));
 		
-		radiation.withParameterRef(parameterRefMap.get("AvmaxInf"));
-		radiation.withParameterRef(parameterRefMap.get("NAvmax"));
-		radiation.withParameterRef(parameterRefMap.get("deltaAvmax"));
-		radiation.withParameterRef(parameterRefMap.get("AvmaxVariationMethod"));
-		radiation.withParameterRef(parameterRefMap.get("FmrcInf"));
-		radiation.withParameterRef(parameterRefMap.get("NFmrc"));
-		radiation.withParameterRef(parameterRefMap.get("deltaFmrc"));
-		radiation.withParameterRef(parameterRefMap.get("FmrcVariationMethod"));
-		radiation.withParameterRef(parameterRefMap.get("RadmInf"));
-		radiation.withParameterRef(parameterRefMap.get("NRadm"));
-		radiation.withParameterRef(parameterRefMap.get("deltaRadm"));
-		radiation.withParameterRef(parameterRefMap.get("RadmVariationMethod"));
-		radiation.withParameterRef(parameterRefMap.get("RadpInf"));		
-		radiation.withParameterRef(parameterRefMap.get("NRadp"));
-		radiation.withParameterRef(parameterRefMap.get("deltaRadp"));
-		radiation.withParameterRef(parameterRefMap.get("RadpVariationMethod"));
+		avmax.withParameterRef(parameterRefMap.get("AvmaxInf"));
+		avmax.withParameterRef(parameterRefMap.get("NAvmax"));
+		avmax.withParameterRef(parameterRefMap.get("deltaAvmax"));
+		avmax.withParameterRef(parameterRefMap.get("AvmaxVariationMethod"));
+		fmrc.withParameterRef(parameterRefMap.get("FmrcInf"));
+		fmrc.withParameterRef(parameterRefMap.get("NFmrc"));
+		fmrc.withParameterRef(parameterRefMap.get("deltaFmrc"));
+		fmrc.withParameterRef(parameterRefMap.get("FmrcVariationMethod"));
+		radm.withParameterRef(parameterRefMap.get("RadmInf"));
+		radm.withParameterRef(parameterRefMap.get("NRadm"));
+		radm.withParameterRef(parameterRefMap.get("deltaRadm"));
+		radm.withParameterRef(parameterRefMap.get("RadmVariationMethod"));
+		radp.withParameterRef(parameterRefMap.get("RadpInf"));		
+		radp.withParameterRef(parameterRefMap.get("NRadp"));
+		radp.withParameterRef(parameterRefMap.get("deltaRadp"));
+		radp.withParameterRef(parameterRefMap.get("RadpVariationMethod"));
 		radiation.withParameterRef(parameterRefMap.get("srcpp"));
 		radiation.withParameterRef(parameterRefMap.get("dsour"));
 		
+		radiation.withParameterGroup(avmax);
+		radiation.withParameterGroup(fmrc);
+		radiation.withParameterGroup(radm);
+		radiation.withParameterGroup(radp);
 		
 		chem.withParameterRef(parameterRefMap.get("Chimie"));
 		chem.withParameterRef(parameterRefMap.get("Fisrf"));
@@ -95,15 +107,18 @@ public class PDRV3Description extends BaseExample {
 		eos.withParameterRef(parameterRefMap.get("ieqth"));
 		eos.withParameterRef(parameterRefMap.get("ifisob"));
 		eos.withParameterRef(parameterRefMap.get("ifisob"));
-		eos.withParameterRef(parameterRefMap.get("PresseInf"));
-		eos.withParameterRef(parameterRefMap.get("NPresse"));
-		eos.withParameterRef(parameterRefMap.get("deltaPresse"));
-		eos.withParameterRef(parameterRefMap.get("PresseVariationMethod"));
-		eos.withParameterRef(parameterRefMap.get("TgazInf"));
-		eos.withParameterRef(parameterRefMap.get("NTgaz"));
-		eos.withParameterRef(parameterRefMap.get("deltaTgaz"));
-		eos.withParameterRef(parameterRefMap.get("TgazVariationMethod"));
+		presse.withParameterRef(parameterRefMap.get("PresseInf"));
+		presse.withParameterRef(parameterRefMap.get("NPresse"));
+		presse.withParameterRef(parameterRefMap.get("deltaPresse"));
+		presse.withParameterRef(parameterRefMap.get("PresseVariationMethod"));
+		tgaz.withParameterRef(parameterRefMap.get("TgazInf"));
+		tgaz.withParameterRef(parameterRefMap.get("NTgaz"));
+		tgaz.withParameterRef(parameterRefMap.get("deltaTgaz"));
+		tgaz.withParameterRef(parameterRefMap.get("TgazVariationMethod"));
 		eos.withParameterRef(parameterRefMap.get("vturb"));
+		
+		eos.withParameterGroup(presse);
+		eos.withParameterGroup(tgaz);
 		
 		algo.withParameterRef(parameterRefMap.get("cdunit"));
 		algo.withParameterRef(parameterRefMap.get("ifafm"));

@@ -427,24 +427,36 @@
         </ParameterGroup>
         <ParameterGroup>
             <Name>RadiationField</Name>
-            <ParameterRef ParameterName="AvmaxInf"/>
-            <ParameterRef ParameterName="NAvmax"/>
-            <ParameterRef ParameterName="deltaAvmax"/>
-            <ParameterRef ParameterName="AvmaxVariationMethod"/>
-            <ParameterRef ParameterName="FmrcInf"/>
-            <ParameterRef ParameterName="NFmrc"/>
-            <ParameterRef ParameterName="deltaFmrc"/>
-            <ParameterRef ParameterName="FmrcVariationMethod"/>
-            <ParameterRef ParameterName="RadmInf"/>
-            <ParameterRef ParameterName="NRadm"/>
-            <ParameterRef ParameterName="deltaRadm"/>
-            <ParameterRef ParameterName="RadmVariationMethod"/>
-            <ParameterRef ParameterName="RadpInf"/>
-            <ParameterRef ParameterName="NRadp"/>
-            <ParameterRef ParameterName="deltaRadp"/>
-            <ParameterRef ParameterName="RadpVariationMethod"/>
             <ParameterRef ParameterName="srcpp"/>
             <ParameterRef ParameterName="dsour"/>
+            <ParameterGroup>
+                <Name>Avmax</Name>
+                <ParameterRef ParameterName="AvmaxInf"/>
+                <ParameterRef ParameterName="NAvmax"/>
+                <ParameterRef ParameterName="deltaAvmax"/>
+                <ParameterRef ParameterName="AvmaxVariationMethod"/>
+            </ParameterGroup>
+            <ParameterGroup>
+                <Name>Fmrc</Name>
+                <ParameterRef ParameterName="FmrcInf"/>
+                <ParameterRef ParameterName="NFmrc"/>
+                <ParameterRef ParameterName="deltaFmrc"/>
+                <ParameterRef ParameterName="FmrcVariationMethod"/>
+            </ParameterGroup>
+            <ParameterGroup>
+                <Name>Radm</Name>
+                <ParameterRef ParameterName="RadmInf"/>
+                <ParameterRef ParameterName="NRadm"/>
+                <ParameterRef ParameterName="deltaRadm"/>
+                <ParameterRef ParameterName="RadmVariationMethod"/>
+            </ParameterGroup>
+            <ParameterGroup>
+                <Name>Radp</Name>
+                <ParameterRef ParameterName="RadpInf"/>
+                <ParameterRef ParameterName="NRadp"/>
+                <ParameterRef ParameterName="deltaRadp"/>
+                <ParameterRef ParameterName="RadpVariationMethod"/>
+            </ParameterGroup>
         </ParameterGroup>
         <ParameterGroup>
             <Name>Chemistry</Name>
@@ -470,15 +482,21 @@
             <ParameterRef ParameterName="ieqth"/>
             <ParameterRef ParameterName="ifisob"/>
             <ParameterRef ParameterName="ifisob"/>
-            <ParameterRef ParameterName="PresseInf"/>
-            <ParameterRef ParameterName="NPresse"/>
-            <ParameterRef ParameterName="deltaPresse"/>
-            <ParameterRef ParameterName="PresseVariationMethod"/>
-            <ParameterRef ParameterName="TgazInf"/>
-            <ParameterRef ParameterName="NTgaz"/>
-            <ParameterRef ParameterName="deltaTgaz"/>
-            <ParameterRef ParameterName="TgazVariationMethod"/>
             <ParameterRef ParameterName="vturb"/>
+            <ParameterGroup>
+                <Name>Presse</Name>
+                <ParameterRef ParameterName="PresseInf"/>
+                <ParameterRef ParameterName="NPresse"/>
+                <ParameterRef ParameterName="deltaPresse"/>
+                <ParameterRef ParameterName="PresseVariationMethod"/>
+            </ParameterGroup>
+            <ParameterGroup>
+                <Name>Tgaz</Name>
+                <ParameterRef ParameterName="TgazInf"/>
+                <ParameterRef ParameterName="NTgaz"/>
+                <ParameterRef ParameterName="deltaTgaz"/>
+                <ParameterRef ParameterName="TgazVariationMethod"/>
+            </ParameterGroup>
         </ParameterGroup>
         <ParameterGroup>
             <Name>Algorithms</Name>

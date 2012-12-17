@@ -31,6 +31,8 @@ public class GUITest {
 		//Initialise the description of parameters from their Skos concepts
 		SkossConverter.getInstance();
 		
+		System.out.println(Thread.currentThread()+" is the current tread");
+		
 		gui.createAndShowGUI();
 	}
 
