@@ -10,7 +10,8 @@ import net.ivoa.pdl.interpreter.criterion.CriterionInterpreterFactory;
 public class AlwaysConditionalStatementInterpreter extends
 		ConditionalStatementInterpreter {
 
-	public AlwaysConditionalStatementInterpreter(
+	
+         AlwaysConditionalStatementInterpreter(
 			AlwaysConditionalStatement statement) {
 		super();
 		this.statement = statement;

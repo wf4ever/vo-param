@@ -14,7 +14,7 @@ public class AtomicParameterExpressionParser extends ExpressionWithPowerParser {
 
 	private AtomicParameterExpression exp;
 
-	public AtomicParameterExpressionParser(AtomicParameterExpression exp) {
+	 AtomicParameterExpressionParser(AtomicParameterExpression exp) {
 		this.exp = exp;
 	}
 
@@ -50,6 +50,7 @@ public class AtomicParameterExpressionParser extends ExpressionWithPowerParser {
 
 	private Integer getParameterDimension(SingleParameter parameter)
 			throws InvalidExpression, InvalidParameterException {
+	    if(parameter.getDimension() != null){
 		List<GeneralParameter> dimensions = ExpressionParserFactory
 				.getInstance().buildParser(parameter.getDimension()).parse();
 		if (dimensions.size() > 1) {
@@ -62,6 +63,9 @@ public class AtomicParameterExpressionParser extends ExpressionWithPowerParser {
 						"Dimension must be an integer scalar value");
 			}
 		}
+	    }else {
+	        return Integer.valueOf(1); // just return one
+	    }
 	}
 
 	private List<GeneralParameter> withoutOperationParser(
@@ -73,7 +77,7 @@ public class AtomicParameterExpressionParser extends ExpressionWithPowerParser {
 
 		Integer parameterDimension = getParameterDimension(parameter);
 
-		if (userProvidedValue.size() != parameterDimension) {
+		if (userProvidedValue != null && userProvidedValue.size() != parameterDimension) {
 			throw new InvalidExpression(
 					"Incompatible user provided dimension for parameter "
 							+ parameter.getName());

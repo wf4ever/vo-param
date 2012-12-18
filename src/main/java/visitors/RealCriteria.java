@@ -2,8 +2,10 @@ package visitors;
 
 import java.security.InvalidParameterException;
 
+import net.ivoa.parameter.model.ParameterType;
+
 /**
- * @author Carlo Maria Zwšlf, Lerma/ObsPM 
+ * @author Carlo Maria Zwï¿½lf, Lerma/ObsPM 
  * 
  * Implementation of interface Icreteria for testing Double parameter type
  *
@@ -11,11 +13,11 @@ import java.security.InvalidParameterException;
 
 public class RealCriteria implements Icriteria {
 
-	private static final String authorizedCriteriaType = "real";
+	private static final ParameterType authorizedCriteriaType = ParameterType.REAL;
 
-	public boolean VerifyCriteria(String type, String value) {
+	public boolean VerifyCriteria(ParameterType type, String value) {
 		boolean isTypeDouble = false;
-		if (type.equalsIgnoreCase(this.getAuthorizedCriteriaType())) {
+		if (type == this.getAuthorizedCriteriaType()) {
 			// The type is known
 			isTypeDouble = true;
 			// Verify that value could be cast to double
@@ -29,7 +31,7 @@ public class RealCriteria implements Icriteria {
 		return isTypeDouble;
 	}
 
-	public String getAuthorizedCriteriaType() {
+	public ParameterType getAuthorizedCriteriaType() {
 		return this.authorizedCriteriaType;
 	}
 

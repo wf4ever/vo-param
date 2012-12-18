@@ -59,6 +59,7 @@ public class PDLSummaryPanel extends JPanel implements ActionListener{
 		// Loop for every group
 		for (int i = 0; i < handler.size(); i++) {
 			String currentGroupName = handler.get(i).getGroupName();
+			if(!handler.get(i).isGroupActive()) continue;
 			Boolean isGroupCompleted = true;
 			
 			// For every statement in the current group
@@ -93,7 +94,7 @@ public class PDLSummaryPanel extends JPanel implements ActionListener{
 		// Loop for every group
 		for (int i = 0; i < handler.size(); i++) {
 			String currentGroupName = handler.get(i).getGroupName();
-
+			if(!handler.get(i).isGroupActive()) continue;
 			if (null != handler.get(i).getGroupValid()
 					&& handler.get(i).getGroupValid()) {
 				toReturn.add(currentGroupName);
@@ -131,6 +132,7 @@ public class PDLSummaryPanel extends JPanel implements ActionListener{
 		// Loop for every group
 		for (int i = 0; i < handler.size(); i++) {
 			String currentGroupName = handler.get(i).getGroupName();
+			if(!handler.get(i).isGroupActive()) continue;
 			Boolean isGroupInError = false;
 			// Loop for every statement in the current group
 			if (null != handler.get(i).getStatementHelperList()) {

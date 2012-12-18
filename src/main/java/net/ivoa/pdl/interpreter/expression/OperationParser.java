@@ -37,7 +37,7 @@ public class OperationParser {
 			if (this.operation.getOperationType() == OperationType.SCALAR) {
 				// The variable used for storing the scalar product
 				GeneralParameter scalarProductResult = new GeneralParameter(
-						"0", ParameterType.INTEGER.toString(),
+						"0", ParameterType.INTEGER,
 						"result of scalar product", firstOperand.get(0)
 								.getVisitor());
 				for (int i = 0; i < firstOperand.size(); i++) {

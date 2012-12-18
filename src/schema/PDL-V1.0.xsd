@@ -60,7 +60,10 @@
       </xs:sequence>
    </xs:complexType>
    <xs:complexType name="ParameterReference">
-      <xs:attribute name="ParameterName" type="xs:string">
+        <xs:annotation>
+           <xs:documentation>A reference to a parameter</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="ParameterName" type="xs:string">
          <xs:annotation>
             <xs:documentation>The name of the parameter being referred to.</xs:documentation>
          </xs:annotation>
@@ -159,14 +162,40 @@
 
    <xs:complexType name="SingleParameter">
       <xs:sequence>
-         <xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1"> </xs:element>
-         <xs:element name="ParameterType" type="pm:ParameterType" minOccurs="1" maxOccurs="1"> </xs:element>
-         <xs:element name="UCD" type="xs:string" maxOccurs="1" minOccurs="0"> </xs:element>
-         <xs:element name="UType" type="xs:string" maxOccurs="1" minOccurs="0"/>
-         <xs:element name="SkossConcept" type="xs:string" minOccurs="0" maxOccurs="1"/>
-         <xs:element name="Unit" type="xs:string" minOccurs="0" maxOccurs="1"/>
-         <xs:element name="Precision" type="pm:Expression" minOccurs="0" maxOccurs="1"/>
-         <xs:element name="Dimension" type="pm:Expression" maxOccurs="1" minOccurs="1"/>
+         <xs:element name="Name" type="xs:string" minOccurs="1"
+            maxOccurs="1"
+         >
+         </xs:element>
+         <xs:element name="ParameterType" type="pm:ParameterType"
+            minOccurs="1" maxOccurs="1"
+         >
+         </xs:element>
+         <xs:element name="UCD" type="xs:string" maxOccurs="1"
+            minOccurs="0"
+         >
+         </xs:element>
+         <xs:element name="UType" type="xs:string" maxOccurs="1"
+            minOccurs="0"
+         />
+         <xs:element name="SkossConcept" type="xs:string" minOccurs="0"
+            maxOccurs="1"
+         />
+         <xs:element name="Unit" type="xs:string" minOccurs="0"
+            maxOccurs="1"
+         />
+         <xs:element name="Precision" type="pm:Expression" minOccurs="0"
+            maxOccurs="1"
+         />
+         <xs:element name="Dimension" type="pm:Expression" maxOccurs="1"
+            minOccurs="1"
+         />
+         <xs:element name="restriction" type="pm:AlwaysConditionalStatement" maxOccurs="1" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>A restriction on a parameter value - This restriction is to be evaluated before any constraints that occur in a group. 
+The purpose of this restriction here is to allow globally true constraints to be placed on a parameter so that they do not have to be repeated in the parameter groups wherever a parameter might appear.
+Although the grammar does not formally disallow it, any constraint here should not reference any other parameters as that would increase the likelyhood of contradictions.
+</xs:documentation>
+            </xs:annotation></xs:element>
       </xs:sequence>
       <xs:attribute name="dependency">
          <xs:simpleType>
@@ -179,20 +208,48 @@
    </xs:complexType>
 
    <xs:complexType name="ParameterGroup">
-      <xs:sequence>
-         <xs:element name="Name" type="xs:string" maxOccurs="1" minOccurs="1"/>
-         <xs:element name="ParameterRef" type="pm:ParameterReference" minOccurs="0"
-            maxOccurs="unbounded"> </xs:element>
-         <xs:element name="ConstraintOnGroup" type="pm:ConstraintOnGroup" maxOccurs="1"
-            minOccurs="0"/>
-         <xs:element name="ParameterGroup" type="pm:ParameterGroup" minOccurs="0"
-            maxOccurs="unbounded"/>
+        <xs:annotation>
+           <xs:documentation>A logical grouping of parameters</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+         <xs:element name="Name" type="xs:string" maxOccurs="1"
+            minOccurs="1"
+         >
+            <xs:annotation>
+               <xs:documentation>The name of the parameter group which can be used for display</xs:documentation>
+            </xs:annotation></xs:element>
+         <xs:element name="ParameterRef" type="pm:ParameterReference"
+            minOccurs="0" maxOccurs="unbounded"
+         >
+                <xs:annotation>
+                   <xs:documentation>The list of parameters that are in the group</xs:documentation>
+                </xs:annotation>
+         </xs:element>
+         <xs:element name="ConstraintOnGroup"
+            type="pm:ConstraintOnGroup" maxOccurs="1" minOccurs="0"
+         >
+            <xs:annotation>
+               <xs:documentation>The constraints on parameters in the group</xs:documentation>
+            </xs:annotation></xs:element>
+         <xs:element name="ParameterGroup" type="pm:ParameterGroup"
+            minOccurs="0" maxOccurs="unbounded"
+         >
+            <xs:annotation>
+               <xs:documentation>possibly nested parameter groups</xs:documentation>
+            </xs:annotation></xs:element>
+         <xs:element name="Active" type="pm:WhenConditionalStatement" maxOccurs="1" minOccurs="0">
+            <xs:annotation>
+               <xs:documentation>It the goup active? i.e. should it be displayed - The default is yes if there is no active element, otherwise it is the result of the evaluation of the When conditional statement.</xs:documentation>
+            </xs:annotation></xs:element>
       </xs:sequence>
    </xs:complexType>
 
 
    <xs:complexType name="ConstraintOnGroup">
-      <xs:sequence>
+        <xs:annotation>
+           <xs:documentation>The possible constraints on the parameters in a group</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
          <xs:element name="ConditionalStatement" type="pm:ConditionalStatement" minOccurs="0"
             maxOccurs="unbounded"/>
       </xs:sequence>
@@ -289,6 +346,9 @@
       </xs:complexContent>
    </xs:complexType>
    <xs:complexType name="BelongToSet">
+        <xs:annotation>
+           <xs:documentation>The value must belong to a set</xs:documentation>
+        </xs:annotation>
         <xs:complexContent>
          <xs:extension base="pm:AbstractCondition">
             <xs:sequence>
@@ -481,4 +541,24 @@
          </xs:annotation>
       </xs:attribute>
    </xs:attributeGroup>
+
+   <xs:complexType name="WhenConditionalStatement">
+      <xs:annotation>
+         <xs:documentation>
+            A statement that has only a True or a False value
+         </xs:documentation>
+      </xs:annotation>
+      <xs:complexContent>
+         <xs:extension base="pm:ConditionalStatement">
+            <xs:sequence>
+               <xs:element name="when" type="pm:When"></xs:element>
+            </xs:sequence>
+         </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
+   <xs:complexType name="When">
+      <xs:complexContent>
+         <xs:extension base="pm:ConditionalClause"></xs:extension>
+      </xs:complexContent>
+   </xs:complexType>
 </xs:schema>

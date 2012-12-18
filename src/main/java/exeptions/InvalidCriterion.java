@@ -1,6 +1,6 @@
 package exeptions;
 
-public class InvalidCriterion extends Exception {
+public class InvalidCriterion extends PDLException {
 	private static final long serialVersionUID = -5315405384001086653L;
 
 	public InvalidCriterion(String message) {

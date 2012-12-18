@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import net.ivoa.parameter.model.ParameterType;
 import net.ivoa.parameter.model.SingleParameter;
 import net.ivoa.pdl.interpreter.expression.ExpressionParserFactory;
 import net.ivoa.pdl.interpreter.utilities.SkossConverter;
@@ -36,7 +37,7 @@ public abstract class PDLBaseParamPanel extends JPanel implements FocusListener 
 		System.out.println(Thread.currentThread()+" is the current tread");
 		this.paramName = parameter.getName();
 		this.paramUnit = parameter.getUnit();
-		this.paramType = parameter.getParameterType().toString();
+		this.paramType = parameter.getParameterType();
 		this.skossConcept = parameter.getSkossConcept();
 		this.paramDimension = null;
 		try {
@@ -79,7 +80,7 @@ public abstract class PDLBaseParamPanel extends JPanel implements FocusListener 
 	private JLabel paramLabel;
 	protected String paramName;
 	private String paramUnit;
-	private String paramType;
+	private ParameterType paramType;
 	private String paramDimension;
 	private String skossConcept;
 

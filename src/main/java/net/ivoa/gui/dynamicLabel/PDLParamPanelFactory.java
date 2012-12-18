@@ -3,8 +3,6 @@ package net.ivoa.gui.dynamicLabel;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JPanel;
-
 import net.ivoa.parameter.model.AbstractCriterion;
 import net.ivoa.parameter.model.AlwaysConditionalStatement;
 import net.ivoa.parameter.model.AtomicParameterExpression;
@@ -36,29 +34,39 @@ public class PDLParamPanelFactory {
 			SingleParameter parameter) {
 		List<StatementHelperContainer> helperList = ghh
 				.getStatementHelperList();
+	    
+	    PDLBaseParamPanel panel;
+	        if(parameter.getRestriction() != null){
+	            StatementHelperContainer localHelper = new StatementHelperContainer(parameter.getRestriction());
+	            localHelper.setStatementSwitched(true);
+	            if ((panel = test(localHelper, parameter))!=null)
+	            {
+	                return panel;
+	            }
+	        }
 
 		if (null == helperList) {
 			return buildBasicPanel(parameter);
 		} else {
-			for (StatementHelperContainer localHelper : helperList) {
-				PDLBaseParamPanel panel = test(localHelper, parameter);
-				if (null != panel) {
-					return panel;
-				}
+		for (StatementHelperContainer localHelper : helperList) {
+			 panel = test(localHelper, parameter);
+			if (null != panel) {
+				return panel;
 			}
-			return buildBasicPanel(parameter);
 		}
-
+		return buildBasicPanel(parameter);
 	}
-
-	private PDLBaseParamPanel buildBasicPanel(SingleParameter parameter) {
+	
+	}
+	
+	private PDLBaseParamPanel buildBasicPanel(SingleParameter parameter){
 		if (parameter.getParameterType() == ParameterType.BOOLEAN) {
 			return new PDLBooleanParamPanel(parameter);
 		} else {
 			return new PDLTextParamPanel(parameter);
 		}
 	}
-
+	
 	private PDLBaseParamPanel test(StatementHelperContainer statementHelp,
 			SingleParameter parameter) {
 

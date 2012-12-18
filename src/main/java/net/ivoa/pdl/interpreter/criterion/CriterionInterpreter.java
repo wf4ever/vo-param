@@ -9,7 +9,7 @@ import net.ivoa.pdl.interpreter.condition.ConditionInterpreterFactory;
 
 public class CriterionInterpreter extends AbstractCriterionInterpreter {
 
-	public CriterionInterpreter(Criterion criterion) {
+       CriterionInterpreter(Criterion criterion) {
 		super();
 		this.criterion = criterion;
 	}

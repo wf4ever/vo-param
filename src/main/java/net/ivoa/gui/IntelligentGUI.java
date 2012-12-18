@@ -6,9 +6,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.DefaultMutableTreeNode;
-
-
 import net.ivoa.parameter.model.Service;
 import net.ivoa.pdl.interpreter.groupInterpreter.GroupHandlerHelper;
 import net.ivoa.pdl.interpreter.groupInterpreter.GroupProcessor;
@@ -27,8 +24,8 @@ public class IntelligentGUI implements TreeSelectionListener, ActionListener {
 	private PDLTree groupTree;
 	private GroupPanel groupPanel;
 	private PDLSummaryPanel serverPanel;
-
-	private String activeNodeName;
+	
+	private GroupHandlerHelper currentGroupH;
 
 	private JFrame frame;
 	private JFrame frameGR;
@@ -46,7 +43,7 @@ public class IntelligentGUI implements TreeSelectionListener, ActionListener {
 
 		// Add content to the window.
 
-		this.groupTree = new PDLTree(this.gp.getGroupsHandler(), this);
+		this.groupTree = new PDLTree(this.gp.getGhh(), this);
 		this.groupPanel = new GroupPanel(this);
 		
 		this.serverPanel = new PDLSummaryPanel(this.gp);
@@ -82,18 +79,16 @@ public class IntelligentGUI implements TreeSelectionListener, ActionListener {
 		
 		System.out.println(Thread.currentThread()+" is the current tread");
 		
-		DefaultMutableTreeNode node = (DefaultMutableTreeNode) e
+		currentGroupH = (GroupHandlerHelper) e
 				.getNewLeadSelectionPath().getLastPathComponent();
-		this.activeNodeName = node.toString();
-		this.updateGroupPanel();
+		if(currentGroupH.isGroupActive())
+		    this.updateGroupPanel();
 
 	}
 
 	private void updateGroupPanel() {
-		DefaultMutableTreeNode node = this.groupTree
-				.getNodeFromName(this.activeNodeName);
-		GroupHandlerHelper helper = (GroupHandlerHelper) node.getUserObject();
-		this.groupPanel.updateGroupPanel(helper);
+		
+		this.groupPanel.updateGroupPanel(currentGroupH);
 		this.groupPanel.setSize(450, 450);
 		this.groupPanel.repaint();
 	}
@@ -112,7 +107,7 @@ public class IntelligentGUI implements TreeSelectionListener, ActionListener {
 	}
 
 	private void refreshTree() {
-		this.groupTree = new PDLTree(this.gp.getGroupsHandler(), this);
+		this.groupTree = new PDLTree(this.gp.getGhh(), this);
 	}
 
 }

@@ -3,6 +3,7 @@ package net.ivoa.pdl.interpreter.conditionalStatement;
 import net.ivoa.parameter.model.AlwaysConditionalStatement;
 import net.ivoa.parameter.model.ConditionalStatement;
 import net.ivoa.parameter.model.IfThenConditionalStatement;
+import net.ivoa.parameter.model.WhenConditionalStatement;
 import exeptions.InvalidConditionalStatement;
 
 public class ConditionalStatementInterpreterFactory {
@@ -25,6 +26,11 @@ public class ConditionalStatementInterpreterFactory {
 			return new AlwaysConditionalStatementInterpreter(
 					(AlwaysConditionalStatement) statement);
 		}
+	        if (statement.getClass() == WhenConditionalStatement.class) {
+	                        return new WhenConditionalStatementInterpreter(
+	                                        (WhenConditionalStatement) statement);
+	        }
+
 		throw new InvalidConditionalStatement("Statement type non handled "
 				+ statement.getClass());
 	}

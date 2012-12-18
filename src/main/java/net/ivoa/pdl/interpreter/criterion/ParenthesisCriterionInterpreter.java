@@ -11,7 +11,7 @@ import exeptions.InvalidParameterException;
 public class ParenthesisCriterionInterpreter extends
 		AbstractCriterionInterpreter {
 
-	public ParenthesisCriterionInterpreter(ParenthesisCriterion criterion) {
+        ParenthesisCriterionInterpreter(ParenthesisCriterion criterion) {
 		super();
 		this.criterion = criterion;
 	}

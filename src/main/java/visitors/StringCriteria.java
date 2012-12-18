@@ -1,7 +1,9 @@
 package visitors;
 
+import net.ivoa.parameter.model.ParameterType;
+
 /**
- * @author Carlo Maria Zwšlf, Lerma/ObsPM 
+ * @author Carlo Maria Zwï¿½lf, Lerma/ObsPM 
  * 
  * Implementation of interface Icreteria for testing String parameter type
  *
@@ -9,16 +11,16 @@ package visitors;
 
 public class StringCriteria implements Icriteria{
 	
-	private static final String authorizedCriteriaType = "String";
+	private static final ParameterType authorizedCriteriaType = ParameterType.STRING;
 	
-	public String getAuthorizedCriteriaType() {
+	public ParameterType getAuthorizedCriteriaType() {
 		return this.authorizedCriteriaType;
 	}
 
 
-	public boolean VerifyCriteria(String type, String value) {
+	public boolean VerifyCriteria(ParameterType type, String value) {
 		boolean isTypeString = false;
-		if (type.equalsIgnoreCase(this.getAuthorizedCriteriaType())) {
+		if (type == this.getAuthorizedCriteriaType()) {
 			// The type is known
 			isTypeString = true;
 		}

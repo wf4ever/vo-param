@@ -1,9 +1,10 @@
 package CommonsObjects;
 
+import net.ivoa.parameter.model.ParameterType;
 import visitors.Ivisitor;
 
 /**
- * @author Carlo Maria Zwšlf, Lerma/ObsPM
+ * @author Carlo Maria Zwï¿½lf, Lerma/ObsPM
  * 
  *         Class describing general parameters wich may be both input and
  *         outputs of a Job Object.
@@ -28,7 +29,7 @@ public class GeneralParameter {
 	 * contained in the value attribute. E.g. if your value is the integer 3,
 	 * then the String value is "Integer"
 	 */
-	private String type;
+	private ParameterType type;
 
 	/**
 	 * This attribute contains the functional description of parameter provided
@@ -47,7 +48,7 @@ public class GeneralParameter {
 	 *            will be used for checking the validity of the data contained
 	 *            in the GeneralParameter attributes.
 	 */
-	public GeneralParameter(String value, String type, String description,
+	public GeneralParameter(String value, ParameterType type, String description,
 			Ivisitor visitor) {
 		super();
 		this.value = value;
@@ -70,7 +71,7 @@ public class GeneralParameter {
 		return value;
 	}
 
-	public String getType() {
+	public ParameterType getType() {
 		return type;
 	}
 

@@ -16,7 +16,7 @@ public class BelongToSetInterpreter extends ConditionInterpreter {
 
 	private BelongToSet condition;
 
-	public BelongToSetInterpreter(BelongToSet condition) {
+        BelongToSetInterpreter(BelongToSet condition) {
 		super();
 		this.condition = condition;
 	}

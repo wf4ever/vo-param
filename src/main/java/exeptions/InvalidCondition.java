@@ -1,6 +1,6 @@
 package exeptions;
 
-public class InvalidCondition extends Exception {
+public class InvalidCondition extends PDLException {
 	private static final long serialVersionUID = -5315405384001086653L;
 
 	public InvalidCondition(String message) {

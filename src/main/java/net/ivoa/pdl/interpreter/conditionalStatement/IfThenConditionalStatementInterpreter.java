@@ -12,7 +12,7 @@ public class IfThenConditionalStatementInterpreter extends
 
 	private IfThenConditionalStatement statement;
 
-	public IfThenConditionalStatementInterpreter(
+	 IfThenConditionalStatementInterpreter(
 			IfThenConditionalStatement statement) {
 		super();
 		this.statement = statement;

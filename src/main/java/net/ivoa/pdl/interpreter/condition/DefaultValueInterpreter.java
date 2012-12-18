@@ -7,6 +7,7 @@ import exeptions.InvalidParameterException;
 
 public class DefaultValueInterpreter extends ConditionInterpreter{
 
+        
 	@Override
 	public boolean isConditionVerified(Expression exp)
 			throws InvalidExpression, InvalidParameterException,

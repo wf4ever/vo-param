@@ -13,7 +13,7 @@ public class FunctionExpressionParser extends ExpressionWithPowerParser{
 	private FunctionExpression exp;
 	
 	
-	public FunctionExpressionParser(FunctionExpression exp) {
+        FunctionExpressionParser(FunctionExpression exp) {
 		super();
 		this.exp = exp;
 	}
