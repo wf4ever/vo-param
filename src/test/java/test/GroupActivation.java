@@ -1,6 +1,10 @@
 package test;
 
 
+import static net.ivoa.pdl.interpreter.utilities.ConstantUtils.mkVectorConstant;
+import static net.ivoa.pdl.interpreter.utilities.ConstantUtils.mkconst;
+import static net.ivoa.pdl.interpreter.utilities.ConstantUtils.mktconst;
+
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +38,6 @@ import net.ivoa.parameter.model.When;
 import net.ivoa.parameter.model.WhenConditionalStatement;
 import exeptions.InvalidExpression;
 import exeptions.InvalidParameterException;
-import static net.ivoa.pdl.interpreter.utilities.ConstantUtils.*;
 
 
 public class GroupActivation extends BaseExample {
@@ -136,6 +139,19 @@ public class GroupActivation extends BaseExample {
 		speedZ.setUnit("m/s");
 		speedZ.setDimension(mktconst("1",ParameterType.INTEGER));
 
+		
+		// Creating a parameter for basic Test
+		SingleParameter positive = factory.createSingleParameter();
+		positive.setName("positive");
+		positive.setParameterType(ParameterType.REAL);
+		positive.setPrecision(mktconst("0.0001",ParameterType.REAL));
+		positive.setSkossConcept("SKOSS_POSITIVE");
+		positive.setUnit("none");
+		positive.setDimension(mktconst("1",ParameterType.INTEGER));
+         
+		positive.setRestriction((new AlwaysConditionalStatement().withAlways(new Always().withCriterion(new Criterion().withConditionType(
+                new ValueLargerThan().withReached(true).withValue(mktconst("1",ParameterType.INTEGER) ))))));
+         
 	        //alternatives in spherical coordinates
 		//radial component
                 SingleParameter rdot = factory.createSingleParameter();
@@ -205,6 +221,7 @@ public class GroupActivation extends BaseExample {
                 parameters.add(rdot);
                 parameters.add(phidot);
                 parameters.add(thetadot);
+                parameters.add(positive);
                 
 
                 
@@ -328,6 +345,7 @@ public class GroupActivation extends BaseExample {
 		inputsPG.getParameterRef().add(massRef);
 		inputsPG.getParameterRef().add(timeref);
 		inputsPG.getParameterRef().add(mkRef(coordtyp));
+		inputsPG.getParameterRef().add(mkRef(positive));
 
 		inputsPG.getParameterGroup().add(speed);
 		inputsPG.getParameterGroup().add(speedsp);
