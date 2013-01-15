@@ -54,13 +54,13 @@ public class PDRV3Description extends BaseExample {
 		ParameterGroup algo = factory.createParameterGroup().withName("Algorithms");
 		ParameterGroup technical = factory.createParameterGroup().withName("TechnicalParameters");
 		
-		ParameterGroup avmax = factory.createParameterGroup().withName("Avmax");
-		ParameterGroup fmrc = factory.createParameterGroup().withName("Fmrc");
-		ParameterGroup radm = factory.createParameterGroup().withName("Radm");
-		ParameterGroup radp = factory.createParameterGroup().withName("Radp");
+		ParameterGroup avmax = factory.createParameterGroup().withName("Variating: Avmax");
+		ParameterGroup fmrc = factory.createParameterGroup().withName("Variating: Fmrc");
+		ParameterGroup radm = factory.createParameterGroup().withName("Variating: Radm");
+		ParameterGroup radp = factory.createParameterGroup().withName("Variating: Radp");
 		
-		ParameterGroup presse = factory.createParameterGroup().withName("Presse");
-		ParameterGroup tgaz = factory.createParameterGroup().withName("Tgaz");
+		ParameterGroup presse = factory.createParameterGroup().withName("Variating: Presse");
+		ParameterGroup tgaz = factory.createParameterGroup().withName("Variating: Tgaz");
 		
 		
 		technical.withParameterRef(parameterRefMap.get("mail"));

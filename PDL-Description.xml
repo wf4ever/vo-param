@@ -430,28 +430,28 @@
             <ParameterRef ParameterName="srcpp"/>
             <ParameterRef ParameterName="dsour"/>
             <ParameterGroup>
-                <Name>Avmax</Name>
+                <Name>Variating: Avmax</Name>
                 <ParameterRef ParameterName="AvmaxInf"/>
                 <ParameterRef ParameterName="NAvmax"/>
                 <ParameterRef ParameterName="deltaAvmax"/>
                 <ParameterRef ParameterName="AvmaxVariationMethod"/>
             </ParameterGroup>
             <ParameterGroup>
-                <Name>Fmrc</Name>
+                <Name>Variating: Fmrc</Name>
                 <ParameterRef ParameterName="FmrcInf"/>
                 <ParameterRef ParameterName="NFmrc"/>
                 <ParameterRef ParameterName="deltaFmrc"/>
                 <ParameterRef ParameterName="FmrcVariationMethod"/>
             </ParameterGroup>
             <ParameterGroup>
-                <Name>Radm</Name>
+                <Name>Variating: Radm</Name>
                 <ParameterRef ParameterName="RadmInf"/>
                 <ParameterRef ParameterName="NRadm"/>
                 <ParameterRef ParameterName="deltaRadm"/>
                 <ParameterRef ParameterName="RadmVariationMethod"/>
             </ParameterGroup>
             <ParameterGroup>
-                <Name>Radp</Name>
+                <Name>Variating: Radp</Name>
                 <ParameterRef ParameterName="RadpInf"/>
                 <ParameterRef ParameterName="NRadp"/>
                 <ParameterRef ParameterName="deltaRadp"/>
@@ -484,14 +484,14 @@
             <ParameterRef ParameterName="ifisob"/>
             <ParameterRef ParameterName="vturb"/>
             <ParameterGroup>
-                <Name>Presse</Name>
+                <Name>Variating: Presse</Name>
                 <ParameterRef ParameterName="PresseInf"/>
                 <ParameterRef ParameterName="NPresse"/>
                 <ParameterRef ParameterName="deltaPresse"/>
                 <ParameterRef ParameterName="PresseVariationMethod"/>
             </ParameterGroup>
             <ParameterGroup>
-                <Name>Tgaz</Name>
+                <Name>Variating: Tgaz</Name>
                 <ParameterRef ParameterName="TgazInf"/>
                 <ParameterRef ParameterName="NTgaz"/>
                 <ParameterRef ParameterName="deltaTgaz"/>
