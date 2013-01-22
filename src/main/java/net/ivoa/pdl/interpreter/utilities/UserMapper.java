@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import visitors.GeneralParameterVisitor;
+//import visitors.GeneralParameterVisitor;
 
-import com.sun.xml.xsom.impl.scd.Iterators.Map;
+//import com.sun.xml.xsom.impl.scd.Iterators.Map;
 
-import net.ivoa.parameter.model.ParameterType;
+//import net.ivoa.parameter.model.ParameterType;
 import net.ivoa.parameter.model.SingleParameter;
 import CommonsObjects.GeneralParameter;
 
