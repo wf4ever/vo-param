@@ -589,6 +589,63 @@ public class Shock extends BaseExample {
 				.withAlways(new Always().withCriterion(TimeJRange))
 				.withComment("TimeJRange value must be >0 and < 1e8");
 
+		// defining constraint on SOS
+		AtomicParameterExpression SOSExpr = factory
+				.createAtomicParameterExpression().withParameterRef(SOSRef);
+
+		Criterion SOSSet = new Criterion()
+				.withExpression(SOSExpr)
+				.withConditionType(
+						new BelongToSet()
+								.withValue(mktconst("AD", ParameterType.STRING))
+								.withValue(mktconst("CD", ParameterType.STRING))
+								.withValue(mktconst("FD", ParameterType.STRING)));
+
+		AlwaysConditionalStatement SOSSetAlways = new AlwaysConditionalStatement()
+				.withAlways(new Always().withCriterion(SOSSet))
+				.withComment(
+						"SOS values are : 'AD'(cm-3), 'CD'(cm-2) or 'FD'(n(x)/nH)");
+
+		// defining constraint on LEOS
+		AtomicParameterExpression LEOSExpr = factory
+				.createAtomicParameterExpression().withParameterRef(LEOSRef);
+
+		Criterion LEOSSet = new Criterion()
+				.withExpression(LEOSExpr)
+				.withConditionType(
+						new BelongToSet()
+								.withValue(mktconst("AD", ParameterType.STRING))
+								.withValue(mktconst("CD", ParameterType.STRING))
+								.withValue(
+										mktconst("ln(N/g)",
+												ParameterType.STRING)));
+
+		AlwaysConditionalStatement LEOSSetAlways = new AlwaysConditionalStatement()
+				.withAlways(new Always().withCriterion(LEOSSet)).withComment(
+						"LEOS values are : 'AD'(cm-3), 'CD'(cm-2) or ln(N/g)");
+
+		// defining constraint on LIOS
+		AtomicParameterExpression LIOSExpr = factory
+				.createAtomicParameterExpression().withParameterRef(LIOSRef);
+
+		Criterion LIOSSet = new Criterion()
+				.withExpression(LIOSExpr)
+				.withConditionType(
+						new BelongToSet()
+								.withValue(
+										mktconst("local", ParameterType.STRING))
+								.withValue(
+										mktconst("integrated",
+												ParameterType.STRING))
+								.withValue(
+										mktconst("ln(N/g)",
+												ParameterType.STRING)));
+
+		AlwaysConditionalStatement LIOSSetAlways = new AlwaysConditionalStatement()
+				.withAlways(new Always().withCriterion(LIOSSet))
+				.withComment(
+						"LIOS values are : 'local'(erg/s/cm3) or 'integrated'(erg/s/cm2/sr)");
+
 		// defining some conditional criteria
 		AtomicParameterExpression shockTypeExpr2 = factory
 				.createAtomicParameterExpression().withParameterRef(
@@ -717,6 +774,11 @@ public class Shock extends BaseExample {
 		outputSpecifications.getParameterRef().add(SOSRef);
 		outputSpecifications.getParameterRef().add(LEOSRef);
 		outputSpecifications.getParameterRef().add(LIOSRef);
+
+		outputSpecifications.withConstraintOnGroup(new ConstraintOnGroup()
+				.withConditionalStatement(SOSSetAlways)
+				.withConditionalStatement(LEOSSetAlways)
+				.withConditionalStatement(LIOSSetAlways));
 
 		inputsPG.getParameterRef().add(mailRef);
 
