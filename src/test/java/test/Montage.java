@@ -3,6 +3,7 @@ package test;
 import static net.ivoa.pdl.interpreter.utilities.ConstantUtils.mkconst;
 import static net.ivoa.pdl.interpreter.utilities.ConstantUtils.mktconst;
 
+import java.awt.image.SampleModel;
 import java.io.FileNotFoundException;
 
 import javax.xml.bind.JAXBException;
@@ -10,6 +11,7 @@ import javax.xml.bind.PropertyException;
 
 import net.ivoa.parameter.model.Always;
 import net.ivoa.parameter.model.AlwaysConditionalStatement;
+import net.ivoa.parameter.model.AtomicConstantExpression;
 import net.ivoa.parameter.model.AtomicParameterExpression;
 import net.ivoa.parameter.model.ConstraintOnGroup;
 import net.ivoa.parameter.model.Criterion;
@@ -22,18 +24,19 @@ import net.ivoa.parameter.model.ParameterType;
 import net.ivoa.parameter.model.Parameters;
 import net.ivoa.parameter.model.Service;
 import net.ivoa.parameter.model.SingleParameter;
+import net.ivoa.parameter.model.ValueDifferentFrom;
 import net.ivoa.parameter.model.ValueInRange;
 import net.ivoa.parameter.model.ValueLargerThan;
 import net.ivoa.parameter.model.ValueSmallerThan;
 
 public class Montage extends BaseExample {
-	
-	
-    public static void main(String[] args) throws PropertyException, FileNotFoundException, JAXBException {
-        Montage example = new Montage();
-        example.marshall();
-    }
-	
+
+	public static void main(String[] args) throws PropertyException,
+			FileNotFoundException, JAXBException {
+		Montage example = new Montage();
+		example.marshall();
+	}
+
 	@Override
 	protected Service buildService() {
 
@@ -180,6 +183,17 @@ public class Montage extends BaseExample {
 		ParameterReference CROTA2_REF = new ParameterReference()
 				.withParameterName(CROTA2.getName());
 
+		SingleParameter ImageLocation = factory.createSingleParameter();
+		ImageLocation.setName("ImageLocation");
+		ImageLocation.setSkossConcept("Folder where the raw images are stored");
+		ImageLocation.setParameterType(ParameterType.STRING);
+		ImageLocation.setPrecision(mkconst(0.0));
+		ImageLocation.setUnit("None");
+		ImageLocation.setDimension(mktconst("1", ParameterType.INTEGER));
+		parameterList.getParameter().add(ImageLocation);
+		ParameterReference ImageLocationREF = new ParameterReference()
+				.withParameterName(ImageLocation.getName());
+
 		SingleParameter EQUINOX = factory.createSingleParameter();
 		EQUINOX.setName("EQUINOX");
 		EQUINOX.setSkossConcept("Rotation angle of image around the reference pixel");
@@ -213,6 +227,7 @@ public class Montage extends BaseExample {
 		coordinatesGroup.getParameterRef().add(CDELT2_REF);
 		coordinatesGroup.getParameterRef().add(CROTA2_REF);
 		coordinatesGroup.getParameterRef().add(EQUINOX_REF);
+		coordinatesGroup.getParameterRef().add(ImageLocationREF);
 
 		ParameterGroup technical = factory.createParameterGroup().withName(
 				"Technical parameters");
@@ -272,6 +287,21 @@ public class Montage extends BaseExample {
 				new DefaultValue().withValue(mktconst("2000",
 						ParameterType.STRING)));
 
+		// defining criterion for the ImageLocation default value
+		AtomicParameterExpression ImageLocationExpr = factory
+				.createAtomicParameterExpression().withParameterRef(
+						ImageLocationREF);
+
+		Criterion ImageLocationDefault = new Criterion().withExpression(
+				ImageLocationExpr).withConditionType(
+				new DefaultValue().withValue(mktconst("SampleLocation",
+						ParameterType.STRING)));
+
+		AlwaysConditionalStatement ImageLocationAlways = new AlwaysConditionalStatement()
+				.withAlways(new Always().withCriterion(ImageLocationDefault))
+				.withComment(
+						"Default value for image location is 'SampleLocation'");
+
 		// Defining the operations
 
 		AtomicParameterExpression CRPIX1Expression = new AtomicParameterExpression()
@@ -323,14 +353,44 @@ public class Montage extends BaseExample {
 		AlwaysConditionalStatement EQUINOXAlways = new AlwaysConditionalStatement()
 				.withAlways(new Always().withCriterion(EQUINOXDefaultValue))
 				.withComment("default value for EQUINOX is 2000");
-		
-		AlwaysConditionalStatement HorizontalAlways = new AlwaysConditionalStatement().withAlways(new Always().withCriterion(HorizontalPositive))
-				.withComment("The horizontal reference pixel should be included in the Image: CRPIX1<=NAXIS1");
-		
-		AlwaysConditionalStatement VerticalAlways = new AlwaysConditionalStatement().withAlways(new Always().withCriterion(VerticalPositive))
-		.withComment("The vertical reference pixel should be included in the Image: CRPIX2<=NAXIS2");
-		
-		ConstraintOnGroup coordinatesConstraints = factory.createConstraintOnGroup();
+
+		AlwaysConditionalStatement HorizontalAlways = new AlwaysConditionalStatement()
+				.withAlways(new Always().withCriterion(HorizontalPositive))
+				.withComment(
+						"The horizontal reference pixel should be included in the Image: CRPIX1<=NAXIS1");
+
+		AlwaysConditionalStatement VerticalAlways = new AlwaysConditionalStatement()
+				.withAlways(new Always().withCriterion(VerticalPositive))
+				.withComment(
+						"The vertical reference pixel should be included in the Image: CRPIX2<=NAXIS2");
+
+		// constraint on CDELT1 and CELDT2
+		AtomicParameterExpression CDELT1Expr = new AtomicParameterExpression()
+				.withParameterRef(CDELT1_REF);
+
+		Criterion CDELT1_CRIT = new Criterion().withExpression(CDELT1Expr)
+				.withConditionType(
+						new ValueDifferentFrom().withValue((mktconst("0",
+								ParameterType.INTEGER))));
+
+		AlwaysConditionalStatement CDELT1_Always = new AlwaysConditionalStatement()
+				.withAlways(new Always().withCriterion(CDELT1_CRIT))
+				.withComment("CDELT1 must be different from 0");
+
+		AtomicParameterExpression CDELT2Expr = new AtomicParameterExpression()
+				.withParameterRef(CDELT2_REF);
+
+		Criterion CDELT2_CRIT = new Criterion().withExpression(CDELT2Expr)
+				.withConditionType(
+						new ValueDifferentFrom().withValue((mktconst("0",
+								ParameterType.INTEGER))));
+
+		AlwaysConditionalStatement CDELT2_Always = new AlwaysConditionalStatement()
+				.withAlways(new Always().withCriterion(CDELT2_CRIT))
+				.withComment("CDELT2 must be different from 0");
+
+		ConstraintOnGroup coordinatesConstraints = factory
+				.createConstraintOnGroup();
 		coordinatesConstraints.getConditionalStatement().add(NAXIS1Always);
 		coordinatesConstraints.getConditionalStatement().add(NAXIS2Always);
 		coordinatesConstraints.getConditionalStatement().add(CRVAL1Always);
@@ -338,20 +398,21 @@ public class Montage extends BaseExample {
 		coordinatesConstraints.getConditionalStatement().add(EQUINOXAlways);
 		coordinatesConstraints.getConditionalStatement().add(HorizontalAlways);
 		coordinatesConstraints.getConditionalStatement().add(VerticalAlways);
-		
+		coordinatesConstraints.getConditionalStatement().add(CDELT1_Always);
+		coordinatesConstraints.getConditionalStatement().add(CDELT2_Always);
+		coordinatesConstraints.getConditionalStatement().add(ImageLocationAlways);
+
 		coordinatesGroup.setConstraintOnGroup(coordinatesConstraints);
-		
+
 		ParameterGroup inputsPG = factory.createParameterGroup().withName(
-		"inputs");
-		
+				"inputs");
+
 		inputsPG.getParameterGroup().add(coordinatesGroup);
 		inputsPG.getParameterGroup().add(technical);
-		
-		
+
 		service.setInputs(inputsPG);
 		service.setOutputs(outputsPG);
-		
-		
+
 		return service;
 	}
 }
