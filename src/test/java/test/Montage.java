@@ -204,6 +204,20 @@ public class Montage extends BaseExample {
 		parameterList.getParameter().add(EQUINOX);
 		ParameterReference EQUINOX_REF = new ParameterReference()
 				.withParameterName(EQUINOX.getName());
+		
+		
+		// Defining the parameter for the result
+		
+		SingleParameter result = factory.createSingleParameter();
+		result.setName("fileResult");
+		result.setSkossConcept("url to the tar file containing the mosaiced fits files");
+		result.setParameterType(ParameterType.STRING);
+		result.setPrecision(mkconst(0.0));
+		result.setUnit("None");
+		result.setDimension(mktconst("1", ParameterType.INTEGER));
+		parameterList.getParameter().add(result);
+		ParameterReference result_REF = new ParameterReference()
+				.withParameterName(result.getName());
 
 		// Adding the parameter list to the service
 		service.setParameters(parameterList);
@@ -212,8 +226,9 @@ public class Montage extends BaseExample {
 		// Creating input and output parameter group
 		ParameterGroup coordinatesGroup = factory.createParameterGroup()
 				.withName("Coordinates Header");
-		ParameterGroup outputsPG = factory.createParameterGroup().withName(
-				"outputs");
+		
+	
+		
 
 		coordinatesGroup.getParameterRef().add(NAXIS1_REF);
 		coordinatesGroup.getParameterRef().add(NAXIS2_REF);
@@ -409,7 +424,14 @@ public class Montage extends BaseExample {
 
 		inputsPG.getParameterGroup().add(coordinatesGroup);
 		inputsPG.getParameterGroup().add(technical);
-
+		
+		
+		ParameterGroup outputsPG = factory.createParameterGroup().withName(
+				"outputs");
+		
+		outputsPG.getParameterRef().add(result_REF);
+		
+		
 		service.setInputs(inputsPG);
 		service.setOutputs(outputsPG);
 
