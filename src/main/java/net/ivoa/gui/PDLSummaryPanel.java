@@ -186,7 +186,7 @@ public class PDLSummaryPanel extends JPanel implements ActionListener{
 		sum2.add(lab2);
 		sum3.add(lab3);
 
-		JTextArea textArea1 = new JTextArea(infosOnGroups.get(0), 4, 7);
+		JTextArea textArea1 = new JTextArea(infosOnGroups.get(0), 4, 15);
 		textArea1.setBackground(Color.YELLOW);
 		JScrollPane scroll1 = new JScrollPane(textArea1);
 		scroll1.setVisible(true);
@@ -197,7 +197,7 @@ public class PDLSummaryPanel extends JPanel implements ActionListener{
 			sum1.setVisible(true);
 		}
 
-		JTextArea textArea2 = new JTextArea(infosOnGroups.get(1), 4, 7);
+		JTextArea textArea2 = new JTextArea(infosOnGroups.get(1), 4, 15);
 		textArea2.setBackground(Color.RED);
 		JScrollPane scroll2 = new JScrollPane(textArea2);
 		sum2.add(scroll2);
@@ -207,7 +207,7 @@ public class PDLSummaryPanel extends JPanel implements ActionListener{
 			sum2.setVisible(true);
 		}
 
-		JTextArea textArea3 = new JTextArea(infosOnGroups.get(2), 4, 7);
+		JTextArea textArea3 = new JTextArea(infosOnGroups.get(2), 4, 15);
 		textArea3.setBackground(Color.GREEN);
 		JScrollPane scroll3 = new JScrollPane(textArea3);
 		sum3.add(scroll3);
