@@ -37,7 +37,7 @@ public class GroupHandlerHelper implements TreeModel {
     private List<String> sonNames = new ArrayList<String>();
     private final List<GroupHandlerHelper> children = new ArrayList<GroupHandlerHelper>();
     private List<SingleParameter> singleParamsIntoThisGroup;
-    private boolean groupValid = true;
+    private boolean groupValid = false;
     private boolean groupActive = true;
     private final List<StatementHelperContainer> statementHelperList = new ArrayList<StatementHelperContainer>();
 
