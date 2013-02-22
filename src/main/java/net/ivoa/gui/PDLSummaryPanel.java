@@ -236,7 +236,7 @@ public class PDLSummaryPanel extends JPanel implements ActionListener{
 		System.out.println("server response "+message);
 		
 		if("ok".equalsIgnoreCase(message.trim())){
-			text = "the job have been correctly sent to server";
+			text = "the job has been correctly sent to server";
 		}else{
 			text = "error in submitting jobs. Please verify your data and try again";
 		}
