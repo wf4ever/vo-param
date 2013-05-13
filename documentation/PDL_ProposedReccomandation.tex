@@ -1,0 +1,1131 @@
+\documentclass[a4paper,11pt] {ivoa}
+\usepackage{geometry}                % See geometry.pdf to learn the layout
+% options. There are lots.
+\geometry{a4paper}                   % ... or a4paper or a5paper or ...
+% \geometry{landscape}                % Activate for for rotated page geometry
+% \usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty
+% line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{listings}
+
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\title{PDL: The Parameter Description Language}
+% Give author list: separate different authors with \\ 
+% You can add email addresses with links \url{mailto:yourname@ivoa.net}
+\author{Carlo Maria Zw\"olf, Paul Harrison and Franck Le Petit}
+\newcommand{\pdlversion}{1.0}
+\newcommand{\pdldate}{\today}
+
+%I have marked sections which I am unsure of with this
+\newcommand{\tocheck}[1]{{\color{red} #1}}
+
+% Give date and version number
+\date{\pdldate}
+
+% Choose one document type from below
+%\ivoatype{IVOA Note}
+%\ivoatype{IVOA Working Draft}
+\ivoatype{IVOA Proposed Recommendation}
+%\ivoatype{IVOA Recommendation}
+\ivoagroup{Theory}
+\version{\pdlversion}
+\def\SVN$#1: #2 ${\expandafter\def\csname SVN#1\endcsname{#2}}
+\SVN$Rev: 195 $
+
+\urlthisversion{\pdlversion:  \pdldate\ (SVN Revision \SVNRev)}
+\urllastversion{N/A}
+\previousversion{PDL: The Parameter Description Language, IVOA Working Draft, Version 0.1
+}
+
+\begin{document}
+\maketitle
+\section*{Abstract}
+This document discusses a Paramter Definition Language (PDL).
+\section{Status of this document}
+This document has been produced jointly by the by the Theory and Grid Working Groups. It follows the previous working draft.
+ 
+\section*{Acknowledgements}
+TBD
+
+\clearpage
+
+\tableofcontents
+
+\newpage
+
+\section{Introduction}
+
+In the context of the {\it International Virtual Observatory Alliance} researchers would like to
+provide astronomical services to the community. \\
+These services could be
+\begin{itemize}
+\item  access to an existing catalogue of images and/or data,
+\item  the entry point to a database listing the results of complex  and heavy numerical simulations,
+\item a computation code exposed online, etc... 
+\end{itemize}
+In the following we will ignore any specific feature and will use the term {\it generic service} to
+refer to any kind of process that receives input parameters and produces output ones.\\
+
+Let us notice that users from the community will not be able to use a new service unless they have
+the knowledge of what the service does (and how).
+Moreover this new service will be even more useful if it can be immediately interactive  and is well
+integrated with other services.\\
+
+{\bf Service description} and {\bf Interoperability} are indeed two key points for building
+efficient and useful services.
+
+\subsection{The service description: existing solutions and specific needs}
+For a client starting to interact with an unknown service, its description is fundamental: in a
+sense it is this description that puts the service from the {\it unknown} to the {\it known}
+state.\\
+Since the client could be a computer system, a generic description should be machine-readable.\\
+
+There are several description languages. The most known for their high expression level and their
+wide use are \emph{WSDL} (\href{http://www.w3.org/TR/wsdl20/}{http://www.w3.org/TR/wsdl20/}) and
+\textit{WADL} (\href{http://www.w3.org/Submission/wadl/}{http://www.w3.org/Submission/wadl/}).\\
+With those tools, people providing a given service could easily express what parameters the service
+expects and what data structures it returns. It thus serves a roughly similar purpose as a
+method-signature in a programming language.\\
+
+In the case of {\it generic services} for science, description needs are very specific: since we
+have to deal with complex physics and models, one should be able to describe for each parameter its
+physical meaning, its unit and precision and the range (or set) of admissible values (according to
+the model).\\ 
+
+In many cases, especially for theoretical simulations, parameters could be linked by
+complex conditions or have to satisfy, under given conditions, a set of constraints (that could
+involve mathematical properties and formulas).
+Two examples of this high level description we would be able to provide are the following:
+
+\begin{equation}\label{PDLExemplum01}
+\mbox{Service1 }\left\{
+\begin{array}{l}
+\ \mbox{Input } \left\{
+\begin{array}{c}
+ \mbox{$\vec p_1$ is a $m/s$ vector speed and $\| \vec p_1\|<c$} \\
+ \mbox{ $p_2$ is time (in second) and $p_2 \geq 0$ }\\
+ \mbox{$p_3$ is a $kg$ mass and $p_3 > 0$}\\
+\end{array}
+\right. \\
+\\
+\ \mbox{\hspace{1cm} Output } \left\{
+\begin{array}{l}
+ \mbox{ $p_4$ is a Joule Kinetic Energy and $p_4 \geq 0$} \\
+ \mbox{ $p_5$ is a distance (in meter) }\\
+ \end{array}
+\right.\\
+\end{array}
+\right.
+\end{equation}
+
+\begin{equation}\label{PDLExemplum02}
+\mbox{Service2 } \left\{
+\begin{array}{l}
+\ \mbox{Input } \left\{
+\begin{array}{l}
+\ \mbox{ $\mathbb R \ni p_1 >0$; $p_2 \in \mathbb N$; $p_3 \in \mathbb R$} \\
+\  \bullet \mbox{ if $p_1 \in ]0,\pi/2]$ then $p_2 \in \{2;4;6\}$,}\\
+\ \mbox{$p_3 \in [-1,+1]$ and $\displaystyle \left( \left|  \sin(p_1)^{p_2} -p_3 \right| \right)^{1/2}<3/2$ } \\
+\ \bullet \mbox{ if $p_1 \in ]\pi/2,\pi]$ then $0<p_2 < 10$,}\\
+\ \mbox{$p_3>\log(p_2)$ and $(p_1 \cdot p_2)$ must belong to $\mathbb N$} \\
+\end{array}
+\right. \\
+\\
+\ \mbox{\hspace{1cm} Output } \left\{
+\begin{array}{l}
+ \mbox{$\vec p_4, \, \vec p_5 \in \mathbb R^3$ } \\
+ \ \mbox{Always $\displaystyle \frac{\| \vec p_5\|}{\|\vec p_4 \|} \leq 0.01 $} \\
+ \end{array}
+\right.\\
+\end{array}
+\right.
+\end{equation}
+To our knowledge, no existing description language meets these fine needs coming with scientific
+services. This leads us naturally to work on a new solution and consider about developing a new
+description language.\\
+
+\noindent {\bf Remark: } The PDL descriptions for the two examples above are online:  \href{http://vo-param.googlecode.com/svn/trunk/model/documentation/PDL-Description_example01.xml}{Example 1} and \href{http://vo-param.googlecode.com/svn/trunk/model/documentation/PDL-Description_Example02.xml}{Example 2}.
+
+
+\subsection{Interoperability issues}
+Nowadays, with the massive spread and diffusion of {\it cloud} services, interoperability has become
+an important element for the success and usability of services. This remains true in the context of
+astronomy.
+For the astronomical community, the ability of systems to work together without restrictions (and
+without further {\it ad hoc} implementations) is of high value: this is the ultimate goal
+that guides the {\it IVOA}.\\
+
+Computer scientists have developed different tools for setting up service interoperability and
+orchestration. The most well known are
+\begin{itemize}
+\item {\it BAbel} (\href{https://computation.llnl.gov/casc/components/}{https://computation.llnl.gov/casc/components/}),
+\item {\it Taverna }�(\href{http://www.taverna.org.uk}{http://www.taverna.org.uk}),
+\item {\it OSGI} and {\it D-OSGI } (\href{http://www.osgi.org/}{http://www.osgi.org/}),
+\item {\it OPalm} (\href{http://www.cerfacs.fr/globc/PALM_WEB/}{http://www.cerfacs.fr/globc/PALM\_WEB/}),
+\item {\it GumTree} (\href{http://docs.codehaus.org/display/GUMTREE/}{http://docs.codehaus.org/display/GUMTREE/}).
+\end{itemize}
+In general, with those tools one could coordinate only the services written with given languages.
+Moreover the interoperability is achieved only in a basic "computer" way: if the input of the $B$
+service is a double and the output of $A$ service is a double too, thus the two services could
+interact.\\
+
+Our needs are more complex than this: let us consider a service $B'$ whose inputs are a density and
+a temperature and a service $A'$ whose outputs are density and temperature too. \\
+The interoperability is not so straightforward: the interaction of the two services has a sense only
+if the two densities (likewise the two temperatures)
+\begin{itemize}
+\item have the same "computer" type (ex. double),
+\item are expressed in the same system of units,
+\item correspond to the same physical concepts (for example, in the service $A'$ density could be
+an electronic density whereas in the service $B'$ the density could be a mass density)
+\end{itemize}
+But things could be more complicated, even if all the previous items are satisfied: the model behind
+the service $B'$ could implement an Equation of State which is valid only if the product
+(density$\times$temperature) is smaller than a given value.
+Thus the interoperability with $A'$ could be achieved only if the outputs of this last satisfy the
+condition on product.\\
+
+Again, as in case of descriptions no existing solutions could meet our needs and we are oriented
+towards building our own solution.
+
+\subsection{A new Parameter Description Language: a unique solutions to description and interoperability needs}
+To overcome the lack of a  solution to our description and interoperability
+needs, it is proposed to introduce a new language.
+Our aim is to finely describe the set of parameters (inputs and outputs of a given generic services)
+in a way that
+\begin{itemize}
+\item could be understood easily by human beings,
+\item could be interpreted and handled by a computer,
+\item complex relations and constraints involving parameters could be formulated unambiguously.
+Indeed we would like to express
+\begin{itemize}
+\item all the possible mathematical laws/formulas,
+\item all the possible conditional sentences (provided they have a logical sense)
+\end{itemize}
+involving parameters.
+\end{itemize}
+The new language is based on a generic data model (DM). Each object of the DM corresponds to a
+syntactic element. Sentences are made by building object-structures.
+Each sentence can be interpreted by a computer by parsing the sentence-related object structure.\\
+For describing the physical scientific concept or model behind a given parameter, the idea is to use
+{\it SKOS} concepts
+(\href{http://www.w3.org/TR/skos-reference/}{http://www.w3.org/TR/skos-reference/}) or, in more
+complicated cases, ontologies.\\
+
+Since the inputs and outputs  of every service (including their constraints and complex conditions)
+could be described with this fine grained granularity, interoperability becomes possible in the {\it
+smart} and {\it intelligent} sense we really need: services should be able to work out if they can
+sensibly use their output as input for another one, by simply looking at its description.\\
+
+With no loss of generality and to ensure that the model could work with the largest possible number
+of programming languages, we decided to fix it under the form of an XML schema (this choice is also
+convenient because there are many libraries and tools for handling and parsing XML documents).\\
+
+
+{\bf Remark:} We recall that PDL is a syntactic framework for describing parameters (with related
+constraints) of generic services. Since a PDL description is rigorous and unambiguous, starting from
+it, it is possible to verify if the instance of a given parameter (i.e. the value of the parameter
+that a user send to the service) is consistent with the description.\\
+In what follows in this document, we will often use the terms {\it evaluate} and {\it interpret}
+with reference to an expression and/or conditions composed with PDL. By this we mean that one must
+replace in the PDL expressions/conditions the referenced parameters  by the set of values provided to the
+service by user. The replacement mechanisms will be explained in detail, case by case.
+
+
+\section{The Service object}\label{par-service}
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.9\textwidth]{pictures/Service.jpg} 
+\caption{Graphical representation of the Service object}
+\label{Pic-Service}
+\end{center}
+\end{figure}
+
+The root element of the PDL description of a generic service is the object {\it Service} (see figure
+\ref{Pic-Service}). This {\bf must contain}
+\begin{itemize}
+\item A unique {\it ServiceName}. This field is a String containing the name of the service.
+\item A unique {\it ServiceId}. This field is a String containing the technical Id of the service.
+It is introduced for a future eventual integration of PDL into the IVOA registry. Each service in
+the registry will be marked with its own unique id.
+\item A unique {\it Description}. This field is a String and contains a human readable description
+of the service. This description is not intended to be understood/parsed by a machine.
+\item A unique {\it Parameters} field which is a list of {\it SingleParameter} object type (cf.
+paragraph \ref{par01}). This list contains the definition of all parameters (both inputs and
+outputs) of the service. The two following fields specify if a given parameter is a input or an
+output one.
+\item A unique {\it Inputs} field of type {\it ParameterGroup} (cf. paragraph \ref{par-group}). This
+object contain the detailed description (with constraints and conditions) of all the input
+parameters.
+\item A unique {\it Outputs} field of type {\it ParameterGroup}. This object contain the detailed
+description (with constraints and conditions) of all the output parameters.
+\end{itemize}
+
+
+\section{The SingleParameter Object}\label{par01}
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.65\textwidth]{pictures/Parameter.jpg} 
+\caption{Graphical representation of the Parameter object}
+\label{Pic-Parameter}
+\end{center}
+\end{figure}
+
+The {\it SingleParameter} object (see figure \ref{Pic-Parameter}) is the core element for describing
+jobs.
+Every object of this type must be characterized by:
+\begin{itemize}
+\item A name (which is unique and is the Id of the parameter);
+\item A unique parameter type, which explains the nature of the current parameter. The allowed
+types are : boolean, string, rational, complex, integer, real, date;
+\item A unique dimension. A $1$-dimension corresponds to a scalar parameter whereas a dimension
+equal to N corresponds to a N-size vector. The dimension is expressed using an {\it expression} (cf.
+paragraph \ref{par02}). The result of the expression that appears in this {\it
+SingleParameter}-field object {\bf must be integer}.\footnote{This is obvious, since this value
+corresponds to a vector size.}
+\end{itemize}
+The unique attribute {\it dependency} can take one of the two values {\bf required} or {\bf
+optional}. If required the parameter {\bf must be} provided to the service. If optional, the service
+could work even without the current parameter and the values will be considered for processing only
+if provided.\\
+
+Optional fields for the {\it SingleParameter} object are:
+\begin{itemize}
+\item a unique UCD : which is a reference to an existing UCD for characterizing the parameter
+(\textcolor{red}{the reference is typically a text string});
+\item a unique Utype  : which is a reference to an existing Utype for characterizing the parameter
+(\textcolor{red}{the reference is typically a text string});
+\item a unique Skos Concept  (\textcolor{red}{the reference is typically a text string}).
+\item a unique Unit (\textcolor{red}{which is a string reference to a valid VOUnits element}).
+\item a unique precision. This field must be specified only for parameter types where the concept of
+precision has a meaning. It has indeed no sense for integer, rational or string. It has
+sense, for instance, on a real type. For understanding the meaning of this field, let the function
+$f$ be a model of a given service. If $i$ denotes the input parameter, $f(i)$ denotes the output. The
+precision $\delta$ is the smaller value such that $f(i+\delta) \neq f(i)$.\\ The precision is
+expressed using an {\it expression} (cf. paragraph \ref{par02}). The result of the expression that
+appears in this {\it precision}-field  {\bf must be} of the same type as (or could be naturally
+cast to) the type appearing in the field {\it parameter type}.
+%\item an optional restriction on the object which takes the form of an {\it
+%AlwaysCondtionalStatement} (cf. paragraph \ref{par-AlwaysConditionalStatement}). This restriction is
+%a way of placing a global restriction on a parameter that takes precedence over any constraint that
+%might occur on a parameter in a {\it ParameterGroup}.
+\end{itemize}
+
+{\bf NB:} The name of every {\it SingleParameter} is unique. 
+
+\section{The ParameterReference object}\label{par-parRef}
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.65\textwidth]{pictures/ParameterRef.jpg} 
+\caption{Graphical representation of the Parameter Reference object}
+\label{Pic-ParameterRef}
+\end{center}
+\end{figure}
+
+This object, as its name indicates, is used to reference an existing parameter defined in the {\it
+Service} context (cf. paragraph
+\ref{par-service}). It  contains only a unique attribute {\it ParameterName} of type String which
+must corresponds to the {\it Name} field of an existing {\it SingleParameter} (cf. paragraph \ref {par01}).
+
+\section{The ParameterType object}\label{par-ParameterType}
+This object is used to explain the type of a parameter (cf. paragraph \ref{par01}) or an expression
+(cf. paragraph \ref{par02_03}). The allowed types are : boolean, string, rational, complex,
+integer, real, date;
+
+\section{The ParameterGroup object}\label{par-group}
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{pictures/ParameterGroup.jpg} 
+\caption{Graphical representation of the ParameterGroup object}
+\label{Pic-ParameterGroup}
+\end{center}
+\end{figure}
+
+The {\it ParameterGroup} object (see figure \ref{Pic-ParameterGroup}) is used for grouping
+parameters according to a criterion of relevancy arbitrarily chosen by users (for instance
+parameters may be grouped according to the physics : position-group, speed-group; thermodynamic-group).
+However,  the ParameterGroup is not only a kind of parameter set, but also can be used for
+defining complex relations and/or constraints involving the contained parameters (cf. paragraph
+\ref{par-ConstraintsOnGroup}).\\
+This object {\bf must contain} a unique Name. This name is a String and is the identification label
+of the ParameterGroup, and no two groups can have the same Name.\\
+Optional fields are
+\begin{itemize}
+\item the references to the parameters (cf. paragraph \ref{par-parRef}) one want to include into the
+group;
+\item a unique object ConstraintOnGroup of type {\it ConstraintOnGroup} (cf. paragraph 
+\ref{par-ConstraintsOnGroup}). This object is used for expressing the complex relations and
+constraints involving parameters.
+\item the objects of type {\it ParametersGroup} contained within the current root group. Indeed the
+{\it ParametersGroup} is a recursive object which can contain other sub-groups.
+\end{itemize}
+
+{\bf NB:} The name of every {\it ParameterGroup} is unique.\\
+
+{\bf NB:} A given {\it SingleParameter} object could only belong to one {\it
+ParameterGroup}\footnote{As we will see in paragraph \ref{par-ConstraintsOnGroup}, constraints on
+parameters are defined at the level of the group. If a {\it SingleParameter} belongs only to one
+group, it will be easier to verify that there is no contradictions on conditions}.
+{\bf NB:}  For any practical use, the number on the parameter referenced into a given group summed
+to the number of sub-groups of the same group must be greater than one. Otherwise the group would be
+a hollow shell.
+
+
+\section{The Expression Objects}\label{par02}
+The {\it Expression} is the most versatile component of the PDL. It occurs almost everywhere: in
+defining fields for {\it SingleParameters} (cf. paragraph \ref{par01}) or in defining conditions and
+criteria).\\
+Expression itself is an abstract object. In this section we are going to review all the concrete
+object extending and specializing expressions.\\
+
+\noindent {\bf N.B.} In what follows, we will call a {\bf numerical expression} every {\it
+expression} involving only numerical types. This means that the evaluation of such expressions
+should lead to a number (or a vector number if the dimension of the expression is greater than
+one).\\
+
+
+\subsection{The AtomicParameter expression}\label{par02_01}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{pictures/AtomicParameter.jpg} 
+\caption{Graphical representation of the AtomicParameter expression object}
+\label{Pic-AtomicParameter}
+\end{center}
+\end{figure}
+The {\it AtomicParameterExpression} (extending {\it Expression}, see figure
+\ref{Pic-AtomicParameter}) is the simplest expression that could be built involving a defined
+parameter. This object {\bf must contain} unique reference to a given parameter.\\
+
+Optional fields, valid only for numerical types, are :
+\begin{itemize}
+\item A unique {\bf numerical} power expression;
+\item A unique operation (cf. paragraph \ref{par02_02}).\\
+\end{itemize}
+Let $p$ and $exp$ be respectively the parameter and the power expression we want to encapsulate. The
+composite object could be presented as follows:
+\begin{equation}\label{eq01}
+ \underbrace{  p^{exp} \underbrace{  \overbrace{\left( \begin{array}{c} + \\ - \\ \ast  \\ \cdot \\ \div   \end{array} \right) }^{\mbox{\tiny Operation type}}
+ \overbrace{    \left( \mbox{AnotherExpression}\right) }^{\mbox{\tiny expression contained in operation}}   }_{\mbox{\tiny Operation object}}}_{\mbox{\tiny Atomic Parameter Expression}}
+\end{equation}
+
+To evaluate a given {\it AtomicParameterExpression}, one proceeds as follows: 
+Let $d_p$, $d_{exp}$ and $d_{oo}$ be respectively the dimension of the parameter $p$ referenced, the
+dimension of the power expression and the dimension of the expression contained within the operation
+object.\\
+The exponent part of the expression is legal if and only if:
+\begin{itemize}
+\item $d_p=d_{exp}$. In this case $p^{exp}$ is a $d_p$-size vector expression and $\forall$
+$i=1,...,d_p$ the $i$ component of this vector is equal to ${p_i}^{exp_i}$, where $p_i$ is the value
+of the $i$ component of vector parameter $p$ and $exp_i$ is the value obtained by interpreting the
+$i$ component of vector expression $exp$.
+\item Or $d_{exp}=1$. In this case, $\forall$ $i=1,...,d_p$ the $i$ component of the vector result
+is equal to ${p_i}^{exp}$, where $p_i$ is the same as defined above.\\
+\end{itemize} 
+
+Whatever the method used, let us note $ep$ the result of this first step. It is is clear that the
+dimension of $ep$ is always equal to $d_p$. In order to complete the evaluation of the expression,
+one should proceed as shown in paragraph \ref{par02_02}, by setting there $b=ep$.
+
+\subsection{The AtomicConstant expression}\label{par02_03}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{pictures/AtomicConstant.jpg} 
+\caption{Graphical representation of the AtomicParameter expression object}
+\label{Pic-AtomicConstant}
+\end{center}
+\end{figure}
+
+The {\it AtomicConstantExpression} (extending {\it Expression}, see figure \ref{Pic-AtomicConstant})
+is the simplest expression that could be built involving constants. Since this object could be used
+for defining a constant vector expression, it {\bf must contain}
+\begin{itemize}
+\item A unique list of String which expresses the value of each component of the expression. Let
+$d_c$ be the size of the String list. If $d_c=1$ the expression is scalar and it is a vector
+expression if $d_c>1$.
+\item A unique attribute {\it ConstantType} of type {\it ParameterType} (cf. paragraph
+\ref{par-ParameterType}) which defines the nature of the constant expression. The allowed
+types are the same as in the field {\it parameterType} of the object {\it SingleParameter}.
+\end{itemize}
+The object {\bf is legal if and only if} every element of the String list could be cast into the
+type expressed by the attribute {\it constantType}.\\
+
+Optional fields, valid only for numerical types, are : 
+\begin{itemize}
+\item A unique {\bf numerical} power expression;
+\item A unique operation (cf. paragraph \ref{par02_02}).
+\end{itemize}
+
+Let $s_i$ ($i=1,...,d_c$) and $exp$ be respectively the $i$ component of the String list and the
+power expression we want to encapsulate. The composite object could be presented as follows:
+\begin{equation}
+ \underbrace{    \overbrace{ \left( s_1  , s_2, ..., s_{d_c}\right)^{exp} }^{\mbox{\tiny List of String  to cast into the provided type}}   \underbrace{  \overbrace{\left( \begin{array}{c} + \\ - \\ \ast  \\ \cdot \\ \div   \end{array} \right) }^{\mbox{\tiny Operation type}}
+ \overbrace{    \left( \mbox{AnotherExpression}\right) }^{\mbox{\tiny expression contained in operation}}   }_{\mbox{\tiny Operation object}}}_{\mbox{\tiny Atomic Constant Expression}}
+\end{equation}
+%missing a symbol below?
+\tocheck{To evaluate a given {\it atomicConstantExpression}, one proceeds as follows: let $d_{exp}$
+and $d_{oo}$ be respectively the dimension of the parameter $p$ referenced, the dimension of the power
+expression and the dimension of the expression contained within the operation object.}\\
+The exponent part of the expression is legal if and only if:
+\begin{itemize}
+\item $d_c = d_{exp}$. In this case $(s_1,...,s_{d_c})^{exp}$ is a $d_c$ size vector expression and
+$\forall i =1,...,d_c$ the $i$-th component of this vector is equal to $s_i^{exp_i}$, where $exp_i$
+is the value obtained by interpreting the $i$ component of vector $exp$.
+\item Or $d_{exp}=1$. In this case, $\forall i =1,...,d_c$ the $i$ component of the vector result is
+equal to $s_i^{exp}$.\\
+\end{itemize}
+Whatever the method used, let us note $ep$ (whose dimension is always equal to $d_c$)  is the result
+of this first step.  In order to complete the evaluation of the expression, one should proceed as
+exposed in paragraph \ref{par02_02}, by substituting there $b=ep$.
+
+
+\subsection{The parenthesisContent expression}\label{par02_04}
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{pictures/ParenthesisContent.jpg} 
+\caption{Graphical representation of theParenthesisContent expression object}
+\label{Pic-ParenthesisContent}
+\end{center}
+\end{figure}
+
+The {\it parenthesisContentExpression} (extending {\it Expression}, see
+\ref{Pic-ParenthesisContent}) object is used to explicitly denote precedence by grouping the
+expressions that should be evaluated first. This object {\bf must contain} a unique {\bf numerical}
+object $Expression$ (referred to hereafter as $exp_1$).\\
+Optional fields are 
+\begin{itemize}
+\item A unique {\bf numerical} power expression (referred to hereafter as $exp_2$);
+\item A unique operation (cf. paragraph \ref{par02_02}).\\
+\end{itemize}
+This composite object could be presented as follows:
+\begin{equation}
+ \underbrace{    \underbrace{ \left( exp_1\right) }_{\mbox{\tiny Priority term}} ^{\hspace{15mm}exp_2} \underbrace{  \overbrace{\left( \begin{array}{c} + \\ - \\ \ast  \\ \cdot \\ \div   \end{array} \right) }^{\mbox{\tiny Operation type}}
+ \overbrace{    \left( \mbox{AnotherExpression}\right) }^{\mbox{\tiny expression contained in operation}}   }_{\mbox{\tiny Operation object}}}_{\mbox{\tiny Parenthesis Expression}}
+\end{equation}
+In order to evaluate this object expression, one proceeds as follows: first one evaluates the
+expression $exp_1$ that has the main priority. Then one proceeds exactly as in paragraph
+\ref{par02_01} (after the equation (\ref{eq01})) by substituting $p=exp_1$ and $exp=exp_2$.
+
+\subsection{The Operation object}\label{par02_02}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.6\textwidth]{pictures/Operation.jpg} 
+\caption{Graphical representation of Operation object}
+\label{Pic-Operation}
+\end{center}
+\end{figure}
+
+The {\it Operation} object (see figure \ref{Pic-Operation}) is used for expressing operations
+involving two {\bf numerical} expressions. This object {\bf must contain}:
+\begin{itemize}
+\item a unique attribute operationType. This attribute could take the following values: plus for the
+sum, minus for the difference, multiply for the standard product, scalarProduct for the scalar
+product and divide for the standard division. Hereafter these operators will be respectively denoted
+$+,-,\ast,\cdot, \div$.
+\item a unique expression.
+\end{itemize}
+\begin{equation}\label{OperationEquation}
+\underbrace{ \overbrace{\left( \begin{array}{c} + \\ - \\ \ast  \\ \cdot \\ \div   \end{array} \right) }^{\mbox{\tiny Operation type}}
+ \overbrace{    \left( \mbox{ContaindedExpression}\right) }^{\mbox{\tiny expression contained in operation}}   }_{\mbox{\tiny Operation object}}
+\end{equation}
+
+The {\it Operation} object is always contained within a {\bf numerical} {\it Expression} (cf.
+paragraph \ref{par02}) and could not exist alone.
+Let $a$ be the result of the evaluation of the expression object containing the
+operation\footnote{this came from the evaluation of parameterRef field in case of an {\it
+AtomicParameterExpression} cf. paragraph \ref{par02}, from the evaluation of constant field in the
+case of a {\it AtomicConstantExpression} (\textcolor{red}{to be extended...})} and let $b$ the
+result of the evaluation of the {\bf numerical} expression contained within the operation. As usual,
+we note $d_a$ and $d_b$ the dimensions of $a$ and $b$.\\
+
+The operation evaluation is legal if and only if:
+\begin{itemize}
+\item $d_a=d_b$ and operation type (i.e. the operator) $op \in \{ + , - , \ast , \div \}$. In this
+case $a \, op \, b$ is a vector expression of size $d_a$ and $\forall$ $i=1,...,d_a$ the $i$
+component of this vector is equal to $(a_i \, op \,b_i)$ (i.e. a term by term operation).
+\item Or $d_a = d_b$ and operation type $op$ is "$\cdot$". In this case $a \cdot b$ is the result of
+the scalar product $\sum_{i =1}^{d_a} a_i \ast b_i$. It is obvious that the dimension of this result
+is equal to $1$.
+\item Or $d_b=1$ and operation type (i.e. the operator) $op \in \{ + , - , \ast , \div \}$. In this
+case $a \, op \, b$ is a vector expression of size $d_a$ and $\forall$ $i=1,...,d_a$ the $i$
+component of this vector is equal to $(a_i \, op \,b)$.
+\item Or $d_a=1$ and operation type (i.e. the operator) $op \in \{ + , - , \ast , \div \}$. This
+case in symmetric to the previous one.
+\end{itemize}
+
+The type of the result is automatically induced by standard cast operation performed during the
+evaluations (Indeed for example a double vector added to an integer vector is a double vector).
+
+\subsection{The FunctionType object}\label{par-FunctionType}
+This object is used for specifying the mathematical nature of the function contained within a {\it
+Function} object (cf. paragraph \ref{par02_05}). The unique String field this object contains could
+take one of these values:
+size, abs, sin, cos, tan, asin, acos, atan, exp, log, sum, product. In paragraph \ref{par02_05} it
+is explained how these different function types are used and handled.
+
+
+\subsection{The Function object}\label{par02_05}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.6\textwidth]{pictures/Function.jpg} 
+\caption{Graphical representation of Function object}
+\label{Pic-Function}
+\end{center}
+\end{figure}
+The {\it function} object (extending {\it expression}, see figure \ref{Pic-Function}) is used for
+expressing a mathematical function on expressions.
+This object {\bf must contain} 
+\begin{itemize}
+\item A unique attribute {\it functionName} of type {\it functionType} (cf. paragraph
+\ref{par-FunctionType}) which specifies the nature of the function.
+\item A unique expression (which is the function argument).\\
+\end{itemize}
+Let $exp$ be the result of the evaluation of the function argument expression and  $d_{exp}$ its
+dimension.
+The {\it function} object evaluation {\bf is legal if and only if}:
+\begin{itemize}
+\item $f  \in \{ \mbox{abs, sin, cos, tan, asin, acos, atan, exp, log} \}$ and the function argument
+is a {\bf numerical} expression. In this case the  result  is a $d_{exp}$-size vector and each
+component  $r_i = f(exp_i$), $\forall \, i=1,...,d_{exp}$.
+\item Or $f=$sum (likewise $f=$product) and the argument is a {\bf numerical} expression. In this
+case the result is a scalar value equal to $\sum_{i=1}^{i=d_{exp}} exp_i$ (likewise $\prod
+_{i=1}^{i=d_{exp}} exp_i$), where $exp_i$ is the value obtained
+by interpreting the $i$ component of vector expression $exp$.
+\item Or $f=$size. In this case the result is the scalar integer value $d_{exp}$. 
+\end{itemize}
+From what we saw above, the result of the interpretation of a function object { \bf is always a number}.
+
+
+\subsection{The FunctionExpression object} 
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.6\textwidth]{pictures/FunctionExpression.jpg} 
+\caption{Graphical representation of FunctionExpression object}
+\label{Pic-FunctionExpression}
+\end{center}
+\end{figure}
+The {\it FunctionExpression} object (extending {\it Expression}, see figure
+\ref{Pic-FunctionExpression}) is used for building mathematical expressions involving functions.\\
+This object {\bf must contains} a unique {\it Function} object (cf. paragraph \ref{par02_05}).\\
+Optional fields, valid only for numerical types, are :
+\begin{itemize}
+\item A unique {\bf numerical} power expression;
+\item A unique operation (cf. paragraph \ref{par02_02}).\\
+\end{itemize}
+
+This composite object could be presented as follows:
+\begin{equation}
+ \underbrace{    \underbrace{ \left(\mbox{function}\right) }_{\mbox{\tiny Function object}} ^{\hspace{15mm}exp} \underbrace{  \overbrace{\left( \begin{array}{c} + \\ - \\ \ast  \\ \cdot \\ \div   \end{array} \right) }^{\mbox{\tiny Operation type}}
+ \overbrace{    \left( \mbox{AnotherExpression}\right) }^{\mbox{\tiny expression contained in operation}}   }_{\mbox{\tiny Operation object}}}_{\mbox{\tiny FunctionExpression Object}}
+\end{equation}
+In order to evaluate this object expression, one proceed as follows: first one evaluate the funtion
+expression as explained in paragraph  \ref{par02_05}. Then one proceed exactly as in paragraph
+\ref{par02_01} (after the equation (\ref{eq01})) by taking $p=$function.
+
+
+
+\section{Expressing complex relations and constraints on parameters} 
+In this part of the document we will explain how PDL objects could be used for building complex
+constraints and conditions involving input and/or output parameters.
+
+\subsection{The ConstraintOnGroup Object}\label{par-ConstraintsOnGroup}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.6\textwidth]{pictures/ConstraintOnGroup.jpg} 
+\caption{Graphical representation of ConstraintOnGroup object}
+\label{Pic-ConstraintOnGroup}
+\end{center}
+\end{figure}
+
+The {\it  ConstraintOnGroup} object (see figure \ref{Pic-ConstraintOnGroup}) is always contained within a {\it ParameterGroup} object and could not exist alone.
+This object {\bf must contain} the {\it ConditionalStatement} objects. The latter are used, as is
+shown in paragraph \ref{par-ConditionalStatement}, for expressing the complex relations and
+constraints involving parameters.
+
+\subsection{The ConditionalStatement object}\label{par-ConditionalStatement}
+The {\it ConditionalStatement} object, as its name indicates, is used for defining conditional
+statements. This object is abstract. In this section we are going to review the two concrete objects
+extending and specializing  {\it ConditionalStatement}.
+
+\subsubsection{The AlwaysConditionalStatement}\label{par-AlwaysConditionalStatement}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=1.1\textwidth]{pictures/AlwaysStatement.jpg} 
+\caption{Graphical representation of AlwaysConditionalStatement object}
+\label{Pic-AlwaysConditionalStatement}
+\end{center}
+\end{figure}
+As its name indicates, this object (see figure \ref{Pic-AlwaysConditionalStatement}) is used
+for expressing statement that must always be valid. It {\bf must contain} a unique {\it Always}
+ object (which extends {\it ConditionalClause}, cf. paragraph \ref{par-ConditionalClause}).
+
+\subsubsection{The IfThenConditionalStatement}\label{par-IfThenConditionalStatement}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=1.0\textwidth]{pictures/IfThenStatement.jpg} 
+\caption{Graphical representation of IfThenConditionalStatement object}
+\label{Pic-IfThenConditionalStatement}
+\end{center}
+\end{figure}
+As its name indicates, this object (see figure \ref{Pic-IfThenConditionalStatement}) is used for
+expressing statements that are valid only if a previous condition is verified. It {\bf must
+contain}:
+\begin{itemize}
+\item a unique {\it If} object (which extends {\it ConditionalClause}, cf. paragraph
+\ref{par-ConditionalClause}).
+\item a unique {\it Then} object (which extends {\it ConditionalClause}, cf. paragraph
+\ref{par-ConditionalClause}).
+\end{itemize}
+If the condition contained within the {\it If} object is valid, the condition contained within
+the {\it Then} object {\bf must be} valid too.
+
+\subsubsection{The WhenConditionalStatement object}\label{par-WhenConditionalStatment}
+
+The when conditional statement is valid when the enclosed {\it When} conditional clause
+evalutes to true.
+
+\subsection{The ConditionalClause object}\label{par-ConditionalClause}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.75\textwidth]{pictures/ConditionalClause.jpg} 
+\caption{Graphical representation of ConditionalClause object}
+\label{Pic-ConditionalClause}
+\end{center}
+\end{figure}
+The {\it ConditionalClause} object (see figure \ref{Pic-ConditionalClause}) is abstract. It {\bf
+must contain} a unique Criterion object of type {\it AbstractCriterion} (cf. paragraph
+\ref{par-AbstractCriterion}).\\
+The four concrete objects extending the abstract {\it ConditionalClause} are (see figure
+\ref{Pic-ConcreteClause}):
+\begin{itemize}
+\item {\it Always};
+\item {\it If};
+\item {\it Then};
+\item {\it When}.
+\end{itemize}
+\begin{figure}[htbp]
+\begin{center}
+TODO new picuture including When
+\includegraphics[width=0.7\textwidth]{pictures/ConcreteClauses.jpg} 
+\caption{Graphical representation of Always, If and Then clauses}
+\label{Pic-ConcreteClause}
+\end{center}
+\end{figure}
+The Criterion contained within a {\it Always} object must always be valid (cf paragraph
+\label{par-AlwaysConditionalStatement}).\\
+
+The Criterion contained within a {\it When} object will be valid only when the enclosed Expression
+is True.
+
+The {\it If} and {\it Then} objects work as a tuple by composing the  {\it
+IfThenConditionalStatement} (cf. paragraph
+\ref{par-IfThenConditionalStatement}).
+
+\subsection{The AbstractCriterion object}\label{par-AbstractCriterion}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{pictures/AbstractCriterion.jpg} 
+\caption{Graphical representation of AbstractCriterion object}
+\label{Pic-AbstractCriterion}
+\end{center}
+\end{figure}
+The objects extending {\it AbstractCriterion} (see figure \ref{Pic-AbstractCriterion}) are
+fundamentals for building {\it ConditionalStatemets} (cf. paragraph \ref{par-ConditionalStatement})
+since they are contained within the {\it Always, If} and {\it Then} objects (cf. paragraph
+\ref{par-ConditionalClause}).
+An {\it AbstractCriterion} object {\bf must contain}:
+\begin{itemize}
+\item a unique {\it Expression} object (cf. paragraph \ref{par02});
+\item a unique ConditionType which is an object of type {\it AbstractCondition} (cf. paragraph 
+\ref{par-ConditionType}).
+This object specify which condition must be satisfied by the previous {\it Expression}.
+\end{itemize}
+An optional field is the unique {\it LogicalConnector} object (cf. paragraph
+\ref{par-LogicalConnector}) used for building logical expressions.\\
+The two concrete objects extending  {\it AbstractCriterion}  are {\it Criterion} and {\it
+ParenthesisCriterion}.  The difference between these two objects is in the priority they induce for
+interpreting and linking the criteria (cf. paragraph \ref{par-EvalCriteria}).
+
+\subsubsection{The Criterion object}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{pictures/Criterion.jpg} 
+\caption{Graphical representation of Criterion object}
+\label{Pic-Criterion}
+\end{center}
+\end{figure}
+This object (see figure \ref{Pic-Criterion}) extends the  {\it AbstractCriterion} without
+specializing it. It is indeed just a concrete version of the abstract type.
+
+\subsubsection{The ParenthesisCriterion object}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{pictures/ParenthesisCriterion.jpg} 
+\caption{Graphical representation of ParenthesisCriterion object}
+\label{Pic-ParenthesisCriterion}
+\end{center}
+\end{figure}
+This object (see figure \ref{Pic-ParenthesisCriterion}) extends and specialize the  {\it
+AbstractCriterion}. It is used for defining arbitrary priority in interpreting boolean expression
+based on criteria.
+The optional field of {\it ParenthesisCriterion} is a unique {\it ExternalLogicalConnector} object
+of type {\it LogicalConnector}. It is used for linking other criteria, out of the priority
+perimeter defined by the parenthesis (cf.  paragraph \ref{par-EvalCriteria}).
+
+\subsection{The LogicalConnector object}\label{par-LogicalConnector}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{pictures/LogicalConnector.jpg} 
+\caption{Graphical representation of LogicalConnector object}
+\label{Pic-LogicalConnector}
+\end{center}
+\end{figure}
+The {\it LogicalConnector} object (see figure \ref{Pic-LogicalConnector}) is used for building
+complex logical expressions. It is an abstract object and it {\bf must} contain a unique Criterion
+of type {\it AbstractCriterion} (cf. paragraph \ref{par-AbstractCriterion}).\\
+The two concrete objects extending {\it LogicalConnector} are:
+\begin{itemize}
+\item the {\it And} object used for introducing the logical AND operator between two
+criteria;\footnote{The first criterion is the one containing the {\it LogicalConnector} and the
+second is the criterion contained within the connector itself.}
+\item the {\it Or} object used for introducing the logical OR operator between two criteria.
+\end{itemize}
+
+\subsection{The AbstractCondition object}\label{par-ConditionType}
+{\it AbstractCondition} is abstract type. The objects extending it always belong to an  {\it 
+AbstractCriterion} (cf. \ref{par-AbstractCriterion}). In this context, they are used combined with
+an {\it Expression} object, for expressing the condition that the expression must satisfy.\\
+Let us consider a given criterion object $\mathcal{CR}$ (extending{\it AbstractCriterion})  and let
+us note $\mathcal E$ and $\mathcal C$ the expression and the condition contained within
+$\mathcal{CR}$.
+In what follows we are going to explain the different objects specializing  {\it AbstractCondition}
+and their behavior.
+
+\subsubsection{The IsNull condition}\label{par-IsNull}
+This object is used for specifying that the expression $\mathcal E$ has no assigned value (this is
+exactly the same concept as the NULL value in Java or the None value in Python).
+Indeed, if and only if $\mathcal E$ has no assigned value, the evaluation of the tuple $(\mathcal
+E, \mathcal C)$ leads to a TRUE boolean value. Thus, in the case $\mathcal{CR}$ has no {\it
+LogicalConnector}, the criterion is true.
+
+
+
+\subsubsection{The "numerical-type" conditions}
+These objects are used for specifying that the result of the evaluation of the expression $\mathcal
+E$ is of a given numerical type. The tuple $(\mathcal E, \mathcal C)$ is legal if and only if
+$\mathcal E$ is a {\bf numerical} expression. \\
+The "numerical-type" objects extending {\it AbstractCondition}  are:
+\begin{itemize}
+\item {\it IsInteger}, in this case the evaluation of the tuple $(\mathcal E, \mathcal C)$ leads to
+a TRUE boolean value if and only if the evaluation of the numerical expression $\mathcal E$ is an
+integer.
+\item {\it IsRational}, in this case the evaluation of the tuple $(\mathcal E, \mathcal C)$ leads
+to a TRUE boolean value if and only if the evaluation of the numerical expression $\mathcal E$ is a
+rational number.
+\item {\it IsReal}, in this case the evaluation of the tuple $(\mathcal E, \mathcal C)$ leads to a
+TRUE boolean value
+if and only if the evaluation of the numerical expression $\mathcal E$ is a real number.
+\end{itemize} 
+
+\subsubsection{The BelongToSet condition}\label{par-BelongToSet}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{pictures/BelongToSet.jpg} 
+\caption{Graphical representation of BelongToSet object}
+\label{Pic-BelongToSet}
+\end{center}
+\end{figure}
+This object (see figure \ref{Pic-BelongToSet}) is used for specifying that the expression $\mathcal
+E$ could take only a finite set of values.
+It {\bf must contain} the {\it Values} (which are objects of type {\it Expression}) defining the set
+of legal values. The number of {\it Values} must be greater than one.\\
+This object is legal only if all the {\it Expressions} of the set are of the same type (e.g. they
+are all numerical, or all boolean or all String expressions).\\
+The tuple $(\mathcal E, \mathcal C)$ leads to a TRUE boolean value if and only if:
+\begin{itemize}
+\item the expression $\mathcal E$ and the expressions composing the set are of the same type
+\item and an element $\mathcal E_s$ exists in the set such that $\mathcal E_s = \mathcal E$.\\
+This last equality is to be understood in the following sense: let $=_t$ be the equality operator
+induced by the type (for numerical type the equality is in the real number sense, for String type
+the equality is case sensitive and for boolean the equality is in the classic boolean sense).\\
+Two expressions are equal if and only if
+\begin{itemize}
+\item the expressions have the same size $d_{\mathcal E}$,
+\item and $\mathcal E_s^i =_t \mathcal E^i$, $\forall i =1,...,d_{\mathcal E}$, where $\mathcal
+E_s^i$ and $ \mathcal E^i$ are respectively the result of the evaluation of the
+$i$ component of expressions $\mathcal E_s$ and $\mathcal E$. 
+\end{itemize}
+\end{itemize}
+
+\subsubsection{The ValueLargerThan object}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{pictures/ValueLargerThan.jpg} 
+\caption{Graphical representation of ValueLargerThan object}
+\label{Pic-ValueLargerThan}
+\end{center}
+\end{figure}
+This object (see figure \ref{Pic-ValueLargerThan}) is used for expressing that the result of the
+evaluation of the expression $\mathcal E$ must be greater than a given value.\\
+It {\bf must contain}
+\begin{itemize}
+\item a unique {\bf numerical} expression $\mathcal E_c$. 
+\item a unique {\it Reached} attribute which is a boolean type.
+\end{itemize}
+The tuple $(\mathcal E, \mathcal C)$ is legal only if $\mathcal E$ is a numerical expression.\\
+This tuple leads to a TRUE boolean value if and only if the result of the evaluation of the
+expression $\mathcal E$ is greater than the result of the evaluation
+of the expression $\mathcal E_c$ and the attribute {\it Reached} is false. Otherwise if the {\it
+Reached} attribute is true the expression $\mathcal E$ may be greater than or equal to the result.
+
+\subsubsection{The ValueSmallerThan object}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{pictures/ValueSmallerThan.jpg} 
+\caption{Graphical representation of ValueSmallerThan object}
+\label{Pic-ValueSmallerThan}
+\end{center}
+\end{figure}
+This object (see figure \ref{Pic-ValueSmallerThan}) is used for expressing that the result of the
+evaluation of the expression $\mathcal E$ must be smaller than a given value.\\
+It {\bf must contain}
+\begin{itemize}
+\item a unique {\bf numerical} expression $\mathcal E_c$. 
+\item a unique {\it Reached} attribute which is a boolean type.
+\end{itemize}
+The tuple $(\mathcal E, \mathcal C)$ is legal only if $\mathcal E$ is a numerical expression.\\
+This tuple leads to a TRUE boolean value if and only if the result of the evaluation of the
+expression $\mathcal E$ is smaller (otherwise smaller or equal when the  attribute {\it Reached} is
+true) than the result of the evaluation of the expression $\mathcal E_c$.
+
+\subsubsection{The ValueInRange object}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{pictures/ValueInRange.jpg} 
+\caption{Graphical representation of ValueInRange object}
+\label{Pic-ValueInRange}
+\end{center}
+\end{figure}
+This object (see figure \ref{Pic-ValueInRange}) is used for expressing that the result of the
+evaluation of the expression $\mathcal E$ must belong to a given interval. The definition of the
+interval is made using the {\it ValueLargerThan} {\it ValueSmallerThan} objects.
+Indeed, the {\it ValueInRange} object {\bf must contain}:
+\begin{itemize}
+\item a unique {\it ValueLargerThan} object,
+\item a unique {\it ValueSmallerThan} object. 
+\end{itemize}
+The tuple $(\mathcal E, \mathcal C)$ is legal only if $\mathcal E$ is a numerical expression.\\
+This tuple leads to a TRUE boolean value if and only if the evaluation of both tuples $(\mathcal E,
+\mbox{\it ValueSmallerThan})$ and $(\mathcal E, \mbox{\it ValueLargerThan})$ lead to TRUE boolean
+values.
+
+
+% note that this should be ValueDifferentFrom or ValueDifferentTo for proper english sense
+\subsubsection{\tocheck{The ValueDifferentOf object}}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{pictures/ValueDifferentOf.jpg} 
+\caption{Graphical representation of ValueDifferentOf object}
+\label{Pic-ValueDifferentOf}
+\end{center}
+\end{figure}
+This object (see figure \ref{Pic-ValueDifferentOf}) is used for specifying that the expression
+$\mathcal E$ must be different from a given value.
+It {\bf must contain} a unique {\it Expression} $\mathcal E_c$.\\
+In order to be compared, the two expressions $\mathcal E$ and $\mathcal E_c$ must have the same
+type.
+The evaluation of the tuple $(\mathcal E, \mathcal C)$  leads to a TRUE boolean value only if
+$\mathcal E \neq \mathcal E_c$. This inequality has to be understood in the sense explained in
+paragraph \ref{par-BelongToSet} (in the second point of the list).
+
+\subsubsection{The DefaultValue object}\label{par-DefaultValue}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.8\textwidth]{pictures/DefaultValue.jpg} 
+\caption{Graphical representation of DefaultValue object}
+\label{Pic-DefaultValue}
+\end{center}
+\end{figure}
+This object (see figure \ref{Pic-DefaultValue}) is used for specifying the default value of a
+parameter.\\
+It {\bf must contain} a unique expression $\mathcal E_c$.\\
+Since the default value of an expression involving functions, multiple parameters, etc. has no
+particular sense, in the case of the present object the tuple $(\mathcal E, \mathcal C)$  is legal
+only if
+\begin{itemize}
+\item $\mathcal E$ is an {\it AtomicParameterExpression} (cf. paragraph. \ref{par02_01}) \item and
+the dimension and the type of the expression $\mathcal E_c$ are equal to the dimension and type
+expressed in the {\it SingleParameter} object referenced into the {\it AtomicParameterExpression}.
+\end{itemize}
+Moreover, for having a legal {\it DefaultValue} object, the criterion $\mathcal{CR}$ containing it must be contained within 
+the {\it Always} or {\it Then}  objects (cf. paragraph \ref{par-ConditionalClause}).
+
+\subsection{Evaluating and interpreting criteria objects}\label{par-EvalCriteria}
+The evaluation of the criterion type objects (cf. paragraph \ref{par-AbstractCriterion}) always
+leads to a boolean value (the only exception is what we saw in paragraph \ref{par-DefaultValue},
+where the criterion contains a {\it DefaultValue} condition).\\
+We use hereafter the same notation introduced in \ref{par-ConditionType}: let us consider a given
+criterion (extending{\it AbstractCriterion}) $\mathcal{CR}$ and let us note $\mathcal E$ and
+$\mathcal C$ the expression and the condition contained within $\mathcal{CR}$.\\
+When $\mathcal{CR}$ contains no {\it LogicalConnector} objects, the evaluation of the criterion is
+straightforward :
+the result is equal to the boolean-evaluation of the tuple $(\mathcal E, \mathcal C)$. This tuple
+is evaluated according to the concrete class involved, as explained in paragraphs \ref{par-IsNull}
+to \ref{par-DefaultValue} \\
+It is a bit more complex when criteria contain {\it LogicalConnectors}. Let us see how to
+proceed.\\
+To begin with, let us consider only {\it Criterion} concrete objects:\\
+As we saw in the previous paragraphs, criteria object are (with the help of {\it
+LogicalConnectors} object) recursive and hierarchical objects.\\
+This hierarchical structure composing a complex criterion could be graphically represented as
+follows.
+\begin{equation}\label{eq-CriterionStructure01}
+(\mathcal E_1, \mathcal C_1) \xrightarrow[{\mbox{\tiny AND/OR}}]{LC_1} 
+(\mathcal E_2, \mathcal C_2) \xrightarrow[{\mbox{\tiny AND/OR}}]{LC_2}
+\cdots 
+(\mathcal E_i, \mathcal C_i) \xrightarrow[{\mbox{\tiny AND/OR}}]{LC_i}
+\cdots 
+(\mathcal E_{N-1}, \mathcal C_{N-1}) \xrightarrow[{\mbox{\tiny AND/OR}}]{LC_{N-1}}
+(\mathcal E_N, \mathcal C_N)
+\end{equation}
+where the index $1$, $i$ and $N$ are respectively for the root, the $i$ and the leaf criterion
+composing the structure. The term $LC_i$ denotes the {\it LogicalConnector} contained within the
+criterion $\mathcal{CR}_i$.\\
+As we saw in paragraphs \ref{par-IsNull} to \ref{par-DefaultValue} every tuple $(\mathcal E_i,
+\mathcal C_i)$, $i=1,..,N$ could be evaluated (according to the concrete object involved) and leads
+to a boolean value $\mathcal B_i$. Thus the expression (\ref{eq-CriterionStructure01}) become
+\begin{equation}\label{eq-CriterionStructure02}
+\mathcal B_1 \xrightarrow[{\mbox{\tiny AND/OR}}]{LC_1} 
+\mathcal B_2 \xrightarrow[{\mbox{\tiny AND/OR}}]{LC_2}
+\cdots 
+\mathcal B_i \xrightarrow[{\mbox{\tiny AND/OR}}]{LC_i}
+\cdots 
+\mathcal B_{N-1} \xrightarrow[{\mbox{\tiny AND/OR}}]{LC_{N-1}}
+\mathcal B_N
+\end{equation}
+This last is a classic sequential boolean expression. It is evaluated from left to right and the
+operator AND takes precedence over the OR operator.\\
+
+Let us now consider {\it ParenthesisCriterion}  criteria. A representation of such a criterion
+$\mathcal{CR}$ could be the following:
+\begin{equation}
+\Big \langle  (\mathcal E , \mathcal C) \xrightarrow{LC}  \mathcal{CR}_c  \Big \rangle_{\mathcal{CR}}  \xrightarrow{ELC}\,,
+\end{equation}
+where $\mathcal E$, $\mathcal C$, $LC$, $\mathcal{CR}_c$ are respectively 
+the {\it Expression}, the condition, the {\it LogicalConnector} and the criterion contained within $LC$.
+The term $ELC$ is the {\it ExternalLogicalConnector} of $\mathcal{CR}$.\\
+The criterion structure contained within $\langle \cdot \rangle_{\mathcal{CR}}$ has the highest
+priority and has to be evaluate, before the {\it ExternalLogicalConnector} evaluation.\\
+
+In the case where $\mathcal{CR}_c$ is composed only of {\it Criterion} objects (so with no
+{\it ParenthesisCriterion}), the evaluation of the content of  $\langle \cdot
+\rangle_{\mathcal{CR}}$  is performed as shown before in (\ref{eq-CriterionStructure01}) and
+(\ref{eq-CriterionStructure02}).
+
+In the case where $\mathcal{CR}_c$ contains at least one {\it ParenthesisCriterion}, one has to go
+deeper in the criterion structure to find the deepest criterion $\mathcal{CR}_d$ such that $\langle
+\cdot \rangle_{\mathcal{CR}_d}$ contains only criteria of type {\it Criterion}.Thus one can simply
+evaluate the content of  $\langle \cdot \rangle_{\mathcal{CR}_d}$ as already shown.\\
+
+For illustrating how to proceed, let us consider the following complex-criterion structure:
+\begin{equation}\label{eq-CriterionStructure03}
+\begin{array}{l}
+\displaystyle \Big \langle (\mathcal E_1, \mathcal C_1) \xrightarrow{LC_1} 
+(\mathcal E_2, \mathcal C_2) \Big \rangle_{\mathcal{CR}_1 } \xrightarrow{ELC_1} 
+\cdots \vspace{1mm}
+\\
+\hspace{1.5cm} \displaystyle \Big \langle (\mathcal E_{i-1}, \mathcal C_{i-1}) \xrightarrow{LC_{i-1}}
+\Big \langle
+(\mathcal E_i, \mathcal C_i) \xrightarrow{LC_i}
+(\mathcal E_{i+1}, \mathcal C_{i+1}) \Big\rangle_{\mathcal{CR}_{i} }  \Big \rangle_{\mathcal{CR}_{i-1}}  \xrightarrow{ELC_{i-1}}  \vspace{1mm} \\
+ \hspace{7cm} \cdots \displaystyle \Big \langle (\mathcal E_{N-1}, \mathcal C_{N-1}) \xrightarrow{LC_{N-1}}
+(\mathcal E_N, \mathcal C_N) \Big\rangle_{\mathcal{CR}_{N-1} } \\
+\end{array}
+\end{equation}
+
+From what we saw above, the expression (\ref{eq-CriterionStructure03}) becomes
+\begin{equation}
+\begin{array}{l}
+\displaystyle \Big \langle \mathcal B_1 \xrightarrow{LC_1}  \mathcal B_2 \Big \rangle_{\mathcal{CR}_1} 
+\xrightarrow{ELC_1}  \cdots \\
+\displaystyle \hspace{3cm} \Big \langle \mathcal B_{i-1}  \xrightarrow{LC_{i-1}} \Big \langle \mathcal B_i 
+ \xrightarrow{LC_i} \mathcal B_{i+1} \Big \rangle_{\mathcal{CR}_i} \Big \rangle_{\mathcal{CR}_{i-1}}  \xrightarrow{ELC_{i-1}}  \\
+\displaystyle \hspace{7.5cm} \cdots  \Big \langle  \mathcal B_{N-1}   \xrightarrow{LC_{N-1}} \mathcal B_N  \Big \rangle_{\mathcal{CR}_{N-1}}
+\end{array}
+\end{equation}
+and finally
+\begin{equation}
+\begin{array}{l}
+\displaystyle \Big ( \mathcal B_1 \xrightarrow[{\mbox{\tiny AND/OR}}]{LC_1}  \mathcal B_2 \Big ) \xrightarrow[{\mbox{\tiny AND/OR}}]{ELC_1}  \cdots \\
+\displaystyle \hspace{2.5cm} \Big ( \mathcal B_{i-1} \xrightarrow[{\mbox{\tiny AND/OR}}]{LC_{i-1}} \Big (
+\mathcal B_i \xrightarrow[{\mbox{\tiny AND/OR}}]{LC_i} \mathcal B_{i+1} \Big) \Big )  \xrightarrow[{\mbox{\tiny AND/OR}}]{ELC_{i-1}}  \\
+\displaystyle  \hspace{7.5cm}  \cdots \Big (   B_{N-1}   \xrightarrow[{\mbox{\tiny AND/OR}}]{LC_{N-1}} \mathcal B_N \Big ) \,. \\
+\end{array}
+\end{equation}
+This last is a classical sequential boolean expression. It is evaluated from the left to the right.
+The sub-expression between the parenthesis must be evaluated with the highest priority and the
+operator AND takes precedence over the OR operator.
+
+
+\section{PDL and formal logic}
+We recall that PDL is a grammar and syntax framework for describing parameters and their
+constraints. Since the description is rigorous and unambiguous, PDL could verify if the instance of
+a given parameter is consistent with the provided description and related constraints. For example,
+consider the description
+\begin{equation}
+\left\{
+\begin{array}{l}
+p_1 \mbox{is a Kelvin temperature}\\
+\mbox{Always }  p_1 > 0 \\
+\end{array}
+\right..
+\end{equation}
+According to the description, the PDL framework could automatically verify the validity of the
+parameter provided by the user.
+If he/she provides $p_1=-3$, then this value will be rejected.\\
+In any case PDL is not a formal-logic calculation tool. One could build the following description
+with no problem:
+\begin{equation}
+\left\{
+\begin{array}{l}
+p_1 \in \mathbb R\\
+\displaystyle \mbox{Always } \big(  (p_1 > 0) \mbox{ AND } (p_1 < 0) \big)\\
+\end{array}
+\right..
+\end{equation}
+PDL lacks the capabilwities to perceive the logical contradiction and will work according to its
+rules. In this case any parameter $p_1$ provided by user will be rejected.\\
+In other words {\bf people providing descriptions of services must pay great attention to their
+contents.}\\
+
+{\bf Remark:} In further developments PDL will include a formal-logic module. This will permit 
+finding contradictions inside the descriptions. Moreover this kind of module is required for
+implementing the automatic computation of
+{\it a priori} interoperability graphs %described in paragrah XYZ.
+
+\section{Description Examples}
+Examples of the descriptions defined by equation (\ref{PDLExemplum01}) and (\ref{PDLExemplum02}) are available respectively at the following links:
+\begin{itemize}
+\item \href{http://vo-param.googlecode.com/svn/trunk/model/documentation/PDL-Description_example01.xml}{Example 1} ;
+\item \href{http://vo-param.googlecode.com/svn/trunk/model/documentation/PDL-Description_Example02.xml}{Example 2}.
+\end{itemize}
+
+
+\end{document}
+
+
+
+
+
+ 
