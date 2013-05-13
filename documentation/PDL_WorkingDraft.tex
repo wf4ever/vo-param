@@ -301,11 +301,11 @@ if provided.\\
 Optional fields for the {\it SingleParameter} object are:
 \begin{itemize}
 \item a unique UCD : which is a reference to an existing UCD for characterizing the parameter
-(\textcolor{red}{to be extended});
+(\textcolor{red}{the reference is typically a text string});
 \item a unique Utype  : which is a reference to an existing Utype for characterizing the parameter
-(\textcolor{red}{to be extended});
-\item a unique Skos Concept  (\textcolor{red}{to be extended}).
-\item a unique Unit (\textcolor{red}{to be extended}).
+(\textcolor{red}{the reference is typically a text string});
+\item a unique Skos Concept  (\textcolor{red}{the reference is typically a text string}).
+\item a unique Unit (\textcolor{red}{which is a string reference to a valid VOUnits element}).
 \item a unique precision. This field must be specified only for parameter types where the concept of
 precision has a meaning. It has indeed no sense for integer, rational or string. It has
 sense, for instance, on a real type. For understanding the meaning of this field, let the function
@@ -314,10 +314,10 @@ precision $\delta$ is the smaller value such that $f(i+\delta) \neq f(i)$.\\ The
 expressed using an {\it expression} (cf. paragraph \ref{par02}). The result of the expression that
 appears in this {\it precision}-field  {\bf must be} of the same type as (or could be naturally
 cast to) the type appearing in the field {\it parameter type}.
-\item an optional restriction on the object which takes the form of an {\it
-AlwaysCondtionalStatement} (cf. paragraph \ref{par-AlwaysConditionalStatement}). This restriction is
-a way of placing a global restriction on a parameter that takes precedence over any constraint that
-might occur on a parameter in a {\it ParameterGroup}.
+%\item an optional restriction on the object which takes the form of an {\it
+%AlwaysCondtionalStatement} (cf. paragraph \ref{par-AlwaysConditionalStatement}). This restriction is
+%a way of placing a global restriction on a parameter that takes precedence over any constraint that
+%might occur on a parameter in a {\it ParameterGroup}.
 \end{itemize}
 
 {\bf NB:} The name of every {\it SingleParameter} is unique. 
