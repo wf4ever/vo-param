@@ -244,7 +244,7 @@ public class Shock extends BaseExample {
 		parameterList.getParameter().add(TimeJ);
 
 		SingleParameter MaxTimeN = factory.createSingleParameter();
-		MaxTimeN.setName("durationMax");
+		MaxTimeN.setName("MaxTimeN");
 		MaxTimeN.setParameterType(ParameterType.REAL);
 		MaxTimeN.setSkossConcept("maximum shock duration");
 		MaxTimeN.setUnit("yr");
@@ -636,9 +636,6 @@ public class Shock extends BaseExample {
 										mktconst("local", ParameterType.STRING))
 								.withValue(
 										mktconst("integrated",
-												ParameterType.STRING))
-								.withValue(
-										mktconst("ln(N/g)",
 												ParameterType.STRING)));
 
 		AlwaysConditionalStatement LIOSSetAlways = new AlwaysConditionalStatement()

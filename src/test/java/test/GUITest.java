@@ -8,6 +8,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import net.ivoa.gui.IntelligentGUI;
+import net.ivoa.gui.UnifiedGUI;
 import net.ivoa.parameter.model.Service;
 import net.ivoa.pdl.interpreter.utilities.SkossConverter;
 import net.ivoa.pdl.interpreter.utilities.UserMapper;

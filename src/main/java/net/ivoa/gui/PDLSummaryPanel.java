@@ -20,7 +20,7 @@ import net.ivoa.pdl.interpreter.groupInterpreter.GroupHandlerHelper;
 import net.ivoa.pdl.interpreter.groupInterpreter.GroupProcessor;
 import net.ivoa.pdl.interpreter.utilities.Utilities;
 
-public class PDLSummaryPanel extends JPanel implements ActionListener{
+public class PDLSummaryPanel extends JPanel implements ActionListener {
 
 	private GroupProcessor groupProcessor;
 
@@ -59,9 +59,10 @@ public class PDLSummaryPanel extends JPanel implements ActionListener{
 		// Loop for every group
 		for (int i = 0; i < handler.size(); i++) {
 			String currentGroupName = handler.get(i).getGroupName();
-			if(!handler.get(i).isGroupActive()) continue;
+			if (!handler.get(i).isGroupActive())
+				continue;
 			Boolean isGroupCompleted = true;
-			
+
 			// For every statement in the current group
 			if (null != handler.get(i).getStatementHelperList()) {
 				for (StatementHelperContainer currentStatement : handler.get(i)
@@ -72,9 +73,10 @@ public class PDLSummaryPanel extends JPanel implements ActionListener{
 						} else {
 							isGroupCompleted = isGroupCompleted && false;
 						}
-					}else{
-						//In the case where the statement is not switched
-						isGroupCompleted = isGroupCompleted && currentStatement.isStatementValid();
+					} else {
+						// In the case where the statement is not switched
+						isGroupCompleted = isGroupCompleted
+								&& currentStatement.isStatementValid();
 					}
 				}
 				if (!isGroupCompleted) {
@@ -94,7 +96,8 @@ public class PDLSummaryPanel extends JPanel implements ActionListener{
 		// Loop for every group
 		for (int i = 0; i < handler.size(); i++) {
 			String currentGroupName = handler.get(i).getGroupName();
-			if(!handler.get(i).isGroupActive()) continue;
+			if (!handler.get(i).isGroupActive())
+				continue;
 			if (null != handler.get(i).getGroupValid()
 					&& handler.get(i).getGroupValid()) {
 				toReturn.add(currentGroupName);
@@ -132,7 +135,8 @@ public class PDLSummaryPanel extends JPanel implements ActionListener{
 		// Loop for every group
 		for (int i = 0; i < handler.size(); i++) {
 			String currentGroupName = handler.get(i).getGroupName();
-			if(!handler.get(i).isGroupActive()) continue;
+			if (!handler.get(i).isGroupActive())
+				continue;
 			Boolean isGroupInError = false;
 			// Loop for every statement in the current group
 			if (null != handler.get(i).getStatementHelperList()) {
@@ -176,8 +180,10 @@ public class PDLSummaryPanel extends JPanel implements ActionListener{
 
 		List<String> infosOnGroups = this.getInfosOnGroups();
 		JButton serverButton = new JButton("Launch computation");
-		if ((infosOnGroups.get(0) == null || infosOnGroups.get(0).equalsIgnoreCase(""))
-				&& (infosOnGroups.get(1) == null || infosOnGroups.get(1).equalsIgnoreCase(""))) {	
+		if ((infosOnGroups.get(0) == null || infosOnGroups.get(0)
+				.equalsIgnoreCase(""))
+				&& (infosOnGroups.get(1) == null || infosOnGroups.get(1)
+						.equalsIgnoreCase(""))) {
 			serverButton.addActionListener(this);
 			this.containedPanel.add(serverButton, BorderLayout.EAST);
 		}
@@ -230,17 +236,29 @@ public class PDLSummaryPanel extends JPanel implements ActionListener{
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		String message = Utilities.getInstance().callService();
-		String text;
-		
-		System.out.println("server response "+message);
-		
-		if("ok".equalsIgnoreCase(message.trim())){
-			text = "the job has been correctly sent to server";
-		}else{
-			text = "error in submitting jobs. Please verify your data and try again";
+
+		List<String> requiredParamsNotProvided = Utilities.getInstance()
+				.getRequiredFieldsNotProvided();
+		boolean requiredParametersProvided = requiredParamsNotProvided.size() < 0;
+		if (requiredParametersProvided) {
+			String message = Utilities.getInstance().callService();
+			String text;
+			System.out.println("server response " + message);
+			if ("ok".equalsIgnoreCase(message.trim())) {
+				text = "the job has been correctly sent to server";
+			} else {
+				text = "error in submitting jobs. Please verify your data and try again";
+			}
+			JOptionPane.showMessageDialog(this, text);
+		} else {
+			String message="";
+			for(String currentParamName : requiredParamsNotProvided){
+				message = message + currentParamName+"\n";
+			}
+			JOptionPane.showMessageDialog(this,
+					"some required parameters are not provided: "+message);
 		}
-		JOptionPane.showMessageDialog(this, text);
+
 	}
 
 }
