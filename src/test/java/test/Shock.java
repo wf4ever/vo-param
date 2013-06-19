@@ -17,6 +17,7 @@ import net.ivoa.parameter.model.If;
 import net.ivoa.parameter.model.IfThenConditionalStatement;
 import net.ivoa.parameter.model.Operation;
 import net.ivoa.parameter.model.OperationType;
+import net.ivoa.parameter.model.ParameterDependency;
 import net.ivoa.parameter.model.ParameterGroup;
 import net.ivoa.parameter.model.ParameterReference;
 import net.ivoa.parameter.model.ParameterType;
@@ -64,6 +65,7 @@ public class Shock extends BaseExample {
 				.withName("outputSpecifications");
 
 		SingleParameter mail = factory.createSingleParameter();
+		mail.setDependency(ParameterDependency.REQUIRED);
 		mail.setName("mail");
 		mail.setParameterType(ParameterType.STRING);
 		mail.setSkossConcept("mail of the user");
@@ -73,6 +75,7 @@ public class Shock extends BaseExample {
 		parameterList.getParameter().add(mail);
 
 		SingleParameter shockType = factory.createSingleParameter();
+		shockType.setDependency(ParameterDependency.REQUIRED);
 		shockType.setName("shockType");
 		shockType.setParameterType(ParameterType.STRING);
 		shockType.setSkossConcept("shock type");
@@ -82,6 +85,7 @@ public class Shock extends BaseExample {
 		parameterList.getParameter().add(shockType);
 
 		SingleParameter Nfluids = factory.createSingleParameter();
+		Nfluids.setDependency(ParameterDependency.REQUIRED);
 		Nfluids.setName("Nfluids");
 		Nfluids.setParameterType(ParameterType.INTEGER);
 		Nfluids.setSkossConcept("number of fluids to consider");
@@ -91,6 +95,7 @@ public class Shock extends BaseExample {
 		parameterList.getParameter().add(Nfluids);
 
 		SingleParameter Bbeta = factory.createSingleParameter();
+		Bbeta.setDependency(ParameterDependency.REQUIRED);
 		Bbeta.setName("Bbeta");
 		Bbeta.setParameterType(ParameterType.REAL);
 		Bbeta.setSkossConcept("magnetic field strenght parameter");
@@ -100,6 +105,7 @@ public class Shock extends BaseExample {
 		parameterList.getParameter().add(Bbeta);
 
 		SingleParameter Vs = factory.createSingleParameter();
+		Vs.setDependency(ParameterDependency.REQUIRED);
 		Vs.setName("Vs");
 		Vs.setParameterType(ParameterType.REAL);
 		Vs.setSkossConcept("shock velocity");
@@ -109,6 +115,7 @@ public class Shock extends BaseExample {
 		parameterList.getParameter().add(Vs);
 
 		SingleParameter Vdi = factory.createSingleParameter();
+		Vdi.setDependency(ParameterDependency.REQUIRED);
 		Vdi.setName("Vdi");
 		Vdi.setParameterType(ParameterType.REAL);
 		Vdi.setSkossConcept("initial drift velocity");
@@ -118,6 +125,7 @@ public class Shock extends BaseExample {
 		parameterList.getParameter().add(Vdi);
 
 		SingleParameter OpH2 = factory.createSingleParameter();
+		OpH2.setDependency(ParameterDependency.REQUIRED);
 		OpH2.setName("OpH2");
 		OpH2.setParameterType(ParameterType.REAL);
 		OpH2.setSkossConcept("initial H2 ortho/para ratio");
@@ -127,6 +135,7 @@ public class Shock extends BaseExample {
 		parameterList.getParameter().add(OpH2);
 
 		SingleParameter Ti = factory.createSingleParameter();
+		Ti.setDependency(ParameterDependency.REQUIRED);
 		Ti.setName("Ti");
 		Ti.setParameterType(ParameterType.REAL);
 		Ti.setSkossConcept("initial gas temperature");
@@ -136,6 +145,7 @@ public class Shock extends BaseExample {
 		parameterList.getParameter().add(Ti);
 
 		SingleParameter nHi = factory.createSingleParameter();
+		nHi.setDependency(ParameterDependency.REQUIRED);
 		nHi.setName("nHi");
 		nHi.setParameterType(ParameterType.REAL);
 		nHi.setSkossConcept("pre-shock density");
@@ -145,6 +155,7 @@ public class Shock extends BaseExample {
 		parameterList.getParameter().add(nHi);
 
 		SingleParameter Tg = factory.createSingleParameter();
+		Tg.setDependency(ParameterDependency.REQUIRED);
 		Tg.setName("Tg");
 		Tg.setParameterType(ParameterType.REAL);
 		Tg.setSkossConcept("initial grain temperature");
@@ -154,6 +165,7 @@ public class Shock extends BaseExample {
 		parameterList.getParameter().add(Tg);
 
 		SingleParameter Zeta = factory.createSingleParameter();
+		Zeta.setDependency(ParameterDependency.REQUIRED);
 		Zeta.setName("Zeta");
 		Zeta.setParameterType(ParameterType.REAL);
 		Zeta.setSkossConcept("cosmic ray ionization rate");
@@ -163,6 +175,7 @@ public class Shock extends BaseExample {
 		parameterList.getParameter().add(Zeta);
 
 		SingleParameter NstepMax = factory.createSingleParameter();
+		NstepMax.setDependency(ParameterDependency.REQUIRED);
 		NstepMax.setName("NstepMax");
 		NstepMax.setParameterType(ParameterType.INTEGER);
 		NstepMax.setSkossConcept("maximum number of integration steps");
@@ -172,6 +185,7 @@ public class Shock extends BaseExample {
 		parameterList.getParameter().add(NstepMax);
 
 		SingleParameter NstepW = factory.createSingleParameter();
+		NstepW.setDependency(ParameterDependency.REQUIRED);
 		NstepW.setName("NstepW");
 		NstepW.setParameterType(ParameterType.INTEGER);
 		NstepW.setSkossConcept("number of steps between two outputs");
@@ -181,6 +195,7 @@ public class Shock extends BaseExample {
 		parameterList.getParameter().add(NstepW);
 
 		SingleParameter NH2Lev = factory.createSingleParameter();
+		NH2Lev.setDependency(ParameterDependency.REQUIRED);
 		NH2Lev.setName("NH2Lev");
 		NH2Lev.setParameterType(ParameterType.INTEGER);
 		NH2Lev.setSkossConcept("number of H2 levels included");
@@ -190,6 +205,7 @@ public class Shock extends BaseExample {
 		parameterList.getParameter().add(NH2Lev);
 
 		SingleParameter NH2Lines = factory.createSingleParameter();
+		NH2Lines.setDependency(ParameterDependency.REQUIRED);
 		NH2Lines.setName("NH2Lines");
 		NH2Lines.setParameterType(ParameterType.INTEGER);
 		NH2Lines.setSkossConcept("maximum number of H2 lines in output files");
@@ -199,6 +215,7 @@ public class Shock extends BaseExample {
 		parameterList.getParameter().add(NH2Lines);
 
 		SingleParameter iforH2 = factory.createSingleParameter();
+		iforH2.setDependency(ParameterDependency.REQUIRED);
 		iforH2.setName("iforH2");
 		iforH2.setParameterType(ParameterType.INTEGER);
 		iforH2.setSkossConcept("formation of grain model");
@@ -208,6 +225,7 @@ public class Shock extends BaseExample {
 		parameterList.getParameter().add(iforH2);
 
 		SingleParameter ikinH2 = factory.createSingleParameter();
+		ikinH2.setDependency(ParameterDependency.REQUIRED);
 		ikinH2.setName("ikinH2");
 		ikinH2.setParameterType(ParameterType.INTEGER);
 		ikinH2.setSkossConcept("kinetic energy of newly formed H2");
@@ -217,6 +235,7 @@ public class Shock extends BaseExample {
 		parameterList.getParameter().add(ikinH2);
 
 		SingleParameter xll = factory.createSingleParameter();
+		xll.setDependency(ParameterDependency.REQUIRED);
 		xll.setName("xll");
 		xll.setParameterType(ParameterType.REAL);
 		xll.setSkossConcept("characteristic viscous lenght");
@@ -226,6 +245,7 @@ public class Shock extends BaseExample {
 		parameterList.getParameter().add(xll);
 
 		SingleParameter epsV = factory.createSingleParameter();
+		epsV.setDependency(ParameterDependency.REQUIRED);
 		epsV.setName("epsV");
 		epsV.setParameterType(ParameterType.REAL);
 		epsV.setSkossConcept("precision of computation");
@@ -235,6 +255,7 @@ public class Shock extends BaseExample {
 		parameterList.getParameter().add(epsV);
 
 		SingleParameter TimeJ = factory.createSingleParameter();
+		TimeJ.setDependency(ParameterDependency.REQUIRED);
 		TimeJ.setName("TimeJ");
 		TimeJ.setParameterType(ParameterType.REAL);
 		TimeJ.setSkossConcept("shock age");
@@ -244,6 +265,7 @@ public class Shock extends BaseExample {
 		parameterList.getParameter().add(TimeJ);
 
 		SingleParameter MaxTimeN = factory.createSingleParameter();
+		MaxTimeN.setDependency(ParameterDependency.REQUIRED);
 		MaxTimeN.setName("MaxTimeN");
 		MaxTimeN.setParameterType(ParameterType.REAL);
 		MaxTimeN.setSkossConcept("maximum shock duration");
@@ -253,6 +275,7 @@ public class Shock extends BaseExample {
 		parameterList.getParameter().add(MaxTimeN);
 
 		SingleParameter SOS = factory.createSingleParameter();
+		SOS.setDependency(ParameterDependency.REQUIRED);
 		SOS.setName("SOS");
 		SOS.setParameterType(ParameterType.STRING);
 		SOS.setSkossConcept("species abundance option");
@@ -262,6 +285,7 @@ public class Shock extends BaseExample {
 		parameterList.getParameter().add(SOS);
 
 		SingleParameter LEOS = factory.createSingleParameter();
+		LEOS.setDependency(ParameterDependency.REQUIRED);
 		LEOS.setName("LEOS");
 		LEOS.setParameterType(ParameterType.STRING);
 		LEOS.setSkossConcept("H2 level population option");
@@ -271,6 +295,7 @@ public class Shock extends BaseExample {
 		parameterList.getParameter().add(LEOS);
 
 		SingleParameter LIOS = factory.createSingleParameter();
+		LIOS.setDependency(ParameterDependency.REQUIRED);
 		LIOS.setName("LIOS");
 		LIOS.setParameterType(ParameterType.STRING);
 		LIOS.setSkossConcept("H2 line emissivity option");
