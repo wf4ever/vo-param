@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import net.ivoa.gui.GroupPanel;
 import net.ivoa.parameter.model.ParameterType;
 import net.ivoa.parameter.model.SingleParameter;
 import net.ivoa.pdl.interpreter.expression.ExpressionParserFactory;
@@ -86,6 +87,9 @@ public abstract class PDLBaseParamPanel extends JPanel implements FocusListener 
 
 	public void verify() {
 		String userProvidedString = getUserProvidedValue();
+		if("".equalsIgnoreCase(userProvidedString) || null==userProvidedString){
+			return;
+		}
 
 		String[] vectorExpression = userProvidedString.split(SEPARATOR);
 
@@ -125,7 +129,13 @@ public abstract class PDLBaseParamPanel extends JPanel implements FocusListener 
 			Utilities.getInstance().getMapper().getMap()
 					.put(this.paramName, generalParamList);
 		}
+		//this.validateProvidedValues();
 
+	}
+	
+	protected void validateProvidedValues(){
+		GroupPanel myFather = (GroupPanel) this.getParent().getParent();
+		myFather.clickOnValidate();
 	}
 
 	protected String convertToStringProvidedValues(

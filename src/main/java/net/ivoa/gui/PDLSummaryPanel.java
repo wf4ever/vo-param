@@ -239,7 +239,7 @@ public class PDLSummaryPanel extends JPanel implements ActionListener {
 
 		List<String> requiredParamsNotProvided = Utilities.getInstance()
 				.getRequiredFieldsNotProvided();
-		boolean requiredParametersProvided = requiredParamsNotProvided.size() < 0;
+		boolean requiredParametersProvided = requiredParamsNotProvided.size() <= 0;
 		if (requiredParametersProvided) {
 			String message = Utilities.getInstance().callService();
 			String text;

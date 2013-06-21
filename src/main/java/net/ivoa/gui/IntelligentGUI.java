@@ -30,7 +30,7 @@ public class IntelligentGUI implements TreeSelectionListener, ActionListener {
 	private JFrame frame;
 	private JFrame frameGR;
 	private JFrame frameServer;
-
+	
 	/**
 	 * Create the GUI and show it. For thread safety, this method should be
 	 * invoked from the event dispatch thread.
