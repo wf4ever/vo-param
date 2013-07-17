@@ -1,10 +1,13 @@
 package net.ivoa.gui.dynamicLabel;
 
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -19,7 +22,7 @@ import net.ivoa.pdl.interpreter.utilities.Utilities;
 import visitors.GeneralParameterVisitor;
 import CommonsObjects.GeneralParameter;
 
-public abstract class PDLBaseParamPanel extends JPanel implements FocusListener {
+public abstract class PDLBaseParamPanel extends JPanel implements FocusListener, ActionListener {
 
 	/**
 	 * 
@@ -27,6 +30,8 @@ public abstract class PDLBaseParamPanel extends JPanel implements FocusListener 
 	private static final long serialVersionUID = -5425016803025275974L;
 	private static final String SEPARATOR = ";";
 
+	private JButton infoButton;
+	
 	public JLabel getParamName() {
 		return paramLabel;
 	}
@@ -59,8 +64,22 @@ public abstract class PDLBaseParamPanel extends JPanel implements FocusListener 
 		this.add(paramLabel);
 		this.add(this.getComponent());
 		this.setComponentValue();
+		
+		this.infoButton  = new JButton();
+		this.infoButton.setText("?");
+		this.infoButton.addActionListener(this);
+		
+		this.infoButton.setSize(20,20);
+		
+		this.add(this.infoButton);
 		this.getComponent().addFocusListener(this);
 
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+		String infoMessage = SkossConverter.getInstance().getSkosDescriptionBySkosURI(this.skossConcept);
+		
+		JOptionPane.showMessageDialog(this,infoMessage,"Parameter description for "+this.paramName,JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	protected abstract String getUserProvidedValue();
@@ -68,13 +87,7 @@ public abstract class PDLBaseParamPanel extends JPanel implements FocusListener 
 	protected abstract void setComponentValue();
 
 	private String buildLabelText() {
-		String toReturn = " "+this.paramName + " ( " + this.paramUnit + "; "
-				+ this.paramType;
-
-		if (null != paramDimension) {
-			toReturn = toReturn + " ; " + this.paramDimension;
-		}
-		toReturn = toReturn + ")";
+		String toReturn = " "+this.paramName + " (" + this.paramUnit +")";
 		return toReturn;
 	}
 

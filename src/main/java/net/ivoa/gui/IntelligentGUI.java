@@ -2,13 +2,22 @@ package net.ivoa.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+
+import visitors.GeneralParameterVisitor;
+
+import CommonsObjects.GeneralParameter;
+import net.ivoa.parameter.model.ParameterType;
 import net.ivoa.parameter.model.Service;
 import net.ivoa.pdl.interpreter.groupInterpreter.GroupHandlerHelper;
 import net.ivoa.pdl.interpreter.groupInterpreter.GroupProcessor;
+import net.ivoa.pdl.interpreter.utilities.Utilities;
 
 public class IntelligentGUI implements TreeSelectionListener, ActionListener {
 
@@ -36,7 +45,10 @@ public class IntelligentGUI implements TreeSelectionListener, ActionListener {
 	 * invoked from the event dispatch thread.
 	 */
 	public void createAndShowGUI() {
-
+		
+		
+		initializeUserMail();
+		
 		// Create and set up the window.
 		this.frame = new JFrame(this.serviceName);
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -72,6 +84,22 @@ public class IntelligentGUI implements TreeSelectionListener, ActionListener {
 
 		frame.setVisible(true);
 		System.out.println(Thread.currentThread()+" is the current tread");
+	}
+
+	private void initializeUserMail() {
+		boolean goodMail = false;
+		String message ="PDL client for "+ this.serviceName + " by C.M. Zwölf and P. Harrison \n\n";
+		message = message + "Please enter your e-mail (necessary for receiving results):";
+		String eMail="";
+		while(!goodMail){
+			eMail = JOptionPane.showInputDialog(null,message,"welcome",JOptionPane.QUESTION_MESSAGE);
+			if(eMail.contains("@") && eMail.contains(".")){
+				goodMail=true;
+			}
+		}		
+		List<GeneralParameter> mail = new ArrayList<GeneralParameter>();
+		mail.add(new GeneralParameter(eMail, ParameterType.STRING, "user mail", new GeneralParameterVisitor()));
+		Utilities.getInstance().getMapper().getMap().put("mail",mail);
 	}
 
 	/** Required by TreeSelectionListener interface. */
