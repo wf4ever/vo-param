@@ -29,11 +29,11 @@ import net.ivoa.parameter.model.ValueInRange;
 import net.ivoa.parameter.model.ValueLargerThan;
 import net.ivoa.parameter.model.ValueSmallerThan;
 
-public class ConeSearch extends BaseExample {
+public class ConeSearchWithExtraColumns extends BaseExample {
 
 	public static void main(String[] args) throws PropertyException,
 			FileNotFoundException, JAXBException {
-		ConeSearch example = new ConeSearch();
+		ConeSearchWithExtraColumns example = new ConeSearchWithExtraColumns();
 		example.marshall();
 	}
 
@@ -112,7 +112,55 @@ public class ConeSearch extends BaseExample {
 		parameterList.getParameter().add(result);
 		ParameterReference result_REF = new ParameterReference()
 				.withParameterName(result.getName());
+		
+		SingleParameter RA_J2000 = factory.createSingleParameter();
+		RA_J2000.setName("RA J2000");
+		RA_J2000.setSkossConcept("Right Ascension J2000");
+		RA_J2000.setParameterType(ParameterType.REAL);
+		RA_J2000.setPrecision(mkconst(0.0001));
+		RA_J2000.setUnit("deg");
+		RA_J2000.setUCD("POS_EQ_RA");
+		RA_J2000.setDimension(mktconst("1", ParameterType.INTEGER));
+		parameterList.getParameter().add(RA_J2000);
+		ParameterReference RA_J2000_REF = new ParameterReference()
+				.withParameterName(RA_J2000.getName());
 
+		SingleParameter DEC_J2000 = factory.createSingleParameter();
+		DEC_J2000.setName("DEC J2000");
+		DEC_J2000.setSkossConcept("Right Ascension J2000");
+		DEC_J2000.setParameterType(ParameterType.REAL);
+		DEC_J2000.setPrecision(mkconst(0.0001));
+		DEC_J2000.setUnit("deg");
+		DEC_J2000.setUCD("POS_EQ_RA");
+		DEC_J2000.setDimension(mktconst("1", ParameterType.INTEGER));
+		parameterList.getParameter().add(DEC_J2000);
+		ParameterReference DEC_J2000_REF = new ParameterReference()
+				.withParameterName(DEC_J2000.getName());
+		
+		SingleParameter LB = factory.createSingleParameter();
+		LB.setName("LB");
+		LB.setSkossConcept("Blue luminosity calculated from D and mB-corr (Verdes-Montenegro et al. 2005) as explained in Lisenfeld et al. 2007");
+		LB.setParameterType(ParameterType.REAL);
+		LB.setPrecision(mkconst(0.01));
+		LB.setUnit("Lsun");
+		LB.setUCD("phys.luminosity;em.opt;arith.ratio");
+		LB.setDimension(mktconst("1", ParameterType.INTEGER));
+		parameterList.getParameter().add(LB);
+		ParameterReference LB_REF = new ParameterReference()
+				.withParameterName(LB.getName());
+
+		SingleParameter V3K = factory.createSingleParameter();
+		V3K.setName("V3K");
+		V3K.setSkossConcept("3K corrected recession Velocity (Verdes-Montenegro et al. 2005)");
+		V3K.setParameterType(ParameterType.REAL);
+		V3K.setPrecision(mkconst(0.0));
+		V3K.setUnit("Lsun");
+		V3K.setUCD("phys.veloc");
+		V3K.setDimension(mktconst("1", ParameterType.INTEGER));
+		parameterList.getParameter().add(V3K);
+		ParameterReference V3K_REF = new ParameterReference()
+				.withParameterName(V3K.getName());
+		
 		// Adding the parameter list to the service
 		service.setParameters(parameterList);
 
@@ -195,6 +243,10 @@ public class ConeSearch extends BaseExample {
 				"outputs");
 		
 		outputsPG.getParameterRef().add(result_REF);
+		outputsPG.getParameterRef().add(RA_J2000_REF);
+		outputsPG.getParameterRef().add(DEC_J2000_REF);
+		outputsPG.getParameterRef().add(LB_REF);
+		outputsPG.getParameterRef().add(V3K_REF);
 		
 		
 		service.setInputs(inputsPG);
