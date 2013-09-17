@@ -213,6 +213,15 @@ towards building our own solution.\\
 
 \noindent {\bf Remark}: We will present further considerations on the workflows aspects in paragraph \ref{PDLWF}, once we have exposed some basic concepts about PDL in the following paragraph.  
 
+\subsection{Astronomical and Astrophysical use-cases needing PDL's fine description capabilities}
+{\bf Put here the text from Franck Le Petit explaining the needs on PDR code and the text from Antoine explaining the needs for Paris-Durham code}.\\
+
+The following sections of this document could seems complex at first reading. This is because we present all the features and the descriptive richness  of PDL. Nevertheless this not means that all the PDL descriptions are complex. They could be complex in case of services with lot of parameters linked by heavy constraints. But PDL description could be very simple in case of simple services. 
+For example the PDL description associated with a common cone search service is very simple. It could be consulted at the following URL:\\
+\href{
+http://www.myexperiment.org/files/999/versions/4/download/AMIGA-PDL-Description.xml
+}{http://www.myexperiment.org/files/999/versions/4/\\download/AMIGA-PDL-Description.xml}.
+
 \subsection{A new Parameter Description Language: a unique solution to description and interoperability needs}
 To overcome the lack of a  solution to our description and interoperability
 needs, it is proposed to introduce a new language.
@@ -281,15 +290,6 @@ By considering this automatization facility we suggest to perform the verificati
 \item verifications server-side will avoid to run jobs with wrong set of parameters. Indeed a server does not know if the job is sent by a client implementing the verifications or not. Therefore it must behave as if the data had never been checked. 
 \end{itemize}
 Verification of non-standard errors (e.g. network issues) are out of the scope of PDL.
-
-\subsubsection{Astronomical and Astrophysical use-cases needing PDL's fine description capabilities}
-{\bf Put here the text from Franck Le Petit explaining the needs on PDR code and the text from Antoine explaining the needs for Paris-Durham code}.\\
-
-The following sections of this document could seems complex at first reading. This is because we present all the features and the descriptive richness  of PDL. Nevertheless this not means that all the PDL descriptions are complex. They could be complex in case of services with lot of parameters linked by heavy constraints. But PDL description could be very simple in case of simple services. 
-For example the PDL description associated with a common cone search service is very simple. It could be consulted at the following URL:\\
-\href{
-http://www.myexperiment.org/files/999/versions/4/download/AMIGA-PDL-Description.xml
-}{http://www.myexperiment.org/files/999/versions/4/\\download/AMIGA-PDL-Description.xml}.
 
 \section{The Service object}\label{par-service}
 
