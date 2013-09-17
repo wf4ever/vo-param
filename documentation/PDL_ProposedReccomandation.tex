@@ -42,23 +42,23 @@
 \ivoagroup{Grid and Web Services}
 \version{\pdlversion}
 \def\SVN$#1: #2 ${\expandafter\def\csname SVN#1\endcsname{#2}}
-\SVN$Rev: 200 $
+\SVN$Rev: 201 $
 
 \urlthisversion{\pdlversion:  \pdldate\ (SVN Revision \SVNRev)}
 \urllastversion{N/A}
-\previousversion{PDL: The Parameter Description Language, IVOA Working Draft, Version 0.1
+\previousversion{PDL: The Parameter Description Language, IVOA Working Draft, Version 1.0
 }
 
 \begin{document}
 \maketitle
 \section*{Abstract}
-This document discusses the definition of the  {\it Paramter Description Language} (PDL). In this language sentences and syntactical elements are organized into a rigorous data model. With no loss of generality, we will represent this data model using XML.\\
+This document discusses the definition of the  {\it Parameter Description Language} (PDL). In this language sentences and syntactical elements are organized into a rigorous data model. With no loss of generality, we will represent this data model using XML.\\
 It intends to be a description language for self-descriptive web services exposing the semantic nature of input and output parameters, as well as all possible complex constraints. PDL is a step forward towards web services interoperability. 
 \section{Status of this document}
 This document has been produced by the  Grid and Web Service Working Group. It follows the previous working draft.
  
 \section*{Acknowledgements}
-TBD
+We wish to thank the members of the IVOA Grid and Web Services working group for the discussions around PDL it hosted during the Interop meetings (starting from Naples, May 2011). A special thank to Andr\'e Shaaff for its precious advices,  useful discussions and feedback on every version of this work.
 
 \clearpage
 
@@ -81,7 +81,7 @@ In the following we will ignore any specific feature and will use the term {\it 
 refer to any kind of process that receives input parameters and produces output ones.\\
 
 Interoperability with other services and the immediacy of use are two key points for the success of a service:
-in general, a service will not be used by the community if users do not know how to call it, the inputs it needs, what it does and how. However, other issues may have influence in the user decision e.g. who has implement it, who is the service provider, does it implement a well known technique, is there a paper to support the research behind the service, can I use it as a standalone application and can be used together with other services. 
+in general, a service will not be used by the community if users do not know how to call it, the inputs it needs, what it does and how. However, other issues may have influence in the user decision e.g. who has implement it, who is the service provider, does it implement a well known technique, is there a paper to support the research behind the service, can I use it as a standalone application and can it be used together with other services. 
 A new service will be more useful for some users if it can be released easily as an interactive and standalone application whereas other users consider essential the interoperability with other services and applications. 
 Indeed, Service description and interoperability are two key points for building efficient and useful services. 
 
@@ -99,21 +99,25 @@ sense it is this description that puts the service from the {\it unknown} to the
 state.\\
 Since the client could be a computer system, a generic description should be machine-readable.\\
 
-There are several description languages. The most known for their high expression level and their
-wide use are \emph{WSDL} (\href{http://www.w3.org/TR/wsdl20/}{http://www.w3.org/TR/wsdl20/}) and
-\textit{WADL} (\href{http://www.w3.org/Submission/wadl/}{http://www.w3.org/Submission/wadl/}).\\
-With those tools, people providing a given service could easily express what parameters the service
-expects and what data structures it returns. It thus serves a roughly similar purpose as a
-method-signature in a programming language.\\
+There are several description languages.
+
+
+ The most known for their high expression level and their
+wide use are the \emph{W3C} \emph{WSDL} and
+\textit{WADL}.\\
+Since both {\it WSDL} and {\it WADL} support {\it XML-schema}, one could include in these languages complex and highly specialized 
+XML objects for expressing conditions and/or restrictions. However, the process for building these ad-hoc XML types is not standard\footnote{For example, for expressing that a given parameter must be greater and smaller than arbitrary values, we could define a {\it bounded} type containing an {\it inf} field and a {\it sup} field. If another user define a similar object calling these two fields {\it inf-bound} and {\it sub-bound}, the instances of these two types could not interoperate straightforwardly. The theory of types is not sufficient to ensure the interoperability of the object defined.}: 
+people providing a given service could only describe, using the native standard feature of WADL or WSDL, primitive-typed parameters. It thus serves a roughly similar purpose as a method-signature in a programming language, with no possibility for defining 
+restrictions, semantics and criteria to satisfy. PDL propose a way for expressing these elements in a unified way.\\
 
 In the case of {\it generic services} for science, description needs are very specific: since we
-have to deal with complex physics and models, one should be able to describe for each parameter its
+have to deal with complex formalisms and models, one should be able to describe for each parameter its
 physical meaning, its unit and precision and the range (or set) of admissible values (according to
 the model).\\ 
-
 In many cases, especially for theoretical simulations, parameters could be linked by
 complex conditions or have to satisfy, under given conditions, a set of constraints (that could
 involve mathematical properties and formulas).
+
 Two examples of this high level description we would be able to provide are the following:
 
 \begin{equation}\label{PDLExemplum01}
@@ -209,7 +213,7 @@ towards building our own solution.\\
 
 \noindent {\bf Remark}: We will present further considerations on the workflows aspects in paragraph \ref{PDLWF}, once we have exposed some basic concepts about PDL in the following paragraph.  
 
-\subsection{A new Parameter Description Language: a unique solutions to description and interoperability needs}
+\subsection{A new Parameter Description Language: a unique solution to description and interoperability needs}
 To overcome the lack of a  solution to our description and interoperability
 needs, it is proposed to introduce a new language.
 Our aim is to finely describe the set of parameters (inputs and outputs of a given generic services)
@@ -254,8 +258,21 @@ with reference to an expression and/or conditions composed with PDL. By this we 
 replace in the PDL expressions/conditions the referenced parameters  by the set of values provided to the
 service by user. The replacement mechanisms will be explained in detail, case by case.
 
+\subsubsection{PDL in the IVOA architecture}
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=1.0\textwidth]{pictures/IVOAarch.jpg} 
+\caption{The IVOA Architecture, with PDL highlighted}
+\label{Pic-arch}
+\end{center}
+\end{figure}
+With the IVOA Architecture of figure \ref{Pic-arch}, PDL is a VO standard for richly describing parameters with a fine grained granularity, allowing to introduce constraints and mathematical formulae.\\
+If PDL describe the nature, the hierarchy of parameters and their constraints, {\bf it  does not describe} how this parameters are transmitted to a service, nor how these parameters will be processed by the described service. For example, PDL won't tell to user if he/she has to transfer parameters through a SOAP envelope or through a REST post, nor what will be the  phases that will pass the submitted job. In the context of the IVOA, this means that the separation between PDL and UWS is clear and one can be used without the other without infringing any rules of those standards.\\
+Indeed, PDL could be seen a supplementary layer, whose aim is to simplify user interaction with the VO, by explaining in a unified way the physical/computational meaning of every parameter. But, again, it is not a description of parameters values.\\
+PDL could be plugged as an additional layer to every existing IVOA service and is suitable for solving issues not covered by other IVOA standards and is particularly indicated for workflows.
+
 \subsubsection{Some consideration on PDL and Workflows}\label{PDLWF}
-The orchestration of services define a Scientific Workflow, and services interoperability is key in the process of designing and building workflows. Something really important to consider in this process of orchestration is the control of parameters constraints at the moment of the workflow execution. Even if interoperability is assured at the phase of workflow desing, a control at the execution phase has to be implemented by workflow engines as service clients. 
+The orchestration of services define a Scientific Workflow, and services interoperability is key in the process of designing and building workflows. Something really important to consider in this process of orchestration is the control of parameters constraints at the moment of the workflow execution. Even if interoperability is assured at the phase of workflow design, a control at the execution phase has to be implemented by workflow engines as service clients. 
 As we suggested in the remark of the previous paragraph, test for validating parameters provided to a service could be automatically generated starting from the PDL description 
 %(cf for example the implementing note document REFERENCE to add after having it published on the IVOA site). 
 By considering this automatization facility we suggest to perform the verification both client side and server side:
@@ -265,6 +282,14 @@ By considering this automatization facility we suggest to perform the verificati
 \end{itemize}
 Verification of non-standard errors (e.g. network issues) are out of the scope of PDL.
 
+\subsubsection{Astronomical and Astrophysical use-cases needing PDL's fine description capabilities}
+{\bf Put here the text from Franck Le Petit explaining the needs on PDR code and the text from Antoine explaining the needs for Paris-Durham code}.\\
+
+The following sections of this document could seems complex at first reading. This is because we present all the features and the descriptive richness  of PDL. Nevertheless this not means that all the PDL descriptions are complex. They could be complex in case of services with lot of parameters linked by heavy constraints. But PDL description could be very simple in case of simple services. 
+For example the PDL description associated with a common cone search service is very simple. It could be consulted at the following URL:\\
+\href{
+http://www.myexperiment.org/files/999/versions/4/download/AMIGA-PDL-Description.xml
+}{http://www.myexperiment.org/files/999/versions/4/\\download/AMIGA-PDL-Description.xml}.
 
 \section{The Service object}\label{par-service}
 
@@ -279,20 +304,20 @@ Verification of non-standard errors (e.g. network issues) are out of the scope o
 The root element of the PDL description of a generic service is the object {\it Service} (see figure
 \ref{Pic-Service}). This {\bf must contain}
 \begin{itemize}
-\item A unique {\it ServiceName}. This field is a String containing the name of the service.
-\item A unique {\it ServiceId}. This field is a String containing the technical Id of the service.
-It is introduced for a future eventual integration of PDL into the IVOA registry. Each service in
+\item A single {\it ServiceName}. This field is a String containing the name of the service.
+\item A  {\it ServiceId}. This field is a String containing the technical Id of the service.
+It is introduced for a future  integration of PDL into the registries: each service in
 the registry will be marked with its own unique id.
-\item A unique {\it Description}. This field is a String and contains a human readable description
+\item A  {\it Description}. This field is a String and contains a human readable description
 of the service. This description is not intended to be understood/parsed by a machine.
-\item A unique {\it Parameters} field which is a list of {\it SingleParameter} object type (cf.
+\item A {\it Parameters} field which is a list of {\it SingleParameter} object type (cf.
 paragraph \ref{par01}). This list contains the definition of all parameters (both inputs and
 outputs) of the service. The two following fields specify if a given parameter is a input or an
 output one.
-\item A unique {\it Inputs} field of type {\it ParameterGroup} (cf. paragraph \ref{par-group}). This
-object contain the detailed description (with constraints and conditions) of all the input
+\item An {\it Inputs} field of type {\it ParameterGroup} (cf. paragraph \ref{par-group}). This
+object contains the detailed description (with constraints and conditions) of all the input
 parameters.
-\item A unique {\it Outputs} field of type {\it ParameterGroup}. This object contain the detailed
+\item An {\it Outputs} field of type {\it ParameterGroup}. This object contains the detailed
 description (with constraints and conditions) of all the output parameters.
 \end{itemize}
 
@@ -311,28 +336,29 @@ The {\it SingleParameter} object (see figure \ref{Pic-Parameter}) is the core el
 jobs.
 Every object of this type must be characterized by:
 \begin{itemize}
-\item A name (which is unique and is the Id of the parameter);
-\item A unique parameter type, which explains the nature of the current parameter. The allowed
+\item A name, which is the Id of the parameter. In a given PDL description instance, two parameters cannot 
+have the same name;
+\item A single parameter type, which explains the nature of the current parameter. The allowed
 types are : boolean, string, rational, complex, integer, real, date;
-\item A unique dimension. A $1$-dimension corresponds to a scalar parameter whereas a dimension
+\item A dimension. A $1$-dimension corresponds to a scalar parameter whereas a dimension
 equal to N corresponds to a N-size vector. The dimension is expressed using an {\it expression} (cf.
 paragraph \ref{par02}). The result of the expression that appears in this {\it
 SingleParameter}-field object {\bf must be integer}.\footnote{This is obvious, since this value
 corresponds to a vector size.}
 \end{itemize}
-The unique attribute {\it dependency} can take one of the two values {\bf required} or {\bf
+The attribute {\it dependency} can take one of the two values {\bf required} or {\bf
 optional}. If required the parameter {\bf must be} provided to the service. If optional, the service
 could work even without the current parameter and the values will be considered for processing only
 if provided.\\
 
 Optional fields for the {\it SingleParameter} object are:
 \begin{itemize}
-\item a unique UCD : which is a text reference to an existing UCD for characterizing the parameter;
-\item a unique Utype  : which is a reference to an existing Utype for characterizing the parameter
+\item a UCD : which is a text reference to an existing UCD for characterizing the parameter;
+\item a Utype  : which is a reference to an existing Utype for characterizing the parameter
 (\textcolor{red}{the reference is typically a text string});
-\item a unique Skos Concept  (\textcolor{red}{the reference is typically a text string}).
-\item a unique Unit (\textcolor{red}{which is a string reference to a valid VOUnits element}).
-\item a unique precision. This field must be specified only for parameter types where the concept of
+\item a Skos Concept  (\textcolor{red}{the reference is typically a text string}).
+\item a Unit (\textcolor{red}{which is a string reference to a valid VOUnits element}).
+\item a precision. This field must be specified only for parameter types where the concept of
 precision has a meaning. It has indeed no sense for integer, rational or string. It has
 sense, for instance, on a real type. For understanding the meaning of this field, let the function
 $f$ be a model of a given service. If $i$ denotes the input parameter, $f(i)$ denotes the output. The
@@ -358,9 +384,9 @@ cast to) the type appearing in the field {\it parameter type}.
 \end{center}
 \end{figure}
 
-This object, as its name indicates, is used to reference an existing parameter defined in the {\it
+This object, as it name suggests, is used to reference an existing parameter defined in the {\it
 Service} context (cf. paragraph
-\ref{par-service}). It  contains only a unique attribute {\it ParameterName} of type String which
+\ref{par-service}). It  contains only an attribute {\it ParameterName} of type String which
 must corresponds to the {\it Name} field of an existing {\it SingleParameter} (cf. paragraph \ref {par01}).
 
 \section{The ParameterType object}\label{par-ParameterType}
@@ -384,16 +410,16 @@ parameters may be grouped according to the physics : position-group, speed-group
 However,  the ParameterGroup is not only a kind of parameter set, but also can be used for
 defining complex relations and/or constraints involving the contained parameters (cf. paragraph
 \ref{par-ConstraintsOnGroup}).\\
-This object {\bf must contain} a unique Name. This name is a String and is the identification label
-of the ParameterGroup, and no two groups can have the same Name.\\
+This object {\bf must contain} a single Name. This name is a String and is the identification label
+of the ParameterGroup, and two groups cannot have the same Name in a given PDL description instance.\\
 Optional fields are
 \begin{itemize}
 \item the references to the parameters (cf. paragraph \ref{par-parRef}) one want to include into the
 group;
-\item a unique object ConstraintOnGroup of type {\it ConstraintOnGroup} (cf. paragraph 
+\item a  ConstraintOnGroup object {\it ConstraintOnGroup} (cf. paragraph 
 \ref{par-ConstraintsOnGroup}). This object is used for expressing the complex relations and
 constraints involving parameters.
-\item a unique {\it Active} field of type {\it WhenConditionalStatement} (cf. paragraph \ref{par-WhenConditionalStatment}). If there is no {\it Active} element the group will be considered active by default  (e.g. in case of a graphical representation it will be displayed). Otherwise, the activations depends on the result of the evaluation of the Criterion contained into the  When conditional statement (cf. paragraphs \ref{par-WhenConditionalStatment} and \ref{par-EvalCriteria}).
+\item an  {\it Active} field of type {\it WhenConditionalStatement} (cf. paragraph \ref{par-WhenConditionalStatment}). If there is no {\it Active} element the group will be considered active by default  (e.g. in case of a graphical representation it will be displayed). Otherwise, the activations depends on the result of the evaluation of the Criterion contained into the  When conditional statement (cf. paragraphs \ref{par-WhenConditionalStatment} and \ref{par-EvalCriteria}).
 
  
 \item the objects of type {\it ParameterGroup} contained within the current root group. Indeed the
@@ -402,14 +428,15 @@ constraints involving parameters.
 
 {\bf NB:} The name of every {\it ParameterGroup} is unique.\\
 
-{\bf NB:} A given {\it SingleParameter} object could only belong to one {\it
-ParameterGroup}\footnote{As we will see in paragraph \ref{par-ConstraintsOnGroup}, constraints on
-parameters are defined at the level of the group. If a {\it SingleParameter} belongs only to one
-group, it will be easier to verify that there is no contradictions on conditions}.
+%% Agree with Paul view: at the beginning I (CMZ) introduced this constraint for avoiding contradictions.
+%But one could also build contradiction by putting different constraints on a given group...
+%{\bf NB:} A given {\it SingleParameter} object could only belong to one {\it
+%ParameterGroup}\footnote{As we will see in paragraph \ref{par-ConstraintsOnGroup}, constraints on
+%parameters are defined at the level of the group. If a {\it SingleParameter} belongs only to one
+%group, it will be easier to verify that there is no contradictions on conditions}.
 {\bf NB:}  For any practical use, the number on the parameter referenced into a given group summed
 to the number of sub-groups of the same group must be greater than one. Otherwise the group would be
 a hollow shell.
-
 
 \section{The Expression Objects}\label{par02}
 The {\it Expression} is the most versatile component of the PDL. It occurs almost everywhere: in
@@ -438,8 +465,8 @@ parameter. This object {\bf must contain} unique reference to a given parameter.
 
 Optional fields, valid only for numerical types, are :
 \begin{itemize}
-\item A unique {\bf numerical} power expression;
-\item A unique operation (cf. paragraph \ref{par02_02}).\\
+\item A  {\bf numerical} power {\it Expression} object;
+\item An  {\it Operation} object (cf. paragraph \ref{par02_02}).\\
 \end{itemize}
 Let $p$ and $exp$ be respectively the parameter and the power expression we want to encapsulate. The
 composite object could be presented as follows:
@@ -479,10 +506,10 @@ The {\it AtomicConstantExpression} (extending {\it Expression}, see figure \ref{
 is the simplest expression that could be built involving constants. Since this object could be used
 for defining a constant vector expression, it {\bf must contain}
 \begin{itemize}
-\item A unique list of String which expresses the value of each component of the expression. Let
+\item A single list of String which expresses the value of each component of the expression. Let
 $d_c$ be the size of the String list. If $d_c=1$ the expression is scalar and it is a vector
 expression if $d_c>1$.
-\item A unique attribute {\it ConstantType} of type {\it ParameterType} (cf. paragraph
+\item An attribute {\it ConstantType} of type {\it ParameterType} (cf. paragraph
 \ref{par-ParameterType}) which defines the nature of the constant expression. The allowed
 types are the same as in the field {\it parameterType} of the object {\it SingleParameter}.
 \end{itemize}
@@ -491,8 +518,8 @@ type expressed by the attribute {\it constantType}.\\
 
 Optional fields, valid only for numerical types, are : 
 \begin{itemize}
-\item A unique {\bf numerical} power expression;
-\item A unique operation (cf. paragraph \ref{par02_02}).
+\item A  {\bf numerical} power {\it Expression} object;
+\item An {\it operation} object (cf. paragraph \ref{par02_02}).
 \end{itemize}
 
 Let $s_i$ ($i=1,...,d_c$) and $exp$ be respectively the $i$ component of the String list and the
@@ -533,8 +560,8 @@ expressions that should be evaluated first. This object {\bf must contain} a uni
 object $Expression$ (referred to hereafter as $exp_1$).\\
 Optional fields are 
 \begin{itemize}
-\item A unique {\bf numerical} power expression (referred to hereafter as $exp_2$);
-\item A unique operation (cf. paragraph \ref{par02_02}).\\
+\item A {\bf numerical} power {\it expression} object (referred to hereafter as $exp_2$);
+\item An {\it Operation} object (cf. paragraph \ref{par02_02}).\\
 \end{itemize}
 This composite object could be presented as follows:
 \begin{equation}
@@ -557,11 +584,11 @@ expression $exp_1$ that has the main priority. Then one proceeds exactly as in p
 The {\it Operation} object (see figure \ref{Pic-Operation}) is used for expressing operations
 involving two {\bf numerical} expressions. This object {\bf must contain}:
 \begin{itemize}
-\item a unique attribute operationType. This attribute could take the following values: plus for the
+\item an {\it operationType} attribute. This attribute could take the following values: plus for the
 sum, minus for the difference, multiply for the standard product, scalarProduct for the scalar
 product and divide for the standard division. Hereafter these operators will be respectively denoted
 $+,-,\ast,\cdot, \div$.
-\item a unique expression.
+\item an {\it Expression} object.
 \end{itemize}
 \begin{equation}\label{OperationEquation}
 \underbrace{ \overbrace{\left( \begin{array}{c} + \\ - \\ \ast  \\ \cdot \\ \div   \end{array} \right) }^{\mbox{\tiny Operation type}}
@@ -602,7 +629,6 @@ take one of these values:
 size, abs, sin, cos, tan, asin, acos, atan, exp, log, sum, product. In paragraph \ref{par02_05} it
 is explained how these different function types are used and handled.
 
-
 \subsection{The Function object}\label{par02_05}
 \begin{figure}[htbp]
 \begin{center}
@@ -615,9 +641,9 @@ The {\it function} object (extending {\it expression}, see figure \ref{Pic-Funct
 expressing a mathematical function on expressions.
 This object {\bf must contain} 
 \begin{itemize}
-\item A unique attribute {\it functionName} of type {\it functionType} (cf. paragraph
-\ref{par-FunctionType}) which specifies the nature of the function.
-\item A unique expression (which is the function argument).\\
+\item A {\it functionName} attribute (of type {\it functionType} (cf. paragraph
+\ref{par-FunctionType})) which specifies the nature of the function.
+\item An {\it Expression} object (which is the function argument).\\
 \end{itemize}
 Let $arg$ be the result of the evaluation of the function argument expression and  $d_{arg}$ its
 dimension.
@@ -648,8 +674,8 @@ The {\it FunctionExpression} object (extending {\it Expression}, see figure
 This object {\bf must contains} a unique {\it Function} object (cf. paragraph \ref{par02_05}).\\
 Optional fields, valid only for numerical types, are :
 \begin{itemize}
-\item A unique {\bf numerical} power expression;
-\item A unique operation (cf. paragraph \ref{par02_02}).\\
+\item A {\bf numerical} power {\it Expression} object;
+\item An {\it Operation} objecté (cf. paragraph \ref{par02_02}).\\
 \end{itemize}
 
 This composite object could be presented as follows:
@@ -660,7 +686,6 @@ This composite object could be presented as follows:
 In order to evaluate this object expression, one proceed as follows: first one evaluate the funtion
 expression as explained in paragraph  \ref{par02_05}. Then one proceed exactly as in paragraph
 \ref{par02_01} (after the equation (\ref{eq01})) by taking $p=$function.
-
 
 
 \section{Expressing complex relations and constraints on parameters}\label{complexRelations}
@@ -694,9 +719,9 @@ extending and specializing  {\it ConditionalStatement}.
 \label{Pic-AlwaysConditionalStatement}
 \end{center}
 \end{figure}
-As its name indicates, this object (see figure \ref{Pic-AlwaysConditionalStatement}) is used
+This object (see figure \ref{Pic-AlwaysConditionalStatement}), as it name suggests,  is used
 for expressing statement that must always be valid. It {\bf must contain} a unique {\it Always}
- object (which extends {\it ConditionalClause}, cf. paragraph \ref{par-ConditionalClause}).
+object (which extends {\it ConditionalClause}, cf. paragraph \ref{par-ConditionalClause}).
 
 \subsubsection{The IfThenConditionalStatement}\label{par-IfThenConditionalStatement}
 \begin{figure}[htbp]
@@ -706,13 +731,13 @@ for expressing statement that must always be valid. It {\bf must contain} a uniq
 \label{Pic-IfThenConditionalStatement}
 \end{center}
 \end{figure}
-As its name indicates, this object (see figure \ref{Pic-IfThenConditionalStatement}) is used for
+This object (see figure \ref{Pic-IfThenConditionalStatement}), as it name suggests, is used for
 expressing statements that are valid only if a previous condition is verified. It {\bf must
 contain}:
 \begin{itemize}
-\item a unique {\it If} object (which extends {\it ConditionalClause}, cf. paragraph
+\item an  {\it If} object (which extends {\it ConditionalClause}, cf. paragraph
 \ref{par-ConditionalClause}).
-\item a unique {\it Then} object (which extends {\it ConditionalClause}, cf. paragraph
+\item a {\it Then} object (which extends {\it ConditionalClause}, cf. paragraph
 \ref{par-ConditionalClause}).
 \end{itemize}
 If the condition contained within the {\it If} object is valid, the condition contained within
@@ -738,7 +763,7 @@ evaluates to true (cf. paragraph \ref{par-EvalCriteria}). It contains a unique f
 \end{center}
 \end{figure}
 The {\it ConditionalClause} object (see figure \ref{Pic-ConditionalClause}) is abstract. It {\bf
-must contain} a unique Criterion object of type {\it AbstractCriterion} (cf. paragraph
+must contain} a single {\it Criterion} object of type {\it AbstractCriterion} (cf. paragraph
 \ref{par-AbstractCriterion}).\\
 The four concrete objects extending the abstract {\it ConditionalClause} are (see figure
 \ref{Pic-ConcreteClause}):
@@ -774,13 +799,13 @@ IfThenConditionalStatement} (cf. paragraph
 \end{center}
 \end{figure}
 The objects extending {\it AbstractCriterion} (see figure \ref{Pic-AbstractCriterion}) are
-fundamentals for building {\it ConditionalStatemets} (cf. paragraph \ref{par-ConditionalStatement})
+essentials for building {\it ConditionalStatemets} (cf. paragraph \ref{par-ConditionalStatement})
 since they are contained within the {\it Always, If} and {\it Then} objects (cf. paragraph
 \ref{par-ConditionalClause}).
 An {\it AbstractCriterion} object {\bf must contain}:
 \begin{itemize}
-\item a unique {\it Expression} object (cf. paragraph \ref{par02});
-\item a unique ConditionType which is an object of type {\it AbstractCondition} (cf. paragraph 
+\item an {\it Expression} object (cf. paragraph \ref{par02});
+\item a {\it ConditionType} which is an object of type {\it AbstractCondition} (cf. paragraph 
 \ref{par-ConditionType}).
 This object specify which condition must be satisfied by the previous {\it Expression}.
 \end{itemize}
@@ -812,7 +837,7 @@ specializing it. It is indeed just a concrete version of the abstract type.
 This object (see figure \ref{Pic-ParenthesisCriterion}) extends and specialize the  {\it
 AbstractCriterion}. It is used for defining arbitrary priority in interpreting boolean expression
 based on criteria.
-The optional field of {\it ParenthesisCriterion} is a unique {\it ExternalLogicalConnector} object
+The optional field of {\it ParenthesisCriterion} is an {\it ExternalLogicalConnector} object
 of type {\it LogicalConnector}. It is used for linking other criteria, out of the priority
 perimeter defined by the parenthesis (cf.  paragraph \ref{par-EvalCriteria}).
 
@@ -825,7 +850,7 @@ perimeter defined by the parenthesis (cf.  paragraph \ref{par-EvalCriteria}).
 \end{center}
 \end{figure}
 The {\it LogicalConnector} object (see figure \ref{Pic-LogicalConnector}) is used for building
-complex logical expressions. It is an abstract object and it {\bf must} contain a unique Criterion
+complex logical expressions. It is an abstract object and it {\bf must} contain a Criterion
 of type {\it AbstractCriterion} (cf. paragraph \ref{par-AbstractCriterion}).\\
 The two concrete objects extending {\it LogicalConnector} are:
 \begin{itemize}
@@ -851,8 +876,6 @@ exactly the same concept as the NULL value in Java or the None value in Python).
 Indeed, if and only if $\mathcal E$ has no assigned value, the evaluation of the tuple $(\mathcal
 E, \mathcal C)$ leads to a TRUE boolean value. Thus, in the case $\mathcal{CR}$ has no {\it
 LogicalConnector}, the criterion is true.
-
-
 
 \subsubsection{The "numerical-type" conditions}
 These objects are used for specifying that the result of the evaluation of the expression $\mathcal
@@ -913,8 +936,8 @@ This object (see figure \ref{Pic-ValueLargerThan}) is used for expressing that t
 evaluation of the expression $\mathcal E$ must be greater than a given value.\\
 It {\bf must contain}
 \begin{itemize}
-\item a unique {\bf numerical} expression $\mathcal E_c$. 
-\item a unique {\it Reached} attribute which is a boolean type.
+\item a {\bf numerical} {\it Expression} $\mathcal E_c$. 
+\item a {\it Reached} attribute, which is a boolean type.
 \end{itemize}
 The tuple $(\mathcal E, \mathcal C)$ is legal only if $\mathcal E$ is a numerical expression.\\
 This tuple leads to a TRUE boolean value if and only if the result of the evaluation of the
@@ -934,8 +957,8 @@ This object (see figure \ref{Pic-ValueSmallerThan}) is used for expressing that 
 evaluation of the expression $\mathcal E$ must be smaller than a given value.\\
 It {\bf must contain}
 \begin{itemize}
-\item a unique {\bf numerical} expression $\mathcal E_c$. 
-\item a unique {\it Reached} attribute which is a boolean type.
+\item a  {\bf numerical} {\it Expression} $\mathcal E_c$. 
+\item a  {\it Reached} attribute which is a boolean type.
 \end{itemize}
 The tuple $(\mathcal E, \mathcal C)$ is legal only if $\mathcal E$ is a numerical expression.\\
 This tuple leads to a TRUE boolean value if and only if the result of the evaluation of the
@@ -955,27 +978,25 @@ evaluation of the expression $\mathcal E$ must belong to a given interval. The d
 interval is made using the {\it ValueLargerThan} {\it ValueSmallerThan} objects.
 Indeed, the {\it ValueInRange} object {\bf must contain}:
 \begin{itemize}
-\item a unique {\it ValueLargerThan} object,
-\item a unique {\it ValueSmallerThan} object. 
+\item a {\it ValueLargerThan} object,
+\item a {\it ValueSmallerThan} object. 
 \end{itemize}
 The tuple $(\mathcal E, \mathcal C)$ is legal only if $\mathcal E$ is a numerical expression.\\
 This tuple leads to a TRUE boolean value if and only if the evaluation of both tuples $(\mathcal E,
 \mbox{\it ValueSmallerThan})$ and $(\mathcal E, \mbox{\it ValueLargerThan})$ lead to TRUE boolean
 values.
 
-
-% note that this should be ValueDifferentFrom or ValueDifferentTo for proper english sense
-\subsubsection{\tocheck{The ValueDifferentOf object}}
+\subsubsection{The ValueDifferentFrom object}
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=0.8\textwidth]{pictures/ValueDifferentOf.jpg} 
-\caption{Graphical representation of ValueDifferentOf object}
-\label{Pic-ValueDifferentOf}
+\includegraphics[width=0.8\textwidth]{pictures/ValueDifferentFrom.jpg} 
+\caption{Graphical representation of ValueDifferentFrom object}
+\label{Pic-ValueDifferentFrom}
 \end{center}
 \end{figure}
-This object (see figure \ref{Pic-ValueDifferentOf}) is used for specifying that the expression
+This object (see figure \ref{Pic-ValueDifferentFrom}) is used for specifying that the expression
 $\mathcal E$ must be different from a given value.
-It {\bf must contain} a unique {\it Expression} $\mathcal E_c$.\\
+It {\bf must contain} an {\it Expression} $\mathcal E_c$.\\
 In order to be compared, the two expressions $\mathcal E$ and $\mathcal E_c$ must have the same
 type.
 The evaluation of the tuple $(\mathcal E, \mathcal C)$  leads to a TRUE boolean value only if
@@ -992,7 +1013,7 @@ paragraph \ref{par-BelongToSet} (in the second point of the list).
 \end{figure}
 This object (see figure \ref{Pic-DefaultValue}) is used for specifying the default value of a
 parameter.\\
-It {\bf must contain} a unique expression $\mathcal E_c$.\\
+It {\bf must contain} an {\it Expression} $\mathcal E_c$.\\
 Since the default value of an expression involving functions, multiple parameters, etc. has no
 particular sense, in the case of the present object the tuple $(\mathcal E, \mathcal C)$  is legal
 only if
@@ -1139,20 +1160,25 @@ p_1 \in \mathbb R\\
 \end{equation}
 The PDL language grammar is not a tool with capabilities to perceive logical contradictions. 
 For this reason, a validation system for PDL definitions may (or may not) implements the  detection of contradictions. This kind of considerations is out of the scope of the present document and is more axed on implementations. The current PDL developments do not implement this feature and any parameter $p_1$ provided by user will be rejected for this example.\\
-In other words {\bf people providing descriptions of services must pay great attention to their contents.
-contents.}\\
+In other words {\bf people providing descriptions of services must pay great attention to their contents.}\\
 
 \section{Remarks for software components implementing PDL}
-At the present (Summer 2013) four software elements are implemented around PDL:
-\begin{itemize}
-\item the standalone dynamic client, including the automatic generation of the verification layer (google code repository at https://code.google.com/p/vo-param/);
-\item the PDL server, embedding the verification layer and exposing a given code as a UWS-like service (GitHub repository at https://github.com/cmzwolf);
-\item the Taverna Plugin, for calling the server from this workflow engine. From a point of view this plugin could be seen as an alternate client to the standalone one. From another point of view it is strongly oriented to physical and scientific interoperability (discussed in paragraph \ref{ParInteropIssues}) since it uses PDL description for validating the "chaining" of jobs composing a workflow (GitHub repository for stable version at https://github.com/wf4ever/astrotaverna
- and GitHub repository for development version at https://github.com/julian-garrido/astrotaverna).
-\item the description editor, for editing PDL description from a Graphical User Interface (google code repository at https://code.google.com/p/pdl-editor/).
-\end{itemize}
+Throughout this document we have connoted PDL with the term {\it grammar}. 
+If we consider it just as a grammar, then a specific description should be considered as an implementation.\\ 
+We remember that, since a PDL description is detailed, it is {a priori} possible to write once for all generic software components. These components will be automatically {\it configured} by a PDL description for becoming {\it ad hoc} software for the described code. Moreover checking algorithms could also be generated automatically starting from a description instance.
+In our implementations we wanted to check practically that these concepts implied in the definition of PDL really works. 
+The development of operational services (as the Paris-Durham shock code) also permits to ensure the coherence of the core grammar and to verify if the PDL's capabilities could meet the description needs of state of the art simulation codes.
 
-In further developments, PDL-client implementations will include a formal-logic module. This will permit finding contradictions inside the descriptions.\\
+At the present (Fall 2013) four software elements are implemented around PDL:
+\begin{itemize}
+\item the standalone dynamic client. It embeds the automatic generation of the verification layer (google code repository at https://code.google.com/p/vo-param/). This development shows that a PDL description instance can be used for generating the checking algorithms and for generating a client with a dynamic-intelligent behavior helping the user in interacting with a service. This client could be used for interacting with services exposed using different job systems;
+\item a server for exposing as a web services any code. It embeds the verification layer. This development was done for showing that a PDL description instance can be used for generating the {\it ad hoc} server, exposing the described service. A particular feature of this server is that it can generates grids of model starting from a single job submission, which indicates ranges for parameters (GitHub repository at https://github.com/cmzwolf);
+\item the Taverna Plugin. From a point of view this plugin could be seen as an alternate client to the standalone one. From another point of view it is strongly oriented to physical and scientific interoperability (discussed in paragraph \ref{ParInteropIssues}) since it uses PDL description for validating the "chaining" of jobs composing a workflow. As the dynamic client, the Taverna plugin can be used for interacting with services exposed different job systems (GitHub repository for stable version at https://github.com/wf4ever/astrotaverna).  
+\item the description editor, for editing PDL description from a Graphical User Interface. Since the key point for using PDL and take advantage of the software tools we have just described is a PDL description, we decided to provide the community with a tool for easily composing PDL description. In some sense this is the entry-point of the PDL software farmework  (google code repository at https://code.google.com/p/pdl-editor/).
+\end{itemize}
+All these developments validate the concepts of automatic generation of algorithms and the possibility of configuring -to a highly specialized behavior- generic software components. This is very important since it reduces drastically the development time for building services based on the PDL grammar. This is essential in a scientific context where only few scientists have access to software engineer for their IVOA developments.\\
+
+\noindent In further developments, PDL-client implementations will include a formal-logic module. This will permit finding contradictions inside the descriptions.\\
 Such a  module will also be required for implementing the automatic computation of {\it a priori interoperability graphs}. 
 It will also permit checking interoperability in terms of semantic annotations: for example, let A be the concept that describes an input parameter of a service $\mathcal S$ and B the concept that describes an output parameter of a service $\mathcal S'$. If A and B are the same concept, then both services match the interoperability criterion. However, if A and B are not the same concept we need, for piping the result of  
 $\mathcal S'$ to $\mathcal S$, to ask if the concept B is more specific than the concept A, in other words, if the concept B is generalized or subsumed by the concept A. If this happens then both services match again the interoperability criterion. 
