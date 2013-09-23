@@ -15,6 +15,9 @@
 \usepackage{listings}
 
 \DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
 
 
 
@@ -52,13 +55,13 @@
 \begin{document}
 \maketitle
 \section*{Abstract}
-This document discusses the definition of the  {\it Parameter Description Language} (PDL). In this language sentences and syntactical elements are organized into a rigorous data model. With no loss of generality, we will represent this data model using XML.\\
-It intends to be a description language for self-descriptive web services exposing the semantic nature of input and output parameters, as well as all possible complex constraints. PDL is a step forward towards web services interoperability. 
+This document discusses the definition of the  {\it Parameter Description Language} (PDL). In this language parameters are described in a rigorous data model. With no loss of generality, we will represent this data model using XML.\\
+It intends to be a expressive language for self-descriptive web services exposing the semantic nature of input and output parameters, as well as all necessary complex constraints. PDL is a step forward towards true web services interoperability. 
 \section{Status of this document}
-This document has been produced by the  Grid and Web Service Working Group. It follows the previous working draft.
+This document has been produced by the Grid and Web Service Working Group. It follows the previous working draft.
  
 \section*{Acknowledgements}
-We wish to thank the members of the IVOA Grid and Web Services working group for the discussions around PDL it hosted during the Interop meetings (starting from Naples, May 2011). A special thank to Andr\'e Shaaff for its precious advices,  useful discussions and feedback on every version of this work.
+We wish to thank the members of the IVOA Grid and Web Services working group for the discussions around PDL it has hosted during the Interop meetings (starting from Naples, May 2011). A special thanks are due to Andr\'e Shaaff for his advice, useful discussions and feedback on every version of this work.
 
 \clearpage
 
@@ -72,21 +75,21 @@ In the context of the {\it International Virtual Observatory Alliance} researche
 provide astronomical services to the community. \\
 These services could be
 \begin{itemize}
-\item  an access to an existing catalogue of images and/or data,
-\item an access to smaller sub-products images, spectra and/or data generated on the fly,
-\item  the entry point to a database listing the results of complex  and heavy numerical simulations,
+\item   access to an existing catalogue of images and/or data,
+\item  access to smaller sub-products images, spectra and/or data generated on the fly,
+\item  the entry point to a database listing the results of complex and compute-intensive numerical simulations,
 \item a computation code exposed online, etc... 
 \end{itemize}
 In the following we will ignore any specific feature and will use the term {\it generic service} to
 refer to any kind of process that receives input parameters and produces output ones.\\
 
-Interoperability with other services and the immediacy of use are two key points for the success of a service:
-in general, a service will not be used by the community if users do not know how to call it, the inputs it needs, what it does and how. However, other issues may have influence in the user decision e.g. who has implement it, who is the service provider, does it implement a well known technique, is there a paper to support the research behind the service, can I use it as a standalone application and can it be used together with other services. 
-A new service will be more useful for some users if it can be released easily as an interactive and standalone application whereas other users consider essential the interoperability with other services and applications. 
-Indeed, Service description and interoperability are two key points for building efficient and useful services. 
+Interoperability with other services and the immediacy of use are two key factors in the success of a service:
+in general, a service will not be used by the community if users do not know how to call it, the inputs it needs, or what it does and how. However, other issues may have influence in the user decision e.g. Who has implemented it? Who is the service provider? Does it implement a well known technique? Is there a paper to support the research behind the service? Can it be used as a standalone application and can it be used together with other services? 
+A new service will be more useful for some users if it can be released easily as an interactive and standalone application whereas for other users the interoperability with other services and applications is more important. This standard is focused on the needs of the second group, as the ease of the distribution of web services is the primary concern of service providers.
+Indeed, service description and interoperability are two key points for building efficient and useful ecosystem of services. 
 
-Since PDL aim is to solve both these issues, this document is focused on these two aspects. 
-With PDL service providers will be able to share with users (intended as human or as computer systems) 
+PDL aims to provide a solution to the problems of description and interoperability of services. 
+With PDL, service providers will be able to share with users (either as humans or as computer systems) 
 the knowledge of what the service does (and how).
 Moreover this new service will be immediately interactive and well integrated with other services.\\
 
@@ -99,21 +102,19 @@ sense it is this description that puts the service from the {\it unknown} to the
 state.\\
 Since the client could be a computer system, a generic description should be machine-readable.\\
 
-There are several description languages.
-
-
- The most known for their high expression level and their
+There are several pre-existing service description languages.
+ The most well known for their high expression level and their
 wide use are the \emph{W3C} \emph{WSDL} and
 \textit{WADL}.\\
-Since both {\it WSDL} and {\it WADL} support {\it XML-schema}, one could include in these languages complex and highly specialized 
-XML objects for expressing conditions and/or restrictions. However, the process for building these ad-hoc XML types is not standard\footnote{For example, for expressing that a given parameter must be greater and smaller than arbitrary values, we could define a {\it bounded} type containing an {\it inf} field and a {\it sup} field. If another user define a similar object calling these two fields {\it inf-bound} and {\it sub-bound}, the instances of these two types could not interoperate straightforwardly. The theory of types is not sufficient to ensure the interoperability of the object defined.}: 
-people providing a given service could only describe, using the native standard feature of WADL or WSDL, primitive-typed parameters. It thus serves a roughly similar purpose as a method-signature in a programming language, with no possibility for defining 
-restrictions, semantics and criteria to satisfy. PDL propose a way for expressing these elements in a unified way.\\
+Since both {\it WSDL} and {\it WADL} support {\it XML-schema}, one could include in these descriptions complex and highly specialized 
+XML objects for expressing conditions and/or restrictions. However, the process for building these ad-hoc XML extension types is not standard\footnote{For example, for expressing that a given parameter must be greater and smaller than arbitrary values, we could define a {\it bounded} type containing an {\it inf} field and a {\it sup} field. If another user defines a similar object calling these two fields {\it inf-bound} and {\it sub-bound}, the instances of these two types could not interoperate straightforwardly. The theory of types is not sufficient to ensure the interoperability of the object defined.}: 
+a service provider could only describe, using the native standard feature of WADL or WSDL, primitive-typed parameters. It thus serves a roughly similar purpose as a method-signature in a programming language, with no possibility for defining 
+restrictions, semantics and criteria to satisfy. PDL proposes a way for expressing these features in a unified way.\\
 
-In the case of {\it generic services} for science, description needs are very specific: since we
-have to deal with complex formalisms and models, one should be able to describe for each parameter its
-physical meaning, its unit and precision and the range (or set) of admissible values (according to
-the model).\\ 
+In the case of {\it generic services} for science, the description needs are very specific: since we
+have to deal with complex formalisms and models, one should be able to describe for each parameter; its
+physical meaning, its unit and precision and a range (or set) of admissible values (according to
+a model).\\ 
 In many cases, especially for theoretical simulations, parameters could be linked by
 complex conditions or have to satisfy, under given conditions, a set of constraints (that could
 involve mathematical properties and formulas).
@@ -163,15 +164,15 @@ Two examples of this high level description we would be able to provide are the 
 \end{array}
 \right.
 \end{equation}
-To our knowledge, no existing description language meets these fine needs coming with scientific
-services. This leads us naturally to work on a new solution and consider about developing a new
+To our knowledge, no existing description language meets these exacting requirements of scientific
+services. This leads us naturally to work on a new solution and consider developing a new
 description language.\\
 
-\noindent {\bf Remark: } The PDL descriptions for the two examples above are provided respectively in paragraph \ref{Exemplum1XML}
+\noindent {\bf Remark: } The PDL descriptions for the two examples above are provided respectively in paragraphs \ref{Exemplum1XML}
 and \ref{Exemplum2XML}.
 
 \subsection{Interoperability issues}\label{ParInteropIssues}
-Nowadays, with the massive spread and diffusion of {\it cloud} services, interoperability has become
+Nowadays, with the massive spread and popularity of {\it cloud} services, interoperability has become
 an important element for the success and usability of services. This remains true in the context of
 astronomy.
 For the astronomical community, the ability of systems to work together without restrictions (and
@@ -182,14 +183,14 @@ Computer scientists have developed different tools for setting up service intero
 orchestration. The most well known are
 \begin{itemize}
 \item {\it BAbel} (\href{https://computation.llnl.gov/casc/components/}{https://computation.llnl.gov/casc/components/}),
-\item {\it Taverna }ï¿½(\href{http://www.taverna.org.uk}{http://www.taverna.org.uk}),
+\item {\it Taverna } (\href{http://www.taverna.org.uk}{http://www.taverna.org.uk}),
 \item {\it OSGI} and {\it D-OSGI } (\href{http://www.osgi.org/}{http://www.osgi.org/}),
 \item {\it OPalm} (\href{http://www.cerfacs.fr/globc/PALM_WEB/}{http://www.cerfacs.fr/globc/PALM\_WEB/}),
 \item {\it GumTree} (\href{http://docs.codehaus.org/display/GUMTREE/}{http://docs.codehaus.org/display/GUMTREE/}).
 \end{itemize}
 In general, with those tools one could coordinate only the services written with given languages.
 Moreover the interoperability is achieved only in a basic "computer" way: if the input of the $B$
-service is a double and the output of $A$ service is a double too, thus the two services could
+service is a double and the output of the $A$ service is a double too, thus the two services could
 interact.\\
 
 Our needs are more complex than this: let us consider a service $B'$ whose inputs are a density and
@@ -216,14 +217,16 @@ towards building our own solution.\\
 \subsection{Astronomical and Astrophysical use-cases needing PDL's fine description capabilities}
 {\bf Put here the text from Franck Le Petit explaining the needs on PDR code and the text from Antoine explaining the needs for Paris-Durham code}.\\
 
-The following sections of this document could seems complex at first reading. This is because we present all the features and the descriptive richness  of PDL. Nevertheless this not means that all the PDL descriptions are complex. They could be complex in case of services with lot of parameters linked by heavy constraints. But PDL description could be very simple in case of simple services. 
+The following sections of this document could seems complex at first reading. This is because we present all the features and the descriptive richness  of PDL. Nevertheless this does  not mean that all PDL descriptions are necessarily complex. They could be complex in case of services with many parameters linked by many constraints. But PDL description could be very simple in case of simple services. 
 For example the PDL description associated with a common cone search service is very simple. It could be consulted at the following URL:\\
+
+% think that this should be actually included in-line pah
 \href{
 http://www.myexperiment.org/files/999/versions/4/download/AMIGA-PDL-Description.xml
 }{http://www.myexperiment.org/files/999/versions/4/\\download/AMIGA-PDL-Description.xml}.
 
 \subsection{A new Parameter Description Language: a unique solution to description and interoperability needs}
-To overcome the lack of a  solution to our description and interoperability
+To overcome the lack of a solution to our description and interoperability
 needs, it is proposed to introduce a new language.
 Our aim is to finely describe the set of parameters (inputs and outputs of a given generic services)
 in a way that
@@ -234,15 +237,18 @@ in a way that
 Indeed we would like to express
 \begin{itemize}
 \item mathematical laws/formulas,
-\item conditional sentences (provided they have a logical sense)
+\item conditional relationships (provided they have a logical sense)
 \end{itemize}
 involving parameters.
 \end{itemize}
 The new language is based on a generic data model (DM). Each object of the DM corresponds to a
 syntactic element. Sentences are made by building object-structures.
-Each sentence can be interpreted by a computer by parsing the sentence-related object structure.\\
+Each sentence can be interpreted by a computer by parsing the object structure.\\
 
-With PDL one could build mathematical expression (respectively conditional sentences) assembling the base-element described in section \ref{par02} (resp. section \ref{complexRelations}).  If a particular expression (or condition) could not be expressed using the existing features,
+With PDL one could build a mathematical expression (respectively conditional sentences) assembling the base-element described in section \ref{par02} (resp. section \ref{complexRelations}). 
+
+%should remove following paragraph
+If a particular expression (or condition) could not be expressed using the existing features,
 this modular grammar could be extended by introducing an ad hoc syntactic element into the object DM. \\
 
 For describing the physical scientific concept or model behind a given parameter, the idea is to use
@@ -252,20 +258,20 @@ For describing the physical scientific concept or model behind a given parameter
 Since the inputs and outputs  of every service (including their constraints and complex conditions)
 could be described with this fine grained granularity, interoperability becomes possible in the {\it
 smart} and {\it intelligent} sense we really need: services should be able to work out if they can
-sensibly use their output as input for another one, by simply looking at its description.\\
+reasonably use their output as input for another one, by simply looking at its description.\\
 
 With no loss of generality and to ensure that the model could work with the largest possible number
 of programming languages, we decided to fix it under the form of an XML schema (cf paragraph \ref{pdlSchema}).This choice is also
 convenient because there are many libraries and tools for handling and parsing XML documents.\\
 
 {\bf Remark:} We recall that PDL is a syntactic framework for describing parameters (with related
-constraints) of generic services. Since a PDL description is rigorous and unambiguous, starting from
-it, it is possible to verify if the instance of a given parameter (i.e. the value of the parameter
-that a user send to the service) is consistent with the description.\\
+constraints) of generic services. Since a PDL description is rigorous and unambiguous, 
+it is possible to verify if the instance of a given parameter (i.e. the value of the parameter
+that a user sends to the service) is consistent with the description.\\
 In what follows in this document, we will often use the terms {\it evaluate} and {\it interpret}
-with reference to an expression and/or conditions composed with PDL. By this we mean that one must
-replace in the PDL expressions/conditions the referenced parameters  by the set of values provided to the
-service by user. The replacement mechanisms will be explained in detail, case by case.
+with reference to an expression and/or condition composed with PDL. By this we mean that one must
+replace the referenced parameters (in the PDL expressions/conditions) by the set of values provided to the
+service by the user. The replacement mechanisms will be explained in detail, case by case.
 
 \subsubsection{PDL in the IVOA architecture}
 \begin{figure}[htbp]
@@ -275,19 +281,19 @@ service by user. The replacement mechanisms will be explained in detail, case by
 \label{Pic-arch}
 \end{center}
 \end{figure}
-With the IVOA Architecture of figure \ref{Pic-arch}, PDL is a VO standard for richly describing parameters with a fine grained granularity, allowing to introduce constraints and mathematical formulae.\\
-If PDL describe the nature, the hierarchy of parameters and their constraints, {\bf it  does not describe} how this parameters are transmitted to a service, nor how these parameters will be processed by the described service. For example, PDL won't tell to user if he/she has to transfer parameters through a SOAP envelope or through a REST post, nor what will be the  phases that will pass the submitted job. In the context of the IVOA, this means that the separation between PDL and UWS is clear and one can be used without the other without infringing any rules of those standards.\\
-Indeed, PDL could be seen a supplementary layer, whose aim is to simplify user interaction with the VO, by explaining in a unified way the physical/computational meaning of every parameter. But, again, it is not a description of parameters values.\\
+Within the IVOA Architecture of figure \ref{Pic-arch}, PDL is a VO standard for richly describing parameters with a fine grained granularity, allowing to introduce constraints and mathematical formulae.\\
+If PDL describes the nature, the hierarchy of parameters and their constraints, {\bf it  does not describe} how this parameters are transmitted to a service, nor how these parameters will be processed by the described service. For example, PDL does not prescribe whether to transfer parameters through a SOAP envelope or through a REST post, nor what will be the  phases that the submitted job will pass through. In the context of the IVOA, this means that the separation between PDL and UWS is clear and one can be used without the other without infringing any rules of those  standards.\\
+Indeed, PDL could be seen a supplementary layer, by explaining in a unified way the physical/computational meaning of every parameter, whereas UWS has only a description of the values of parameters. \\
 PDL could be plugged as an additional layer to every existing IVOA service and is suitable for solving issues not covered by other IVOA standards and is particularly indicated for workflows.
 
 \subsubsection{Some consideration on PDL and Workflows}\label{PDLWF}
-The orchestration of services define a Scientific Workflow, and services interoperability is key in the process of designing and building workflows. Something really important to consider in this process of orchestration is the control of parameters constraints at the moment of the workflow execution. Even if interoperability is assured at the phase of workflow design, a control at the execution phase has to be implemented by workflow engines as service clients. 
-As we suggested in the remark of the previous paragraph, test for validating parameters provided to a service could be automatically generated starting from the PDL description 
+The orchestration of services define a Scientific Workflow, and services interoperability is key in the process of designing and building workflows. An important consideration in this process of orchestration is the control of parameters constraints at the moment of the workflow execution. Even if interoperability is assured at the phase of workflow design, a control at the execution phase has to be implemented by workflow engines as service clients. 
+As we suggested in the remark of the previous paragraph, testing for valid parameters provided to a service could be automatically generated starting from the PDL description. 
 %(cf for example the implementing note document REFERENCE to add after having it published on the IVOA site). 
-By considering this automatization facility we suggest to perform the verification both client side and server side:
+This automation facility could be used to perform the verification both client side and server side:
 \begin{itemize}
-\item verifications made client-side will avoid to send wrong set of parameters to a server, reducing the charge of the latter,
-\item verifications server-side will avoid to run jobs with wrong set of parameters. Indeed a server does not know if the job is sent by a client implementing the verifications or not. Therefore it must behave as if the data had never been checked. 
+\item verifications made client-side will avoid sending the wrong set of parameters to a server, reducing the load on the latter,
+\item verifications server-side will avoid running jobs with wrong set of parameters. Indeed a server does not know if the job is sent by a client implementing the verifications or not. Therefore it must behave as if the data had never been checked. 
 \end{itemize}
 Verification of non-standard errors (e.g. network issues) are out of the scope of PDL.
 
@@ -305,12 +311,12 @@ The root element of the PDL description of a generic service is the object {\it 
 \ref{Pic-Service}). This {\bf must contain}
 \begin{itemize}
 \item A single {\it ServiceName}. This field is a String containing the name of the service.
-\item A  {\it ServiceId}. This field is a String containing the technical Id of the service.
+\item A  {\it ServiceId}. This field is a String containing the IVOA id of the service.
 It is introduced for a future  integration of PDL into the registries: each service in
 the registry will be marked with its own unique id.
 \item A  {\it Description}. This field is a String and contains a human readable description
 of the service. This description is not intended to be understood/parsed by a machine.
-\item A {\it Parameters} field which is a list of {\it SingleParameter} object type (cf.
+\item A {\it Parameters} field which is a list of {\it SingleParameter} object types (cf.
 paragraph \ref{par01}). This list contains the definition of all parameters (both inputs and
 outputs) of the service. The two following fields specify if a given parameter is a input or an
 output one.
@@ -351,6 +357,7 @@ optional}. If required the parameter {\bf must be} provided to the service. If o
 could work even without the current parameter and the values will be considered for processing only
 if provided.\\
 
+%proffreadend
 Optional fields for the {\it SingleParameter} object are:
 \begin{itemize}
 \item a UCD : which is a text reference to an existing UCD for characterizing the parameter;
@@ -359,8 +366,7 @@ Optional fields for the {\it SingleParameter} object are:
 \item a Skos Concept  (\textcolor{red}{the reference is typically a text string}).
 \item a Unit (\textcolor{red}{which is a string reference to a valid VOUnits element}).
 \item a precision. This field must be specified only for parameter types where the concept of
-precision has a meaning. It has indeed no sense for integer, rational or string. It has
-sense, for instance, on a real type. For understanding the meaning of this field, let the function
+precision makes sense. It has indeed no meaning for integer, rational or string. It is valid, for instance, for a real type. To understand the meaning of this field, let the function
 $f$ be a model of a given service. If $i$ denotes the input parameter, $f(i)$ denotes the output. The
 precision $\delta$ is the smaller value such that $f(i+\delta) \neq f(i)$.\\ The precision is
 expressed using an {\it expression} (cf. paragraph \ref{par02}). The result of the expression that
@@ -619,8 +625,8 @@ component of this vector is equal to $(a_i \, op \,b)$.
 case in symmetric to the previous one.
 \end{itemize}
 
-The type of the result is automatically induced by standard cast operation performed during the
-evaluations (Indeed for example a double vector added to an integer vector is a double vector).
+The type of the result is automatically induced by a standard cast operation performed during the
+evaluations (for example a double vector added to an integer vector is a double vector).
 
 \subsection{The FunctionType object}\label{par-FunctionType}
 This object is used for specifying the mathematical nature of the function contained within a {\it
@@ -675,7 +681,7 @@ This object {\bf must contains} a unique {\it Function} object (cf. paragraph \r
 Optional fields, valid only for numerical types, are :
 \begin{itemize}
 \item A {\bf numerical} power {\it Expression} object;
-\item An {\it Operation} objectŽ (cf. paragraph \ref{par02_02}).\\
+\item An {\it Operation} objectï¿½ (cf. paragraph \ref{par02_02}).\\
 \end{itemize}
 
 This composite object could be presented as follows:
@@ -812,7 +818,7 @@ This object specify which condition must be satisfied by the previous {\it Expre
 An optional field is the unique {\it LogicalConnector} object (cf. paragraph
 \ref{par-LogicalConnector}) used for building logical expressions.\\
 The two concrete objects extending  {\it AbstractCriterion}  are {\it Criterion} and {\it
-ParenthesisCriterion}.  The difference between these two objects is in the priority they induce for
+ParenthesisCriterion}.  The latter of these two objects allows for assigning priority when
 interpreting and linking the criteria (cf. paragraph \ref{par-EvalCriteria}).
 
 \subsubsection{The Criterion object}
@@ -1158,25 +1164,26 @@ p_1 \in \mathbb R\\
 \end{array}
 \right..
 \end{equation}
-The PDL language grammar is not a tool with capabilities to perceive logical contradictions. 
-For this reason, a validation system for PDL definitions may (or may not) implements the  detection of contradictions. This kind of considerations is out of the scope of the present document and is more axed on implementations. The current PDL developments do not implement this feature and any parameter $p_1$ provided by user will be rejected for this example.\\
+The PDL language grammar is not a tool with capabilities to perceive logical contradictions which may be contained within statements. This kind of consideration is outside of the scope of the present standard.
+For this reason, a validation system for PDL definitions is not required to implement the detection of contradictions, but may do if the services within its description realm make this feasible.
+The current PDL reference implementation does not perform such contradiction detection and thus any parameter $p_1$ provided by user would be rejected for this example.\\
 In other words {\bf people providing descriptions of services must pay great attention to their contents.}\\
 
 \section{Remarks for software components implementing PDL}
-Throughout this document we have connoted PDL with the term {\it grammar}. 
+Throughout this document we have described PDL as a {\it grammar}. 
 If we consider it just as a grammar, then a specific description should be considered as an implementation.\\ 
-We remember that, since a PDL description is detailed, it is {a priori} possible to write once for all generic software components. These components will be automatically {\it configured} by a PDL description for becoming {\it ad hoc} software for the described code. Moreover checking algorithms could also be generated automatically starting from a description instance.
+We remember that, since a PDL description is detailed, it is {a priori} possible to write once for all generic software components. These components will be automatically {\it configured} by a PDL description thus becoming {\it ad hoc} implementation software for the described service. Moreover checking algorithms could also be generated automatically starting from a description instance.
 In our implementations we wanted to check practically that these concepts implied in the definition of PDL really works. 
 The development of operational services (as the Paris-Durham shock code) also permits to ensure the coherence of the core grammar and to verify if the PDL's capabilities could meet the description needs of state of the art simulation codes.
 
 At the present (Fall 2013) four software elements are implemented around PDL:
 \begin{itemize}
-\item the standalone dynamic client. It embeds the automatic generation of the verification layer (google code repository at https://code.google.com/p/vo-param/). This development shows that a PDL description instance can be used for generating the checking algorithms and for generating a client with a dynamic-intelligent behavior helping the user in interacting with a service. This client could be used for interacting with services exposed using different job systems;
-\item a server for exposing as a web services any code. It embeds the verification layer. This development was done for showing that a PDL description instance can be used for generating the {\it ad hoc} server, exposing the described service. A particular feature of this server is that it can generates grids of model starting from a single job submission, which indicates ranges for parameters (GitHub repository at https://github.com/cmzwolf);
-\item the Taverna Plugin. From a point of view this plugin could be seen as an alternate client to the standalone one. From another point of view it is strongly oriented to physical and scientific interoperability (discussed in paragraph \ref{ParInteropIssues}) since it uses PDL description for validating the "chaining" of jobs composing a workflow. As the dynamic client, the Taverna plugin can be used for interacting with services exposed different job systems (GitHub repository for stable version at https://github.com/wf4ever/astrotaverna).  
-\item the description editor, for editing PDL description from a Graphical User Interface. Since the key point for using PDL and take advantage of the software tools we have just described is a PDL description, we decided to provide the community with a tool for easily composing PDL description. In some sense this is the entry-point of the PDL software farmework  (google code repository at https://code.google.com/p/pdl-editor/).
+\item the standalone dynamic client. It embeds the automatic generation of the verification layer (Google code repository at \url{https://code.google.com/p/vo-param/}). This development shows that a PDL description instance can be used for generating the checking algorithms and for generating a client with a dynamic-intelligent behavior helping the user in interacting with a service. This client could be used for interacting with services exposed using different job systems;
+\item a server for exposing any exiting code as a web services. It embeds the verification layer. This development was done for showing that a PDL description instance can be used for generating the {\it ad hoc} server, exposing the described service. A particular feature of this server is that it can generates grids of model starting from a single job submission, which indicates ranges for parameters (GitHub repository at \url{https://github.com/cmzwolf});
+\item the Taverna Plugin. From one point of view this plugin could be seen as an alternate client to the standalone one. From another point of view it is strongly oriented towards general physical and scientific interoperability (discussed in paragraph \ref{ParInteropIssues}) since it uses PDL description for validating the "chaining" of jobs composing a workflow. As the dynamic client, the Taverna plugin can be used for interacting with services exposed different job systems (GitHub repository for stable version at \url{https://github.com/wf4ever/astrotaverna}).  
+\item the description editor, for editing PDL description from a Graphical User Interface. Since the key point for using PDL and take advantage of the software tools we have just described is a PDL description, we decided to provide the community with a tool for easily composing PDL description. In some sense this is the entry-point of the PDL software farmework  (google code repository at \url{https://code.google.com/p/pdl-editor/}).
 \end{itemize}
-All these developments validate the concepts of automatic generation of algorithms and the possibility of configuring -to a highly specialized behavior- generic software components. This is very important since it reduces drastically the development time for building services based on the PDL grammar. This is essential in a scientific context where only few scientists have access to software engineer for their IVOA developments.\\
+All these developments validate the concepts of automatic generation of algorithms and the possibility of configuring, with highly specialized individual behaviors, generic software components. This is very important since it reduces drastically the development time for building services based on the PDL grammar. This is essential in a scientific context where only few scientists have access to software engineer for their IVOA developments.\\
 
 \noindent In further developments, PDL-client implementations will include a formal-logic module. This will permit finding contradictions inside the descriptions.\\
 Such a  module will also be required for implementing the automatic computation of {\it a priori interoperability graphs}. 
@@ -1199,7 +1206,19 @@ The reader will find the xml file related to this example at the following URL:\
 
 
 \subsection{The PDL XSD Schema}\label{pdlSchema}
-\begin{lstlisting}
+\lstdefinestyle{listXML}{language=XML, extendedchars=true,  belowcaptionskip=5pt, xleftmargin=1.8em, xrightmargin=0.5em, numbers=left, numberstyle=\small\ttfamily\bf, 
+frame=single, breaklines=true, breakatwhitespace=true, breakindent=0pt, emph={}, emphstyle=\color{red}, basicstyle=\small\ttfamily,
+columns=fullflexible, showstringspaces=false, commentstyle=\color{gray}\upshape,
+morestring=[b]",
+morecomment=[s]{<?}{?>},
+morecomment=[s][\color{orange}]{<!--}{-->},
+keywordstyle=\color{cyan},
+stringstyle=\color{black},
+tagstyle=\color{darkblue},
+morekeywords={xmlns,version,type}
+}
+
+\begin{lstlisting}[style=listXML]
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
    xmlns:pm="http://www.ivoa.net/xml/Parameter/v0.1" elementFormDefault="qualified"
