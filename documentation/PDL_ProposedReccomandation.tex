@@ -26,7 +26,7 @@
 % You can add email addresses with links \url{mailto:yourname@ivoa.net}
 \editor{Carlo Maria Zw\"olf }
 \author{Carlo Maria Zw\"olf \\ Paul Harrison \\ Juli\'an Garrido \\ Jose Enrique Ruiz \\ Franck Le Petit}
-\newcommand{\pdlversion}{1.1}
+\newcommand{\pdlversion}{1.0}
 \newcommand{\pdldate}{\today}
 
 \lstset{language=xml,frame=single, breaklines=true, basicstyle=\ttfamily,basicstyle=\scriptsize}
@@ -69,11 +69,33 @@ We wish to thank the members of the IVOA Grid and Web Services working group for
 
 \newpage
 
-\section{Introduction}
+\section{Preface}
+Before going into technical details and explanations about PDL, we would like to suggest what are the categories of users potentially interested in this description language and underline in what field PDL has a strategic impact.\\
 
+\noindent PDL is particularly addressed to scientists or engineers
+\begin{itemize}
+\item wishing to expose their research codes (without limits or compromise on the complexity of the exposed code) online as public services,
+\item wishing to interconnect their codes into workflows.
+\end{itemize}
+
+\noindent {\bf The online code aspect -} Usually, people who are about to publish their codes as online services are wondering if user will be able to correctly use the new services: the code may have many parameters (usually with obscure names,  due to historical reasons). These parameters can be intercorrelated and/or have forbidden ranges, according to the configuration or validity domain of the implemented model. In other words the use of the code may be reserved to experts.\\
+How can the service provider ensure that the users will be aware of all the subtleties (units, physical meaning, value ranges of parameters)? The natural answer is to provide a good code documentation to the community. However, our experience as service providers shown that rarely users read carefully the documentation. And even if they read it entirely, they are not safe from making gross and/or distraction errors. 
+Two commons consequences of this situation are the abandonment of the service by users, after few inconclusive tests and
+the abandonment of the service by the provider him(her)self, buried by e-mails from users containing question whose answer are ... in the provided documentation.\\
+PDL is a powerful tool for improving both the user and the provider experiences: it may be seen as a way for hardcoding all the subtleties and constraints of the code into the software components used by the provider for exposing the code and by users for interacting with it.\\
+The fine expertise on the code to expose is fixed into the PDL description. The PDL software framework is able to automatically generate client interfaces (for assisting the user in interacting with the service) and checking algorithms (for verifying that the data submitted by users are compliant with the description). Moreover the software composing the PDL framework are generic elements which are automatically configured by the description into ad-hoc components. The work for people wishing to expose code is indeed essentially restricted to redaction of the description. For these reasons PDL is particularly indicates for people wishing to expose their code but  don't have much time or don't have the technical skills for building web services.\\
+
+\noindent {\bf The workflow aspect -} Scientists or engineers wishing to integrate their code into workflow engines have to write ad hoc artifacts: (in the case of the {\it Taverna} engine) these could be {\it Java Beans}, {\it Shell} and {\it Python} artifacts. Normally one has to write a specific artifact for every code to integrate. This could be extremely time consuming and, from the technical point of view, this is not an 'out of the box' procedure for people starting using workflows engine.\\
+PDL is indicated to facilitate the integration of code into workflow engines: the generic PDL-workflow plugin is configured by the PDL code description into an ad hoc component for the described code. The integration phase is reduced to the redaction of the description.\\ 
+Moreover PDL introduce a new feature into the workflow domain: since every description embeds fine grained details and metadata on parameters (also with their related constraints), the PDL workflow plugin can check if the whole workflow composed of PDL codes has physical sense and satisfies the limitations of use of every code.\\
+
+The PDL application domain is not limited only to online code or workflows. It could be wider and include advanced R\&D on interoperability. We are now going to detail all the technical aspects of this description grammar. 
+
+
+\section{Introduction}
 In the context of the {\it International Virtual Observatory Alliance} researchers would like to
 provide astronomical services to the community. \\
-These services could be
+These services could be 
 \begin{itemize}
 \item   access to an existing catalogue of images and/or data,
 \item  access to smaller sub-products images, spectra and/or data generated on the fly,
@@ -215,13 +237,15 @@ towards building our own solution.\\
 \noindent {\bf Remark}: We will present further considerations on the workflows aspects in paragraph \ref{PDLWF}, once we have exposed some basic concepts about PDL in the following paragraph.  
 
 \subsection{Astronomical and Astrophysical use-cases needing PDL's fine description capabilities}
-{\bf Put here the text from Franck Le Petit explaining the needs on PDR code and the text from Antoine explaining the needs for Paris-Durham code}.\\
+PDL was originally designed for meeting requirements coming from the community members wishing to expose their code online as public services. One of the difficulty they often mentioned is that online codes are often complex to use and users may do mistake with online simulations. For example, they could use them outside of their validity domain. The description of parameters with PDL allows to constrain those ones in validity domains, and so PDL answers this fear of the theorist community.\\
 
-The following sections of this document could seems complex at first reading. This is because we present all the features and the descriptive richness  of PDL. Nevertheless this does  not mean that all PDL descriptions are necessarily complex. They could be complex in case of services with many parameters linked by many constraints. But PDL description could be very simple in case of simple services. 
+\noindent During the PDL development, close cooperation naturally born with the Workflow community. PDL indeed allow the real {\it scientific} interoperability (not only based on computer types) required by the Astronomic and Astrophysics workflow community.\\
+
+\noindent The following sections of this document could seems complex at first reading. This is because we present all the features and the descriptive richness  of PDL. Nevertheless this does  not mean that all PDL descriptions are necessarily complex. They could be complex in case of services with many parameters linked by many constraints. But PDL description could be very simple in case of simple services. 
 For example the PDL description associated with a common cone search service is very simple. It could be consulted at the following URL:\\
 
 % think that this should be actually included in-line pah
-\href{
+\noindent \href{
 http://www.myexperiment.org/files/999/versions/4/download/AMIGA-PDL-Description.xml
 }{http://www.myexperiment.org/files/999/versions/4/\\download/AMIGA-PDL-Description.xml}.
 
@@ -411,7 +435,7 @@ integer, real, date;
 \end{figure}
 
 The {\it ParameterGroup} object (see figure \ref{Pic-ParameterGroup}) is used for grouping
-parameters according to a criterion of relevancy arbitrarily chosen by users (for instance
+parameters according to a criterion of relevancy arbitrarily chosen by service provider (for instance
 parameters may be grouped according to the physics : position-group, speed-group; thermodynamic-group).
 However,  the ParameterGroup is not only a kind of parameter set, but also can be used for
 defining complex relations and/or constraints involving the contained parameters (cf. paragraph
@@ -422,13 +446,11 @@ Optional fields are
 \begin{itemize}
 \item the references to the parameters (cf. paragraph \ref{par-parRef}) one want to include into the
 group;
-\item a  ConstraintOnGroup object {\it ConstraintOnGroup} (cf. paragraph 
+\item a {\it ConstraintOnGroup} object (cf. paragraph 
 \ref{par-ConstraintsOnGroup}). This object is used for expressing the complex relations and
 constraints involving parameters.
 \item an  {\it Active} field of type {\it WhenConditionalStatement} (cf. paragraph \ref{par-WhenConditionalStatment}). If there is no {\it Active} element the group will be considered active by default  (e.g. in case of a graphical representation it will be displayed). Otherwise, the activations depends on the result of the evaluation of the Criterion contained into the  When conditional statement (cf. paragraphs \ref{par-WhenConditionalStatment} and \ref{par-EvalCriteria}).
-
- 
-\item the objects of type {\it ParameterGroup} contained within the current root group. Indeed the
+\item the {\it ParameterGroup} object contained within the current root group. Indeed the
 {\it ParametersGroup} is a recursive object which can contain other sub-groups.
 \end{itemize}
 
@@ -560,9 +582,9 @@ exposed in paragraph \ref{par02_02}, by substituting there $b=ep$.
 \end{center}
 \end{figure}
 
-The {\it parenthesisContentExpression} (extending {\it Expression}, see
-\ref{Pic-ParenthesisContent}) object is used to explicitly denote precedence by grouping the
-expressions that should be evaluated first. This object {\bf must contain} a unique {\bf numerical}
+The {\it parenthesisContent} object (extending {\it Expression}, see
+\ref{Pic-ParenthesisContent}) is used to explicitly denote precedence by grouping the
+expressions that should be evaluated first. This object {\bf must contain} a single {\bf numerical}
 object $Expression$ (referred to hereafter as $exp_1$).\\
 Optional fields are 
 \begin{itemize}
@@ -643,7 +665,7 @@ is explained how these different function types are used and handled.
 \label{Pic-Function}
 \end{center}
 \end{figure}
-The {\it function} object (extending {\it expression}, see figure \ref{Pic-Function}) is used for
+The {\it Function} object (extending {\it expression}, see figure \ref{Pic-Function}) is used for
 expressing a mathematical function on expressions.
 This object {\bf must contain} 
 \begin{itemize}
@@ -677,7 +699,7 @@ From what we saw above, the result of the interpretation of a function object { 
 \end{figure}
 The {\it FunctionExpression} object (extending {\it Expression}, see figure
 \ref{Pic-FunctionExpression}) is used for building mathematical expressions involving functions.\\
-This object {\bf must contains} a unique {\it Function} object (cf. paragraph \ref{par02_05}).\\
+This object {\bf must contains} a single {\it Function} object (cf. paragraph \ref{par02_05}).\\
 Optional fields, valid only for numerical types, are :
 \begin{itemize}
 \item A {\bf numerical} power {\it Expression} object;
@@ -713,8 +735,7 @@ shown in paragraph \ref{par-ConditionalStatement}, for expressing the complex re
 constraints involving parameters.
 
 \subsection{The ConditionalStatement object}\label{par-ConditionalStatement}
-The {\it ConditionalStatement} object, as its name indicates, is used for defining conditional
-statements. This object is abstract. In this section we are going to review the two concrete objects
+The {\it ConditionalStatement} object is abstract and, as its name suggests, is used for defining conditional statements. In this section we are going to review the two concrete objects
 extending and specializing  {\it ConditionalStatement}.
 
 \subsubsection{The AlwaysConditionalStatement}\label{par-AlwaysConditionalStatement}
@@ -726,7 +747,7 @@ extending and specializing  {\it ConditionalStatement}.
 \end{center}
 \end{figure}
 This object (see figure \ref{Pic-AlwaysConditionalStatement}), as it name suggests,  is used
-for expressing statement that must always be valid. It {\bf must contain} a unique {\it Always}
+for expressing statement that must always be valid. It {\bf must contain} a single {\it Always}
 object (which extends {\it ConditionalClause}, cf. paragraph \ref{par-ConditionalClause}).
 
 \subsubsection{The IfThenConditionalStatement}\label{par-IfThenConditionalStatement}
@@ -815,7 +836,7 @@ An {\it AbstractCriterion} object {\bf must contain}:
 \ref{par-ConditionType}).
 This object specify which condition must be satisfied by the previous {\it Expression}.
 \end{itemize}
-An optional field is the unique {\it LogicalConnector} object (cf. paragraph
+An optional field is the single {\it LogicalConnector} object (cf. paragraph
 \ref{par-LogicalConnector}) used for building logical expressions.\\
 The two concrete objects extending  {\it AbstractCriterion}  are {\it Criterion} and {\it
 ParenthesisCriterion}.  The latter of these two objects allows for assigning priority when
@@ -867,7 +888,7 @@ second is the criterion contained within the connector itself.}
 \end{itemize}
 
 \subsection{The AbstractCondition object}\label{par-ConditionType}
-{\it AbstractCondition} is abstract type. The objects extending it always belong to an  {\it 
+{\it AbstractCondition} is an abstract object. The objects extending it always belong to an  {\it 
 AbstractCriterion} (cf. \ref{par-AbstractCriterion}). In this context, they are used combined with
 an {\it Expression} object, for expressing the condition that the expression must satisfy.\\
 Let us consider a given criterion object $\mathcal{CR}$ (extending{\it AbstractCriterion})  and let
