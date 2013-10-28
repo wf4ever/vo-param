@@ -103,8 +103,8 @@ public class ConeSearchWithExtraColumns extends BaseExample {
 		// Defining the parameter for the result
 		
 		SingleParameter result = factory.createSingleParameter();
-		result.setName("VOTableResult");
-		result.setSkossConcept("url to the tar file containing the mosaiced fits files");
+		result.setName("responseBody");
+		result.setSkossConcept("VOTable that contains the result of the service");
 		result.setParameterType(ParameterType.TABLE);
 		result.setPrecision(mkconst(0.0));
 		result.setUnit("None");
@@ -187,7 +187,7 @@ public class ConeSearchWithExtraColumns extends BaseExample {
 		Criterion RARange = new Criterion().withExpression(
 				RAAtomicExpression).withConditionType(
 				new ValueInRange().withInf(
-						new ValueLargerThan().withReached(false).withValue(
+						new ValueLargerThan().withReached(true).withValue(
 								mktconst("0", ParameterType.INTEGER))).withSup(
 						new ValueSmallerThan().withReached(false).withValue(
 								mktconst("360", ParameterType.INTEGER))));
@@ -195,9 +195,9 @@ public class ConeSearchWithExtraColumns extends BaseExample {
 		Criterion DECRange = new Criterion().withExpression(
 				DECAtomicExpression).withConditionType(
 				new ValueInRange().withInf(
-						new ValueLargerThan().withReached(false).withValue(
+						new ValueLargerThan().withReached(true).withValue(
 								mktconst("-90", ParameterType.REAL))).withSup(
-						new ValueSmallerThan().withReached(false).withValue(
+						new ValueSmallerThan().withReached(true).withValue(
 								mktconst("90", ParameterType.REAL))));
 
 		AtomicParameterExpression SRAtomicExpression = factory
@@ -207,21 +207,21 @@ public class ConeSearchWithExtraColumns extends BaseExample {
 				SRAtomicExpression).withConditionType(
 						new ValueLargerThan().withReached(true).withValue(
 								mktconst("0", ParameterType.INTEGER)));
-
+		
 		AlwaysConditionalStatement RAAlways = new AlwaysConditionalStatement()
 				.withAlways(new Always().withCriterion(RARange))
 				.withComment(
-						"Right ascension must be between -90 and 90");
+						"Right ascension must be in the interval [0,360)");
 
 		AlwaysConditionalStatement DECAlways = new AlwaysConditionalStatement()
 				.withAlways(new Always().withCriterion(DECRange))
 				.withComment(
-						"Declination must be between 0 and 360");
+						"Declination must be in the interval (-90, 90)");
 
 		AlwaysConditionalStatement SRAlways = new AlwaysConditionalStatement()
 				.withAlways(new Always().withCriterion(SRPositive))
 				.withComment(
-						"Radius must be greater than 0");
+						"Radius must be greater or equal to 0");
 
 
 		ConstraintOnGroup coordinatesConstraints = factory
