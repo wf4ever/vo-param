@@ -3,7 +3,7 @@ package visitors;
 import net.ivoa.parameter.model.ParameterType;
 
 /**
- * @author Carlo Maria Zw�lf, Lerma/ObsPM 
+ * @author Carlo Maria Zwolf, Lerma/ObsPM 
  * 
  * General Interface for Criteria. A given Criteria is composed of a set of properties
  * that a parameter must satisfy to be valid 

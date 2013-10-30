@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Carlo Maria Zwšlf, Lerma/ObsPM
+ * @author Carlo Maria Zwolf, Lerma/ObsPM
  * 
  *         Simple implementation of the abstract visitor, for handling basic type
  *         based parameters (Real, Integer, Boolean and String)
