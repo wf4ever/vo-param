@@ -2,6 +2,7 @@ package net.ivoa.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,11 +93,20 @@ public class IntelligentGUI implements TreeSelectionListener, ActionListener {
 		message = message + "Please enter your e-mail (necessary for receiving results):";
 		String eMail="";
 		while(!goodMail){
-			eMail = JOptionPane.showInputDialog(null,message,"welcome",JOptionPane.QUESTION_MESSAGE);
+			String candidateMail = "your mail here";
+			try{
+				candidateMail=Utilities.getInstance().getMapper().getMap().get("mail").get(0).getValue();
+			}catch(Exception e){
+				//Do nothing
+			}
+			eMail = JOptionPane.showInputDialog(message, candidateMail);
+					
+					//showInputDialog(null,message,"welcome",JOptionPane.QUESTION_MESSAGE);
 			if(eMail.contains("@") && eMail.contains(".")){
 				goodMail=true;
 			}
 		}		
+		
 		List<GeneralParameter> mail = new ArrayList<GeneralParameter>();
 		mail.add(new GeneralParameter(eMail, ParameterType.STRING, "user mail", new GeneralParameterVisitor()));
 		Utilities.getInstance().getMapper().getMap().put("mail",mail);
@@ -122,6 +132,16 @@ public class IntelligentGUI implements TreeSelectionListener, ActionListener {
 	}
 
 	public void actionPerformed(ActionEvent e) {
+		
+		//Saving the map into file
+		
+		try {
+			Utilities.getInstance().writeMapIntoFile();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		System.out.println("VALIDATION");
 		this.gp.process();
 		this.refreshTree();

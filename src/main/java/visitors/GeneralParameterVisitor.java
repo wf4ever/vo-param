@@ -18,6 +18,7 @@ public class GeneralParameterVisitor extends AbstractVisitor {
 		criteriaList.add(new IntegerCriteria());
 		criteriaList.add(new BooleanCriteria());
 		criteriaList.add(new StringCriteria());
+		criteriaList.add(new DateCriteria());
 		return criteriaList;
 	}
 

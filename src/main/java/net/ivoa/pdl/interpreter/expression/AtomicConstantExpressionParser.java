@@ -73,8 +73,7 @@ public class AtomicConstantExpressionParser extends ExpressionWithPowerParser {
             return exp.getConstantType();
 
         case REAL:
-        case RATIONAL:
-            return ParameterType.REAL;
+       
             
         default:  
 
