@@ -67,35 +67,35 @@ public class Example02 extends BaseExample {
 		p1.setName("p1");
 		p1.setParameterType(ParameterType.REAL);
 		p1.setPrecision(mktconst("0.0001", ParameterType.REAL));
-		p1.setSkossConcept("SKOS_REAL");
+		p1.setSkosConcept("SKOS_REAL");
 		p1.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter p2 = factory.createSingleParameter();
 		p2.setName("p2");
 		p2.setParameterType(ParameterType.INTEGER);
 		p2.setPrecision(mktconst("0", ParameterType.REAL));
-		p2.setSkossConcept("SKOS_INTEGER");
+		p2.setSkosConcept("SKOS_INTEGER");
 		p1.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter p3 = factory.createSingleParameter();
 		p3.setName("p3");
 		p3.setParameterType(ParameterType.REAL);
 		p3.setPrecision(mktconst("0.0001", ParameterType.REAL));
-		p3.setSkossConcept("SKOS_REAL");
+		p3.setSkosConcept("SKOS_REAL");
 		p3.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter p4 = factory.createSingleParameter();
 		p4.setName("p4");
 		p4.setParameterType(ParameterType.REAL);
 		p4.setPrecision(mktconst("0.0001", ParameterType.REAL));
-		p4.setSkossConcept("SKOS_REAL_VECTOR");
+		p4.setSkosConcept("SKOS_REAL_VECTOR");
 		p4.setDimension(mktconst("3", ParameterType.INTEGER));
 
 		SingleParameter p5 = factory.createSingleParameter();
 		p5.setName("p5");
 		p5.setParameterType(ParameterType.REAL);
 		p5.setPrecision(mktconst("0.0001", ParameterType.REAL));
-		p5.setSkossConcept("SKOS_REAL_VECTOR");
+		p5.setSkosConcept("SKOS_REAL_VECTOR");
 		p5.setDimension(mktconst("3", ParameterType.INTEGER));
 
 		ParameterReference p1Ref = new ParameterReference()

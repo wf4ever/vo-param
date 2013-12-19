@@ -79,7 +79,7 @@ public class GroupActivation extends BaseExample {
 		mass.setName("mass");
 		mass.setParameterType(ParameterType.REAL);
 		mass.setPrecision(mktconst("0.0001", ParameterType.REAL));
-		mass.setSkossConcept("SKOSS_MASS");
+		mass.setSkosConcept("SKOSS_MASS");
 		mass.setUnit("kg");
 		mass.setDimension(mktconst("1", ParameterType.INTEGER));
 
@@ -88,7 +88,7 @@ public class GroupActivation extends BaseExample {
 		time.setName("time");
 		time.setParameterType(ParameterType.BOOLEAN);
 		time.setPrecision(mktconst("0.0001", ParameterType.REAL));
-		time.setSkossConcept("SKOSS_TIME");
+		time.setSkosConcept("SKOSS_TIME");
 		time.setUnit("s");
 		time.setDimension(mktconst("2", ParameterType.INTEGER));
 
@@ -97,7 +97,7 @@ public class GroupActivation extends BaseExample {
 		Kenergy.setName("E");
 		Kenergy.setParameterType(ParameterType.REAL);
 		Kenergy.setPrecision(mktconst("0.0001", ParameterType.REAL));
-		Kenergy.setSkossConcept("SKOSS_ENERGY");
+		Kenergy.setSkosConcept("SKOSS_ENERGY");
 		Kenergy.setUnit("J");
 		Kenergy.setDimension(mktconst("1", ParameterType.INTEGER));
 
@@ -106,7 +106,7 @@ public class GroupActivation extends BaseExample {
 		distance.setName("distance");
 		distance.setParameterType(ParameterType.REAL);
 		distance.setPrecision(mktconst("0.0001", ParameterType.REAL));
-		distance.setSkossConcept("SKOSS_LENGHT");
+		distance.setSkosConcept("SKOSS_LENGHT");
 		distance.setUnit("m");
 		distance.setDimension(mktconst("1", ParameterType.INTEGER));
 
@@ -115,7 +115,7 @@ public class GroupActivation extends BaseExample {
 		speedX.setName("speedX");
 		speedX.setParameterType(ParameterType.REAL);
 		speedX.setPrecision(mktconst("0.0001", ParameterType.REAL));
-		speedX.setSkossConcept("SKOSS_SPEED_COMPONENT");
+		speedX.setSkosConcept("SKOSS_SPEED_COMPONENT");
 		speedX.setUnit("m/s");
 		speedX.setDimension(mktconst("1", ParameterType.INTEGER));
 
@@ -124,7 +124,7 @@ public class GroupActivation extends BaseExample {
 		speedY.setName("speedY");
 		speedY.setParameterType(ParameterType.REAL);
 		speedY.setPrecision(mktconst("0.0001", ParameterType.REAL));
-		speedY.setSkossConcept("SKOSS_SPEED_COMPONENT");
+		speedY.setSkosConcept("SKOSS_SPEED_COMPONENT");
 		speedY.setUnit("m/s");
 		speedY.setDimension(mktconst("1", ParameterType.INTEGER));
 
@@ -133,7 +133,7 @@ public class GroupActivation extends BaseExample {
 		speedZ.setName("speedZ");
 		speedZ.setParameterType(ParameterType.REAL);
 		speedZ.setPrecision(mktconst("0.0001", ParameterType.REAL));
-		speedZ.setSkossConcept("SKOSS_SPEED_COMPONENT");
+		speedZ.setSkosConcept("SKOSS_SPEED_COMPONENT");
 		speedZ.setUnit("m/s");
 		speedZ.setDimension(mktconst("1", ParameterType.INTEGER));
 
@@ -142,7 +142,7 @@ public class GroupActivation extends BaseExample {
 		positive.setName("positive");
 		positive.setParameterType(ParameterType.REAL);
 		positive.setPrecision(mktconst("0.0001", ParameterType.REAL));
-		positive.setSkossConcept("SKOSS_POSITIVE");
+		positive.setSkosConcept("SKOSS_POSITIVE");
 		positive.setUnit("none");
 		positive.setDimension(mktconst("1", ParameterType.INTEGER));
 
@@ -158,7 +158,7 @@ public class GroupActivation extends BaseExample {
 		rdot.setName("rdot");
 		rdot.setParameterType(ParameterType.REAL);
 		rdot.setPrecision(mktconst("0.0001", ParameterType.REAL));
-		rdot.setSkossConcept("SKOSS_SPEED_COMPONENT");
+		rdot.setSkosConcept("SKOSS_SPEED_COMPONENT");
 		rdot.setUnit("m/s");
 		rdot.setDimension(mktconst("1", ParameterType.INTEGER));
 
@@ -167,7 +167,7 @@ public class GroupActivation extends BaseExample {
 		thetadot.setName("thetadot");
 		thetadot.setParameterType(ParameterType.REAL);
 		thetadot.setPrecision(mktconst("0.0001", ParameterType.REAL));
-		thetadot.setSkossConcept("SKOSS_SPEED_COMPONENT");
+		thetadot.setSkosConcept("SKOSS_SPEED_COMPONENT");
 		thetadot.setUnit("rad/s");
 		thetadot.setDimension(mktconst("1", ParameterType.INTEGER));
 
@@ -176,7 +176,7 @@ public class GroupActivation extends BaseExample {
 		phidot.setName("phidot");
 		phidot.setParameterType(ParameterType.REAL);
 		phidot.setPrecision(mktconst("0.0001", ParameterType.REAL));
-		phidot.setSkossConcept("SKOSS_SPEED_COMPONENT");
+		phidot.setSkosConcept("SKOSS_SPEED_COMPONENT");
 		phidot.setUnit("rad/s");
 		phidot.setDimension(mktconst("1", ParameterType.INTEGER));
 

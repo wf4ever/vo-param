@@ -44,7 +44,7 @@ public abstract class PDLBaseParamPanel extends JPanel implements FocusListener,
 		this.paramName = parameter.getName();
 		this.paramUnit = parameter.getUnit();
 		this.paramType = parameter.getParameterType();
-		this.skossConcept = parameter.getSkossConcept();
+		this.skossConcept = parameter.getSkosConcept();
 		this.paramDimension = null;
 		try {
 			this.paramDimension = ExpressionParserFactory.getInstance()

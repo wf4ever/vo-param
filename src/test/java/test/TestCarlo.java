@@ -51,14 +51,14 @@ public class TestCarlo extends BaseExample {
 		SingleParameter first = factory.createSingleParameter();
 		first.setName("p1");
 		first.setParameterType(ParameterType.REAL);
-		first.setSkossConcept("Number");
+		first.setSkosConcept("Number");
 		first.setUnit("");
 		first.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter second = factory.createSingleParameter();
 		second.setName("p2");
 		second.setParameterType(ParameterType.REAL);
-		second.setSkossConcept("Number");
+		second.setSkosConcept("Number");
 		second.setUnit("");
 		second.setDimension(mktconst("1", ParameterType.INTEGER));
 

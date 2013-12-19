@@ -17,6 +17,7 @@ import net.ivoa.parameter.model.ConstraintOnGroup;
 import net.ivoa.parameter.model.Criterion;
 import net.ivoa.parameter.model.Operation;
 import net.ivoa.parameter.model.OperationType;
+import net.ivoa.parameter.model.ParameterDependency;
 import net.ivoa.parameter.model.ParameterGroup;
 import net.ivoa.parameter.model.ParameterReference;
 import net.ivoa.parameter.model.ParameterType;
@@ -39,8 +40,8 @@ public class BroadeningExample extends BaseExample {
 	protected Service buildService() {
 
 		Service service = factory.createService()
-				.withServiceId("http://vm-calc-lerma02:8081/broadening")
-				.withServiceName("Lerma-Broadening-Service");
+				.withServiceId("http://pdl-calc.obspm.fr:8081/broadening/OnlineCode")
+				.withServiceName("Broadening-Service");
 		service.setDescription("Hydrogen Stark broadening calculation for astrophysical applications");
 
 		// Creating input and output parameter group
@@ -52,37 +53,43 @@ public class BroadeningExample extends BaseExample {
 		SingleParameter mail = factory.createSingleParameter();
 		mail.setName("mail");
 		mail.setParameterType(ParameterType.STRING);
-		mail.setSkossConcept("SKOS_MAIL");
+		mail.setSkosConcept("SKOS_MAIL");
 		mail.setUnit("none");
 		mail.setDimension(mktconst("1", ParameterType.INTEGER));
+		mail.setDependency(ParameterDependency.REQUIRED);
 
 		SingleParameter initialLevel = factory.createSingleParameter();
 		initialLevel.setName("InitialLevel");
 		initialLevel.setParameterType(ParameterType.INTEGER);
-		initialLevel.setSkossConcept("SKOS_INITIAL_LEVEL");
+		initialLevel.setSkosConcept("SKOS_INITIAL_LEVEL");
 		initialLevel.setUnit("number");
 		initialLevel.setDimension(mktconst("1", ParameterType.INTEGER));
+		initialLevel.setDependency(ParameterDependency.REQUIRED);
 
 		SingleParameter finaleLevel = factory.createSingleParameter();
 		finaleLevel.setName("FinalLevel");
 		finaleLevel.setParameterType(ParameterType.INTEGER);
-		finaleLevel.setSkossConcept("SKOS_INITIAL_LEVEL");
+		finaleLevel.setSkosConcept("SKOS_INITIAL_LEVEL");
 		finaleLevel.setUnit("number");
 		finaleLevel.setDimension(mktconst("1", ParameterType.INTEGER));
-
+		finaleLevel.setDependency(ParameterDependency.REQUIRED);
+		
+		
 		SingleParameter temperature = factory.createSingleParameter();
 		temperature.setName("Temperature");
 		temperature.setParameterType(ParameterType.REAL);
-		temperature.setSkossConcept("SKOS_TEMPERATURE");
+		temperature.setSkosConcept("SKOS_TEMPERATURE");
 		temperature.setUnit("K");
 		temperature.setDimension(mktconst("1", ParameterType.INTEGER));
+		temperature.setDependency(ParameterDependency.REQUIRED);
 
 		SingleParameter density = factory.createSingleParameter();
 		density.setName("Density");
 		density.setParameterType(ParameterType.REAL);
-		density.setSkossConcept("SKOS_DENSITY");
+		density.setSkosConcept("SKOS_DENSITY");
 		density.setUnit("cm^-3");
 		density.setDimension(mktconst("1", ParameterType.INTEGER));
+		density.setDependency(ParameterDependency.REQUIRED);
 
 		Parameters parameterList = factory.createParameters();
 		parameterList.getParameter().add(mail);

@@ -50,112 +50,112 @@ public class OpacityExample extends BaseExample {
 		SingleParameter mail = factory.createSingleParameter();
 		mail.setName("email");
 		mail.setParameterType(ParameterType.STRING);
-		mail.setSkossConcept("SKOS_MAIL");
+		mail.setSkosConcept("SKOS_MAIL");
 		mail.setUnit("e-mail");
 		mail.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter C = factory.createSingleParameter();
 		C.setName("C");
 		C.setParameterType(ParameterType.REAL);
-		C.setSkossConcept("C_Abundance");
+		C.setSkosConcept("C_Abundance");
 		C.setUnit("number");
 		C.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter N = factory.createSingleParameter();
 		N.setName("N");
 		N.setParameterType(ParameterType.REAL);
-		N.setSkossConcept("N_Abundance");
+		N.setSkosConcept("N_Abundance");
 		N.setUnit("number");
 		N.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter O = factory.createSingleParameter();
 		O.setName("O");
 		O.setParameterType(ParameterType.REAL);
-		O.setSkossConcept("O_Abundance");
+		O.setSkosConcept("O_Abundance");
 		O.setUnit("number");
 		O.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter Ne = factory.createSingleParameter();
 		Ne.setName("Ne");
 		Ne.setParameterType(ParameterType.REAL);
-		Ne.setSkossConcept("Ne_Abundance");
+		Ne.setSkosConcept("Ne_Abundance");
 		Ne.setUnit("number");
 		Ne.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter Na = factory.createSingleParameter();
 		Na.setName("Na");
 		Na.setParameterType(ParameterType.REAL);
-		Na.setSkossConcept("Na_Abundance");
+		Na.setSkosConcept("Na_Abundance");
 		Na.setUnit("number");
 		Na.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter Mg = factory.createSingleParameter();
 		Mg.setName("Mg");
 		Mg.setParameterType(ParameterType.REAL);
-		Mg.setSkossConcept("Mg_Abundance");
+		Mg.setSkosConcept("Mg_Abundance");
 		Mg.setUnit("number");
 		Mg.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter Al = factory.createSingleParameter();
 		Al.setName("Al");
 		Al.setParameterType(ParameterType.REAL);
-		Al.setSkossConcept("Al_Abundance");
+		Al.setSkosConcept("Al_Abundance");
 		Al.setUnit("number");
 		Al.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter Si = factory.createSingleParameter();
 		Si.setName("Si");
 		Si.setParameterType(ParameterType.REAL);
-		Si.setSkossConcept("Si_Abundance");
+		Si.setSkosConcept("Si_Abundance");
 		Si.setUnit("number");
 		Si.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter S = factory.createSingleParameter();
 		S.setName("S");
 		S.setParameterType(ParameterType.REAL);
-		S.setSkossConcept("Si_Abundance");
+		S.setSkosConcept("Si_Abundance");
 		S.setUnit("number");
 		S.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter Ar = factory.createSingleParameter();
 		Ar.setName("Ar");
 		Ar.setParameterType(ParameterType.REAL);
-		Ar.setSkossConcept("Ar_Abundance");
+		Ar.setSkosConcept("Ar_Abundance");
 		Ar.setUnit("number");
 		Ar.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter Ca = factory.createSingleParameter();
 		Ca.setName("Ca");
 		Ca.setParameterType(ParameterType.REAL);
-		Ca.setSkossConcept("Ca_Abundance");
+		Ca.setSkosConcept("Ca_Abundance");
 		Ca.setUnit("number");
 		Ca.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter Cr = factory.createSingleParameter();
 		Cr.setName("Cr");
 		Cr.setParameterType(ParameterType.REAL);
-		Cr.setSkossConcept("Cr_Abundance");
+		Cr.setSkosConcept("Cr_Abundance");
 		Cr.setUnit("number");
 		Cr.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter Mn = factory.createSingleParameter();
 		Mn.setName("Mn");
 		Mn.setParameterType(ParameterType.REAL);
-		Mn.setSkossConcept("Mn_Abundance");
+		Mn.setSkosConcept("Mn_Abundance");
 		Mn.setUnit("number");
 		Mn.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter Fe = factory.createSingleParameter();
 		Fe.setName("Fe");
 		Fe.setParameterType(ParameterType.REAL);
-		Fe.setSkossConcept("Fe_Abundance");
+		Fe.setSkosConcept("Fe_Abundance");
 		Fe.setUnit("number");
 		Fe.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter Ni = factory.createSingleParameter();
 		Ni.setName("Ni");
 		Ni.setParameterType(ParameterType.REAL);
-		Ni.setSkossConcept("Ni_Abundance");
+		Ni.setSkosConcept("Ni_Abundance");
 		Ni.setUnit("number");
 		Ni.setDimension(mktconst("1", ParameterType.INTEGER));
 

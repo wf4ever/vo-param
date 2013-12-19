@@ -33,7 +33,7 @@ public class SkossConverter {
 		List<Thread> treadList = new ArrayList<Thread>();
 		
 		for(SingleParameter currentParam : parameterList){
-			SkosCaller currentCaller = new SkosCaller(currentParam.getSkossConcept());
+			SkosCaller currentCaller = new SkosCaller(currentParam.getSkosConcept());
 			callerList.add(currentCaller);
 			treadList.add(new Thread(currentCaller));
 	//		urlSkossDescription.put(currentParam.getSkossConcept(), getDescriptionBySkos(currentParam.getSkossConcept()));
@@ -44,9 +44,9 @@ public class SkossConverter {
 		for(int i = 0 ; i< parameterList.size(); i++){
 			try {
 				treadList.get(i).join();
-				urlSkossDescription.put(parameterList.get(i).getSkossConcept(), callerList.get(i).getSkosDescription());
+				urlSkossDescription.put(parameterList.get(i).getSkosConcept(), callerList.get(i).getSkosDescription());
 			} catch (InterruptedException e) {
-				urlSkossDescription.put(parameterList.get(i).getSkossConcept(), parameterList.get(i).getSkossConcept());
+				urlSkossDescription.put(parameterList.get(i).getSkosConcept(), parameterList.get(i).getSkosConcept());
 				e.printStackTrace();
 			}
 		}

@@ -56,63 +56,63 @@ public class PDRService extends BaseExample {
 		SingleParameter mail = factory.createSingleParameter();
 		mail.setName("email");
 		mail.setParameterType(ParameterType.STRING);
-		mail.setSkossConcept("SKOS_MAIL");
+		mail.setSkosConcept("SKOS_MAIL");
 		mail.setUnit("e-mail");
 		mail.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter density = factory.createSingleParameter();
 		density.setName("dens");
 		density.setParameterType(ParameterType.REAL);
-		density.setSkossConcept("SKOS_Density");
+		density.setSkosConcept("SKOS_Density");
 		density.setUnit("cm^-3");
 		density.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter temperature = factory.createSingleParameter();
 		temperature.setName("T");
 		temperature.setParameterType(ParameterType.REAL);
-		temperature.setSkossConcept("SKOS_Temperature");
+		temperature.setSkosConcept("SKOS_Temperature");
 		temperature.setUnit("K");
 		temperature.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter pressure = factory.createSingleParameter();
 		pressure.setName("P");
 		pressure.setParameterType(ParameterType.REAL);
-		pressure.setSkossConcept("SKOS_Pressure");
+		pressure.setSkosConcept("SKOS_Pressure");
 		pressure.setUnit("cm^-3 K");
 		pressure.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter ifisob = factory.createSingleParameter();
 		ifisob.setName("EOSChoice");
 		ifisob.setParameterType(ParameterType.STRING);
-		ifisob.setSkossConcept("SKOS_EOS_choice");
+		ifisob.setSkosConcept("SKOS_EOS_choice");
 		ifisob.setUnit("");
 		ifisob.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter ieqth = factory.createSingleParameter();
 		ieqth.setName("thermalBalance");
 		ieqth.setParameterType(ParameterType.STRING);
-		ieqth.setSkossConcept("SKOS_Thermal_Balance");
+		ieqth.setSkosConcept("SKOS_Thermal_Balance");
 		ieqth.setUnit("");
 		ieqth.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter radField = factory.createSingleParameter();
 		radField.setName("radiationFieldIntensity");
 		radField.setParameterType(ParameterType.REAL);
-		radField.setSkossConcept("SKOS_Radiation_field_intensity");
+		radField.setSkosConcept("SKOS_Radiation_field_intensity");
 		radField.setUnit("none");
 		radField.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter radSource = factory.createSingleParameter();
 		radSource.setName("radiationSource");
 		radSource.setParameterType(ParameterType.STRING);
-		radSource.setSkossConcept("SKOS_Radiation_source");
+		radSource.setSkosConcept("SKOS_Radiation_source");
 		radSource.setUnit("none");
 		radSource.setDimension(mktconst("1", ParameterType.INTEGER));
 
 		SingleParameter avmax = factory.createSingleParameter();
 		avmax.setName("cloudSize");
 		avmax.setParameterType(ParameterType.REAL);
-		avmax.setSkossConcept("SKOS_Cloud_Size");
+		avmax.setSkosConcept("SKOS_Cloud_Size");
 		avmax.setUnit("");
 		avmax.setDimension(mktconst("1", ParameterType.INTEGER));
 
