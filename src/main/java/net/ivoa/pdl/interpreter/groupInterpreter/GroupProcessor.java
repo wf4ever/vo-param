@@ -50,15 +50,7 @@ public class GroupProcessor {
     }
 
     private void initialize() {
-        // first look through the parameters for conditions
-
-        for (SingleParameter par : service.getParameters().getParameter()) {
-            if (par.getRestriction() != null) {
-                
-                setParamFromCondition(par, par.getRestriction().getAlways().getCriterion());
- 
-            }
-        }
+        
     }
 
     private void setParamFromCondition(SingleParameter parameter,

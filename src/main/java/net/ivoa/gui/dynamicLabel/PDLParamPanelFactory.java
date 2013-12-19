@@ -36,14 +36,7 @@ public class PDLParamPanelFactory {
 				.getStatementHelperList();
 	    
 	    PDLBaseParamPanel panel;
-	        if(parameter.getRestriction() != null){
-	            StatementHelperContainer localHelper = new StatementHelperContainer(parameter.getRestriction());
-	            localHelper.setStatementSwitched(true);
-	            if ((panel = test(localHelper, parameter))!=null)
-	            {
-	                return panel;
-	            }
-	        }
+	      
 
 		if (null == helperList) {
 			return buildBasicPanel(parameter);
