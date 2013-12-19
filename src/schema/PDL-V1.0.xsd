@@ -160,7 +160,7 @@
          <xs:element name="ParameterType" type="pm:ParameterType" minOccurs="1" maxOccurs="1"> </xs:element>
          <xs:element name="UCD" type="xs:string" maxOccurs="1" minOccurs="0"> </xs:element>
          <xs:element name="UType" type="xs:string" maxOccurs="1" minOccurs="0"/>
-         <xs:element name="SkossConcept" type="xs:string" minOccurs="0" maxOccurs="1"/>
+         <xs:element name="SkosConcept" type="xs:string" minOccurs="0" maxOccurs="1"/>
          <xs:element name="Unit" type="xs:string" minOccurs="0" maxOccurs="1"/>
          <xs:element name="Precision" type="pm:Expression" minOccurs="0" maxOccurs="1"/>
          <xs:element name="Dimension" type="pm:Expression" maxOccurs="1" minOccurs="1"/>
@@ -328,11 +328,6 @@ Although the grammar does not formally disallow it, any constraint here should n
          <xs:extension base="pm:AbstractCondition"> </xs:extension>
       </xs:complexContent>
    </xs:complexType>
-   <xs:complexType name="IsRational">
-      <xs:complexContent>
-         <xs:extension base="pm:AbstractCondition"> </xs:extension>
-      </xs:complexContent>
-   </xs:complexType>
    <xs:complexType name="BelongToSet">
       <xs:annotation>
          <xs:documentation>The value must belong to a set</xs:documentation>
@@ -487,5 +482,5 @@ Although the grammar does not formally disallow it, any constraint here should n
       </xs:complexContent>
    </xs:complexType>
 
-  
+
 </xs:schema>
