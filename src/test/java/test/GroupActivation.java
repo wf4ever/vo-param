@@ -146,12 +146,12 @@ public class GroupActivation extends BaseExample {
 		positive.setUnit("none");
 		positive.setDimension(mktconst("1", ParameterType.INTEGER));
 
-		positive.setRestriction((new AlwaysConditionalStatement()
+	/*	positive.setRestriction((new AlwaysConditionalStatement()
 				.withAlways(new Always().withCriterion(new Criterion()
 						.withConditionType(new ValueLargerThan().withReached(
 								true).withValue(
 								mktconst("1", ParameterType.INTEGER)))))));
-
+*/
 		// alternatives in spherical coordinates
 		// radial component
 		SingleParameter rdot = factory.createSingleParameter();
@@ -186,14 +186,14 @@ public class GroupActivation extends BaseExample {
 
 		// IMPL - would be nice to not have to put in the explicit parameter
 		// reference
-		coordtyp.setRestriction(new AlwaysConditionalStatement()
+/*		coordtyp.setRestriction(new AlwaysConditionalStatement()
 				.withAlways(new Always().withCriterion(new Criterion()
 						.withConditionType(
 								new BelongToSet().withValue(
 										mkconst("cartesian"),
 										mkconst("spherical"))).withExpression(
 								mkRefExp(coordtyp)))));
-
+*/
 		AbstractCondition abcon = new BelongToSet()
 				.withValue(mkconst("cartesian"));
 
