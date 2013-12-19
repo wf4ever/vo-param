@@ -111,7 +111,7 @@
       <xs:restriction base="xs:string">
          <xs:enumeration value="boolean">
             <xs:annotation>
-               <xs:documentation>A representation of a boolean - e.g. true/false on/off</xs:documentation>
+               <xs:documentation>A representation of a boolean - e.g. true/false</xs:documentation>
             </xs:annotation>
          </xs:enumeration>
          <xs:enumeration value="string">
@@ -164,15 +164,6 @@
          <xs:element name="Unit" type="xs:string" minOccurs="0" maxOccurs="1"/>
          <xs:element name="Precision" type="pm:Expression" minOccurs="0" maxOccurs="1"/>
          <xs:element name="Dimension" type="pm:Expression" maxOccurs="1" minOccurs="1"/>
-         <xs:element name="restriction" type="pm:AlwaysConditionalStatement" maxOccurs="1"
-            minOccurs="0">
-            <xs:annotation>
-               <xs:documentation>A restriction on a parameter value - This restriction is to be evaluated before any constraints that occur in a group. 
-The purpose of this restriction here is to allow globally true constraints to be placed on a parameter so that they do not have to be repeated in the parameter groups wherever a parameter might appear.
-Although the grammar does not formally disallow it, any constraint here should not reference any other parameters as that would increase the likelyhood of contradictions.
-</xs:documentation>
-            </xs:annotation>
-         </xs:element>
       </xs:sequence>
       <xs:attribute name="dependency" type="pm:ParameterDependency"> </xs:attribute>
    </xs:complexType>
