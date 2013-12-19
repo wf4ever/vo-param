@@ -19,6 +19,17 @@
 \definecolor{darkblue}{rgb}{0.0,0.0,0.6}
 \definecolor{cyan}{rgb}{0.0,0.6,0.6}
 
+\lstdefinestyle{listXML}{language=XML, extendedchars=true,  belowcaptionskip=5pt, xleftmargin=1.8em, xrightmargin=0.5em, numbers=left, numberstyle=\small\ttfamily\bf, 
+frame=single, breaklines=true, breakatwhitespace=true, breakindent=0pt, emph={}, emphstyle=\color{red}, basicstyle=\small\ttfamily,
+columns=fullflexible, showstringspaces=false, commentstyle=\color{gray}\upshape,
+morestring=[b]",
+morecomment=[s]{<?}{?>},
+morecomment=[s][\color{orange}]{<!--}{-->},
+keywordstyle=\color{cyan},
+stringstyle=\color{black},
+tagstyle=\color{darkblue},
+morekeywords={xmlns,version,type}
+}
 
 
 \title{PDL: The Parameter Description Language}
@@ -77,19 +88,20 @@ Before going into technical details and explanations about PDL, we would like to
 \item wishing to expose their research codes (without limits or compromise on the complexity of the exposed code) online as public services,
 \item wishing to interconnect their codes into workflows.
 \end{itemize}
+We will continue this preface by a quick 'theoretical' overview of PDL. For a practice-oriented introduction, reader should refer to the annex paragraph \ref{divePDL}.\\
 
 \noindent {\bf The online code aspect -} Usually, people who are about to publish their codes as online services are wondering if user will be able to correctly use the new services: the code may have many parameters (usually with obscure names,  due to historical reasons). These parameters can be intercorrelated and/or have forbidden ranges, according to the configuration or validity domain of the implemented model. In other words the use of the code may be reserved to experts.\\
-How can the service provider ensure that the users will be aware of all the subtleties (units, physical meaning, value ranges of parameters)? The natural answer is to provide a good code documentation to the community. However, our experience as service providers shown that rarely users read carefully the documentation. And even if they read it entirely, they are not safe from making gross and/or distraction errors. 
+How can the service provider ensure that the users will be aware of all the subtleties (units, physical meaning, value ranges of parameters)? The natural answer is to provide a good code documentation to the community. However, our experience as service providers showed that rarely users read carefully the documentation. And even if they read it entirely, they are not safe from making gross and/or distraction errors. 
 Two commons consequences of this situation are the abandonment of the service by users, after few inconclusive tests and
 the abandonment of the service by the provider him(her)self, buried by e-mails from users containing question whose answer are ... in the provided documentation.\\
 PDL is a powerful tool for improving both the user and the provider experiences: it may be seen as a way for hardcoding all the subtleties and constraints of the code into the software components used by the provider for exposing the code and by users for interacting with it.\\
-The fine expertise on the code to expose is fixed into the PDL description. The PDL software framework is able to automatically generate client interfaces (for assisting the user in interacting with the service) and checking algorithms (for verifying that the data submitted by users are compliant with the description). Moreover the software composing the PDL framework are generic elements which are automatically configured by the description into ad-hoc components. The work for people wishing to expose code is indeed essentially restricted to redaction of the description. For these reasons PDL is particularly indicates for people wishing to expose their code but  don't have much time or don't have the technical skills for building web services.\\
+The fine expertise on the code to expose is fixed into the PDL description. The PDL software framework is able to automatically generate client interfaces (for assisting the user in interacting with the service) and checking algorithms (for verifying that the data submitted by users are compliant with the description). Moreover the softwares composing the PDL framework are generic elements which are automatically configured by the description into ad-hoc components (cf. paragraph \ref{SoftwareImplementation} for further details and explanation about these concepts). The work for people wishing to expose code is indeed essentially restricted to redaction of the description. For these reasons PDL is particularly indicated for people wishing to expose their code but  don't have much time or the technical skills for building web services.\\
 
-\noindent {\bf The workflow aspect -} Scientists or engineers wishing to integrate their code into workflow engines have to write ad hoc artifacts: (in the case of the {\it Taverna} engine) these could be {\it Java Beans}, {\it Shell} and {\it Python} artifacts. Normally one has to write a specific artifact for every code to integrate. This could be extremely time consuming and, from the technical point of view, this is not an 'out of the box' procedure for people starting using workflows engine.\\
-PDL is indicated to facilitate the integration of code into workflow engines: the generic PDL-workflow plugin is configured by the PDL code description into an ad hoc component for the described code. The integration phase is reduced to the redaction of the description.\\ 
-Moreover PDL introduce a new feature into the workflow domain: since every description embeds fine grained details and metadata on parameters (also with their related constraints), the PDL workflow plugin can check if the whole workflow composed of PDL codes has physical sense and satisfies the limitations of use of every code.\\
+\noindent {\bf The workflow aspect -} Scientists or engineers wishing to integrate their code into workflow engines have to write ad hoc artifacts: (in the case of the {\it Taverna} engine) these could be {\it Java Beans}, {\it Shell} and {\it Python} artefacts. Normally one has to write a specific artefact for every code to integrate. This could be extremely time consuming and, from the technical point of view, this is not an 'out of the box' procedure for people starting using workflows engine.\\
+PDL is indicated to facilitate the integration of code into workflow engines: the integration phase is reduced to the redaction of the description.\\ 
+Moreover PDL introduce a new feature into the workflow domain: since every description embeds fine grained details and metadata on parameters (also with their related constraints), the physical sense (meaning and integrity) of a workflow could be automatically verified.\\
 
-The PDL application domain is not limited only to online code or workflows. It could be wider and include advanced R\&D on interoperability. We are now going to detail all the technical aspects of this description grammar. 
+The PDL application domain is not limited only to online code or workflows. We are now going to detail all the technical aspects of this description grammar. 
 
 
 \section{Introduction}
@@ -239,6 +251,10 @@ towards building our own solution.\\
 \subsection{Astronomical and Astrophysical use-cases needing PDL's fine description capabilities}
 PDL was originally designed for meeting requirements coming from the community members wishing to expose their code online as public services. One of the difficulty they often mentioned is that online codes are often complex to use and users may do mistake with online simulations. For example, they could use them outside of their validity domain. The description of parameters with PDL allows to constrain those ones in validity domains, and so PDL answers this fear of the theorist community.\\
 
+In order to build a grammar like PDL, we could go two ways: in the first we would have built a monolithic solution for meeting the vast majority of astronomical and astrophysical needs. In the other we would have to provide community with a flexible enough tool  (modular and extensible) to fit the majority of use-cases: if the parameters (of a given service) are decomposed with the finest granularity, PDL is a good tool for performing {\it a priori verification}, notifying errors to user before submitting jobs to a server system.
+This has, for example, an immediate consequence on how we deal, in PDL, with sky coordinates: we don't have particular fields/entries for ascensions and declinations. For us this parameters could be stored in {\it double} parameters. The associated unit will precise if the angle will be considered in degrees or radiant  and the associated {\it SKOS} concepts
+(\href{http://www.w3.org/TR/skos-reference/}{http://www.w3.org/TR/skos-reference/}) will provide further information. If a service provider has to define particular conditions on the angular distance between two coordinates $(asc_1, \, dec_1)$ and $(asc_2, \, dec_2)$ (e.g. $|asc_1- asc_2|+|dec_1-dec_2|<\epsilon$) he/she may use the expression capabilities of PDL (cf. paragraph \ref{par02})\\
+
 \noindent During the PDL development, close cooperation naturally born with the Workflow community. PDL indeed allow the real {\it scientific} interoperability (not only based on computer types) required by the Astronomic and Astrophysics workflow community.\\
 
 \noindent The following sections of this document could seems complex at first reading. This is because we present all the features and the descriptive richness  of PDL. Nevertheless this does  not mean that all PDL descriptions are necessarily complex. They could be complex in case of services with many parameters linked by many constraints. But PDL description could be very simple in case of simple services. 
@@ -276,8 +292,7 @@ If a particular expression (or condition) could not be expressed using the exist
 this modular grammar could be extended by introducing an ad hoc syntactic element into the object DM. \\
 
 For describing the physical scientific concept or model behind a given parameter, the idea is to use
-{\it SKOS} concepts
-(\href{http://www.w3.org/TR/skos-reference/}{http://www.w3.org/TR/skos-reference/}) and, if more complexity is required by the use case, a richer ontology.\\
+{\it SKOS} concepts and, if more complexity is required by the use case, a richer ontology.\\
 
 Since the inputs and outputs  of every service (including their constraints and complex conditions)
 could be described with this fine grained granularity, interoperability becomes possible in the {\it
@@ -297,17 +312,17 @@ with reference to an expression and/or condition composed with PDL. By this we m
 replace the referenced parameters (in the PDL expressions/conditions) by the set of values provided to the
 service by the user. The replacement mechanisms will be explained in detail, case by case.
 
-\subsubsection{PDL in the IVOA architecture}
+\subsubsection{PDL in the IVOA architecture}\label{IVOAarch}
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[width=1.0\textwidth]{pictures/IVOAarch.jpg} 
-\caption{The IVOA Architecture, with PDL highlighted}
+\includegraphics[width=1.0\textwidth]{pictures/IVOAarch2.pdf} 
+\caption{{\it The IVOA Architecture, with PDL highlighted. As pointed out in paragraph \ref{IVOAarch}, the domains and scopes of PDL and UWS are well separated: one can be used without the other without infringing any rules of those  standards. Of course they could work in synergy. In this case PDL could be seen a supplementary layer (explaining the physical/computational meaning of every parameter), whereas UWS has only a description of the values of parameters.}}
 \label{Pic-arch}
 \end{center}
 \end{figure}
 Within the IVOA Architecture of figure \ref{Pic-arch}, PDL is a VO standard for richly describing parameters with a fine grained granularity, allowing to introduce constraints and mathematical formulae.\\
 If PDL describes the nature, the hierarchy of parameters and their constraints, {\bf it  does not describe} how this parameters are transmitted to a service, nor how these parameters will be processed by the described service. For example, PDL does not prescribe whether to transfer parameters through a SOAP envelope or through a REST post, nor what will be the  phases that the submitted job will pass through. In the context of the IVOA, this means that the separation between PDL and UWS is clear and one can be used without the other without infringing any rules of those  standards.\\
-Indeed, PDL could be seen a supplementary layer, by explaining in a unified way the physical/computational meaning of every parameter, whereas UWS has only a description of the values of parameters. \\
+Indeed, PDL could be seen a supplementary layer, for explaining in a unified way the physical/computational meaning of every parameter, whereas UWS has only a description of the values of parameters. \\
 PDL could be plugged as an additional layer to every existing IVOA service and is suitable for solving issues not covered by other IVOA standards and is particularly indicated for workflows.
 
 \subsubsection{Some consideration on PDL and Workflows}\label{PDLWF}
@@ -376,6 +391,11 @@ paragraph \ref{par02}). The result of the expression that appears in this {\it
 SingleParameter}-field object {\bf must be integer}.\footnote{This is obvious, since this value
 corresponds to a vector size.}
 \end{itemize}
+
+\noindent {\bf Remark on the vector aspect:} It could seem unnecessarily complex to have the parameter dimension into an {\it Expression}. This feature has been introduced for meeting some particular needs: consider for example a service computing polynomial interpolations. Let the first parameter $d$ (an integer) be the degree of the interpolation and the second parameter  $\vec p$ be the vector containing the set of points to interpolate. For basic mathematical reasons, these two parameters are linked by the condition $(\mbox{size}(\vec v)-1) = d$. By defining dimensions as {\it Expressions} we can easily include this kind of constraints into PDL descriptions.\\
+Vectors in PDL are intended as one dimensional arrays of values. Further significations should be documented using the UCD, Utype or the Skos concept fields. Moreover, if one wish to define an {\it Expression} using the scalar product of two vectors (cf. paragraph \ref{par02}) he/she has to pay attention that the involved vectors are expressed in the same orthonormal basis.\\
+$\mbox{\hspace{14.3cm}} \blacksquare$\\
+
 The attribute {\it dependency} can take one of the two values {\bf required} or {\bf
 optional}. If required the parameter {\bf must be} provided to the service. If optional, the service
 could work even without the current parameter and the values will be considered for processing only
@@ -387,7 +407,7 @@ Optional fields for the {\it SingleParameter} object are:
 \item a UCD : which is a text reference to an existing UCD for characterizing the parameter;
 \item a Utype  : which is a reference to an existing Utype for characterizing the parameter
 (\textcolor{red}{the reference is typically a text string});
-\item a Skos Concept  (\textcolor{red}{the reference is typically a text string}).
+\item a Skos Concept  (\textcolor{red}{the reference is typically a text string} containing the valid URL of a Skos concept).
 \item a Unit (\textcolor{red}{which is a string reference to a valid VOUnits element}).
 \item a precision. This field must be specified only for parameter types where the concept of
 precision makes sense. It has indeed no meaning for integer, rational or string. It is valid, for instance, for a real type. To understand the meaning of this field, let the function
@@ -421,8 +441,18 @@ must corresponds to the {\it Name} field of an existing {\it SingleParameter} (c
 
 \section{The ParameterType object}\label{par-ParameterType}
 This object is used to explain the type of a parameter (cf. paragraph \ref{par01}) or an expression
-(cf. paragraph \ref{par02_03}). The allowed types are : boolean, string, rational, complex,
-integer, real, date;
+(cf. paragraph \ref{par02_03}). The allowed types are : 
+\begin{itemize}
+\item Boolean. The allowed values for parameters of this type are {\it true / false}, non case sensitive.
+\item String. Any String (UTF8 encoding recommend).
+\item Integer. Numbers (positive and negatives) composed of [0-9] characters. 
+\item Real. Two formats are allowed for parameters of this type: 
+\begin{itemize}
+\item numbers (positives and negatives) composed of [0-9] characters, with dot as decimal separator, 
+\item scientific notation: number composed of [0-9] characters, with dot as decimal separator, followed by the {\it E} character (non case sensitive), followed by an integer. 
+\end{itemize}
+\item Date. Parameters of this type are dates in ISO8601 format.
+\end{itemize}
 
 \section{The ParameterGroup object}\label{par-group}
 
@@ -504,7 +534,7 @@ composite object could be presented as follows:
 \end{equation}
 
 To evaluate a given {\it AtomicParameterExpression}, one proceeds as follows: 
-Let $d_p$, $d_{exp}$ and $d_{oo}$ be respectively the dimension of the parameter $p$ referenced, the
+Let $d_p$, $d_{exp}$ be respectively the dimension of the parameter $p$ referenced, the
 dimension of the power expression and the dimension of the expression contained within the operation
 object.\\
 The exponent part of the expression is legal if and only if:
@@ -557,7 +587,7 @@ power expression we want to encapsulate. The composite object could be presented
  \overbrace{    \left( \mbox{AnotherExpression}\right) }^{\mbox{\tiny expression contained in operation}}   }_{\mbox{\tiny Operation object}}}_{\mbox{\tiny Atomic Constant Expression}}
 \end{equation}
 To evaluate a given {\it atomicConstantExpression}, one proceeds as follows: let $d_c$, $d_{exp}$
-and $d_{oo}$ be respectively the dimension of the vector constant ($d_c$ is equal to one in case of scalar constant),
+be respectively the dimension of the vector constant ($d_c$ is equal to one in case of scalar constant),
 the dimension of the power expression and the dimension of the expression contained within the operation object.\\
 The exponent part of the expression is legal if and only if:
 \begin{itemize}
@@ -772,7 +802,7 @@ the {\it Then} object {\bf must be} valid too.
 
 \subsubsection{The WhenConditionalStatement object}\label{par-WhenConditionalStatment}
 The when conditional statement is valid when the enclosed {\it When} conditional clause
-evaluates to true (cf. paragraph \ref{par-EvalCriteria}). It contains a unique field of {\it When} type (cf. paragraph \ref{par-ConditionalClause}).
+evaluates to true (cf. paragraph \ref{par-EvalCriteria}). It contains a unique field of {\it When} type (cf. paragraph \ref{par-ConditionalClause}). It was introduced for the purpose of dealing with the case of activating a ParameterGroup (cf paragraph \ref{par-group}): Thus When has the advantage of having a restricted form of ConditionalStatement that could have no {\it side effects} in the Then part.
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics[width=1.0\textwidth]{pictures/WhenConditionalStatement.jpg} 
@@ -807,11 +837,13 @@ The four concrete objects extending the abstract {\it ConditionalClause} are (se
 \label{Pic-ConcreteClause}
 \end{center}
 \end{figure}
-The Criterion contained within a {\it Always} object must always be valid (cf paragraph
-\ref{par-AlwaysConditionalStatement}).\\
+The Criterion contained within a {\it Always} object must always evaluates to {\it true} (we will hereafter say it is valid, cf paragraph
+\ref{par-AlwaysConditionalStatement}). With other words, this means that {\it it is good} only when the evaluation of the criterion contained into the {\it Always} object' evaluates to {\it true}. What if it is not good? It is wrong. {\it Wrong} evaluation is typically cached for notifying errors to users.\\
 
 The Criterion contained within a {\it When} object will be valid only when the enclosed Expression
-is True (cf. paragraphs \ref{par-WhenConditionalStatment} and \ref{par-EvalCriteria} ).
+evaluates to True (cf. paragraphs \ref{par-WhenConditionalStatment} and \ref{par-EvalCriteria} ).
+
+
 
 The {\it If} and {\it Then} objects work as a tuple by composing the  {\it
 IfThenConditionalStatement} (cf. paragraph
@@ -1190,7 +1222,7 @@ For this reason, a validation system for PDL definitions is not required to impl
 The current PDL reference implementation does not perform such contradiction detection and thus any parameter $p_1$ provided by user would be rejected for this example.\\
 In other words {\bf people providing descriptions of services must pay great attention to their contents.}\\
 
-\section{Remarks for software components implementing PDL}
+\section{Remarks for software components implementing PDL}\label{SoftwareImplementation}
 Throughout this document we have described PDL as a {\it grammar}. 
 If we consider it just as a grammar, then a specific description should be considered as an implementation.\\ 
 We remember that, since a PDL description is detailed, it is {a priori} possible to write once for all generic software components. These components will be automatically {\it configured} by a PDL description thus becoming {\it ad hoc} implementation software for the described service. Moreover checking algorithms could also be generated automatically starting from a description instance.
@@ -1215,6 +1247,140 @@ Interoperability only makes sense when there is an application or infrastructure
 
 \section{Annex}
 
+\subsection{A practice introduction to PDL (or dive in PDL)}\label{divePDL}
+In this section we present a practice approach to PDL. It is inspired by one of the first services we deployed using the PDL framework: the Meudon Stark-H broadening computation service for Hydrogen (\href{http://atomsonline.obspm.fr}{http://atomsonline.obspm.fr}).\\
+The exposed code take as input four parameters:
+\begin{itemize}
+\item A quantum number $N_i$, which corresponds to the upper energy level.
+\item A quantum number $N_f$, which corresponds to the lower energy level.
+\item A temperature $T$, which is the temperature of the simulated medium.
+\item A density $\rho$, which is an electron density.
+\end{itemize} 
+With the existing exposure systems (mostly Soap, REST, servlet web services) the information about parameters is more or less limited to a basic {\it function signature}: the two first parameters are {\it Integer}, while the two last are {\it Double}. But this information is not sufficient for a user wishing to use the service without knowing {a priori} the code: what are the unit of these parameters? What are their physical meaning?
+PDL is a unified way for providing user with this information by hardcoding it directly in the software composing the service. With PDL service provider can easily express that 
+\begin{itemize}
+\item $N_i$ is {\it Integer}, it corresponds to the principal quantum number of the upper energy level and, as a quantum number, it has no dimension. The PDL {\it translation} of this sentence is:
+\begin{lstlisting}[style=listXML]
+<parameter dependency="required">
+	<Name>InitialLevel</Name>
+	<ParameterType>integer</ParameterType>
+	<SkossConcept>skos.uri.to.definition.of.
+		initialLevel</SkossConcept>
+	 <Unit>None</Unit>
+	 <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+		<Constant>1</Constant>
+	</Dimension>
+</parameter>
+\end{lstlisting}
+The PDL description points to the skos uri containing the definition of the physical concept. Moreover it says that the current parameter has $1$ as dimension. This means that the parameter is scalar (a dimensions greater than one is for vector parameters). The required attribute indicate that the user must submit this parameter to the service, and it is not optional.
+
+\item $N_f$ is {\it Integer}, it corresponds to the principal quantum number of the lower energy level and, as a quantum number, it has no dimension. The PDL {\it translation} of this sentence is:
+\begin{lstlisting}[style=listXML]
+<parameter dependency="required">
+	<Name>FinalLevel</Name>
+	<ParameterType>integer</ParameterType>	
+	<SkossConcept>skos.uri.to.definition.of.
+		finalLevel</SkossConcept>	
+	<Unit>None</Unit>
+	<Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+		<Constant>1</Constant>
+	</Dimension>
+</parameter>
+\end{lstlisting}
+
+\item $T$ is the thermodynamic temperature of the simulated medium and is expressed in Kelvin. The PDL {\it translation} for this sentence is:
+\begin{lstlisting}[style=listXML]
+<parameter dependency="required">
+	<Name>Temperature</Name>
+	<ParameterType>real</ParameterType>
+	<SkossConcept>skos.uri.to.definition.of.
+		Temperature</SkossConcept>
+	<Unit>K</Unit>
+	<Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+		<Constant>1</Constant>
+	</Dimension>
+</parameter>
+\end{lstlisting}
+\item $\rho$ is an electron density in $cm^{-3}$. The PDL version is:
+\begin{lstlisting}[style=listXML]
+<parameter dependency="required">
+	<Name>Density</Name>
+	<ParameterType>real</ParameterType>
+	<SkossConcept>skos.uri.to.definition.of.
+		Density</SkossConcept>
+	<Unit>cm^-3</Unit>
+	<Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+		<Constant>1</Constant>
+	</Dimension>
+	</parameter>
+</Parameters>
+\end{lstlisting}
+\end{itemize} 
+Even with this information, it is not guaranteed that users will be able to correctly use the service. Indeed, two constraints involve parameters. The first comes from the definition of $N_i$ and $N_f$: the condition
+\begin{equation}\label{energyDifference}
+(N_i-N_f)>1
+\end{equation}
+must always be satisfied. The second comes from the physical model implemented into the exposed code. The result has a physical meaning only if the Debey approximation hypothesis holds:
+\begin{equation}\label{DebeyApprox}
+\frac{9 \, \rho^{1/6}}{100 \, T^{1/2} }<1
+\end{equation}
+How to alert the user of these two constraints? A first solution consists in writing explanation (e.g. a code documentation) but it is not sure that users will read it. A more secure approach consists in writing checking algorithms. But this solution is time consuming, since you have to write {\it ad hoc} tests for every specific code. 
+PDL answer this issues by providing a unified way for expressing the constraints. The PDL formulation of (\ref{energyDifference}) is 
+\begin{lstlisting}[style=listXML]
+<always>
+	<Criterion xsi:type="Criterion">
+ 		<Expression xsi:type="AtomicParameterExpression">
+			<parameterRef ParameterName="FinalLevel"/>
+			<Operation operationType="MINUS">
+				<expression xsi:type="AtomicParameterExpression">
+    					<parameterRef ParameterName="InitialLevel"/>
+				</expression>
+                    	</Operation>
+		</Expression>
+                    <ConditionType xsi:type="ValueLargerThan" reached="true">
+                    	<Value xsi:type="AtomicConstantExpression" ConstantType="real">
+				<Constant>1</Constant>
+                            </Value>
+                    </ConditionType> 
+ 	</Criterion>
+</always>
+\end{lstlisting}
+whereas the formulation for (\ref{DebeyApprox}) is
+\begin{lstlisting}[style=listXML]
+<always>
+  <Criterion xsi:type="Criterion">
+     <expression xsi:type="AtomicConstantExpression" ConstantType="real">
+           <Constant>0.09</Constant>
+           <Operation operationType="MULTIPLY">
+                <expression xsi:type="AtomicParameterExpression">
+                     <parameterRef ParameterName="Density"/>
+                     <power xsi:type="AtomicConstantExpression" ConstantType="real">
+                       <Constant>0.16666666</Constant>
+                     </power>
+                     <Operation operationType="DIVIDE">
+                            <expression xsi:type="AtomicParameterExpression">
+                                <parameterRef ParameterName="Temperature"/>
+                                 <power xsi:type="AtomicConstantExpression" ConstantType="real">
+                                        <Constant>0.5</Constant>
+                                 </power>
+                           </expression>
+                     </Operation>
+               </expression>
+         </Operation>
+      </Expression>
+      <ConditionType xsi:type="ValueSmallerThan" reached="false">
+	<Value xsi:type="AtomicConstantExpression" ConstantType="real">
+		<Constant>1</Constant>
+	</Value>
+      </ConditionType>
+ </Criterion>
+</always>
+\end{lstlisting}
+These two last pieces of XML (composing a wider  PDL description) are not intended for humans. They are parsed by the PDL framework for automatically generate the checking algorithms associated with the described constraints.\\
+
+\noindent The key point to retain is that PDL is simple for simple services is flexible and powerful enough for meeting description requirements coming with the most complex scientific codes (of course the associated description won't be simple).
+
+
 \subsection{The PDL description of the example of equation (\ref{PDLExemplum01})}\label{Exemplum1XML}
 The reader will find the xml file related to this example at the following URL:\\
 \href{http://vo-param.googlecode.com/svn/trunk/model/documentation/PDL-Description_example01.xml}{http://vo-param.googlecode.com/svn/trunk/model/documentation/\\PDL-Description\_example01.xml}
@@ -1227,17 +1393,6 @@ The reader will find the xml file related to this example at the following URL:\
 
 
 \subsection{The PDL XSD Schema}\label{pdlSchema}
-\lstdefinestyle{listXML}{language=XML, extendedchars=true,  belowcaptionskip=5pt, xleftmargin=1.8em, xrightmargin=0.5em, numbers=left, numberstyle=\small\ttfamily\bf, 
-frame=single, breaklines=true, breakatwhitespace=true, breakindent=0pt, emph={}, emphstyle=\color{red}, basicstyle=\small\ttfamily,
-columns=fullflexible, showstringspaces=false, commentstyle=\color{gray}\upshape,
-morestring=[b]",
-morecomment=[s]{<?}{?>},
-morecomment=[s][\color{orange}]{<!--}{-->},
-keywordstyle=\color{cyan},
-stringstyle=\color{black},
-tagstyle=\color{darkblue},
-morekeywords={xmlns,version,type}
-}
 
 \begin{lstlisting}[style=listXML]
 <?xml version="1.0" encoding="UTF-8"?>
@@ -1327,42 +1482,12 @@ morekeywords={xmlns,version,type}
       <xs:restriction base="xs:string">
          <xs:enumeration value="required">
             <xs:annotation>
-               <xs:documentation>A representation of a boolean - e.g. true/false on/off</xs:documentation>
+               <xs:documentation>The parameter must be provided by user.</xs:documentation>
             </xs:annotation>
          </xs:enumeration>
          <xs:enumeration value="optional">
             <xs:annotation>
-               <xs:documentation>Data that can be interpreted as text.</xs:documentation>
-            </xs:annotation>
-         </xs:enumeration>
-         <xs:enumeration value="rational"/>
-         <xs:enumeration value="complex">
-            <xs:annotation>
-               <xs:documentation>A complex number</xs:documentation>
-            </xs:annotation>
-         </xs:enumeration>
-         <xs:enumeration value="integer"/>
-         <xs:enumeration value="real"/>
-         <xs:enumeration value="date"/>
-         <xs:enumeration value="binary">
-            <xs:annotation>
-               <xs:documentation>Generic binary data that would normally be stored in a file.</xs:documentation>
-               <xs:documentation>how to specify specific file types</xs:documentation>
-            </xs:annotation>
-         </xs:enumeration>
-         <xs:enumeration value="Table">
-            <xs:annotation>
-               <xs:documentation>Data formatted in a tabular fashion</xs:documentation>
-            </xs:annotation>
-         </xs:enumeration>
-         <xs:enumeration value="Image">
-            <xs:annotation>
-               <xs:documentation>An image</xs:documentation>
-            </xs:annotation>
-         </xs:enumeration>
-         <xs:enumeration value="Spectrum">
-            <xs:annotation>
-               <xs:documentation>A spectrum</xs:documentation>
+               <xs:documentation>The parameter is optional.</xs:documentation>
             </xs:annotation>
          </xs:enumeration>
       </xs:restriction>
@@ -1383,7 +1508,7 @@ morekeywords={xmlns,version,type}
       <xs:restriction base="xs:string">
          <xs:enumeration value="boolean">
             <xs:annotation>
-               <xs:documentation>A representation of a boolean - e.g. true/false on/off</xs:documentation>
+               <xs:documentation>A representation of a boolean - e.g. true/false</xs:documentation>
             </xs:annotation>
          </xs:enumeration>
          <xs:enumeration value="string">
@@ -1391,39 +1516,11 @@ morekeywords={xmlns,version,type}
                <xs:documentation>Data that can be interpreted as text.</xs:documentation>
             </xs:annotation>
          </xs:enumeration>
-         <xs:enumeration value="rational"/>
-         <xs:enumeration value="complex">
-            <xs:annotation>
-               <xs:documentation>A complex number</xs:documentation>
-            </xs:annotation>
-         </xs:enumeration>
          <xs:enumeration value="integer"/>
          <xs:enumeration value="real"/>
          <xs:enumeration value="date"/>
-         <xs:enumeration value="binary">
-            <xs:annotation>
-               <xs:documentation>Generic binary data that would normally be stored in a file.</xs:documentation>
-               <xs:documentation>how to specify specific file types</xs:documentation>
-            </xs:annotation>
-         </xs:enumeration>
-         <xs:enumeration value="Table">
-            <xs:annotation>
-               <xs:documentation>Data formatted in a tabular fashion</xs:documentation>
-            </xs:annotation>
-         </xs:enumeration>
-         <xs:enumeration value="Image">
-            <xs:annotation>
-               <xs:documentation>An image</xs:documentation>
-            </xs:annotation>
-         </xs:enumeration>
-         <xs:enumeration value="Spectrum">
-            <xs:annotation>
-               <xs:documentation>A spectrum</xs:documentation>
-            </xs:annotation>
-         </xs:enumeration>
       </xs:restriction>
    </xs:simpleType>
-
 
    <xs:simpleType name="FunctionType">
       <xs:restriction base="xs:string">
@@ -1452,26 +1549,16 @@ morekeywords={xmlns,version,type}
       </xs:restriction>
    </xs:simpleType>
 
-
    <xs:complexType name="SingleParameter">
       <xs:sequence>
          <xs:element name="Name" type="xs:string" minOccurs="1" maxOccurs="1"> </xs:element>
          <xs:element name="ParameterType" type="pm:ParameterType" minOccurs="1" maxOccurs="1"> </xs:element>
          <xs:element name="UCD" type="xs:string" maxOccurs="1" minOccurs="0"> </xs:element>
          <xs:element name="UType" type="xs:string" maxOccurs="1" minOccurs="0"/>
-         <xs:element name="SkossConcept" type="xs:string" minOccurs="0" maxOccurs="1"/>
+         <xs:element name="SkosConcept" type="xs:string" minOccurs="0" maxOccurs="1"/>
          <xs:element name="Unit" type="xs:string" minOccurs="0" maxOccurs="1"/>
          <xs:element name="Precision" type="pm:Expression" minOccurs="0" maxOccurs="1"/>
          <xs:element name="Dimension" type="pm:Expression" maxOccurs="1" minOccurs="1"/>
-         <xs:element name="restriction" type="pm:AlwaysConditionalStatement" maxOccurs="1"
-            minOccurs="0">
-            <xs:annotation>
-               <xs:documentation>A restriction on a parameter value - This restriction is to be evaluated before any constraints that occur in a group. 
-The purpose of this restriction here is to allow globally true constraints to be placed on a parameter so that they do not have to be repeated in the parameter groups wherever a parameter might appear.
-Although the grammar does not formally disallow it, any constraint here should not reference any other parameters as that would increase the likelyhood of contradictions.
-</xs:documentation>
-            </xs:annotation>
-         </xs:element>
       </xs:sequence>
       <xs:attribute name="dependency" type="pm:ParameterDependency"> </xs:attribute>
    </xs:complexType>
@@ -1512,7 +1599,6 @@ Although the grammar does not formally disallow it, any constraint here should n
       </xs:sequence>
    </xs:complexType>
 
-
    <xs:complexType name="ConstraintOnGroup">
       <xs:annotation>
          <xs:documentation>The possible constraints on the parameters in a group</xs:documentation>
@@ -1528,7 +1614,6 @@ Although the grammar does not formally disallow it, any constraint here should n
          <xs:element name="comment" type="xs:string" minOccurs="1" maxOccurs="1"/>
       </xs:sequence>
    </xs:complexType>
-
 
    <xs:complexType name="IfThenConditionalStatement">
       <xs:complexContent>
@@ -1549,7 +1634,6 @@ Although the grammar does not formally disallow it, any constraint here should n
          </xs:extension>
       </xs:complexContent>
    </xs:complexType>
-
 
    <xs:complexType name="WhenConditionalStatement">
       <xs:annotation>
@@ -1627,11 +1711,6 @@ Although the grammar does not formally disallow it, any constraint here should n
          <xs:extension base="pm:AbstractCondition"> </xs:extension>
       </xs:complexContent>
    </xs:complexType>
-   <xs:complexType name="IsRational">
-      <xs:complexContent>
-         <xs:extension base="pm:AbstractCondition"> </xs:extension>
-      </xs:complexContent>
-   </xs:complexType>
    <xs:complexType name="BelongToSet">
       <xs:annotation>
          <xs:documentation>The value must belong to a set</xs:documentation>
@@ -1701,8 +1780,6 @@ Although the grammar does not formally disallow it, any constraint here should n
          />
       </xs:sequence>
    </xs:complexType>
-
-
 
    <xs:complexType name="Criterion">
       <xs:complexContent>
@@ -1785,48 +1862,6 @@ Although the grammar does not formally disallow it, any constraint here should n
          </xs:extension>
       </xs:complexContent>
    </xs:complexType>
-   <xs:complexType name="MinMaxArgument">
-      <xs:sequence>
-         <xs:element maxOccurs="unbounded" minOccurs="2" name="parameterRef"
-            type="pm:ParameterReference"/>
-      </xs:sequence>
-      <xs:attribute name="type">
-         <xs:simpleType>
-            <xs:restriction base="xs:string">
-               <xs:enumeration value="min"/>
-               <xs:enumeration value="MAX"/>
-            </xs:restriction>
-         </xs:simpleType>
-      </xs:attribute>
-   </xs:complexType>
-   <xs:complexType name="MinMaxFunctionExpression">
-      <xs:complexContent>
-         <xs:extension base="pm:Expression">
-            <xs:sequence>
-               <xs:element maxOccurs="1" minOccurs="1" name="expression" type="pm:MinMaxArgument"/>
-               <xs:element maxOccurs="1" minOccurs="0" name="power" type="pm:Expression"/>
-               <xs:element maxOccurs="1" minOccurs="0" name="Operation" type="pm:Operation"/>
-            </xs:sequence>
-         </xs:extension>
-      </xs:complexContent>
-   </xs:complexType>
-
-   <xs:attributeGroup name="cardinality">
-      <xs:annotation>
-         <xs:documentation>
-            attributes for specifiying how often a parameter or
-            parameter group should occur
-         </xs:documentation>
-      </xs:annotation>
-      <xs:attribute name="minOccurs" type="xs:int" use="optional" default="1"/>
-      <xs:attribute name="maxOccurs" type="xs:int" use="optional" default="1">
-         <xs:annotation>
-            <xs:documentation>
-               a value of 0 implies unbounded
-            </xs:documentation>
-         </xs:annotation>
-      </xs:attribute>
-   </xs:attributeGroup>
 </xs:schema>
 \end{lstlisting}
 
