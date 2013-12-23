@@ -72,7 +72,7 @@ It intends to be a expressive language for self-descriptive web services exposin
 This document has been produced by the Grid and Web Service Working Group. It follows the previous working draft.
  
 \section*{Acknowledgements}
-We wish to thank the members of the IVOA Grid and Web Services working group for the discussions around PDL it has hosted during the Interop meetings (starting from Naples, May 2011). A special thanks are due to Andr\'e Shaaff for his advice, useful discussions and feedback on every version of this work.
+We wish to thank the members of the IVOA Grid and Web Services working group for the discussions around PDL it has hosted during the Interop meetings (starting from Naples, May 2011). A special thanks are due to Andr\'e Schaaff for his advice, useful discussions and feedback on every version of this work.
 
 \clearpage
 
@@ -1396,9 +1396,8 @@ The reader will find the xml file related to this example at the following URL:\
 
 \begin{lstlisting}[style=listXML]
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
-   xmlns:pm="http://www.ivoa.net/xml/Parameter/v0.1" elementFormDefault="qualified"
-   targetNamespace="http://www.ivoa.net/xml/PDL/v1.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:pm="http://www.ivoa.net/xml/PDL/v1.0"
+   elementFormDefault="qualified" targetNamespace="http://www.ivoa.net/xml/PDL/v1.0">
    <!-- needs isActive property on group - need to be able to reference a group -->
    <xs:annotation>
       <xs:documentation> IVOA Description of the set of parameters for a service</xs:documentation>
@@ -1793,7 +1792,6 @@ The reader will find the xml file related to this example at the following URL:\
             <xs:sequence>
                <xs:element name="ExternalLogicalConnector" type="pm:LogicalConnector" maxOccurs="1"
                   minOccurs="0"/>
-
             </xs:sequence>
          </xs:extension>
       </xs:complexContent>
@@ -1863,6 +1861,7 @@ The reader will find the xml file related to this example at the following URL:\
       </xs:complexContent>
    </xs:complexType>
 </xs:schema>
+
 \end{lstlisting}
 
 
