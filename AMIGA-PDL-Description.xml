@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Service xmlns="http://www.ivoa.net/xml/Parameter/v0.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ivoa.net/xml/Parameter/v0.1 PDL-V1.0.xsd">
+    <ServiceId>http://amiga.iaa.csic.es/amigasearch/search</ServiceId>
+    <ServiceName>AMIGA cone search</ServiceName>
+    <Description>Cone search for isolated galaxies catalog</Description>
+    <Parameters>
+        <parameter>
+            <Name>RA</Name>
+            <ParameterType>real</ParameterType>
+            <UCD>POS_EQ_RA</UCD>
+            <SkossConcept>Right ascension</SkossConcept>
+            <Unit>deg</Unit>
+            <Precision xsi:type="AtomicConstantExpression" ConstantType="real">
+                <Constant>0.0</Constant>
+            </Precision>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>DEC</Name>
+            <ParameterType>real</ParameterType>
+            <UCD>POS_EQ_DEC</UCD>
+            <SkossConcept>Declination</SkossConcept>
+            <Unit>deg</Unit>
+            <Precision xsi:type="AtomicConstantExpression" ConstantType="real">
+                <Constant>0.0</Constant>
+            </Precision>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>SR</Name>
+            <ParameterType>real</ParameterType>
+            <UCD>OBS_ANG-SIZE</UCD>
+            <SkossConcept>Radius</SkossConcept>
+            <Unit>None</Unit>
+            <Precision xsi:type="AtomicConstantExpression" ConstantType="real">
+                <Constant>0.0</Constant>
+            </Precision>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>VOTableResult</Name>
+            <ParameterType>Table</ParameterType>
+            <SkossConcept>url to the tar file containing the mosaiced fits files</SkossConcept>
+            <Unit>None</Unit>
+            <Precision xsi:type="AtomicConstantExpression" ConstantType="real">
+                <Constant>0.0</Constant>
+            </Precision>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+    </Parameters>
+    <Inputs>
+        <Name>inputs</Name>
+        <ParameterGroup>
+            <Name>Coordinates Header</Name>
+            <ParameterRef ParameterName="RA"/>
+            <ParameterRef ParameterName="DEC"/>
+            <ParameterRef ParameterName="SR"/>
+            <ConstraintOnGroup>
+                <ConditionalStatement xsi:type="AlwaysConditionalStatement">
+                    <comment>Right ascension must be in the interval [0,360)</comment>
+                    <always>
+                        <Criterion xsi:type="Criterion">
+                            <Expression xsi:type="AtomicParameterExpression">
+<parameterRef ParameterName="RA"/>
+                            </Expression>
+                            <ConditionType xsi:type="ValueInRange">
+<Sup reached="false">
+    <Value xsi:type="AtomicConstantExpression" ConstantType="integer">
+        <Constant>360</Constant>
+    </Value>
+</Sup>
+<Inf reached="true">
+    <Value xsi:type="AtomicConstantExpression" ConstantType="integer">
+        <Constant>0</Constant>
+    </Value>
+</Inf>
+                            </ConditionType>
+                        </Criterion>
+                    </always>
+                </ConditionalStatement>
+                <ConditionalStatement xsi:type="AlwaysConditionalStatement">
+                    <comment>Declination must be in the interval (-90, 90)</comment>
+                    <always>
+                        <Criterion xsi:type="Criterion">
+                            <Expression xsi:type="AtomicParameterExpression">
+<parameterRef ParameterName="DEC"/>
+                            </Expression>
+                            <ConditionType xsi:type="ValueInRange">
+<Sup reached="true">
+    <Value xsi:type="AtomicConstantExpression" ConstantType="real">
+        <Constant>90</Constant>
+    </Value>
+</Sup>
+<Inf reached="true">
+    <Value xsi:type="AtomicConstantExpression" ConstantType="real">
+        <Constant>-90</Constant>
+    </Value>
+</Inf>
+                            </ConditionType>
+                        </Criterion>
+                    </always>
+                </ConditionalStatement>
+                <ConditionalStatement xsi:type="AlwaysConditionalStatement">
+                    <comment>Radius must be greater or equal to 0</comment>
+                    <always>
+                        <Criterion xsi:type="Criterion">
+                            <Expression xsi:type="AtomicParameterExpression">
+<parameterRef ParameterName="SR"/>
+                            </Expression>
+                            <ConditionType xsi:type="ValueLargerThan" reached="true">
+<Value xsi:type="AtomicConstantExpression" ConstantType="integer">
+    <Constant>0</Constant>
+</Value>
+                            </ConditionType>
+                        </Criterion>
+                    </always>
+                </ConditionalStatement>
+            </ConstraintOnGroup>
+        </ParameterGroup>
+    </Inputs>
+    <Outputs>
+        <Name>outputs</Name>
+        <ParameterRef ParameterName="VOTableResult"/>
+    </Outputs>
+</Service>
