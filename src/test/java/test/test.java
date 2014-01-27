@@ -29,11 +29,11 @@ import net.ivoa.parameter.model.ValueInRange;
 import net.ivoa.parameter.model.ValueLargerThan;
 import net.ivoa.parameter.model.ValueSmallerThan;
 
-public class ConeSearch extends BaseExample {
+public class test extends BaseExample {
 
 	public static void main(String[] args) throws PropertyException,
 			FileNotFoundException, JAXBException {
-		ConeSearch example = new ConeSearch();
+		test example = new test();
 		example.marshall();
 	}
 
@@ -104,7 +104,7 @@ public class ConeSearch extends BaseExample {
 		
 		SingleParameter result = factory.createSingleParameter();
 		result.setName("VOTableResult");
-		result.setSkossConcept("Catalogue (table)");
+		result.setSkossConcept("url to the tar file containing the mosaiced fits files");
 		result.setParameterType(ParameterType.TABLE);
 		result.setPrecision(mkconst(0.0));
 		result.setUnit("None");
