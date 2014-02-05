@@ -34,7 +34,7 @@ public class PDRV2Service extends BaseExample {
 	@Override
 	protected Service buildService() {
 		Service service = factory.createService()
-				.withServiceId("Meudon-PDR-Service")
+				.withServiceId("http://vm-calc-lerma02:8080/pdl/OnlineCode")
 				.withServiceName("Meudon-PDR-Service");
 		service.setDescription("The Meudon PDR code computes the atomic and molecular structure of interstellar clouds.");
 
@@ -114,7 +114,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter mail = factory.createSingleParameter();
 		mail.setName("email");
 		mail.setParameterType(ParameterType.STRING);
-		mail.setSkossConcept("UserEmail");
+		mail.setSkosConcept("UserEmail");
 		mail.setUnit(" ");
 		mail.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(mail.getName(), mail);
@@ -123,7 +123,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter Avmaxinf = factory.createSingleParameter();
 		Avmaxinf.setName("Avmaxinf");
 		Avmaxinf.setParameterType(ParameterType.REAL);
-		Avmaxinf.setSkossConcept("Avmaxinf");
+		Avmaxinf.setSkosConcept("Avmaxinf");
 		Avmaxinf.setUnit("magnitude");
 		Avmaxinf.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(Avmaxinf.getName(), Avmaxinf);
@@ -132,7 +132,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter NAvmax = factory.createSingleParameter();
 		NAvmax.setName("NAvmax");
 		NAvmax.setParameterType(ParameterType.INTEGER);
-		NAvmax.setSkossConcept("NAvmax");
+		NAvmax.setSkosConcept("NAvmax");
 		NAvmax.setUnit(" ");
 		NAvmax.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(NAvmax.getName(), NAvmax);
@@ -141,7 +141,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter deltaAvmax = factory.createSingleParameter();
 		deltaAvmax.setName("deltaAvmax");
 		deltaAvmax.setParameterType(ParameterType.REAL);
-		deltaAvmax.setSkossConcept("deltaAvmax");
+		deltaAvmax.setSkosConcept("deltaAvmax");
 		deltaAvmax.setUnit("magnitude");
 		deltaAvmax.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(deltaAvmax.getName(), deltaAvmax);
@@ -150,7 +150,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter AvmaxVariationMethod = factory.createSingleParameter();
 		AvmaxVariationMethod.setName("AvmaxVariationMethod");
 		AvmaxVariationMethod.setParameterType(ParameterType.STRING);
-		AvmaxVariationMethod.setSkossConcept("AvmaxVariationMethod");
+		AvmaxVariationMethod.setSkosConcept("AvmaxVariationMethod");
 		AvmaxVariationMethod.setUnit(" ");
 		AvmaxVariationMethod.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(AvmaxVariationMethod.getName(),
@@ -161,7 +161,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter Chimie = factory.createSingleParameter();
 		Chimie.setName("Chimie");
 		Chimie.setParameterType(ParameterType.STRING);
-		Chimie.setSkossConcept("Chimie");
+		Chimie.setSkosConcept("Chimie");
 		Chimie.setUnit(" ");
 		Chimie.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(Chimie.getName(), Chimie);
@@ -170,7 +170,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter F_ISRF = factory.createSingleParameter();
 		F_ISRF.setName("F_ISRF");
 		F_ISRF.setParameterType(ParameterType.INTEGER);
-		F_ISRF.setSkossConcept("F_ISRF");
+		F_ISRF.setSkosConcept("F_ISRF");
 		F_ISRF.setUnit(" ");
 		F_ISRF.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(F_ISRF.getName(), F_ISRF);
@@ -179,7 +179,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter F_dustem = factory.createSingleParameter();
 		F_dustem.setName("F_dustem");
 		F_dustem.setParameterType(ParameterType.INTEGER);
-		F_dustem.setSkossConcept("F_dustem");
+		F_dustem.setSkosConcept("F_dustem");
 		F_dustem.setUnit(" ");
 		F_dustem.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(F_dustem.getName(), F_dustem);
@@ -188,7 +188,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter alpgr = factory.createSingleParameter();
 		alpgr.setName("alpgr");
 		alpgr.setParameterType(ParameterType.REAL);
-		alpgr.setSkossConcept("alpgr");
+		alpgr.setSkosConcept("alpgr");
 		alpgr.setUnit("?");
 		alpgr.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(alpgr.getName(), alpgr);
@@ -197,7 +197,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter cdunit = factory.createSingleParameter();
 		cdunit.setName("cdunit");
 		cdunit.setParameterType(ParameterType.REAL);
-		cdunit.setSkossConcept("cdunit");
+		cdunit.setSkosConcept("cdunit");
 		cdunit.setUnit("?");
 		cdunit.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(cdunit.getName(), cdunit);
@@ -206,7 +206,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter dsour = factory.createSingleParameter();
 		dsour.setName("dsour");
 		dsour.setParameterType(ParameterType.REAL);
-		dsour.setSkossConcept("dsour");
+		dsour.setSkosConcept("dsour");
 		dsour.setUnit("paresec");
 		dsour.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(dsour.getName(), dsour);
@@ -215,7 +215,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter NdensH = factory.createSingleParameter();
 		NdensH.setName("NdensH");
 		NdensH.setParameterType(ParameterType.INTEGER);
-		NdensH.setSkossConcept("NdensH");
+		NdensH.setSkosConcept("NdensH");
 		NdensH.setUnit(" ");
 		NdensH.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(NdensH.getName(), NdensH);
@@ -224,7 +224,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter denshInf = factory.createSingleParameter();
 		denshInf.setName("denshInf");
 		denshInf.setParameterType(ParameterType.REAL);
-		denshInf.setSkossConcept("denshInf");
+		denshInf.setSkosConcept("denshInf");
 		denshInf.setUnit("cm-3");
 		denshInf.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(denshInf.getName(), denshInf);
@@ -233,7 +233,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter deltaDensh = factory.createSingleParameter();
 		deltaDensh.setName("deltaDensh");
 		deltaDensh.setParameterType(ParameterType.REAL);
-		deltaDensh.setSkossConcept("deltaDensh");
+		deltaDensh.setSkosConcept("deltaDensh");
 		deltaDensh.setUnit("cm-3");
 		deltaDensh.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(deltaDensh.getName(), deltaDensh);
@@ -242,7 +242,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter denshVariationMethod = factory.createSingleParameter();
 		denshVariationMethod.setName("denshVariationMethod");
 		denshVariationMethod.setParameterType(ParameterType.STRING);
-		denshVariationMethod.setSkossConcept("denshVariationMethod");
+		denshVariationMethod.setSkosConcept("denshVariationMethod");
 		denshVariationMethod.setUnit(" ");
 		denshVariationMethod.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(denshVariationMethod.getName(),
@@ -252,7 +252,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter Nfmrc = factory.createSingleParameter();
 		Nfmrc.setName("Nfmrc");
 		Nfmrc.setParameterType(ParameterType.INTEGER);
-		Nfmrc.setSkossConcept("Nfmrc");
+		Nfmrc.setSkosConcept("Nfmrc");
 		Nfmrc.setUnit(" ");
 		Nfmrc.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(Nfmrc.getName(), Nfmrc);
@@ -261,7 +261,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter deltaFmrc = factory.createSingleParameter();
 		deltaFmrc.setName("deltaFmrc");
 		deltaFmrc.setParameterType(ParameterType.REAL);
-		deltaFmrc.setSkossConcept("deltaFmrc");
+		deltaFmrc.setSkosConcept("deltaFmrc");
 		deltaFmrc.setUnit("?");
 		deltaFmrc.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(deltaFmrc.getName(), deltaFmrc);
@@ -270,7 +270,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter fmrcInf = factory.createSingleParameter();
 		fmrcInf.setName("fmrcInf");
 		fmrcInf.setParameterType(ParameterType.REAL);
-		fmrcInf.setSkossConcept("fmrcInf");
+		fmrcInf.setSkosConcept("fmrcInf");
 		fmrcInf.setUnit("?");
 		fmrcInf.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(fmrcInf.getName(), fmrcInf);
@@ -279,7 +279,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter fmrcVatiationMethod = factory.createSingleParameter();
 		fmrcVatiationMethod.setName("fmrcVatiationMethod");
 		fmrcVatiationMethod.setParameterType(ParameterType.STRING);
-		fmrcVatiationMethod.setSkossConcept("fmrcVatiationMethod");
+		fmrcVatiationMethod.setSkosConcept("fmrcVatiationMethod");
 		fmrcVatiationMethod.setUnit("?");
 		fmrcVatiationMethod.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(fmrcVatiationMethod.getName(),
@@ -290,7 +290,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter gratio = factory.createSingleParameter();
 		gratio.setName("gratio");
 		gratio.setParameterType(ParameterType.REAL);
-		gratio.setSkossConcept("gratio");
+		gratio.setSkosConcept("gratio");
 		gratio.setUnit("?");
 		gratio.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(gratio.getName(), gratio);
@@ -299,7 +299,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter ichh2 = factory.createSingleParameter();
 		ichh2.setName("ichh2");
 		ichh2.setParameterType(ParameterType.INTEGER);
-		ichh2.setSkossConcept("ichh2");
+		ichh2.setSkosConcept("ichh2");
 		ichh2.setUnit("?");
 		ichh2.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(ichh2.getName(), ichh2);
@@ -308,7 +308,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter ieqth = factory.createSingleParameter();
 		ieqth.setName("ieqth");
 		ieqth.setParameterType(ParameterType.INTEGER);
-		ieqth.setSkossConcept("ieqth");
+		ieqth.setSkosConcept("ieqth");
 		ieqth.setUnit(" ");
 		ieqth.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(ieqth.getName(), ieqth);
@@ -317,7 +317,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter ifafm = factory.createSingleParameter();
 		ifafm.setName("ifafm");
 		ifafm.setParameterType(ParameterType.INTEGER);
-		ifafm.setSkossConcept("ifafm");
+		ifafm.setSkosConcept("ifafm");
 		ifafm.setUnit(" ");
 		ifafm.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(ifafm.getName(), ifafm);
@@ -326,7 +326,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter ifisob = factory.createSingleParameter();
 		ifisob.setName("ifisob");
 		ifisob.setParameterType(ParameterType.INTEGER);
-		ifisob.setSkossConcept("ifisob");
+		ifisob.setSkosConcept("ifisob");
 		ifisob.setUnit(" ");
 		ifisob.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(ifisob.getName(), ifisob);
@@ -335,7 +335,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter iforh2 = factory.createSingleParameter();
 		iforh2.setName("iforh2");
 		iforh2.setParameterType(ParameterType.INTEGER);
-		iforh2.setSkossConcept("iforh2");
+		iforh2.setSkosConcept("iforh2");
 		iforh2.setUnit(" ");
 		iforh2.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(iforh2.getName(), iforh2);
@@ -344,7 +344,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter istic = factory.createSingleParameter();
 		istic.setName("istic");
 		istic.setParameterType(ParameterType.INTEGER);
-		istic.setSkossConcept("istic");
+		istic.setSkosConcept("istic");
 		istic.setUnit(" ");
 		istic.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(istic.getName(), istic);
@@ -353,7 +353,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter itrfer = factory.createSingleParameter();
 		itrfer.setName("itrfer");
 		itrfer.setParameterType(ParameterType.INTEGER);
-		itrfer.setSkossConcept("itrfer");
+		itrfer.setSkosConcept("itrfer");
 		itrfer.setUnit(" ");
 		itrfer.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(itrfer.getName(), itrfer);
@@ -362,7 +362,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter jfgkh2 = factory.createSingleParameter();
 		jfgkh2.setName("jfgkh2");
 		jfgkh2.setParameterType(ParameterType.REAL);
-		jfgkh2.setSkossConcept("jfgkh2");
+		jfgkh2.setSkosConcept("jfgkh2");
 		jfgkh2.setUnit("?");
 		jfgkh2.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(jfgkh2.getName(), jfgkh2);
@@ -371,8 +371,8 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter los_ext = factory.createSingleParameter();
 		los_ext.setName("los_ext");
 		los_ext.setParameterType(ParameterType.STRING);
-		los_ext.setSkossConcept("los_ext");
-		los_ext.setUnit(" ");
+		los_ext.setSkosConcept("los_ext");
+		los_ext.setUnit("no unit");
 		los_ext.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(los_ext.getName(), los_ext);
 		this.addParameterToGroupMap(los_ext.getName(), "Grains");
@@ -380,8 +380,8 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter NPresse = factory.createSingleParameter();
 		NPresse.setName("NPresse");
 		NPresse.setParameterType(ParameterType.INTEGER);
-		NPresse.setSkossConcept("NPresse");
-		NPresse.setUnit("K cm-3");
+		NPresse.setSkosConcept("NPresse");
+		NPresse.setUnit("no unit");
 		NPresse.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(NPresse.getName(), NPresse);
 		this.addParameterToGroupMap(NPresse.getName(), "EquationOfState");
@@ -389,7 +389,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter deltaPresse = factory.createSingleParameter();
 		deltaPresse.setName("deltaPresse");
 		deltaPresse.setParameterType(ParameterType.REAL);
-		deltaPresse.setSkossConcept("deltaPresse");
+		deltaPresse.setSkosConcept("deltaPresse");
 		deltaPresse.setUnit("K cm-3 ");
 		deltaPresse.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(deltaPresse.getName(), deltaPresse);
@@ -398,7 +398,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter presseInf = factory.createSingleParameter();
 		presseInf.setName("presseInf");
 		presseInf.setParameterType(ParameterType.REAL);
-		presseInf.setSkossConcept("presseInf");
+		presseInf.setSkosConcept("presseInf");
 		presseInf.setUnit("K cm-3 ");
 		presseInf.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(presseInf.getName(), presseInf);
@@ -407,8 +407,8 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter presseVariationMethod = factory.createSingleParameter();
 		presseVariationMethod.setName("presseVariationMethod");
 		presseVariationMethod.setParameterType(ParameterType.STRING);
-		presseVariationMethod.setSkossConcept("presseVariationMethod");
-		presseVariationMethod.setUnit(" ");
+		presseVariationMethod.setSkosConcept("presseVariationMethod");
+		presseVariationMethod.setUnit("no unit");
 		presseVariationMethod
 				.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(presseVariationMethod.getName(),
@@ -419,8 +419,8 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter Nradm = factory.createSingleParameter();
 		Nradm.setName("Nradm");
 		Nradm.setParameterType(ParameterType.INTEGER);
-		Nradm.setSkossConcept("Nradm");
-		Nradm.setUnit(" ");
+		Nradm.setSkosConcept("Nradm");
+		Nradm.setUnit("no unit");
 		Nradm.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(Nradm.getName(), Nradm);
 		this.addParameterToGroupMap(Nradm.getName(), "RadiationField");
@@ -428,7 +428,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter deltaRadm = factory.createSingleParameter();
 		deltaRadm.setName("deltaRadm");
 		deltaRadm.setParameterType(ParameterType.REAL);
-		deltaRadm.setSkossConcept("deltaRadm");
+		deltaRadm.setSkosConcept("deltaRadm");
 		deltaRadm.setUnit("?");
 		deltaRadm.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(deltaRadm.getName(), deltaRadm);
@@ -437,7 +437,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter radmInf = factory.createSingleParameter();
 		radmInf.setName("radmInf");
 		radmInf.setParameterType(ParameterType.REAL);
-		radmInf.setSkossConcept("radmInf");
+		radmInf.setSkosConcept("radmInf");
 		radmInf.setUnit("?");
 		radmInf.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(radmInf.getName(), radmInf);
@@ -446,7 +446,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter radmVariationMethod = factory.createSingleParameter();
 		radmVariationMethod.setName("radmVariationMethod");
 		radmVariationMethod.setParameterType(ParameterType.STRING);
-		radmVariationMethod.setSkossConcept("radmVariationMethod");
+		radmVariationMethod.setSkosConcept("radmVariationMethod");
 		radmVariationMethod.setUnit("?");
 		radmVariationMethod.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(radmVariationMethod.getName(),
@@ -457,8 +457,8 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter Nradp = factory.createSingleParameter();
 		Nradp.setName("Nradp");
 		Nradp.setParameterType(ParameterType.INTEGER);
-		Nradp.setSkossConcept("Nradp");
-		Nradp.setUnit(" ");
+		Nradp.setSkosConcept("Nradp");
+		Nradp.setUnit("no unit");
 		Nradp.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(Nradp.getName(), Nradp);
 		this.addParameterToGroupMap(Nradp.getName(), "RadiationField");
@@ -466,7 +466,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter deltaRadp = factory.createSingleParameter();
 		deltaRadp.setName("deltaRadp");
 		deltaRadp.setParameterType(ParameterType.REAL);
-		deltaRadp.setSkossConcept("deltaRadp");
+		deltaRadp.setSkosConcept("deltaRadp");
 		deltaRadp.setUnit("?");
 		deltaRadp.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(deltaRadp.getName(), deltaRadp);
@@ -475,7 +475,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter radpInf = factory.createSingleParameter();
 		radpInf.setName("radpInf");
 		radpInf.setParameterType(ParameterType.REAL);
-		radpInf.setSkossConcept("radpInf");
+		radpInf.setSkosConcept("radpInf");
 		radpInf.setUnit("?");
 		radpInf.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(radpInf.getName(), radpInf);
@@ -484,7 +484,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter radpVariationMethod = factory.createSingleParameter();
 		radpVariationMethod.setName("radpVariationMethod");
 		radpVariationMethod.setParameterType(ParameterType.STRING);
-		radpVariationMethod.setSkossConcept("radpVariationMethod");
+		radpVariationMethod.setSkosConcept("radpVariationMethod");
 		radpVariationMethod.setUnit(" ");
 		radpVariationMethod.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(radpVariationMethod.getName(),
@@ -495,7 +495,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter rgrmax = factory.createSingleParameter();
 		rgrmax.setName("rgrmax");
 		rgrmax.setParameterType(ParameterType.REAL);
-		rgrmax.setSkossConcept("rgrmax");
+		rgrmax.setSkosConcept("rgrmax");
 		rgrmax.setUnit("cm");
 		rgrmax.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(rgrmax.getName(), rgrmax);
@@ -504,7 +504,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter rgmin = factory.createSingleParameter();
 		rgmin.setName("rgmin");
 		rgmin.setParameterType(ParameterType.REAL);
-		rgmin.setSkossConcept("rgmin");
+		rgmin.setSkosConcept("rgmin");
 		rgmin.setUnit("cm");
 		rgmin.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(rgmin.getName(), rgmin);
@@ -513,8 +513,8 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter srcpp = factory.createSingleParameter();
 		srcpp.setName("srcpp");
 		srcpp.setParameterType(ParameterType.STRING);
-		srcpp.setSkossConcept("srcpp");
-		srcpp.setUnit(" ");
+		srcpp.setSkosConcept("srcpp");
+		srcpp.setUnit("no unit");
 		srcpp.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(srcpp.getName(), srcpp);
 		this.addParameterToGroupMap(srcpp.getName(), "RadiationField");
@@ -522,7 +522,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter TgazInf = factory.createSingleParameter();
 		TgazInf.setName("TgazInf");
 		TgazInf.setParameterType(ParameterType.REAL);
-		TgazInf.setSkossConcept("TgazInf");
+		TgazInf.setSkosConcept("TgazInf");
 		TgazInf.setUnit("K");
 		TgazInf.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(TgazInf.getName(), TgazInf);
@@ -531,17 +531,17 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter deltaTgaz = factory.createSingleParameter();
 		deltaTgaz.setName("deltaTgaz");
 		deltaTgaz.setParameterType(ParameterType.REAL);
-		deltaTgaz.setSkossConcept("deltaTgaz");
+		deltaTgaz.setSkosConcept("deltaTgaz");
 		deltaTgaz.setUnit("K");
 		deltaTgaz.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(deltaTgaz.getName(), deltaTgaz);
 		this.addParameterToGroupMap(deltaTgaz.getName(), "EquationOfState");
 
 		SingleParameter NT = factory.createSingleParameter();
-		NT.setName("NT");
+		NT.setName("NTgaz");
 		NT.setParameterType(ParameterType.INTEGER);
-		NT.setSkossConcept("NT");
-		NT.setUnit(" ");
+		NT.setSkosConcept("NT");
+		NT.setUnit("no unit");
 		NT.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(NT.getName(), NT);
 		this.addParameterToGroupMap(NT.getName(), "EquationOfState");
@@ -549,7 +549,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter tgazVariationMethod = factory.createSingleParameter();
 		tgazVariationMethod.setName("tgazVariationMethod");
 		tgazVariationMethod.setParameterType(ParameterType.STRING);
-		tgazVariationMethod.setSkossConcept("tgazVariationMethod");
+		tgazVariationMethod.setSkosConcept("tgazVariationMethod");
 		tgazVariationMethod.setUnit(" ");
 		tgazVariationMethod.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(tgazVariationMethod.getName(),
@@ -560,7 +560,7 @@ public class PDRV2Service extends BaseExample {
 		SingleParameter vturb = factory.createSingleParameter();
 		vturb.setName("vturb");
 		vturb.setParameterType(ParameterType.REAL);
-		vturb.setSkossConcept("vturb");
+		vturb.setSkosConcept("vturb");
 		vturb.setUnit("km s^-1");
 		vturb.setDimension(mktconst("1", ParameterType.INTEGER));
 		this.singleParameterMap.put(vturb.getName(), vturb);

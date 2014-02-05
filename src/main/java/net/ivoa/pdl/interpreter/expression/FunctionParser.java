@@ -13,7 +13,7 @@ public class FunctionParser extends ExpressionParser {
 
 	private Function exp;
 
-	public FunctionParser(Function exp) {
+        FunctionParser(Function exp) {
 		super();
 		this.exp = exp;
 	}

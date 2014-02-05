@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -19,7 +20,7 @@ import net.ivoa.pdl.interpreter.groupInterpreter.GroupHandlerHelper;
 import net.ivoa.pdl.interpreter.groupInterpreter.GroupProcessor;
 import net.ivoa.pdl.interpreter.utilities.Utilities;
 
-public class PDLSummaryPanel extends JPanel implements ActionListener{
+public class PDLSummaryPanel extends JPanel implements ActionListener {
 
 	private GroupProcessor groupProcessor;
 
@@ -58,8 +59,10 @@ public class PDLSummaryPanel extends JPanel implements ActionListener{
 		// Loop for every group
 		for (int i = 0; i < handler.size(); i++) {
 			String currentGroupName = handler.get(i).getGroupName();
+			if (!handler.get(i).isGroupActive())
+				continue;
 			Boolean isGroupCompleted = true;
-			
+
 			// For every statement in the current group
 			if (null != handler.get(i).getStatementHelperList()) {
 				for (StatementHelperContainer currentStatement : handler.get(i)
@@ -70,9 +73,10 @@ public class PDLSummaryPanel extends JPanel implements ActionListener{
 						} else {
 							isGroupCompleted = isGroupCompleted && false;
 						}
-					}else{
-						//In the case where the statement is not switched
-						isGroupCompleted = isGroupCompleted && currentStatement.isStatementValid();
+					} else {
+						// In the case where the statement is not switched
+						isGroupCompleted = isGroupCompleted
+								&& currentStatement.isStatementValid();
 					}
 				}
 				if (!isGroupCompleted) {
@@ -92,7 +96,8 @@ public class PDLSummaryPanel extends JPanel implements ActionListener{
 		// Loop for every group
 		for (int i = 0; i < handler.size(); i++) {
 			String currentGroupName = handler.get(i).getGroupName();
-
+			if (!handler.get(i).isGroupActive())
+				continue;
 			if (null != handler.get(i).getGroupValid()
 					&& handler.get(i).getGroupValid()) {
 				toReturn.add(currentGroupName);
@@ -130,6 +135,8 @@ public class PDLSummaryPanel extends JPanel implements ActionListener{
 		// Loop for every group
 		for (int i = 0; i < handler.size(); i++) {
 			String currentGroupName = handler.get(i).getGroupName();
+			if (!handler.get(i).isGroupActive())
+				continue;
 			Boolean isGroupInError = false;
 			// Loop for every statement in the current group
 			if (null != handler.get(i).getStatementHelperList()) {
@@ -173,8 +180,10 @@ public class PDLSummaryPanel extends JPanel implements ActionListener{
 
 		List<String> infosOnGroups = this.getInfosOnGroups();
 		JButton serverButton = new JButton("Launch computation");
-		if ((infosOnGroups.get(0) == null || infosOnGroups.get(0).equalsIgnoreCase(""))
-				&& (infosOnGroups.get(1) == null || infosOnGroups.get(1).equalsIgnoreCase(""))) {	
+		if ((infosOnGroups.get(0) == null || infosOnGroups.get(0)
+				.equalsIgnoreCase(""))
+				&& (infosOnGroups.get(1) == null || infosOnGroups.get(1)
+						.equalsIgnoreCase(""))) {
 			serverButton.addActionListener(this);
 			this.containedPanel.add(serverButton, BorderLayout.EAST);
 		}
@@ -183,7 +192,7 @@ public class PDLSummaryPanel extends JPanel implements ActionListener{
 		sum2.add(lab2);
 		sum3.add(lab3);
 
-		JTextArea textArea1 = new JTextArea(infosOnGroups.get(0), 4, 7);
+		JTextArea textArea1 = new JTextArea(infosOnGroups.get(0), 4, 15);
 		textArea1.setBackground(Color.YELLOW);
 		JScrollPane scroll1 = new JScrollPane(textArea1);
 		scroll1.setVisible(true);
@@ -194,7 +203,7 @@ public class PDLSummaryPanel extends JPanel implements ActionListener{
 			sum1.setVisible(true);
 		}
 
-		JTextArea textArea2 = new JTextArea(infosOnGroups.get(1), 4, 7);
+		JTextArea textArea2 = new JTextArea(infosOnGroups.get(1), 4, 15);
 		textArea2.setBackground(Color.RED);
 		JScrollPane scroll2 = new JScrollPane(textArea2);
 		sum2.add(scroll2);
@@ -204,7 +213,7 @@ public class PDLSummaryPanel extends JPanel implements ActionListener{
 			sum2.setVisible(true);
 		}
 
-		JTextArea textArea3 = new JTextArea(infosOnGroups.get(2), 4, 7);
+		JTextArea textArea3 = new JTextArea(infosOnGroups.get(2), 4, 15);
 		textArea3.setBackground(Color.GREEN);
 		JScrollPane scroll3 = new JScrollPane(textArea3);
 		sum3.add(scroll3);
@@ -227,8 +236,29 @@ public class PDLSummaryPanel extends JPanel implements ActionListener{
 	}
 
 	public void actionPerformed(ActionEvent e) {
-		Utilities.getInstance().callService();
-		
+
+		List<String> requiredParamsNotProvided = Utilities.getInstance()
+				.getRequiredFieldsNotProvided();
+		boolean requiredParametersProvided = requiredParamsNotProvided.size() <= 0;
+		if (requiredParametersProvided) {
+			String message = Utilities.getInstance().callService();
+			String text;
+			System.out.println("server response " + message);
+			if ("ok".equalsIgnoreCase(message.trim())) {
+				text = "the job has been correctly sent to server";
+			} else {
+				text = "error in submitting jobs. Please verify your data and try again";
+			}
+			JOptionPane.showMessageDialog(this, text);
+		} else {
+			String message="";
+			for(String currentParamName : requiredParamsNotProvided){
+				message = message + currentParamName+"\n";
+			}
+			JOptionPane.showMessageDialog(this,
+					"some required parameters are not provided: "+message);
+		}
+
 	}
 
 }

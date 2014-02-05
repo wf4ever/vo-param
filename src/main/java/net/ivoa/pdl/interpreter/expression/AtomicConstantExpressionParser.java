@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.ivoa.parameter.model.AtomicConstantExpression;
+import net.ivoa.parameter.model.ParameterType;
 import visitors.GeneralParameterVisitor;
 import CommonsObjects.GeneralParameter;
 import exeptions.InvalidExpression;
@@ -13,7 +14,7 @@ public class AtomicConstantExpressionParser extends ExpressionWithPowerParser {
 
     private AtomicConstantExpression exp;
 
-    public AtomicConstantExpressionParser(AtomicConstantExpression exp) {
+     AtomicConstantExpressionParser(AtomicConstantExpression exp) {
         super();
         this.exp = exp;
     }
@@ -48,7 +49,7 @@ public class AtomicConstantExpressionParser extends ExpressionWithPowerParser {
 
         List<GeneralParameter> constantsDefined = new ArrayList<GeneralParameter>();
 
-        String type = buildGeneralHandledParameterType(exp);
+        ParameterType type = buildGeneralHandledParameterType(exp);
 
         for (int i = 0; i < exp.getConstant().size(); i++) {
             constantsDefined
@@ -59,7 +60,7 @@ public class AtomicConstantExpressionParser extends ExpressionWithPowerParser {
         return this.evaluatePower(constantsDefined, power);
     }
 
-    private String buildGeneralHandledParameterType(
+    private ParameterType buildGeneralHandledParameterType(
             AtomicConstantExpression exp2) throws InvalidParameterException {
         String type = exp.getConstantType().toString();
 
@@ -69,11 +70,10 @@ public class AtomicConstantExpressionParser extends ExpressionWithPowerParser {
         case BOOLEAN:
         case DATE:
         case STRING:
-            return exp.getConstantType().toString().toUpperCase();
+            return exp.getConstantType();
 
         case REAL:
-        case RATIONAL:
-            return "REAL";
+       
             
         default:  
 

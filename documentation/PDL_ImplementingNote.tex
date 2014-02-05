@@ -19,8 +19,8 @@
 \title{Implementing Note of the Framework built around PDL}
 % Give author list: separate different authors with \\ 
 % You can add email addresses with links \url{mailto:yourname@ivoa.net}
-\author{Carlo Maria Zw\"olf}
-\newcommand{\pdlversion}{0.1}
+\author{Carlo Maria Zw\"olf, Paul Harrison}
+\newcommand{\pdlversion}{1.0}
 \newcommand{\pdldate}{\today}
 
 %I have marked sections which I am unsure of with this
@@ -447,6 +447,26 @@ This class extends the {\it ConditionalStatementInterpreter} and is used for int
 \end{itemize}
 \end{itemize}
 
+\subsection{The WhenConditionalStatementInterpreter class}
+This class extends the {\it ConditionalStatementInterpreter} and is used for
+interpreting the {\it WhenConditionalStatement} PDL objects. Indeed this class
+has an attribute of {\it IfThenConditionalStatement} type, whose value is
+initialized by the class constructor. Moreover it contains a boolean attribute
+{\it isStatementSwitched} whose value is computed by the method {\it
+isStatementSwitched}.\\
+\begin{itemize}
+\item In the overridden method {\it isStatementSwitched} the following actions are performed:
+\begin{itemize}
+\item We call the method {\it buildCriterionInterpreter} of the factory class
+{\it CriterionInterpreterFactory} (cf. par. \ref{criterionFactory}) by passing
+as argument the PDL {\it Criterion} object contained into the {\it When} PDL
+object (which is in turn contained into the {\it WhenConditionalStatement} class attribute). If no
+exception is detected, the function returns the result of the method {\it isCriterionSatisfied} owned by the object returned by the {\it buildCriterionInterpreter} method.
+\item In case of exception, we are not able to evaluate the condition, this means that the statement is not switched: the function return the boolean false.\\
+\end{itemize}
+\end{itemize}
+
+
 \subsection{The StatementHelperContanier class}\label{StatementHelperContainer}
 This class is a Java Bean used for easily handling the properties of the {\it ConditionalStatement} objects. It is used for facilitating communications between the logical layers we explained into the previous paragraphs and the IHM layer. It contains the 
 \begin{itemize}
@@ -780,7 +800,7 @@ The classes composing this package are:
 \item {\it PDLStatementPanel} represent informations about a given statement and inform user about the statement validity, the switched/off statement character and display the String comment of the statement.\\
 A set of {\it PDLStatementPanel} is contained into {\it GroupPanel}: we have a {\it PDLStatementPanel} for every statement attached to the current group (i.e. the group whose node is selected into the {\it PDLTree} and which is current displayed in the {\it GroupPanel}.
 \item {\it GroupPanel} which is used for presenting into the GUI all the parameters attached to the current group and the {\it PDLStatementPanel} of all the statement attached to the current group.\\
-For every {\it SingleParameter} in the current group this panel build and display a {\it PDLBaseParamPanel}Ê (cf. par. \ref{PDLBaseParamPanel}) by invoking the method {\it buildBasicPanel} of {\it PDLParamPanelFactory} class (cf. par. \ref{PDLParamPanelFactory}).\\
+For every {\it SingleParameter} in the current group this panel build and display a {\it PDLBaseParamPanel}ï¿½ (cf. par. \ref{PDLBaseParamPanel}) by invoking the method {\it buildBasicPanel} of {\it PDLParamPanelFactory} class (cf. par. \ref{PDLParamPanelFactory}).\\
 This panel also display the set of {\it PDLStatementPanel} associated to all the statement attached to the current group.
 \item {\it IntelligentGUI} which coordinates and build all the previous graphic elements and handle their internal communications based on the action and listener mechanism. 
 \end{itemize}

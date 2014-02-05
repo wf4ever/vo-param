@@ -65,7 +65,7 @@ public class test extends BaseExample {
 
 		SingleParameter RA = factory.createSingleParameter();
 		RA.setName("RA");
-		RA.setSkossConcept("Right ascension");
+		RA.setSkosConcept("Right ascension");
 		RA.setParameterType(ParameterType.REAL);
 		RA.setPrecision(mkconst(0.0));
 		RA.setUnit("deg");
@@ -77,7 +77,7 @@ public class test extends BaseExample {
 
 		SingleParameter DEC = factory.createSingleParameter();
 		DEC.setName("DEC");
-		DEC.setSkossConcept("Declination");
+		DEC.setSkosConcept("Declination");
 		DEC.setParameterType(ParameterType.REAL);
 		DEC.setPrecision(mkconst(0.0));
 		DEC.setUnit("deg");
@@ -89,7 +89,7 @@ public class test extends BaseExample {
 
 		SingleParameter SR = factory.createSingleParameter();
 		SR.setName("SR");
-		SR.setSkossConcept("Radius");
+		SR.setSkosConcept("Radius");
 		SR.setParameterType(ParameterType.REAL);
 		SR.setPrecision(mkconst(0.0));
 		SR.setUnit("None");
@@ -104,7 +104,7 @@ public class test extends BaseExample {
 		
 		SingleParameter result = factory.createSingleParameter();
 		result.setName("VOTableResult");
-		result.setSkossConcept("url to the tar file containing the mosaiced fits files");
+		result.setSkosConcept("url to the tar file containing the mosaiced fits files");
 		result.setParameterType(ParameterType.TABLE);
 		result.setPrecision(mkconst(0.0));
 		result.setUnit("None");

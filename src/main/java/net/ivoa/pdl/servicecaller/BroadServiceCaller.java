@@ -10,7 +10,7 @@ import net.ivoa.pdl.interpreter.utilities.Utilities;
 
 public class BroadServiceCaller implements IserviceCaller {
 
-	public void callService() {
+	public String callService() {
 		String serviceUrl = "http://opacity-cs.obspm.fr:8080/broadening/Broadening?";
 		List<SingleParameter> paramList = Utilities.getInstance().getService()
 				.getParameters().getParameter();
@@ -42,10 +42,12 @@ public class BroadServiceCaller implements IserviceCaller {
 				sb.append("\n");
 			}
 			bufferedReader.close();
+			return sb.toString();
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "error in submitting job!";
 		}
-
+		
 	}
 
 }

@@ -20,7 +20,7 @@
 % Give author list: separate different authors with \\ 
 % You can add email addresses with links \url{mailto:yourname@ivoa.net}
 \author{Carlo Maria Zw\"olf, Paul Harrison and Franck Le Petit}
-\newcommand{\pdlversion}{0.1}
+\newcommand{\pdlversion}{1.0}
 \newcommand{\pdldate}{\today}
 
 %I have marked sections which I am unsure of with this
@@ -301,11 +301,11 @@ if provided.\\
 Optional fields for the {\it SingleParameter} object are:
 \begin{itemize}
 \item a unique UCD : which is a reference to an existing UCD for characterizing the parameter
-(\textcolor{red}{to be extended});
+(\textcolor{red}{the reference is typically a text string});
 \item a unique Utype  : which is a reference to an existing Utype for characterizing the parameter
-(\textcolor{red}{to be extended});
-\item a unique Skos Concept  (\textcolor{red}{to be extended}).
-\item a unique Unit (\textcolor{red}{to be extended}).
+(\textcolor{red}{the reference is typically a text string});
+\item a unique Skos Concept  (\textcolor{red}{the reference is typically a text string}).
+\item a unique Unit (\textcolor{red}{which is a string reference to a valid VOUnits element}).
 \item a unique precision. This field must be specified only for parameter types where the concept of
 precision has a meaning. It has indeed no sense for integer, rational or string. It has
 sense, for instance, on a real type. For understanding the meaning of this field, let the function
@@ -314,6 +314,10 @@ precision $\delta$ is the smaller value such that $f(i+\delta) \neq f(i)$.\\ The
 expressed using an {\it expression} (cf. paragraph \ref{par02}). The result of the expression that
 appears in this {\it precision}-field  {\bf must be} of the same type as (or could be naturally
 cast to) the type appearing in the field {\it parameter type}.
+%\item an optional restriction on the object which takes the form of an {\it
+%AlwaysCondtionalStatement} (cf. paragraph \ref{par-AlwaysConditionalStatement}). This restriction is
+%a way of placing a global restriction on a parameter that takes precedence over any constraint that
+%might occur on a parameter in a {\it ParameterGroup}.
 \end{itemize}
 
 {\bf NB:} The name of every {\it SingleParameter} is unique. 
@@ -686,6 +690,11 @@ contain}:
 If the condition contained within the {\it If} object is valid, the condition contained within
 the {\it Then} object {\bf must be} valid too.
 
+\subsubsection{The WhenConditionalStatement object}\label{par-WhenConditionalStatment}
+
+The when conditional statement is valid when the enclosed {\it When} conditional clause
+evalutes to true.
+
 \subsection{The ConditionalClause object}\label{par-ConditionalClause}
 \begin{figure}[htbp]
 \begin{center}
@@ -697,15 +706,17 @@ the {\it Then} object {\bf must be} valid too.
 The {\it ConditionalClause} object (see figure \ref{Pic-ConditionalClause}) is abstract. It {\bf
 must contain} a unique Criterion object of type {\it AbstractCriterion} (cf. paragraph
 \ref{par-AbstractCriterion}).\\
-The three concrete objects extending the abstract {\it ConditionalClause} are (see figure
+The four concrete objects extending the abstract {\it ConditionalClause} are (see figure
 \ref{Pic-ConcreteClause}):
 \begin{itemize}
 \item {\it Always};
 \item {\it If};
-\item {\it Then}.
+\item {\it Then};
+\item {\it When}.
 \end{itemize}
 \begin{figure}[htbp]
 \begin{center}
+TODO new picuture including When
 \includegraphics[width=0.7\textwidth]{pictures/ConcreteClauses.jpg} 
 \caption{Graphical representation of Always, If and Then clauses}
 \label{Pic-ConcreteClause}
@@ -713,6 +724,10 @@ The three concrete objects extending the abstract {\it ConditionalClause} are (s
 \end{figure}
 The Criterion contained within a {\it Always} object must always be valid (cf paragraph
 \label{par-AlwaysConditionalStatement}).\\
+
+The Criterion contained within a {\it When} object will be valid only when the enclosed Expression
+is True.
+
 The {\it If} and {\it Then} objects work as a tuple by composing the  {\it
 IfThenConditionalStatement} (cf. paragraph
 \ref{par-IfThenConditionalStatement}).

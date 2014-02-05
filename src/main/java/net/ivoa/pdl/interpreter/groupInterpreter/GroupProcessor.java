@@ -3,133 +3,203 @@ package net.ivoa.pdl.interpreter.groupInterpreter;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.ivoa.parameter.model.ConditionalStatement;
+import CommonsObjects.GeneralParameter;
+
+import exeptions.InvalidCondition;
+import exeptions.InvalidConditionalStatement;
+import exeptions.InvalidCriterion;
+import exeptions.InvalidExpression;
+import exeptions.InvalidParameterException;
+import exeptions.PDLException;
+
+import net.ivoa.gui.dynamicLabel.PDLChoseBoxParamPanel;
+import net.ivoa.parameter.model.AbstractCriterion;
+import net.ivoa.parameter.model.BelongToSet;
+import net.ivoa.parameter.model.DefaultValue;
+import net.ivoa.parameter.model.Expression;
 import net.ivoa.parameter.model.ParameterGroup;
 import net.ivoa.parameter.model.Service;
+import net.ivoa.parameter.model.SingleParameter;
 import net.ivoa.pdl.interpreter.conditionalStatement.ConditionalStatementInterpreter;
 import net.ivoa.pdl.interpreter.conditionalStatement.ConditionalStatementInterpreterFactory;
 import net.ivoa.pdl.interpreter.conditionalStatement.StatementHelperContainer;
+import net.ivoa.pdl.interpreter.expression.ExpressionParserFactory;
+import net.ivoa.pdl.interpreter.utilities.Utilities;
 
 public class GroupProcessor {
 
-	public GroupProcessor(Service service) {
-		super();
-		this.service = service;
-	}
+    public GroupProcessor(Service service) {
+        super();
+        this.service = service;
+        ghh = new GroupHandlerHelper(service.getInputs(), null);
+        initialize();
+    }
 
-	private Service service;
-	private List<GroupHandlerHelper> groupsHandler;
+    private Service service;
+    private List<GroupHandlerHelper> groupsHandler;
+    private GroupHandlerHelper ghh;
 
-	public List<GroupHandlerHelper> getGroupsHandler() {
-		return groupsHandler;
-	}
+    public List<GroupHandlerHelper> getGroupsHandler() {
+        return groupsHandler;
+    }
 
-	public void process() {
-		this.groupsHandler = buildGroupListFromService();
-		this.processStatementsOfGroups();
-	}
+    public void process() {
 
-	private void processStatementsOfGroups() {
-		// If the group list is null or void we do nothing
-		if (null != this.groupsHandler && this.groupsHandler.size() >= 1) {
-			// For each group of the service
-			for (int i = 0; i < this.groupsHandler.size(); i++) {
+        this.groupsHandler = GroupHandlerHelper.getAllgroups();
+        this.processStatementsOfGroups();
+    }
 
-				ParameterGroup currentGroup = this.groupsHandler.get(i)
-						.getGroup();
+    private void initialize() {
+        
+    }
 
-				// Handling the case where there is no constraint on a group
-				if (null == currentGroup.getConstraintOnGroup()) {
-					// There is no constraint on the group, than it is valid
-					this.groupsHandler.get(i).setGroupValid(true);
-					continue;
-				}
-				// In the case where there is a constraint on group...
-				
-				// Building the list of statement of the current group
-				List<ConditionalStatement> statementList = currentGroup
-						.getConstraintOnGroup().getConditionalStatement();
+    private void setParamFromCondition(SingleParameter parameter,
+            AbstractCriterion criterion) {
+        // If the condition is a Default Value
+        if (criterion.getConditionType().getClass() == DefaultValue.class) {
+            DefaultValue df = (DefaultValue) criterion.getConditionType();
 
-				// If there is no condition on the group, it is always valid
-				if (null == statementList || statementList.size() < 1) {
-					this.groupsHandler.get(i).setGroupValid(true);
-				} else {
-					// Start initializing the list of statement container to
-					// include into the current groupHelper
-					List<StatementHelperContainer> statementsHelper = new ArrayList<StatementHelperContainer>();
-					for (ConditionalStatement statement : statementList) {
-						try {
-							ConditionalStatementInterpreter statementInterpreter = ConditionalStatementInterpreterFactory
-									.getInstance().buildInterpreter(statement);
+            try {
+                // put into the mapper the default value
+                List<GeneralParameter> existingValues = Utilities.getInstance()
+                        .getMapper()
+                        .getuserProvidedValuesForParameter(parameter);
 
-							StatementHelperContainer tempHelper = new StatementHelperContainer();
-							tempHelper.setStatement(statement);
-							tempHelper.setStatementComment(statement
-									.getComment());
-							tempHelper
-									.setStatementSwitched(statementInterpreter
-											.isStatementSwitched());
-							try {
-								tempHelper
-										.setStatementValid(statementInterpreter
-												.isValidStatement());
-							} catch (Exception e) {
-								// If one cannot evaluate the condition, this
-								// means
-								// that one cannot say nothing about the
-								// validity
-								// of the statement
-								e.printStackTrace();
-								System.out
-										.println("Indertminate statement validity");
-								tempHelper.setStatementValid(null);
-							}
-							statementsHelper.add(tempHelper);
+                if (null == existingValues || existingValues.size() < 1) {
+                    Utilities
+                            .getInstance()
+                            .getMapper()
+                            .getMap()
+                            .put(parameter.getName(),
+                                    ExpressionParserFactory.getInstance()
+                                            .buildParser(df.getValue()).parse());
+                }
 
-						} catch (Exception e) {
-							e.printStackTrace();
-							System.out
-									.println("Impossible to verify the statement "
-											+ statement.getComment());
-						}
-					}
-					this.groupsHandler.get(i).setStatementHelperList(
-							statementsHelper);
-				}
-			}
-		}
+            } catch (Exception e) {
+                e.printStackTrace();
+                // If the default value could not be evaluated, we do
+                // nothing
 
-	}
+            }
+        }
 
-	private List<GroupHandlerHelper> buildGroupListFromService() {
-		List<GroupHandlerHelper> toReturn = new ArrayList<GroupHandlerHelper>();
-		addGroups(toReturn, service.getInputs(), "root");
-		return toReturn;
-	}
+        // if the condition is a Belong To Set
+        if (criterion.getConditionType().getClass() == BelongToSet.class) {
+            BelongToSet bts = (BelongToSet) criterion.getConditionType();
 
-	private void addGroups(List<GroupHandlerHelper> toReturn,
-			ParameterGroup input, String fatherName) {
-		GroupHandlerHelper temp = new GroupHandlerHelper();
-		temp.setGroup(input);
-		temp.setFatherName(fatherName);
+            List<List<GeneralParameter>> setOfValues = new ArrayList<List<GeneralParameter>>();
 
-		if (null == input.getParameterGroup()
-				|| input.getParameterGroup().size() < 1) {
-			temp.setSonNames(null);
-			toReturn.add(temp);
-		} else {
-			List<String> sonNames = new ArrayList<String>();
-			List<ParameterGroup> sons = input.getParameterGroup();
-			for (int i = 0; i < sons.size(); i++) {
-				sonNames.add(sons.get(i).getName());
-			}
-			temp.setSonNames(sonNames);
-			toReturn.add(temp);
-			for (int i = 0; i < sons.size(); i++) {
-				addGroups(toReturn, sons.get(i), input.getName());
-			}
-		}
+            try {
+                for (Expression exp : bts.getValue()) {
+                    setOfValues.add(ExpressionParserFactory.getInstance()
+                            .buildParser(exp).parse());
+                }
+                List<GeneralParameter> existingValues = Utilities.getInstance()
+                        .getMapper()
+                        .getuserProvidedValuesForParameter(parameter);
 
-	}
+                if (null == existingValues || existingValues.size() < 1) {
+
+                    Utilities.getInstance().getMapper().getMap()
+                            .put(parameter.getName(), setOfValues.get(0));
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                // If the default value could not be evaluated, we do
+                // nothing
+            }
+        }
+
+    }
+
+    private void processStatementsOfGroups() {
+        // If the group list is null or void we do nothing
+        if (null != this.groupsHandler && this.groupsHandler.size() >= 1) {
+            // For each group of the service
+            for (GroupHandlerHelper currentGroupHandler : this.groupsHandler) {
+
+                ParameterGroup currentGroup = currentGroupHandler.getGroup();
+
+                if (currentGroup.getActive() != null) {
+                    try {
+                        ConditionalStatementInterpreter statementInterpreter = ConditionalStatementInterpreterFactory
+                                .getInstance().buildInterpreter(
+                                        currentGroup.getActive());
+                        if (statementInterpreter.isStatementSwitched()) {
+                            currentGroupHandler.setGroupActive(true);
+                        } else {
+                            currentGroupHandler.setGroupActive(false);
+                            continue; // do do more testing
+                        }
+                    } catch (PDLException e) {
+                        // just carry on
+                        e.printStackTrace();
+                    }
+                }
+
+                // Handling the case where there is no constraint on a group
+                if (null == currentGroup.getConstraintOnGroup()) {
+                    // There is no constraint on the group, than it is valid
+                    currentGroupHandler.setGroupValid(true);
+                    continue;
+                }
+                // In the case where there is a constraint on group...
+
+                // Building the list of statement of the current group
+                List<StatementHelperContainer> statementsHelper = currentGroupHandler
+                        .getStatementHelperList();
+
+                // If there is no condition on the group, it is always valid
+                if (null == statementsHelper || statementsHelper.size() < 1) {
+                    currentGroupHandler.setGroupValid(true);
+                } else {
+                    // Start initializing the list of statement container to
+                    // include into the current groupHelper
+                    for (StatementHelperContainer statementHelper : statementsHelper) {
+                        try {
+                            ConditionalStatementInterpreter statementInterpreter = ConditionalStatementInterpreterFactory
+                                    .getInstance().buildInterpreter(
+                                            statementHelper.getStatement());
+
+                            statementHelper
+                                    .setStatementSwitched(statementInterpreter
+                                            .isStatementSwitched());
+                            try {
+                                statementHelper
+                                        .setStatementValid(statementInterpreter
+                                                .isValidStatement());
+                            } catch (Exception e) {
+                                // If one cannot evaluate the condition, this
+                                // means
+                                // that one cannot say nothing about the
+                                // validity
+                                // of the statement
+                                e.printStackTrace();
+                                System.out
+                                        .println("Indertminate statement validity");
+                                statementHelper.setStatementValid(null);
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            System.out
+                                    .println("Impossible to verify the statement "
+                                            + statementHelper
+                                                    .getStatementComment());
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    /**
+     * @return the ghh
+     */
+    public GroupHandlerHelper getGhh() {
+        return ghh;
+    }
 
 }

@@ -17,7 +17,7 @@ public class ValueLargerThanInterpreter extends ConditionInterpreter {
 
 	private ValueLargerThan condition;
 
-	public ValueLargerThanInterpreter(ValueLargerThan condition) {
+	ValueLargerThanInterpreter(ValueLargerThan condition) {
 		super();
 		this.condition = condition;
 	}

@@ -2,9 +2,15 @@ package visitors;
 
 import java.security.InvalidParameterException;
 import java.util.List;
+
+import net.ivoa.parameter.model.ParameterType;
 import CommonsObjects.GeneralParameter;
 
 /**
+<<<<<<< HEAD
+=======
+ * @author Carlo Maria Zw�lf, Lerma/ObsPM
+>>>>>>> master
  * 
  *         Abstract class implementing the Ivisitor interface. In this class
  *         only the function buildCriteriaList is abstract. The function visit
@@ -23,7 +29,7 @@ public abstract class AbstractVisitor implements Ivisitor {
 	public abstract List<Icriteria> buildCriteriaList();
 
 	public void visit(GeneralParameter A) {
-		String type = A.getType();
+		ParameterType type = A.getType();
 		String value = A.getValue();
 
 		// Build the list of criteria that must be verified

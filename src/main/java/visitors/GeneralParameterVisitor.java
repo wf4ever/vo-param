@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+<<<<<<< HEAD
  * @author Carlo Maria Zwlf, Lerma/ObsPM
+=======
+ * @author Carlo Maria Zwolf, Lerma/ObsPM
+>>>>>>> master
  * 
  *         Simple implementation of the abstract visitor, for handling basic type
  *         based parameters (Real, Integer, Boolean and String)
@@ -18,6 +22,7 @@ public class GeneralParameterVisitor extends AbstractVisitor {
 		criteriaList.add(new IntegerCriteria());
 		criteriaList.add(new BooleanCriteria());
 		criteriaList.add(new StringCriteria());
+		criteriaList.add(new DateCriteria());
 		return criteriaList;
 	}
 

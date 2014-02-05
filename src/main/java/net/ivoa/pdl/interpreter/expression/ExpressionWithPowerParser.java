@@ -21,7 +21,7 @@ public abstract class ExpressionWithPowerParser extends ExpressionParser{
 		
 		// If the power is null, no more operation is needed
 		// We return the general parameter 
-		if (null == power || power.size() < 1) {
+		if (null == userProvidedValue || null == power || power.size() < 1) {
 			toReturn = userProvidedValue;
 			return toReturn;
 		}

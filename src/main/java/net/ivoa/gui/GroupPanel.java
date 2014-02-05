@@ -25,7 +25,11 @@ public class GroupPanel extends JPanel {
 	private List<PDLBaseParamPanel> paramsPanels;
 	private List<PDLStatementPanel> statementsPanelList;
 	private JButton validateButton;
-
+	
+	public void clickOnValidate(){
+		this.validateButton.doClick();
+	}
+	
 	public GroupPanel(ActionListener listener) {
 		super();
 		this.validateButton = new JButton("validate");
@@ -83,7 +87,6 @@ public class GroupPanel extends JPanel {
 			}
 			this.statementPanel.add(this.validateButton);
 
-			
 		}
 
 	}

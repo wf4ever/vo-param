@@ -10,7 +10,7 @@ public class ValueInRangeInterpreter extends ConditionInterpreter {
 
 	private ValueInRange condition;
 
-	public ValueInRangeInterpreter(ValueInRange condition) {
+        ValueInRangeInterpreter(ValueInRange condition) {
 		super();
 		this.condition = condition;
 	}

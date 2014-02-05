@@ -12,7 +12,7 @@ public class LogicalConnectorInterpreter {
 
 	private LogicalConnector connector;
 
-	public LogicalConnectorInterpreter(LogicalConnector connector) {
+        LogicalConnectorInterpreter(LogicalConnector connector) {
 		super();
 		this.connector = connector;
 	}

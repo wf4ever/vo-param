@@ -2,8 +2,14 @@ package visitors;
 
 import java.security.InvalidParameterException;
 
+import net.ivoa.parameter.model.ParameterType;
+
 /**
+<<<<<<< HEAD
  * @author Carlo Maria Zwölf, Lerma/ObsPM 
+=======
+ * @author Carlo Maria Zw�lf, Lerma/ObsPM 
+>>>>>>> master
  * 
  * Implementation of interface Icreteria for testing Boolean parameter type
  *
@@ -11,15 +17,15 @@ import java.security.InvalidParameterException;
 
 public class BooleanCriteria implements Icriteria{
 	
-	private static final String authorizedCriteriaType = "Boolean";
+	private static final ParameterType authorizedCriteriaType = ParameterType.BOOLEAN;
 	
-	public String getAuthorizedCriteriaType() {
+	public ParameterType getAuthorizedCriteriaType() {
 		return this.authorizedCriteriaType;
 	}
 
-	public boolean VerifyCriteria(String type, String value) {
+	public boolean VerifyCriteria(ParameterType type, String value) {
 		boolean isTypeBoolean = false;
-		if (type.equalsIgnoreCase(this.getAuthorizedCriteriaType())) {
+		if (type == this.getAuthorizedCriteriaType()) {
 			// The type is known
 			isTypeBoolean = true;
 			// Verify that value could be cast to boolean

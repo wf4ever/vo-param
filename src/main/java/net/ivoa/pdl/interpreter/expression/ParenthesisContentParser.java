@@ -12,7 +12,7 @@ public class ParenthesisContentParser extends ExpressionWithPowerParser {
 
 	private ParenthesisContent exp;
 
-	public ParenthesisContentParser(ParenthesisContent exp) {
+       ParenthesisContentParser(ParenthesisContent exp) {
 		super();
 		this.exp = exp;
 	}

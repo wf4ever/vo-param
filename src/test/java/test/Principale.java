@@ -69,7 +69,7 @@ public class Principale extends BaseExample {
 		mass.setName("mass");
 		mass.setParameterType(ParameterType.REAL);
 		mass.setPrecision(mktconst("0.0001",ParameterType.REAL));
-		mass.setSkossConcept("SKOSS_MASS");
+		mass.setSkosConcept("SKOSS_MASS");
 		mass.setUnit("kg");
 		mass.setDimension(mktconst("1",ParameterType.INTEGER));
 
@@ -78,7 +78,7 @@ public class Principale extends BaseExample {
 		time.setName("time");
 		time.setParameterType(ParameterType.BOOLEAN);
 		time.setPrecision(mktconst("0.0001",ParameterType.REAL));
-		time.setSkossConcept("SKOSS_TIME");
+		time.setSkosConcept("SKOSS_TIME");
 		time.setUnit("s");
 		time.setDimension(mktconst("2",ParameterType.INTEGER));
 
@@ -87,7 +87,7 @@ public class Principale extends BaseExample {
 		Kenergy.setName("E");
 		Kenergy.setParameterType(ParameterType.REAL);
 		Kenergy.setPrecision(mktconst("0.0001",ParameterType.REAL));
-		Kenergy.setSkossConcept("SKOSS_ENERGY");
+		Kenergy.setSkosConcept("SKOSS_ENERGY");
 		Kenergy.setUnit("J");
 		Kenergy.setDimension(mktconst("1",ParameterType.INTEGER));
 
@@ -96,7 +96,7 @@ public class Principale extends BaseExample {
 		distance.setName("distance");
 		distance.setParameterType(ParameterType.REAL);
 		distance.setPrecision(mktconst("0.0001",ParameterType.REAL));
-		distance.setSkossConcept("SKOSS_LENGHT");
+		distance.setSkosConcept("SKOSS_LENGHT");
 		distance.setUnit("m");
 		distance.setDimension(mktconst("1",ParameterType.INTEGER));
 		
@@ -106,7 +106,7 @@ public class Principale extends BaseExample {
 		speedX.setName("speedX");
 		speedX.setParameterType(ParameterType.REAL);
 		speedX.setPrecision(mktconst("0.0001",ParameterType.REAL));
-		speedX.setSkossConcept("SKOSS_SPEED_COMPONENT");
+		speedX.setSkosConcept("SKOSS_SPEED_COMPONENT");
 		speedX.setUnit("m/s");
 		speedX.setDimension(mktconst("1",ParameterType.INTEGER));
 		
@@ -116,7 +116,7 @@ public class Principale extends BaseExample {
 		speedY.setName("speedY");
 		speedY.setParameterType(ParameterType.REAL);
 		speedY.setPrecision(mktconst("0.0001",ParameterType.REAL));
-		speedY.setSkossConcept("SKOSS_SPEED_COMPONENT");
+		speedY.setSkosConcept("SKOSS_SPEED_COMPONENT");
 		speedY.setUnit("m/s");
 		speedY.setDimension(mktconst("1",ParameterType.INTEGER));
 
@@ -125,7 +125,7 @@ public class Principale extends BaseExample {
 		speedZ.setName("speedZ");
 		speedZ.setParameterType(ParameterType.REAL);
 		speedZ.setPrecision(mktconst("0.0001",ParameterType.REAL));
-		speedZ.setSkossConcept("SKOSS_SPEED_COMPONENT");
+		speedZ.setSkosConcept("SKOSS_SPEED_COMPONENT");
 		speedZ.setUnit("m/s");
 		speedZ.setDimension(mktconst("1",ParameterType.INTEGER));
 		

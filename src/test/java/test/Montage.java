@@ -55,7 +55,7 @@ public class Montage extends BaseExample {
 		SingleParameter mail = factory.createSingleParameter();
 		mail.setName("mail");
 		mail.setParameterType(ParameterType.STRING);
-		mail.setSkossConcept("SKOS_MAIL");
+		mail.setSkosConcept("SKOS_MAIL");
 		mail.setUnit("none");
 		mail.setDimension(mktconst("1", ParameterType.INTEGER));
 		parameterList.getParameter().add(mail);
@@ -64,7 +64,7 @@ public class Montage extends BaseExample {
 
 		SingleParameter NAXIS1 = factory.createSingleParameter();
 		NAXIS1.setName("NAXIS1");
-		NAXIS1.setSkossConcept("Number of pixels in horizontal axis");
+		NAXIS1.setSkosConcept("Number of pixels in horizontal axis");
 		NAXIS1.setParameterType(ParameterType.INTEGER);
 		NAXIS1.setPrecision(mkconst(0.0));
 		NAXIS1.setUnit("None");
@@ -75,7 +75,7 @@ public class Montage extends BaseExample {
 
 		SingleParameter NAXIS2 = factory.createSingleParameter();
 		NAXIS2.setName("NAXIS2");
-		NAXIS2.setSkossConcept("Number of pixels in vertical axis");
+		NAXIS2.setSkosConcept("Number of pixels in vertical axis");
 		NAXIS2.setParameterType(ParameterType.INTEGER);
 		NAXIS2.setPrecision(mkconst(0.0));
 		NAXIS2.setUnit("None");
@@ -86,7 +86,7 @@ public class Montage extends BaseExample {
 
 		SingleParameter CTYPE1 = factory.createSingleParameter();
 		CTYPE1.setName("CTYPE1");
-		CTYPE1.setSkossConcept("WCS Type of the horizontal coordinate, including coordinate and projection, each allowed three character");
+		CTYPE1.setSkosConcept("WCS Type of the horizontal coordinate, including coordinate and projection, each allowed three character");
 		CTYPE1.setParameterType(ParameterType.STRING);
 		CTYPE1.setPrecision(mkconst(0.0));
 		CTYPE1.setUnit("None");
@@ -97,7 +97,7 @@ public class Montage extends BaseExample {
 
 		SingleParameter CTYPE2 = factory.createSingleParameter();
 		CTYPE2.setName("CTYPE2");
-		CTYPE2.setSkossConcept("WCS Type of the vertical coordinate, including coordinate and projection, each allowed three character");
+		CTYPE2.setSkosConcept("WCS Type of the vertical coordinate, including coordinate and projection, each allowed three character");
 		CTYPE2.setParameterType(ParameterType.STRING);
 		CTYPE2.setPrecision(mkconst(0.0));
 		CTYPE2.setUnit("None");
@@ -108,7 +108,7 @@ public class Montage extends BaseExample {
 
 		SingleParameter CRVAL1 = factory.createSingleParameter();
 		CRVAL1.setName("CRVAL1");
-		CRVAL1.setSkossConcept("Horizonal axis WCS value at the reference pixel");
+		CRVAL1.setSkosConcept("Horizonal axis WCS value at the reference pixel");
 		CRVAL1.setParameterType(ParameterType.REAL);
 		CRVAL1.setPrecision(mkconst(0.0));
 		CRVAL1.setUnit("degree");
@@ -119,7 +119,7 @@ public class Montage extends BaseExample {
 
 		SingleParameter CRVAL2 = factory.createSingleParameter();
 		CRVAL2.setName("CRVAL2");
-		CRVAL2.setSkossConcept("Vertical axis WCS value at the reference pixel");
+		CRVAL2.setSkosConcept("Vertical axis WCS value at the reference pixel");
 		CRVAL2.setParameterType(ParameterType.REAL);
 		CRVAL2.setPrecision(mkconst(0.0));
 		CRVAL2.setUnit("degree");
@@ -130,7 +130,7 @@ public class Montage extends BaseExample {
 
 		SingleParameter CRPIX1 = factory.createSingleParameter();
 		CRPIX1.setName("CRPIX1");
-		CRPIX1.setSkossConcept("Reference pixel on the horizonal axis");
+		CRPIX1.setSkosConcept("Reference pixel on the horizonal axis");
 		CRPIX1.setParameterType(ParameterType.INTEGER);
 		CRPIX1.setPrecision(mkconst(0.0));
 		CRPIX1.setUnit("None");
@@ -141,7 +141,7 @@ public class Montage extends BaseExample {
 
 		SingleParameter CRPIX2 = factory.createSingleParameter();
 		CRPIX2.setName("CRPIX2");
-		CRPIX2.setSkossConcept("Reference pixel on the vertical axis");
+		CRPIX2.setSkosConcept("Reference pixel on the vertical axis");
 		CRPIX2.setParameterType(ParameterType.INTEGER);
 		CRPIX2.setPrecision(mkconst(0.0));
 		CRPIX2.setUnit("None");
@@ -152,7 +152,7 @@ public class Montage extends BaseExample {
 
 		SingleParameter CDELT1 = factory.createSingleParameter();
 		CDELT1.setName("CDELT1");
-		CDELT1.setSkossConcept("Change per pixel in horizonal axis WCS value at the reference pixel");
+		CDELT1.setSkosConcept("Change per pixel in horizonal axis WCS value at the reference pixel");
 		CDELT1.setParameterType(ParameterType.REAL);
 		CDELT1.setPrecision(mkconst(0.0));
 		CDELT1.setUnit("degree");
@@ -163,7 +163,7 @@ public class Montage extends BaseExample {
 
 		SingleParameter CDELT2 = factory.createSingleParameter();
 		CDELT2.setName("CDELT2");
-		CDELT2.setSkossConcept("Change per pixel in vertical axis WCS value at the reference pixel");
+		CDELT2.setSkosConcept("Change per pixel in vertical axis WCS value at the reference pixel");
 		CDELT2.setParameterType(ParameterType.REAL);
 		CDELT2.setPrecision(mkconst(0.0));
 		CDELT2.setUnit("degree");
@@ -174,7 +174,7 @@ public class Montage extends BaseExample {
 
 		SingleParameter CROTA2 = factory.createSingleParameter();
 		CROTA2.setName("CROTA2");
-		CROTA2.setSkossConcept("Rotation angle of image around the reference pixel");
+		CROTA2.setSkosConcept("Rotation angle of image around the reference pixel");
 		CROTA2.setParameterType(ParameterType.REAL);
 		CROTA2.setPrecision(mkconst(0.0));
 		CROTA2.setUnit("degree");
@@ -185,7 +185,7 @@ public class Montage extends BaseExample {
 
 		SingleParameter ImageLocation = factory.createSingleParameter();
 		ImageLocation.setName("ImageLocation");
-		ImageLocation.setSkossConcept("Folder where the raw images are stored");
+		ImageLocation.setSkosConcept("Folder where the raw images are stored");
 		ImageLocation.setParameterType(ParameterType.STRING);
 		ImageLocation.setPrecision(mkconst(0.0));
 		ImageLocation.setUnit("None");
@@ -196,7 +196,7 @@ public class Montage extends BaseExample {
 
 		SingleParameter EQUINOX = factory.createSingleParameter();
 		EQUINOX.setName("EQUINOX");
-		EQUINOX.setSkossConcept("Rotation angle of image around the reference pixel");
+		EQUINOX.setSkosConcept("Rotation angle of image around the reference pixel");
 		EQUINOX.setParameterType(ParameterType.STRING);
 		EQUINOX.setPrecision(mkconst(0.0));
 		EQUINOX.setUnit("year");
@@ -210,7 +210,7 @@ public class Montage extends BaseExample {
 		
 		SingleParameter result = factory.createSingleParameter();
 		result.setName("fileResult");
-		result.setSkossConcept("url to the tar file containing the mosaiced fits files");
+		result.setSkosConcept("url to the tar file containing the mosaiced fits files");
 		result.setParameterType(ParameterType.STRING);
 		result.setPrecision(mkconst(0.0));
 		result.setUnit("None");

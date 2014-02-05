@@ -56,7 +56,7 @@ public class ConeSearchWithExtraColumns extends BaseExample {
 		//SingleParameter mail = factory.createSingleParameter();
 		//mail.setName("mail");
 		//mail.setParameterType(ParameterType.STRING);
-		//mail.setSkossConcept("SKOS_MAIL");
+		//mail.setSkosConcept("SKOS_MAIL");
 		//mail.setUnit("none");
 		//mail.setDimension(mktconst("1", ParameterType.INTEGER));
 		//parameterList.getParameter().add(mail);
@@ -65,7 +65,7 @@ public class ConeSearchWithExtraColumns extends BaseExample {
 
 		SingleParameter RA = factory.createSingleParameter();
 		RA.setName("RA");
-		RA.setSkossConcept("Right ascension");
+		RA.setSkosConcept("Right ascension");
 		RA.setParameterType(ParameterType.REAL);
 		RA.setPrecision(mkconst(0.0));
 		RA.setUnit("deg");
@@ -77,7 +77,7 @@ public class ConeSearchWithExtraColumns extends BaseExample {
 
 		SingleParameter DEC = factory.createSingleParameter();
 		DEC.setName("DEC");
-		DEC.setSkossConcept("Declination");
+		DEC.setSkosConcept("Declination");
 		DEC.setParameterType(ParameterType.REAL);
 		DEC.setPrecision(mkconst(0.0));
 		DEC.setUnit("deg");
@@ -89,7 +89,7 @@ public class ConeSearchWithExtraColumns extends BaseExample {
 
 		SingleParameter SR = factory.createSingleParameter();
 		SR.setName("SR");
-		SR.setSkossConcept("Radius");
+		SR.setSkosConcept("Radius");
 		SR.setParameterType(ParameterType.REAL);
 		SR.setPrecision(mkconst(0.0));
 		SR.setUnit("None");
@@ -104,7 +104,7 @@ public class ConeSearchWithExtraColumns extends BaseExample {
 		
 		SingleParameter result = factory.createSingleParameter();
 		result.setName("responseBody");
-		result.setSkossConcept("VOTable that contains the result of the service");
+		result.setSkosConcept("VOTable that contains the result of the service");
 		result.setParameterType(ParameterType.TABLE);
 		result.setPrecision(mkconst(0.0));
 		result.setUnit("None");
@@ -115,7 +115,7 @@ public class ConeSearchWithExtraColumns extends BaseExample {
 		
 		SingleParameter RA_J2000 = factory.createSingleParameter();
 		RA_J2000.setName("RA J2000");
-		RA_J2000.setSkossConcept("Right Ascension J2000");
+		RA_J2000.setSkosConcept("Right Ascension J2000");
 		RA_J2000.setParameterType(ParameterType.REAL);
 		RA_J2000.setPrecision(mkconst(0.0001));
 		RA_J2000.setUnit("deg");
@@ -127,7 +127,7 @@ public class ConeSearchWithExtraColumns extends BaseExample {
 
 		SingleParameter DEC_J2000 = factory.createSingleParameter();
 		DEC_J2000.setName("DEC J2000");
-		DEC_J2000.setSkossConcept("Right Ascension J2000");
+		DEC_J2000.setSkosConcept("Right Ascension J2000");
 		DEC_J2000.setParameterType(ParameterType.REAL);
 		DEC_J2000.setPrecision(mkconst(0.0001));
 		DEC_J2000.setUnit("deg");
@@ -139,7 +139,7 @@ public class ConeSearchWithExtraColumns extends BaseExample {
 		
 		SingleParameter LB = factory.createSingleParameter();
 		LB.setName("LB");
-		LB.setSkossConcept("Blue luminosity calculated from D and mB-corr (Verdes-Montenegro et al. 2005) as explained in Lisenfeld et al. 2007");
+		LB.setSkosConcept("Blue luminosity calculated from D and mB-corr (Verdes-Montenegro et al. 2005) as explained in Lisenfeld et al. 2007");
 		LB.setParameterType(ParameterType.REAL);
 		LB.setPrecision(mkconst(0.01));
 		LB.setUnit("Lsun");
@@ -151,7 +151,7 @@ public class ConeSearchWithExtraColumns extends BaseExample {
 
 		SingleParameter V3K = factory.createSingleParameter();
 		V3K.setName("V3K");
-		V3K.setSkossConcept("3K corrected recession Velocity (Verdes-Montenegro et al. 2005)");
+		V3K.setSkosConcept("3K corrected recession Velocity (Verdes-Montenegro et al. 2005)");
 		V3K.setParameterType(ParameterType.REAL);
 		V3K.setPrecision(mkconst(0.0));
 		V3K.setUnit("Lsun");

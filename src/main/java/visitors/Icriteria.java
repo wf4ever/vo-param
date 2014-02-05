@@ -1,7 +1,13 @@
 package visitors;
 
+import net.ivoa.parameter.model.ParameterType;
+
 /**
+<<<<<<< HEAD
  * @author Carlo Maria Zwlf, Lerma/ObsPM 
+=======
+ * @author Carlo Maria Zwolf, Lerma/ObsPM 
+>>>>>>> master
  * 
  * General Interface for Criteria. A given Criteria is composed of a set of properties
  * that a parameter must satisfy to be valid 
@@ -13,7 +19,7 @@ public interface Icriteria {
 	 * return a String containing the type that is authorized by the criteria
 	 * @return
 	 */
-	public String getAuthorizedCriteriaType();
+	public ParameterType getAuthorizedCriteriaType();
 	
 	/**
 	 * Return true if the criteria is satisfied, false in the other case
@@ -21,5 +27,5 @@ public interface Icriteria {
 	 * @param value : the value of the parameter
 	 * @return
 	 */
-	public boolean VerifyCriteria(String type, String value);
+	public boolean VerifyCriteria(ParameterType type, String value);
 }

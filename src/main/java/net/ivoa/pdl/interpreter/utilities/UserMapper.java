@@ -45,6 +45,10 @@ public class UserMapper {
 		return this.map.get(paramName);
 	}
 	
+	public void setSingleValueInMap(String paramName, GeneralParameter param){
+		this.map.put(paramName, this.makeListFromSingle(param));
+	}
+	
 	
 	List<GeneralParameter> makeListFromSingle(GeneralParameter a){
 		List<GeneralParameter> toReturn = new ArrayList<GeneralParameter>();

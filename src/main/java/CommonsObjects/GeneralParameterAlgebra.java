@@ -30,40 +30,40 @@ public class GeneralParameterAlgebra {
 	public GeneralParameter sum(GeneralParameter a, GeneralParameter b)
 			throws InvalidParameterException {
 		// If a is an integer
-		if (a.getType().equalsIgnoreCase(ParameterType.INTEGER.toString())) {
+		if (a.getType() == ParameterType.INTEGER) {
 			// If b is an integer too
-			if (b.getType().equalsIgnoreCase(ParameterType.INTEGER.toString())) {
+			if (b.getType() == ParameterType.INTEGER) {
 				Integer Result = Integer.parseInt(a.getValue())
 						+ Integer.parseInt(b.getValue());
 				return new GeneralParameter(Result.toString(),
-						ParameterType.INTEGER.toString(),
+						ParameterType.INTEGER,
 						"result of sum " + a.getDescription() + "+"
 								+ b.getDescription(), a.getVisitor());
 			}
 
 			// If b is real
-			if (b.getType().equalsIgnoreCase(ParameterType.REAL.toString())) {
+			if (b.getType() == ParameterType.REAL) {
 				Double Result = Integer.parseInt(a.getValue())
 						+ Double.parseDouble(b.getValue());
 				return new GeneralParameter(Result.toString(),
-						ParameterType.REAL.toString(),
+						ParameterType.REAL,
 						"result of sum " + a.getDescription() + "+"
 								+ b.getDescription(), a.getVisitor());
 			}
 		}
 
 		// if b is integer
-		if (b.getType().equalsIgnoreCase(ParameterType.INTEGER.toString())) {
+		if (b.getType() == ParameterType.INTEGER) {
 			return sum(b, a);
 		}
 
 		// if a and b are real
-		if (a.getType().equalsIgnoreCase(ParameterType.REAL.toString())
-				&& b.getType().equalsIgnoreCase(ParameterType.REAL.toString())) {
+		if (a.getType() == ParameterType.REAL
+				&& b.getType() == ParameterType.REAL) {
 			Double Result = Double.parseDouble(a.getValue())
 					+ Double.parseDouble(b.getValue());
 			return new GeneralParameter(Result.toString(),
-					ParameterType.REAL.toString(), "result of sum "
+					ParameterType.REAL, "result of sum "
 							+ a.getDescription() + "+" + b.getDescription(),
 					a.getVisitor());
 		}
@@ -74,40 +74,40 @@ public class GeneralParameterAlgebra {
 	public GeneralParameter multiplication(GeneralParameter a,
 			GeneralParameter b) throws InvalidParameterException {
 		// If a is an integer
-		if (a.getType().equalsIgnoreCase(ParameterType.INTEGER.toString())) {
+		if (a.getType() == ParameterType.INTEGER) {
 			// If b is an integer too
-			if (b.getType().equalsIgnoreCase(ParameterType.INTEGER.toString())) {
+			if (b.getType() == ParameterType.INTEGER) {
 				Integer Result = Integer.parseInt(a.getValue())
 						* Integer.parseInt(b.getValue());
 				return new GeneralParameter(Result.toString(),
-						ParameterType.INTEGER.toString(),
+						ParameterType.INTEGER,
 						"result of product " + a.getDescription() + "*"
 								+ b.getDescription(), a.getVisitor());
 			}
 
 			// If b is real
-			if (b.getType().equalsIgnoreCase(ParameterType.REAL.toString())) {
+			if (b.getType() == ParameterType.REAL) {
 				Double Result = Integer.parseInt(a.getValue())
 						* Double.parseDouble(b.getValue());
 				return new GeneralParameter(Result.toString(),
-						ParameterType.REAL.toString(),
+						ParameterType.REAL,
 						"result of product " + a.getDescription() + "*"
 								+ b.getDescription(), a.getVisitor());
 			}
 		}
 
 		// if b is integer
-		if (b.getType().equalsIgnoreCase(ParameterType.INTEGER.toString())) {
+		if (b.getType() == ParameterType.INTEGER) {
 			return multiplication(b, a);
 		}
 
 		// if a and b are real
-		if (a.getType().equalsIgnoreCase(ParameterType.REAL.toString())
-				&& b.getType().equalsIgnoreCase(ParameterType.REAL.toString())) {
+		if (a.getType() == ParameterType.REAL
+				&& b.getType() == ParameterType.REAL) {
 			Double Result = Double.parseDouble(a.getValue())
 					* Double.parseDouble(b.getValue());
 			return new GeneralParameter(Result.toString(),
-					ParameterType.REAL.toString(), "result of product "
+					ParameterType.REAL, "result of product "
 							+ a.getDescription() + "*" + b.getDescription(),
 					a.getVisitor());
 		}
@@ -118,46 +118,46 @@ public class GeneralParameterAlgebra {
 	public GeneralParameter substraction(GeneralParameter a, GeneralParameter b)
 			throws InvalidParameterException {
 		// If a is an integer
-		if (a.getType().equalsIgnoreCase(ParameterType.INTEGER.toString())) {
+		if (a.getType() == ParameterType.INTEGER) {
 			// If b is an integer too
-			if (b.getType().equalsIgnoreCase(ParameterType.INTEGER.toString())) {
+			if (b.getType() == ParameterType.INTEGER) {
 				Integer Result = Integer.parseInt(a.getValue())
 						- Integer.parseInt(b.getValue());
 				return new GeneralParameter(Result.toString(),
-						ParameterType.INTEGER.toString(),
+						ParameterType.INTEGER,
 						"result of substraction " + a.getDescription() + "-"
 								+ b.getDescription(), a.getVisitor());
 			}
 
 			// If b is real
-			if (b.getType().equalsIgnoreCase(ParameterType.REAL.toString())) {
+			if (b.getType() == ParameterType.REAL) {
 				Double Result = Integer.parseInt(a.getValue())
 						- Double.parseDouble(b.getValue());
 				return new GeneralParameter(Result.toString(),
-						ParameterType.REAL.toString(),
+						ParameterType.REAL,
 						"result of substraction " + a.getDescription() + "-"
 								+ b.getDescription(), a.getVisitor());
 			}
 		}
 
 		// If a is real
-		if (a.getType().equalsIgnoreCase(ParameterType.REAL.toString())) {
+		if (a.getType() == ParameterType.REAL) {
 			// If b is an integer
-			if (b.getType().equalsIgnoreCase(ParameterType.INTEGER.toString())) {
+			if (b.getType() == ParameterType.INTEGER) {
 				Double Result = Double.parseDouble(a.getValue())
 						- Integer.parseInt(b.getValue());
 				return new GeneralParameter(Result.toString(),
-						ParameterType.INTEGER.toString(),
+						ParameterType.INTEGER,
 						"result of substraction " + a.getDescription() + "-"
 								+ b.getDescription(), a.getVisitor());
 			}
 
 			// If b is real too
-			if (b.getType().equalsIgnoreCase(ParameterType.REAL.toString())) {
+			if (b.getType() == ParameterType.REAL) {
 				Double Result = Double.parseDouble(a.getValue())
 						- Double.parseDouble(b.getValue());
 				return new GeneralParameter(Result.toString(),
-						ParameterType.REAL.toString(),
+						ParameterType.REAL,
 						"result of substraction " + a.getDescription() + "-"
 								+ b.getDescription(), a.getVisitor());
 			}
@@ -169,15 +169,15 @@ public class GeneralParameterAlgebra {
 	public GeneralParameter division(GeneralParameter a, GeneralParameter b)
 			throws InvalidParameterException {
 		// If (a is real or integer) and (b is real or integer)
-		if ((a.getType().equalsIgnoreCase(ParameterType.REAL.toString()) || a
-				.getType().equalsIgnoreCase(ParameterType.INTEGER.toString()))
-				&& (b.getType().equalsIgnoreCase(ParameterType.REAL.toString()) || b
-						.getType().equalsIgnoreCase(
-								ParameterType.INTEGER.toString()))) {
+		if ((a.getType() == ParameterType.REAL || a
+				.getType() == ParameterType.INTEGER)
+				&& (b.getType() == ParameterType.REAL || b
+						.getType() == 
+								ParameterType.INTEGER)) {
 			Double Result = Double.parseDouble(a.getValue())
 					/ Double.parseDouble(b.getValue());
 			return new GeneralParameter(Result.toString(),
-					ParameterType.REAL.toString(), "result of division "
+					ParameterType.REAL, "result of division "
 							+ a.getDescription() + "/" + b.getDescription(),
 					a.getVisitor());
 		}
@@ -188,15 +188,15 @@ public class GeneralParameterAlgebra {
 	public GeneralParameter power(GeneralParameter a, GeneralParameter b)
 			throws InvalidParameterException {
 		// If (a is real or integer) and (b is real or integer)
-		if ((a.getType().equalsIgnoreCase(ParameterType.REAL.toString()) || a
-				.getType().equalsIgnoreCase(ParameterType.INTEGER.toString()))
-				&& (b.getType().equalsIgnoreCase(ParameterType.REAL.toString()) || b
-						.getType().equalsIgnoreCase(
-								ParameterType.INTEGER.toString()))) {
+		if ((a.getType() == ParameterType.REAL || a
+				.getType() == ParameterType.INTEGER)
+				&& (b.getType() == ParameterType.REAL || b
+						.getType() == 
+								ParameterType.INTEGER)) {
 			Double Result = Math.pow(Double.parseDouble(a.getValue()),
 					Double.parseDouble(b.getValue()));
 			return new GeneralParameter(Result.toString(),
-					ParameterType.REAL.toString(), "result of power "
+					ParameterType.REAL, "result of power "
 							+ a.getDescription() + "powered by"
 							+ b.getDescription(), a.getVisitor());
 		}
@@ -210,7 +210,7 @@ public class GeneralParameterAlgebra {
 				param)) {
 			Double value = Math.abs(Double.parseDouble(param.getValue()));
 			return new GeneralParameter(value.toString(),
-					ParameterType.REAL.toString(), "absolute value of "
+					ParameterType.REAL, "absolute value of "
 							+ param.getDescription(), param.getVisitor());
 		} else {
 			throw new InvalidExpression(
@@ -224,7 +224,7 @@ public class GeneralParameterAlgebra {
 				param)) {
 			Double value = Math.sin(Double.parseDouble(param.getValue()));
 			return new GeneralParameter(value.toString(),
-					ParameterType.REAL.toString(), "sinus of "
+					ParameterType.REAL, "sinus of "
 							+ param.getDescription(), param.getVisitor());
 		} else {
 			throw new InvalidExpression(
@@ -238,7 +238,7 @@ public class GeneralParameterAlgebra {
 				param)) {
 			Double value = Math.cos(Double.parseDouble(param.getValue()));
 			return new GeneralParameter(value.toString(),
-					ParameterType.REAL.toString(), "cosinus of "
+					ParameterType.REAL, "cosinus of "
 							+ param.getDescription(), param.getVisitor());
 		} else {
 			throw new InvalidExpression(
@@ -252,7 +252,7 @@ public class GeneralParameterAlgebra {
 				param)) {
 			Double value = Math.tan(Double.parseDouble(param.getValue()));
 			return new GeneralParameter(value.toString(),
-					ParameterType.REAL.toString(), "tan of "
+					ParameterType.REAL, "tan of "
 							+ param.getDescription(), param.getVisitor());
 		} else {
 			throw new InvalidExpression(
@@ -266,7 +266,7 @@ public class GeneralParameterAlgebra {
 				param)) {
 			Double value = Math.asin(Double.parseDouble(param.getValue()));
 			return new GeneralParameter(value.toString(),
-					ParameterType.REAL.toString(), "asinus of "
+					ParameterType.REAL, "asinus of "
 							+ param.getDescription(), param.getVisitor());
 		} else {
 			throw new InvalidExpression(
@@ -280,7 +280,7 @@ public class GeneralParameterAlgebra {
 				param)) {
 			Double value = Math.acos(Double.parseDouble(param.getValue()));
 			return new GeneralParameter(value.toString(),
-					ParameterType.REAL.toString(), "acos of "
+					ParameterType.REAL, "acos of "
 							+ param.getDescription(), param.getVisitor());
 		} else {
 			throw new InvalidExpression(
@@ -294,7 +294,7 @@ public class GeneralParameterAlgebra {
 				param)) {
 			Double value = Math.atan(Double.parseDouble(param.getValue()));
 			return new GeneralParameter(value.toString(),
-					ParameterType.REAL.toString(), "atan of "
+					ParameterType.REAL, "atan of "
 							+ param.getDescription(), param.getVisitor());
 		} else {
 			throw new InvalidExpression(
@@ -308,7 +308,7 @@ public class GeneralParameterAlgebra {
 				param)) {
 			Double value = Math.exp(Double.parseDouble(param.getValue()));
 			return new GeneralParameter(value.toString(),
-					ParameterType.REAL.toString(), "exp of "
+					ParameterType.REAL, "exp of "
 							+ param.getDescription(), param.getVisitor());
 		} else {
 			throw new InvalidExpression(
@@ -322,7 +322,7 @@ public class GeneralParameterAlgebra {
 				param)) {
 			Double value = Math.log(Double.parseDouble(param.getValue()));
 			return new GeneralParameter(value.toString(),
-					ParameterType.REAL.toString(), "log of "
+					ParameterType.REAL, "log of "
 							+ param.getDescription(), param.getVisitor());
 		} else {
 			throw new InvalidExpression(
@@ -332,7 +332,7 @@ public class GeneralParameterAlgebra {
 
 	public GeneralParameter size(List<GeneralParameter> params) {
 		return new GeneralParameter("" + params.size(),
-				ParameterType.INTEGER.toString(), "size of vector expression",
+				ParameterType.INTEGER, "size of vector expression",
 				params.get(0).getVisitor());
 	}
 
@@ -348,7 +348,7 @@ public class GeneralParameterAlgebra {
 				sum = sum + Double.parseDouble(params.get(i).getValue());
 			}
 			return new GeneralParameter(sum.toString(),
-					ParameterType.REAL.toString(), "sum of vector expression",
+					ParameterType.REAL, "sum of vector expression",
 					params.get(0).getVisitor());
 		}
 	}
@@ -366,7 +366,7 @@ public class GeneralParameterAlgebra {
 						* Double.parseDouble(params.get(i).getValue());
 			}
 			return new GeneralParameter(product.toString(),
-					ParameterType.REAL.toString(),
+					ParameterType.REAL,
 					"product of vector expression", params.get(0).getVisitor());
 		}
 	}
@@ -387,7 +387,7 @@ public class GeneralParameterAlgebra {
 		// If the params are not numerical, then they are equal iff both value
 		// and type are equals
 		return (a.getValue().equals(b.getValue()) && a.getType()
-				.equalsIgnoreCase(b.getType()));
+				 == b.getType());
 	}
 
 	public boolean isFirstGreaterThanSecond(GeneralParameter a,
@@ -441,17 +441,17 @@ public class GeneralParameterAlgebra {
 	}
 
 	private boolean isNumericalGeneralParameter(GeneralParameter param) {
-		return (param.getType().equalsIgnoreCase("INTEGER") || param.getType()
-				.equalsIgnoreCase("REAL"));
+		return (param.getType() == ParameterType.INTEGER || param.getType()
+				 == ParameterType.REAL);
 	}
 
 	public static void main(String[] args) throws InvalidParameterException,
 			InvalidExpression, InvalidCondition {
 		Ivisitor visitor = new GeneralParameterVisitor();
 		GeneralParameter a = new GeneralParameter("3",
-				ParameterType.INTEGER.toString(), "a", visitor);
+				ParameterType.INTEGER, "a", visitor);
 		GeneralParameter b = new GeneralParameter("4",
-				ParameterType.INTEGER.toString(), "b", visitor);
+				ParameterType.INTEGER, "b", visitor);
 
 		GeneralParameter c = GeneralParameterAlgebra.getInstance()
 				.substraction(a, b);

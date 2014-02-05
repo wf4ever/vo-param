@@ -1,4 +1,3 @@
-/*
 package test;
 
 import static net.ivoa.pdl.interpreter.utilities.ConstantUtils.mktconst;
@@ -58,18 +57,15 @@ public class Shock extends BaseExample {
 
 		ParameterGroup shockParameter = factory.createParameterGroup()
 				.withName("shockParameters");
-		ParameterGroup environement = factory.createParameterGroup().withName(
-				"environment");
+
 		ParameterGroup numericalParameters = factory.createParameterGroup()
 				.withName("numericalParameters");
-		ParameterGroup outputSpecifications = factory.createParameterGroup()
-				.withName("outputSpecifications");
 
 		SingleParameter mail = factory.createSingleParameter();
 		mail.setDependency(ParameterDependency.REQUIRED);
 		mail.setName("mail");
 		mail.setParameterType(ParameterType.STRING);
-		mail.setSkossConcept("mail of the user");
+		mail.setSkosConcept("mail of the user");
 		mail.setUnit("no unit");
 		mail.setDimension(mktconst("1", ParameterType.INTEGER));
 		ParameterReference mailRef = mkRef(mail);
@@ -79,7 +75,19 @@ public class Shock extends BaseExample {
 		shockType.setDependency(ParameterDependency.REQUIRED);
 		shockType.setName("shockType");
 		shockType.setParameterType(ParameterType.STRING);
-		shockType.setSkossConcept("shock type");
+		String shockTypeConcept = "";
+		shockTypeConcept += "<html><table>";
+		shockTypeConcept += "<tr><td>name:</td> <td> shockType </td></tr>";
+		shockTypeConcept += "<tr><td>definition:</td> <td> this is the type of the shock. The Paris-Durham model allows for </tr>";
+		shockTypeConcept += "<tr><td> </td> <td> stationary C- or J-type, or approximate non stationary CJ-type shock</td></tr>";
+		shockTypeConcept += "<tr><td> </td> <td> models to run. Accordingly choose either 'C', 'J', or 'CJ' </td></tr>";
+		shockTypeConcept += "<tr><td>type: </td> string</tr>";
+		shockTypeConcept += "<tr><td>recommended value:</td> <td>none</td></tr>";
+		shockTypeConcept += "<tr><td>unit:</td><td>none</td></tr>";
+		shockTypeConcept += "<tr><td>conditions:</td><td>yes</td></tr>";
+		shockTypeConcept += "<tr><td>restrictions:</td><td>must be 'C', 'J', or 'CJ'</td></tr>";
+		shockTypeConcept += "</table></html>";
+		shockType.setSkosConcept(shockTypeConcept);
 		shockType.setUnit("no unit");
 		shockType.setDimension(mktconst("1", ParameterType.INTEGER));
 		ParameterReference shockTypeRef = mkRef(shockType);
@@ -89,7 +97,22 @@ public class Shock extends BaseExample {
 		Nfluids.setDependency(ParameterDependency.REQUIRED);
 		Nfluids.setName("Nfluids");
 		Nfluids.setParameterType(ParameterType.INTEGER);
-		Nfluids.setSkossConcept("number of fluids to consider");
+		String nFluidsConcept = "";
+		nFluidsConcept += "<html><table>";
+		nFluidsConcept += "<tr><td>name:</td><td>Nfluids</td></tr>";
+		nFluidsConcept += "<tr><td>definition:</td><td> the number of fluids you must/want to take into account. In a J-type</td></tr>";
+		nFluidsConcept += "<tr><td> </td><td>shock model, where there is no magnetic field, no differential </td></tr>";
+		nFluidsConcept += "<tr><td> </td><td>behaviour is expected between neutral and charged fluids: one fluid </td></tr>";
+		nFluidsConcept += "<tr><td> </td><td>is sufficient. In a CJ- or C-type model, the charged particles do </td></tr>";
+		nFluidsConcept += "<tr><td> </td><td>interact with the magnetic field, contrary to the neutral ones,</td></tr>";
+		nFluidsConcept += "	<tr><td> </td><td>hence the need for three fluids (neutral, charged, electrons).</td></tr>";
+		nFluidsConcept += "	<tr><td>type:</td><td> integer</td></tr>";
+		nFluidsConcept += "	<tr><td>recommended value:</td><td>'3' for C- and CJ-type models, '1' for J-type ones.</td></tr>";
+		nFluidsConcept += "	<tr><td>unit:</td><td>none</td></tr>";
+		nFluidsConcept += "	<tr><td>conditions:</td><td>yes</td></tr>";
+		nFluidsConcept += "	<tr><td>restriction:</td><td> must be equal to '1' or '3'</td></tr>";
+		nFluidsConcept += "	</table></html>";
+		Nfluids.setSkosConcept(nFluidsConcept);
 		Nfluids.setUnit("no unit");
 		Nfluids.setDimension(mktconst("1", ParameterType.INTEGER));
 		ParameterReference NfluidsRef = mkRef(Nfluids);
@@ -99,7 +122,21 @@ public class Shock extends BaseExample {
 		Bbeta.setDependency(ParameterDependency.REQUIRED);
 		Bbeta.setName("Bbeta");
 		Bbeta.setParameterType(ParameterType.REAL);
-		Bbeta.setSkossConcept("magnetic field strenght parameter");
+		String bBetaConcept = "";
+		bBetaConcept += "<html><table>";
+		bBetaConcept += "<tr><td>name:</td><td>Bbeta</td></tr>";
+		bBetaConcept += "<tr><td>definition:</td><td>the magnetic field strength parameter. Note that this parameters</td></tr>";
+		bBetaConcept += "<tr><td></td><td>sets the value of the component transverse to the direction of the</td> </tr>";
+		bBetaConcept += "<tr><td></td><td>shock. This values varies as: </td></tr>";
+		bBetaConcept += "<tr><td></td><td>Btransverse (microG) =  Bbeta * sqrt (nH (cm^-3)),</td></tr>";
+		bBetaConcept += "<tr><td></td><td>where nH is the pre-shock density (see below).</td></tr>";
+		bBetaConcept += "<tr><td>type:</td><td>real</td></tr>";
+		bBetaConcept += "<tr><td>ecommended value:</td><td> '1' is a standard option (Crutcher, R.M., ApJ, 1999, 520, 706).</td></tr>";
+		bBetaConcept += "<tr><td>unit:</td><td>microG/cm^(3/2)</td></tr>";
+		bBetaConcept += "<tr><td>conditions:</td><td>yes</td></tr>";
+		bBetaConcept += "<tr><td>restriction:</td><td>must be positive or null</td></tr>";
+		bBetaConcept += "</table></html>";
+		Bbeta.setSkosConcept(bBetaConcept);
 		Bbeta.setUnit("micro Gauss cm^(3/2)");
 		Bbeta.setDimension(mktconst("1", ParameterType.INTEGER));
 		ParameterReference BbetaRef = mkRef(Bbeta);
@@ -109,7 +146,25 @@ public class Shock extends BaseExample {
 		Vs.setDependency(ParameterDependency.REQUIRED);
 		Vs.setName("Vs");
 		Vs.setParameterType(ParameterType.REAL);
-		Vs.setSkossConcept("shock velocity");
+		String shockVelocityConcept = "";
+		shockVelocityConcept += "<html><table>";
+		shockVelocityConcept += "<tr><td>name:</td><td>vs</td></tr>";
+		shockVelocityConcept += "<tr><td>definition:</td><td>the shock velocity. Note that this value can not be chosen freely. </td></tr>";
+		shockVelocityConcept += "<tr><td></td><td>In case of C-shock models, it can not exceed a 'critical' velocity </td></tr>";
+		shockVelocityConcept += "<tr><td></td><td>that depends on the choice of other parameters such as the pre-shock </td></tr>";
+		shockVelocityConcept += "<tr><td></td><td>density and magnetic field (and many others, see Flower & Pineau des </td></tr>";
+		shockVelocityConcept += "<tr><td></td><td>Forêts, MNRAS, 2003, 343, 390, and Le bourlot et al., MNRAS, 2002, </td></tr>";
+		shockVelocityConcept += "<tr><td></td><td>332, 985). For J-type shock models, the validity of the physics </td></tr>";
+		shockVelocityConcept += "<tr><td></td><td>included in our models might be unsufficient for shock velocities </td></tr>";
+		shockVelocityConcept += "<tr><td></td><td>above ~50 km/s.</td></tr>";
+		shockVelocityConcept += "<tr><td>type:</td><td>real</td></tr>";
+		shockVelocityConcept += "<tr><td>recommended value:</td><td>'25' is a safe option for standard inputs (for instance </td></tr>";
+		shockVelocityConcept += "<tr><td></td><td>nH = 1e4 cm^-3, Bbeta = 1).</td></tr>";
+		shockVelocityConcept += "<tr><td>unit:</td><td>km/s</td></tr>";
+		shockVelocityConcept += "<tr><td>conditions:</td><td>yes</td></tr>";
+		shockVelocityConcept += "<tr><td>restriction:</td><td>must be strictly positive</td></tr>";
+		shockVelocityConcept += "</table></html>";
+		Vs.setSkosConcept(shockVelocityConcept);
 		Vs.setUnit("km/s");
 		Vs.setDimension(mktconst("1", ParameterType.INTEGER));
 		ParameterReference vsRef = mkRef(Vs);
@@ -119,8 +174,18 @@ public class Shock extends BaseExample {
 		Vdi.setDependency(ParameterDependency.REQUIRED);
 		Vdi.setName("Vdi");
 		Vdi.setParameterType(ParameterType.REAL);
-		Vdi.setSkossConcept("initial drift velocity");
-		Vdi.setUnit("km/s");
+		String vdiConcept = "";
+		vdiConcept += "<html><table>";
+		vdiConcept += "<tr><td>name:</td><td>vdi</td></tr>";
+		vdiConcept += "<tr><td>definition:</td><td>the initial drift velocity between ions and neutrals.</td></tr>";
+		vdiConcept += "<tr><td>type:</td><td>real</td></tr>";
+		vdiConcept += "<tr><td>recommended value:</td><td>'1e3'</td></tr>";
+		vdiConcept += "<tr><td>unit:</td><td>cm/s</td></tr>";
+		vdiConcept += "<tr><td>conditions:</td><td>no</td></tr>";
+		vdiConcept += "<tr><td>restriction:</td><td>must be positive or null</td></tr>";
+		vdiConcept += "</table></html>";
+		Vdi.setSkosConcept(vdiConcept);
+		Vdi.setUnit("cm/s");
 		Vdi.setDimension(mktconst("1", ParameterType.INTEGER));
 		ParameterReference VdiRef = mkRef(Vdi);
 		parameterList.getParameter().add(Vdi);
@@ -129,8 +194,18 @@ public class Shock extends BaseExample {
 		OpH2.setDependency(ParameterDependency.REQUIRED);
 		OpH2.setName("OpH2");
 		OpH2.setParameterType(ParameterType.REAL);
-		OpH2.setSkossConcept("initial H2 ortho/para ratio");
-		OpH2.setUnit("None");
+		String opH2Concept = "";
+		opH2Concept += "<html><table>";
+		opH2Concept += "<tr><td>name:</td><td>opH2</td></tr>";
+		opH2Concept += "<tr><td>definition:</td><td>the initial ortho-to-para ratio value for H2.</td></tr>";
+		opH2Concept += "<tr><td>type:</td><td>real</td></tr>";
+		opH2Concept += "<tr><td>recommended value:</td><td>'3', the LTE value.</td></tr>";
+		opH2Concept += "<tr><td>unit:</td><td>none</td></tr>";
+		opH2Concept += "<tr><td>conditions:</td><td>no</td></tr>";
+		opH2Concept += "<tr><td>restriction:</td><td>must be positive or null</td></tr>";
+		opH2Concept += "</table></html>";
+		OpH2.setSkosConcept(opH2Concept);
+		OpH2.setUnit("No unit");
 		OpH2.setDimension(mktconst("1", ParameterType.INTEGER));
 		ParameterReference OpH2Ref = mkRef(OpH2);
 		parameterList.getParameter().add(OpH2);
@@ -139,7 +214,19 @@ public class Shock extends BaseExample {
 		Ti.setDependency(ParameterDependency.REQUIRED);
 		Ti.setName("Ti");
 		Ti.setParameterType(ParameterType.REAL);
-		Ti.setSkossConcept("initial gas temperature");
+		String tiConcept = "";
+		tiConcept += "<html><table>";
+		tiConcept += "<tr><td>name:</td><td>Ti</td></tr>";
+		tiConcept += "<tr><td>definition:</td><td>the initial gas temperature. This is regardless of the considered </td></tr>";
+		tiConcept += "<tr><td></td><td>number of fluids, as in the pre-shock region, the ions and neutral </td></tr>";
+		tiConcept += "<tr><td></td><td>particles are not yet decoupled.</td></tr>";
+		tiConcept += "<tr><td>type:</td><td>real</td></tr>";
+		tiConcept += "<tr><td>recommended value:</td><td>'10'</td></tr>";
+		tiConcept += "<tr><td>unit:</td><td>K</td></tr>";
+		tiConcept += "<tr><td>conditions:</td><td>no</td></tr>";
+		tiConcept += "<tr><td>restriction:</td><td>must be strictly positive</td></tr>";
+		tiConcept += "</table></html>";
+		Ti.setSkosConcept(tiConcept);
 		Ti.setUnit("K");
 		Ti.setDimension(mktconst("1", ParameterType.INTEGER));
 		ParameterReference TiRef = mkRef(Ti);
@@ -149,7 +236,18 @@ public class Shock extends BaseExample {
 		nHi.setDependency(ParameterDependency.REQUIRED);
 		nHi.setName("nHi");
 		nHi.setParameterType(ParameterType.REAL);
-		nHi.setSkossConcept("pre-shock density");
+		String nHiConcept = "";
+		nHiConcept += "<html><table>";
+		nHiConcept += "<tr><td>name:</td><td>nHi</td></tr>";
+		nHiConcept += "<tr><td>definition:</td><td>the pre-shock density, i.e. the initial value for </td></tr>";
+		nHiConcept += "<tr><td></td><td>n(H) + 2.0 n(H2) + n(H+).</td></tr>";
+		nHiConcept += "<tr><td>type:</td><td>real</td></tr>";
+		nHiConcept += "<tr><td>recommended value:</td><td>'1e4'</td></tr>";
+		nHiConcept += "<tr><td>unit:</td><td>cm^-3</td></tr>";
+		nHiConcept += "<tr><td>conditions:</td><td>yes</td></tr>";
+		nHiConcept += "<tr><td>restriction:</td><td>must be strictly positive</td></tr>";
+		nHiConcept += "</table></html>";
+		nHi.setSkosConcept(nHiConcept);
 		nHi.setUnit("cm^(-3)");
 		nHi.setDimension(mktconst("1", ParameterType.INTEGER));
 		ParameterReference nHiRef = mkRef(nHi);
@@ -159,7 +257,19 @@ public class Shock extends BaseExample {
 		Tg.setDependency(ParameterDependency.REQUIRED);
 		Tg.setName("Tg");
 		Tg.setParameterType(ParameterType.REAL);
-		Tg.setSkossConcept("initial grain temperature");
+		String tgConcept = "";
+		tgConcept += "<html><table>";
+		tgConcept += "<tr><td>name:</td><td>Tg</td></tr>";
+		tgConcept += "<tr><td>definition:</td><td>the grain temperature. No thermal balance is done in the current </td></tr>";
+		tgConcept += "<tr><td></td><td>version of the shock model for the grains, so their temperature </td></tr>";
+		tgConcept += "<tr><td></td><td>remains at this value through the whole shocked layer. </td></tr>";
+		tgConcept += "<tr><td>type:</td><td>real</td></tr>";
+		tgConcept += "<tr><td>recommended value:</td><td>'15'</td></tr>";
+		tgConcept += "<tr><td>unit:</td><td>K</td></tr>";
+		tgConcept += "<tr><td>conditions:</td><td>no</td></tr>";
+		tgConcept += "<tr><td>restriction:</td><td>must be strictly positive</td></tr>";
+		tgConcept += "</table></html>";
+		Tg.setSkosConcept(tgConcept);
 		Tg.setUnit("K");
 		Tg.setDimension(mktconst("1", ParameterType.INTEGER));
 		ParameterReference TgRef = mkRef(Tg);
@@ -169,7 +279,17 @@ public class Shock extends BaseExample {
 		Zeta.setDependency(ParameterDependency.REQUIRED);
 		Zeta.setName("Zeta");
 		Zeta.setParameterType(ParameterType.REAL);
-		Zeta.setSkossConcept("cosmic ray ionization rate");
+		String zetaConcept = "";
+		zetaConcept += "<html><table>";
+		zetaConcept += "<tr><td>name:</td><td>Zeta</td></tr>";
+		zetaConcept += "<tr><td>definition:</td><td>the ambient/environmental cosmic ray ionization rate. </td></tr>";
+		zetaConcept += "<tr><td>type:</td><td>real</td></tr>";
+		zetaConcept += "<tr><td>recommended value:</td><td>'5e-17'</td></tr>";
+		zetaConcept += "<tr><td>unit:</td><td>s^-1</td></tr>";
+		zetaConcept += "<tr><td>conditions:</td><td>yes</td></tr>";
+		zetaConcept += "<tr><td>restriction:</td><td>must be strictly positive</td></tr>";
+		zetaConcept += "</table></html>";
+		Zeta.setSkosConcept(zetaConcept);
 		Zeta.setUnit("s^(-1)");
 		Zeta.setDimension(mktconst("1", ParameterType.INTEGER));
 		ParameterReference ZetaRef = mkRef(Zeta);
@@ -179,7 +299,17 @@ public class Shock extends BaseExample {
 		NstepMax.setDependency(ParameterDependency.REQUIRED);
 		NstepMax.setName("NstepMax");
 		NstepMax.setParameterType(ParameterType.INTEGER);
-		NstepMax.setSkossConcept("maximum number of integration steps");
+		String nStepMaxConcept = "";
+		nStepMaxConcept += "<html><table>";
+		nStepMaxConcept += "<tr><td>name:</td><td>NstepMax</td></tr>";
+		nStepMaxConcept += "<tr><td>definition:</td><td>the maximum number of integration steps.</td></tr>";
+		nStepMaxConcept += "<tr><td>type:</td><td>integer</td></tr>";
+		nStepMaxConcept += "<tr><td>recommended value:</td><td>'10000' for a precise model, '1000' for a more rudimentary one.</td></tr>";
+		nStepMaxConcept += "<tr><td>unit:</td><td>no unit</td></tr>";
+		nStepMaxConcept += "<tr><td>conditions:</td><td>yes</td></tr>";
+		nStepMaxConcept += "<tr><td>restriction:</td><td>must be strictly positive</td></tr>";
+		nStepMaxConcept += "</table></html>";
+		NstepMax.setSkosConcept(nStepMaxConcept);
 		NstepMax.setUnit("No unit");
 		NstepMax.setDimension(mktconst("1", ParameterType.INTEGER));
 		ParameterReference NstepMaxRef = mkRef(NstepMax);
@@ -189,7 +319,17 @@ public class Shock extends BaseExample {
 		NstepW.setDependency(ParameterDependency.REQUIRED);
 		NstepW.setName("NstepW");
 		NstepW.setParameterType(ParameterType.INTEGER);
-		NstepW.setSkossConcept("number of steps between two outputs");
+		String nstepWConcept = "";
+		nstepWConcept += "<html><table>";
+		nstepWConcept += "<tr><td>name:</td><td>NstepW</td></tr>";
+		nstepWConcept += "<tr><td>definition:</td><td>the number of steps between two outputs.</td></tr>";
+		nstepWConcept += "<tr><td>type:</td><td>integer</td></tr>";
+		nstepWConcept += "<tr><td>recommended value:</td><td>'5'</td></tr>";
+		nstepWConcept += "<tr><td>unit:</td><td>no unit</td></tr>";
+		nstepWConcept += "<tr><td>conditions:</td><td>yes</td></tr>";
+		nstepWConcept += "<tr><td>restriction:</td><td>must be strictly positive</td></tr>";
+		nstepWConcept += "</table></html>";
+		NstepW.setSkosConcept(nstepWConcept);
 		NstepW.setUnit("No unit");
 		NstepW.setDimension(mktconst("1", ParameterType.INTEGER));
 		ParameterReference NstepWRef = mkRef(NstepW);
@@ -199,7 +339,17 @@ public class Shock extends BaseExample {
 		NH2Lev.setDependency(ParameterDependency.REQUIRED);
 		NH2Lev.setName("NH2Lev");
 		NH2Lev.setParameterType(ParameterType.INTEGER);
-		NH2Lev.setSkossConcept("number of H2 levels included");
+		String nH2LevConcept = "";
+		nH2LevConcept += "<html><table>";
+		nH2LevConcept += "<tr><td>name:</td><td>NH2Lev</td></tr>";
+		nH2LevConcept += "<tr><td>definition:</td><td>the number of H2 levels included.</td></tr>";
+		nH2LevConcept += "<tr><td>type:</td><td>integer</td></tr>";
+		nH2LevConcept += "<tr><td>recommended value:</td><td>'150'</td></tr>";
+		nH2LevConcept += "<tr><td>unit:</td><td>no unit</td></tr>";
+		nH2LevConcept += "<tr><td>conditions:</td><td>yes</td></tr>";
+		nH2LevConcept += "<tr><td>restriction:</td><td>must be strictly positive</td></tr>";
+		nH2LevConcept += "</table></html>";
+		NH2Lev.setSkosConcept(nH2LevConcept);
 		NH2Lev.setUnit("No unit");
 		NH2Lev.setDimension(mktconst("1", ParameterType.INTEGER));
 		ParameterReference NH2LevRef = mkRef(NH2Lev);
@@ -209,7 +359,17 @@ public class Shock extends BaseExample {
 		NH2Lines.setDependency(ParameterDependency.REQUIRED);
 		NH2Lines.setName("NH2Lines");
 		NH2Lines.setParameterType(ParameterType.INTEGER);
-		NH2Lines.setSkossConcept("maximum number of H2 lines in output files");
+		String nH2LinesConcept = "";
+		nH2LinesConcept += "<html><table>";
+		nH2LinesConcept += "<tr><td>name:</td><td>NH2Lines</td></tr>";
+		nH2LinesConcept += "<tr><td>definition:</td><td>the number of H2 lines displayed in the H2-related output file.</td></tr>";
+		nH2LinesConcept += "<tr><td>type:</td><td>integer</td></tr>";
+		nH2LinesConcept += "<tr><td>recommended value:</td><td>'200'</td></tr>";
+		nH2LinesConcept += "<tr><td>unit:</td><td>no unit</td></tr>";
+		nH2LinesConcept += "<tr><td>conditions:</td><td>yes</td></tr>";
+		nH2LinesConcept += "<tr><td>restriction:</td><td>must be strictly positive</td></tr>";
+		nH2LinesConcept += "</table></html>";
+		NH2Lines.setSkosConcept(nH2LinesConcept);
 		NH2Lines.setUnit("No unit");
 		NH2Lines.setDimension(mktconst("1", ParameterType.INTEGER));
 		ParameterReference NH2LinesRef = mkRef(NH2Lines);
@@ -219,7 +379,24 @@ public class Shock extends BaseExample {
 		iforH2.setDependency(ParameterDependency.REQUIRED);
 		iforH2.setName("iforH2");
 		iforH2.setParameterType(ParameterType.INTEGER);
-		iforH2.setSkossConcept("formation of grain model");
+		String iforH2Concept = "";
+		iforH2Concept += "<html><table>";
+		iforH2Concept += "<tr><td>name:</td><td>iforH2</td></tr>";
+		iforH2Concept += "<tr><td>definition:</td><td>a flag parameter for the model of H2 formation on grains. Its value </td></tr>";
+		iforH2Concept += "<tr><td></td><td>can be 0, 1, 2, 3, or 4, corresponding to:</td></tr>";
+		iforH2Concept += "<tr><td></td><td>0: 1/3 of 4.4781 eV in internal energy (=> 17249 K) (Allen, 1999)</td></tr>";
+		iforH2Concept += "<tr><td></td><td>1: Proportional to Boltzman Distrib at 17249 K</td></tr>";
+		iforH2Concept += "<tr><td></td><td>2: Dissociation limit : v = 14, J = 0,1 (4.4781 eV)</td></tr>";
+		iforH2Concept += "<tr><td></td><td>3: v = 6, J = 0,1</td></tr>";
+		iforH2Concept += "<tr><td></td><td>4: fraction = relative populations at t, initialised as </td></tr>";
+		iforH2Concept += "<tr><td></td><td>H2_lev%density, and changed during integration</td></tr>";
+		iforH2Concept += "<tr><td>type:</td><td>integer</td></tr>";
+		iforH2Concept += "<tr><td>recommended value:</td><td>'1'</td></tr>";
+		iforH2Concept += "<tr><td>unit:</td><td>no unit</td></tr>";
+		iforH2Concept += "<tr><td>conditions:</td><td>no</td></tr>";
+		iforH2Concept += "<tr><td>restriction:</td><td>must be equal to '0', '1', '2', '3', or '4'</td></tr>";
+		iforH2Concept += "</table></html>";
+		iforH2.setSkosConcept(iforH2Concept);
 		iforH2.setUnit("No unit");
 		iforH2.setDimension(mktconst("1", ParameterType.INTEGER));
 		ParameterReference iforH2Ref = mkRef(iforH2);
@@ -229,7 +406,20 @@ public class Shock extends BaseExample {
 		ikinH2.setDependency(ParameterDependency.REQUIRED);
 		ikinH2.setName("ikinH2");
 		ikinH2.setParameterType(ParameterType.INTEGER);
-		ikinH2.setSkossConcept("kinetic energy of newly formed H2");
+		String ikinH2Concept = "";
+		ikinH2Concept += "<html><table>";
+		ikinH2Concept += "<tr><td>name:</td><td>ikinH2</td></tr>";
+		ikinH2Concept += "<tr><td>definition:</td><td>a flag parameter for the kinetic energy of the newly formed H2. Its </td></tr>";
+		ikinH2Concept += "<tr><td></td><td>value can be 1 or 2, corresponding to:</td></tr>";
+		ikinH2Concept += "<tr><td></td><td>1: 0.5 * (4.4781 - internal)</td></tr>";
+		ikinH2Concept += "<tr><td></td><td>2: Inf(1.4927 eV, 4.4781 - internal)	</td></tr>";
+		ikinH2Concept += "<tr><td>type:</td><td>integer</td></tr>";
+		ikinH2Concept += "<tr><td>recommended value:</td><td>'1'</td></tr>";
+		ikinH2Concept += "<tr><td>unit:</td><td>no unit</td></tr>";
+		ikinH2Concept += "<tr><td>conditions:</td><td>no</td></tr>";
+		ikinH2Concept += "<tr><td>restriction:</td><td>must be equal to '1' or '2'</td></tr>";
+		ikinH2Concept += "</table></html>";
+		ikinH2.setSkosConcept(ikinH2Concept);
 		ikinH2.setUnit("No unit");
 		ikinH2.setDimension(mktconst("1", ParameterType.INTEGER));
 		ParameterReference ikinH2Ref = mkRef(ikinH2);
@@ -239,7 +429,17 @@ public class Shock extends BaseExample {
 		xll.setDependency(ParameterDependency.REQUIRED);
 		xll.setName("xll");
 		xll.setParameterType(ParameterType.REAL);
-		xll.setSkossConcept("characteristic viscous lenght");
+		String xllConcept = "";
+		xllConcept += "<html><table>";
+		xllConcept += "<tr><td>name:</td><td>xll</td></tr>";
+		xllConcept += "<tr><td>definition:</td><td>the characteristic viscous length.</td></tr>";
+		xllConcept += "<tr><td>type:</td><td>real</td></tr>";
+		xllConcept += "<tr><td>recommended value:</td><td>'1e9'</td></tr>";
+		xllConcept += "<tr><td>unit:</td><td>cm</td></tr>";
+		xllConcept += "<tr><td>conditions:</td><td>yes</td></tr>";
+		xllConcept += "<tr><td>restriction:</td><td>must be strictly positive</td></tr>";
+		xllConcept += "</table></html>";
+		xll.setSkosConcept(xllConcept);
 		xll.setUnit("cm");
 		xll.setDimension(mktconst("1", ParameterType.INTEGER));
 		ParameterReference xllRef = mkRef(xll);
@@ -249,7 +449,17 @@ public class Shock extends BaseExample {
 		epsV.setDependency(ParameterDependency.REQUIRED);
 		epsV.setName("epsV");
 		epsV.setParameterType(ParameterType.REAL);
-		epsV.setSkossConcept("precision of computation");
+		String epsVConcept = "";
+		epsVConcept += "<html><table>";
+		epsVConcept += "<tr><td>name:</td><td>epsV</td></tr>";
+		epsVConcept += "<tr><td>definition:</td><td>a parameter for the precision of the computation.</td></tr>";
+		epsVConcept += "<tr><td>type:</td><td>real</td></tr>";
+		epsVConcept += "<tr><td>recommended value:</td><td>'1e-8'</td></tr>";
+		epsVConcept += "<tr><td>unit:</td><td>no unit</td></tr>";
+		epsVConcept += "<tr><td>conditions:</td><td>yes</td></tr>";
+		epsVConcept += "<tr><td>restriction:</td><td>must be strictly positive</td></tr>";
+		epsVConcept += "</table></html>";
+		epsV.setSkosConcept(epsVConcept);
 		epsV.setUnit("No unit");
 		epsV.setDimension(mktconst("1", ParameterType.INTEGER));
 		ParameterReference epsVRef = mkRef(epsV);
@@ -259,7 +469,20 @@ public class Shock extends BaseExample {
 		TimeJ.setDependency(ParameterDependency.REQUIRED);
 		TimeJ.setName("TimeJ");
 		TimeJ.setParameterType(ParameterType.REAL);
-		TimeJ.setSkossConcept("shock age");
+		String timeJConcept = "";
+		timeJConcept += "<html><table>";
+		timeJConcept += "<tr><td>name:</td><td>TimeJ</td></tr>";
+		timeJConcept += "<tr><td>definition:</td><td>a parameter that determines the age of the shock. For a C- or J-type </td></tr>";
+		timeJConcept += "<tr><td></td><td>shock model, this parameter must be larger than the MaxTimeN one, </td></tr>";
+		timeJConcept += "<tr><td></td><td>contrary to the non-stationary, CJ-type.</td></tr>";
+		timeJConcept += "<tr><td>type:</td><td>real</td></tr>";
+		timeJConcept += "<tr><td>recommended value:</td><td>see above</td></tr>";
+		timeJConcept += "<tr><td>unit:</td><td>year</td></tr>";
+		timeJConcept += "<tr><td>conditions:</td><td>yes</td></tr>";
+		timeJConcept += "<tr><td>restriction:</td><td>must be strictly positive; see above</td></tr>";
+		timeJConcept += "</table></html>";
+		TimeJ.setSkosConcept(timeJConcept);
+
 		TimeJ.setUnit("yr");
 		mail.setDimension(mktconst("1", ParameterType.INTEGER));
 		ParameterReference TimeJRef = mkRef(TimeJ);
@@ -269,12 +492,23 @@ public class Shock extends BaseExample {
 		MaxTimeN.setDependency(ParameterDependency.REQUIRED);
 		MaxTimeN.setName("MaxTimeN");
 		MaxTimeN.setParameterType(ParameterType.REAL);
-		MaxTimeN.setSkossConcept("maximum shock duration");
+		String maxTimeNConcept = "";
+		maxTimeNConcept += "<html><table>";
+		maxTimeNConcept += "<tr><td>name:</td><td>MaxTimeN</td></tr>";
+		maxTimeNConcept += "<tr><td>definition:</td><td>the maximum shock duration.</td></tr>";
+		maxTimeNConcept += "<tr><td>type:</td><td>real</td></tr>";
+		maxTimeNConcept += "<tr><td>recommended value:</td><td>none</td></tr>";
+		maxTimeNConcept += "<tr><td>unit:</td><td>year</td></tr>";
+		maxTimeNConcept += "<tr><td>conditions:</td><td>yes</td></tr>";
+		maxTimeNConcept += "<tr><td>restriction:</td><td>must be strictly positive; see above</td></tr>";
+		maxTimeNConcept += "</table></html>";
+		MaxTimeN.setSkosConcept(maxTimeNConcept);
 		MaxTimeN.setUnit("yr");
 		MaxTimeN.setDimension(mktconst("1", ParameterType.INTEGER));
 		ParameterReference MaxTimeNRef = mkRef(MaxTimeN);
 		parameterList.getParameter().add(MaxTimeN);
 
+<<<<<<< HEAD
 		SingleParameter SOS = factory.createSingleParameter();
 		SOS.setDependency(ParameterDependency.REQUIRED);
 		SOS.setName("SOS");
@@ -305,6 +539,8 @@ public class Shock extends BaseExample {
 		ParameterReference LIOSRef = mkRef(LIOS);
 		parameterList.getParameter().add(LIOS);
 
+=======
+>>>>>>> master
 		// Adding the parameter list to the service
 		service.setParameters(parameterList);
 
@@ -327,10 +563,30 @@ public class Shock extends BaseExample {
 				.withAlways(new Always().withCriterion(shockTypeSet))
 				.withComment("Shock type must be C, J or S");
 
+<<<<<<< HEAD
+=======
+		// constraint on Bbeta
+		AtomicParameterExpression BbetaExpr = factory
+				.createAtomicParameterExpression().withParameterRef(BbetaRef);
+
+>>>>>>> master
 		// constraint on the NH2Lev
 		AtomicParameterExpression NH2LevExpr = factory
 				.createAtomicParameterExpression().withParameterRef(NH2LevRef);
 
+<<<<<<< HEAD
+=======
+		Criterion BBetaLimits = new Criterion().withExpression(BbetaExpr)
+				.withConditionType(
+						new ValueLargerThan().withReached(true).withValue(
+								mktconst("0", ParameterType.REAL)));
+		
+		AlwaysConditionalStatement BbetaLimitsAlways = new AlwaysConditionalStatement()
+		.withAlways(new Always().withCriterion(BBetaLimits))
+		.withComment(
+				"Bbeta must be always positive or null");
+		
+>>>>>>> master
 		Criterion NH2LevRange = new Criterion()
 				.withExpression(NH2LevExpr)
 				.withConditionType(
@@ -615,6 +871,7 @@ public class Shock extends BaseExample {
 				.withAlways(new Always().withCriterion(TimeJRange))
 				.withComment("TimeJRange value must be >0 and < 1e8");
 
+<<<<<<< HEAD
 		// defining constraint on SOS
 		AtomicParameterExpression SOSExpr = factory
 				.createAtomicParameterExpression().withParameterRef(SOSRef);
@@ -669,6 +926,8 @@ public class Shock extends BaseExample {
 				.withComment(
 						"LIOS values are : 'local'(erg/s/cm3) or 'integrated'(erg/s/cm2/sr)");
 
+=======
+>>>>>>> master
 		// defining some conditional criteria
 		AtomicParameterExpression shockTypeExpr2 = factory
 				.createAtomicParameterExpression().withParameterRef(
@@ -754,9 +1013,17 @@ public class Shock extends BaseExample {
 		shockParameter.getParameterRef().add(TiRef);
 		shockParameter.getParameterRef().add(nHiRef);
 		shockParameter.getParameterRef().add(TgRef);
+<<<<<<< HEAD
 
 		shockParameter.withConstraintOnGroup(new ConstraintOnGroup()
 				.withConditionalStatement(shockTpeAlways)
+=======
+		shockParameter.getParameterRef().add(ZetaRef);
+
+		shockParameter.withConstraintOnGroup(new ConstraintOnGroup()
+				.withConditionalStatement(shockTpeAlways)
+				.withConditionalStatement(BbetaLimitsAlways)
+>>>>>>> master
 				.withConditionalStatement(NfluidAlways)
 				.withConditionalStatement(vsPosAlways)
 				.withConditionalStatement(vdiPosAlways)
@@ -769,11 +1036,14 @@ public class Shock extends BaseExample {
 				.withConditionalStatement(ifShockJNfluid1)
 				.withConditionalStatement(ifShockSMaxTimeLimit));
 
+<<<<<<< HEAD
 		environement.getParameterRef().add(ZetaRef);
 
 		environement.withConstraintOnGroup(new ConstraintOnGroup()
 				.withConditionalStatement(ZetaRangeAlways));
 
+=======
+>>>>>>> master
 		numericalParameters.getParameterRef().add(NstepMaxRef);
 		numericalParameters.getParameterRef().add(NstepWRef);
 		numericalParameters.getParameterRef().add(NH2LevRef);
@@ -794,6 +1064,7 @@ public class Shock extends BaseExample {
 				.withConditionalStatement(ikinH2SetAlways)
 				.withConditionalStatement(TimeJRangeAlways));
 
+<<<<<<< HEAD
 		outputSpecifications.getParameterRef().add(SOSRef);
 		outputSpecifications.getParameterRef().add(LEOSRef);
 		outputSpecifications.getParameterRef().add(LIOSRef);
@@ -809,6 +1080,12 @@ public class Shock extends BaseExample {
 		inputsPG.getParameterGroup().add(environement);
 		inputsPG.getParameterGroup().add(numericalParameters);
 		inputsPG.getParameterGroup().add(outputSpecifications);
+=======
+		// inputsPG.getParameterRef().add(mailRef);
+
+		inputsPG.getParameterGroup().add(shockParameter);
+		inputsPG.getParameterGroup().add(numericalParameters);
+>>>>>>> master
 
 		service.withInputs(inputsPG);
 		service.withOutputs(outputsPG);
@@ -816,5 +1093,3 @@ public class Shock extends BaseExample {
 		return service;
 	}
 }
-
-*/

@@ -12,7 +12,7 @@ import net.ivoa.pdl.interpreter.utilities.Utilities;
 
 public class PDRServiceCaller implements IserviceCaller {
 
-	public void callService() {
+	public String callService() {
 		String serviceUrl = "http://opacity-cs.obspm.fr:8080/pdr/PDR?";
 		// List<SingleParameter> paramList =
 		// Utilities.getInstance().getService()
@@ -49,8 +49,10 @@ public class PDRServiceCaller implements IserviceCaller {
 				sb.append("\n");
 			}
 			bufferedReader.close();
+			return sb.toString();
 		} catch (Exception e) {
 			e.printStackTrace();
+			return "error in job submission";
 		}
 
 	}

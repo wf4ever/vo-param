@@ -1,6 +1,6 @@
 package exeptions;
 
-public class InvalidConditionalStatement extends Exception {
+public class InvalidConditionalStatement extends PDLException {
 	private static final long serialVersionUID = -5315405384001086653L;
 
 	public InvalidConditionalStatement(String message) {

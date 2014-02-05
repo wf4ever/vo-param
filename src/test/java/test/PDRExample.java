@@ -92,7 +92,7 @@ public class PDRExample extends BaseExample {
 
         SingleParameter srcppFile = factory.createSingleParameter();
         srcppFile.setName("srcpp_spectrum");
-        srcppFile.setParameterType(ParameterType.SPECTRUM);
+        srcppFile.setParameterType(ParameterType.STRING);
         parameterList.getParameter().add(srcppFile);
         ParameterReference srcppFileRef = new ParameterReference()
         .withParameterName(srcppFile.getName());
@@ -126,7 +126,7 @@ public class PDRExample extends BaseExample {
         .withParameterName(tgaz.getName());
 
         SingleParameter fprofil = factory.createSingleParameter()
-                .withName("fprofil").withParameterType(ParameterType.BINARY);
+                .withName("fprofil").withParameterType(ParameterType.STRING);
         parameterList.getParameter().add(fprofil);
         ParameterReference fprofilRef = new ParameterReference()
         .withParameterName(fprofil.getName());

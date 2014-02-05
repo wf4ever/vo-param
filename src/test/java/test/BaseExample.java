@@ -20,6 +20,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.PropertyException;
 
+import net.ivoa.parameter.model.AtomicParameterExpression;
 import net.ivoa.parameter.model.ObjectFactory;
 import net.ivoa.parameter.model.ParameterReference;
 import net.ivoa.parameter.model.Service;
@@ -66,6 +67,12 @@ public abstract class BaseExample {
         ParameterReference ref = new ParameterReference();
         ref.setParameterName(par.getName());
         return ref ;
+    }
+    
+    protected AtomicParameterExpression mkRefExp(SingleParameter par){
+        return  factory
+                .createAtomicParameterExpression().withParameterRef(mkRef(par));
+         
     }
 
 }

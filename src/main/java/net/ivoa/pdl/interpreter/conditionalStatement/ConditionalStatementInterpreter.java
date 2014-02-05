@@ -6,10 +6,24 @@ import exeptions.InvalidExpression;
 import exeptions.InvalidParameterException;
 
 public abstract class ConditionalStatementInterpreter {
-	// tell if the statement is valid
+	/**
+	 *  tell if the statement is valid.
+	 * @return
+	 * @throws InvalidExpression
+	 * @throws InvalidParameterException
+	 * @throws InvalidCondition
+	 * @throws InvalidCriterion
+	 */
 	public abstract boolean isValidStatement() throws InvalidExpression,
 			InvalidParameterException, InvalidCondition, InvalidCriterion;
 	
-	// tell if the statement is activated
+	/**
+	 * tell if the statement is activated.
+	 * @return
+	 * @throws InvalidExpression
+	 * @throws InvalidParameterException
+	 * @throws InvalidCondition
+	 * @throws InvalidCriterion
+	 */
 	public abstract boolean isStatementSwitched() throws InvalidExpression, InvalidParameterException, InvalidCondition, InvalidCriterion; 
 }

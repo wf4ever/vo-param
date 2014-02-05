@@ -1,35 +1,50 @@
 package net.ivoa.gui;
 
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.image.FilteredImageSource;
+import java.awt.image.ImageFilter;
+import java.awt.image.RGBImageFilter;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
+import javax.swing.UIManager;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeSelectionModel;
 
 import net.ivoa.pdl.interpreter.groupInterpreter.GroupHandlerHelper;
 
 public class PDLTree extends JPanel {
-	
+
 	private static final long serialVersionUID = 1L;
 	private JTree tree;
-	private List<DefaultMutableTreeNode> nodeList;
-	
-	public PDLTree(List<GroupHandlerHelper> groupsHandler,TreeSelectionListener treeListener) {
-		
-		
+	private GroupHandlerHelper root;
+
+	public PDLTree(GroupHandlerHelper root, TreeSelectionListener treeListener) {
+
 		super(new GridLayout(1, 0));
-		
-		this.updateTree(groupsHandler);
-		
+		this.root = root;
+		tree = new JTree(root);
+		tree.setModel(root);
+		tree.getSelectionModel().setSelectionMode(
+				TreeSelectionModel.SINGLE_TREE_SELECTION);
+
+		tree.setCellRenderer(new DisabledRenderer());
+
 		// Listen for when the selection changes.
 		tree.addTreeSelectionListener(treeListener);
-		
+
 		// Create the scroll pane and add the tree to it.
 		JScrollPane treeView = new JScrollPane(tree);
 
@@ -38,101 +53,149 @@ public class PDLTree extends JPanel {
 
 		// Add the split pane to this panel.
 		add(treeView);
-		
+
 	}
-	
-	public DefaultMutableTreeNode getNodeFromName(String nodeName){
-		for(DefaultMutableTreeNode currentNode : this.nodeList){
-			if(currentNode.toString().equals(nodeName)){
-				return currentNode;
+
+	public static class DisabledRenderer extends DefaultTreeCellRenderer {
+		protected final Icon disabledLeafIcon;
+
+		protected final Icon disabledOpenIcon;
+
+		protected final Icon disabledClosedIcon;
+
+		public DisabledRenderer() {
+			this(new GraydIcon(UIManager.getIcon("Tree.leafIcon")),
+					new GraydIcon(UIManager.getIcon("Tree.openIcon")),
+					new GraydIcon(UIManager.getIcon("Tree.closedIcon")));
+		}
+
+		public DisabledRenderer(Icon leafIcon, Icon openIcon, Icon closedIcon) {
+			this.disabledLeafIcon = leafIcon;
+			this.disabledOpenIcon = openIcon;
+			this.disabledClosedIcon = closedIcon;
+		}
+
+		protected Icon getGroupIcon(String groupName) {
+			ImageIcon toReturn;
+			if (groupName.contains("Variating")) {
+				toReturn = new ImageIcon("variating-group.gif");
+			} else {
+				toReturn = new ImageIcon("group.gif");
+			}
+
+			if (toReturn != null) {
+				return toReturn;
+			} else {
+				return getLeafIcon();
 			}
 		}
-		return null;
-	}
-	
-	public void updateTree(List<GroupHandlerHelper> groupsHandler){
-		this.nodeList = new ArrayList<DefaultMutableTreeNode>();
 
-		// Create the nodes.
-		DefaultMutableTreeNode root = createNodes(groupsHandler);
+		public Component getTreeCellRendererComponent(JTree tree, Object value,
+				boolean sel, boolean expanded, boolean leaf, int row,
+				boolean hasFocus) {
 
-		// Create a tree that allows one selection at a time.
-		tree = new JTree(root);
-		tree.getSelectionModel().setSelectionMode(
-				TreeSelectionModel.SINGLE_TREE_SELECTION);
-	}
+			super.getTreeCellRendererComponent(tree, value, sel, expanded,
+					leaf, row, hasFocus);
+			GroupHandlerHelper ghh = (GroupHandlerHelper) value;
+			setForeground(Color.BLUE);
+			setToolTipText(Boolean.toString(ghh.isGroupActive()));
 
-	
+			boolean treeIsEnabled = tree.isEnabled();
+			boolean nodeIsEnabled = ghh.isGroupActive();
+			String groupName = ghh.getGroupName();
+			boolean isEnabled = (treeIsEnabled && nodeIsEnabled);
+			setEnabled(isEnabled);
 
-	private DefaultMutableTreeNode createNodes(
-			List<GroupHandlerHelper> groupsHandler) {
-
-		// List of helper to convert into nodes
-		List<GroupHandlerHelper> toConvertIntoNodes = new ArrayList<GroupHandlerHelper>();
-
-		toConvertIntoNodes.addAll(groupsHandler);
-
-		// We build the root node
-		GroupHandlerHelper rootHelper = findRootElement(groupsHandler);
-
-		DefaultMutableTreeNode root = new DefaultMutableTreeNode(rootHelper);
-
-		// we add it to the created node list
-		this.nodeList.add(root);
-
-		// we remove the root from the list of nodes to create
-		toConvertIntoNodes.remove(rootHelper);
-
-		while (toConvertIntoNodes.size() > 0) {
-			for (int i = 0; i < toConvertIntoNodes.size(); i++) {
-				// Create the node for the current element of the list
-				DefaultMutableTreeNode currentNode = new DefaultMutableTreeNode(
-						toConvertIntoNodes.get(i));
-
-				// Find the parent node of the just created node
-				DefaultMutableTreeNode parentNode = findParentBetweenCreatedNodes(toConvertIntoNodes
-						.get(i).getFatherName());
-				// If the parent not exist we do nothing
-				if (null == parentNode) {
-					// We do nothing
+			if (isEnabled) {
+				selected = sel;
+				if (leaf) {
+					setIcon(getGroupIcon(groupName));
+				} else if (expanded) {
+					setIcon(getGroupIcon(groupName));
 				} else {
-					// In the opposite case we add the node to the parent
-					parentNode.add(currentNode);
-					// We add the node just created to the list of existing nodes
-					this.nodeList.add(currentNode);
-					// We remove the handler related to the placed node from the
-					// list of nodes to create
-					toConvertIntoNodes.remove(i);
-					// Important, since we remove an element, let us
-					// de-increment
-					// the loop counter
-					i--;
+					setIcon(getGroupIcon(groupName));
+				}
+			} else {
+				setForeground(Color.LIGHT_GRAY);
+				selected = false;
+				if (leaf) {
+					if (nodeIsEnabled) {
+						setDisabledIcon(getGroupIcon(groupName));
+					} else {
+						setDisabledIcon(disabledLeafIcon);
+					}
+				} else if (expanded) {
+					if (nodeIsEnabled) {
+						setDisabledIcon(getGroupIcon(groupName));
+					} else {
+						setDisabledIcon(disabledOpenIcon);
+					}
+				} else {
+					if (nodeIsEnabled) {
+						setDisabledIcon(getGroupIcon(groupName));
+					} else {
+						setDisabledIcon(disabledClosedIcon);
+					}
 				}
 			}
+
+			return this;
+
 		}
-		return root;
 	}
 
-	private DefaultMutableTreeNode findParentBetweenCreatedNodes(
-			String fatherName) {
-		for (DefaultMutableTreeNode currentNode : this.nodeList) {
-			GroupHandlerHelper currentHandlerHelper = (GroupHandlerHelper) currentNode
-					.getUserObject();
-			if (currentHandlerHelper.getGroupName()
-					.equalsIgnoreCase(fatherName)) {
-				return currentNode;
+	public static class GraydIcon implements Icon {
+		Icon icon;
+
+		Image image;
+
+		public GraydIcon(Icon icon) {
+			this.icon = icon;
+		}
+
+		public void paintIcon(Component c, Graphics g, int x, int y) {
+			if (image == null) {
+				Image orgImage = c.createImage(getIconWidth(), getIconHeight());
+				Graphics imageG = orgImage.getGraphics();
+				Color background = c.getBackground();
+				imageG.setColor(background);
+				imageG.fillRect(0, 0, getIconWidth(), getIconHeight());
+
+				icon.paintIcon(c, imageG, x, y);
+
+				ImageFilter colorfilter = new GrayFilter();
+				image = c.createImage(new FilteredImageSource(orgImage
+						.getSource(), colorfilter));
+
+			}
+			g.drawImage(image, x, y, null);
+		}
+
+		public int getIconWidth() {
+			return icon.getIconWidth();
+		}
+
+		public int getIconHeight() {
+			return icon.getIconHeight();
+		}
+
+		public static class GrayFilter extends RGBImageFilter {
+
+			public GrayFilter() {
+				// If I set ture, black is gone?!
+				// canFilterIndexColorModel = true;
+			}
+
+			public int filterRGB(int x, int y, int rgb) {
+				int r = (rgb & 0xff0000) >> 16;
+				int g = (rgb & 0x00ff00) >> 8;
+				int b = (rgb & 0x0000ff);
+				int iy = (int) (r + g + b) / 3;
+				iy = Math.min(255, iy);
+				return ((rgb & 0xff000000) | (iy << 16) | (iy << 8) | iy);
 			}
 		}
-		return null;
+
 	}
 
-	private GroupHandlerHelper findRootElement(
-			List<GroupHandlerHelper> groupsHandler) {
-		for (GroupHandlerHelper hand : groupsHandler) {
-			if (hand.getFatherName().equalsIgnoreCase("root")) {
-				return hand;
-			}
-		}
-		return null;
-	}
 }

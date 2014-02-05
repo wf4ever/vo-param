@@ -2,8 +2,16 @@ package visitors;
 
 import java.security.InvalidParameterException;
 
+import org.omg.Dynamic.Parameter;
+
+import net.ivoa.parameter.model.ParameterType;
+
 /**
+<<<<<<< HEAD
  * @author Carlo Maria Zwlf, Lerma/ObsPM
+=======
+ * @author Carlo Maria Zw�lf, Lerma/ObsPM
+>>>>>>> master
  * 
  *         Implementation of interface Icreteria for testing Integer parameter
  *         type
@@ -11,15 +19,15 @@ import java.security.InvalidParameterException;
  */
 public class IntegerCriteria implements Icriteria {
 
-	private static final String authorizedCriteriaType = "Integer";
+	private static final ParameterType authorizedCriteriaType = ParameterType.INTEGER;
 
-	public String getAuthorizedCriteriaType() {
+	public ParameterType getAuthorizedCriteriaType() {
 		return this.authorizedCriteriaType;
 	}
 
-	public boolean VerifyCriteria(String type, String value) {
+	public boolean VerifyCriteria(ParameterType type, String value) {
 		boolean isTypeInteger = false;
-		if (type.equalsIgnoreCase(this.getAuthorizedCriteriaType())) {
+		if (type== this.getAuthorizedCriteriaType()) {
 			// The type is known
 			isTypeInteger = true;
 			// Verify that value could be cast to integer
