@@ -105,7 +105,8 @@ public class ConeSearch extends BaseExample {
 		SingleParameter result = factory.createSingleParameter();
 		result.setName("VOTableResult");
 		result.setSkosConcept("Catalogue (table)");
-		result.setParameterType(ParameterType.TABLE);
+		//result.setParameterType(ParameterType.TABLE);
+		result.setParameterType(ParameterType.STRING);
 		result.setPrecision(mkconst(0.0));
 		result.setUnit("None");
 		result.setDimension(mktconst("1", ParameterType.INTEGER));

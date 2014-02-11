@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Service xmlns="http://www.ivoa.net/xml/PDL/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ivoa.net/xml/Parameter/v0.1 PDL-V1.0.xsd">
+    <ServiceId>Vamdc_Collision_Module</ServiceId>
+    <ServiceName>A prototype for VAMDC collisions</ServiceName>
+    <Description>A prototype for VAMDC collisions</Description>
+    <Parameters>
+        <parameter>
+            <Name>target</Name>
+            <ParameterType>string</ParameterType>
+            <SkosConcept>target for the collision</SkosConcept>
+            <Unit>None</Unit>
+            <Precision xsi:type="AtomicConstantExpression" ConstantType="real">
+                <Constant>0</Constant>
+            </Precision>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>collider</Name>
+            <ParameterType>string</ParameterType>
+            <SkosConcept>collider for the collision</SkosConcept>
+            <Unit>None</Unit>
+            <Precision xsi:type="AtomicConstantExpression" ConstantType="real">
+                <Constant>0</Constant>
+            </Precision>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>reactant</Name>
+            <ParameterType>string</ParameterType>
+            <SkosConcept>reactant for the collision</SkosConcept>
+            <Unit>None</Unit>
+            <Precision xsi:type="AtomicConstantExpression" ConstantType="real">
+                <Constant>0</Constant>
+            </Precision>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>product</Name>
+            <ParameterType>string</ParameterType>
+            <SkosConcept>product for the collision</SkosConcept>
+            <Unit>None</Unit>
+            <Precision xsi:type="AtomicConstantExpression" ConstantType="real">
+                <Constant>0</Constant>
+            </Precision>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>AtomTargetName</Name>
+            <ParameterType>string</ParameterType>
+            <SkosConcept>Symbol of the target atom</SkosConcept>
+            <Unit>None</Unit>
+            <Precision xsi:type="AtomicConstantExpression" ConstantType="real">
+                <Constant>0</Constant>
+            </Precision>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>atomTargetMassNumberInf</Name>
+            <ParameterType>integer</ParameterType>
+            <SkosConcept>Inf of the Mass number of the target atom</SkosConcept>
+            <Unit>AU</Unit>
+            <Precision xsi:type="AtomicConstantExpression" ConstantType="real">
+                <Constant>0</Constant>
+            </Precision>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>atomTargetMassNumberSup</Name>
+            <ParameterType>integer</ParameterType>
+            <SkosConcept>Sup of the Mass number of the target atom</SkosConcept>
+            <Unit>AU</Unit>
+            <Precision xsi:type="AtomicConstantExpression" ConstantType="real">
+                <Constant>0</Constant>
+            </Precision>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>atomTargetNuclearChargeInf</Name>
+            <ParameterType>integer</ParameterType>
+            <SkosConcept>Inf of the nuclear charge of the target atom</SkosConcept>
+            <Unit>None</Unit>
+            <Precision xsi:type="AtomicConstantExpression" ConstantType="real">
+                <Constant>0</Constant>
+            </Precision>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>atomTargetNuclearChargeSup</Name>
+            <ParameterType>integer</ParameterType>
+            <SkosConcept>Sup of the Mass number of the target atom</SkosConcept>
+            <Unit>None</Unit>
+            <Precision xsi:type="AtomicConstantExpression" ConstantType="real">
+                <Constant>0</Constant>
+            </Precision>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>targetAtomInChiKey</Name>
+            <ParameterType>string</ParameterType>
+            <SkosConcept>InChiKey of the target atom</SkosConcept>
+            <Unit>None</Unit>
+            <Precision xsi:type="AtomicConstantExpression" ConstantType="real">
+                <Constant>0</Constant>
+            </Precision>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>atomTargetStateEnergyInf</Name>
+            <ParameterType>real</ParameterType>
+            <SkosConcept>Inf of the state energy for the target atom</SkosConcept>
+            <Unit>cm^(-1)</Unit>
+            <Precision xsi:type="AtomicConstantExpression" ConstantType="real">
+                <Constant>0</Constant>
+            </Precision>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>atomTargetStateEnergySup</Name>
+            <ParameterType>real</ParameterType>
+            <SkosConcept>Sup of the state energy for the target atom</SkosConcept>
+            <Unit>cm^(-1)</Unit>
+            <Precision xsi:type="AtomicConstantExpression" ConstantType="real">
+                <Constant>0</Constant>
+            </Precision>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>moleculeTargetChemicalName</Name>
+            <ParameterType>string</ParameterType>
+            <SkosConcept>Sup of the state energy for the target atom</SkosConcept>
+            <Unit>cm^(-1)</Unit>
+            <Precision xsi:type="AtomicConstantExpression" ConstantType="real">
+                <Constant>0</Constant>
+            </Precision>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+        <parameter>
+            <Name>stoichiometric Formula</Name>
+            <ParameterType>string</ParameterType>
+            <SkosConcept>Sup of the state energy for the target atom</SkosConcept>
+            <Unit>cm^(-1)</Unit>
+            <Precision xsi:type="AtomicConstantExpression" ConstantType="real">
+                <Constant>0</Constant>
+            </Precision>
+            <Dimension xsi:type="AtomicConstantExpression" ConstantType="integer">
+                <Constant>1</Constant>
+            </Dimension>
+        </parameter>
+    </Parameters>
+    <Inputs>
+        <Name>inputs</Name>
+        <ParameterRef ParameterName="target"/>
+        <ParameterRef ParameterName="collider"/>
+        <ParameterRef ParameterName="reactant"/>
+        <ParameterRef ParameterName="product"/>
+        <ConstraintOnGroup>
+            <ConditionalStatement xsi:type="AlwaysConditionalStatement">
+                <comment>collider should be: atom, molecule or particle</comment>
+                <always>
+                    <Criterion xsi:type="Criterion">
+                        <Expression xsi:type="AtomicParameterExpression">
+                            <parameterRef ParameterName="collider"/>
+                        </Expression>
+                        <ConditionType xsi:type="BelongToSet">
+                            <Value xsi:type="AtomicConstantExpression" ConstantType="string">
+<Constant>Atom</Constant>
+                            </Value>
+                            <Value xsi:type="AtomicConstantExpression" ConstantType="string">
+<Constant>Particle</Constant>
+                            </Value>
+                            <Value xsi:type="AtomicConstantExpression" ConstantType="string">
+<Constant>Molecule</Constant>
+                            </Value>
+                        </ConditionType>
+                    </Criterion>
+                </always>
+            </ConditionalStatement>
+            <ConditionalStatement xsi:type="AlwaysConditionalStatement">
+                <comment>target should be: atom, molecule or particle</comment>
+                <always>
+                    <Criterion xsi:type="Criterion">
+                        <Expression xsi:type="AtomicParameterExpression">
+                            <parameterRef ParameterName="target"/>
+                        </Expression>
+                        <ConditionType xsi:type="BelongToSet">
+                            <Value xsi:type="AtomicConstantExpression" ConstantType="string">
+<Constant>Atom</Constant>
+                            </Value>
+                            <Value xsi:type="AtomicConstantExpression" ConstantType="string">
+<Constant>Particle</Constant>
+                            </Value>
+                            <Value xsi:type="AtomicConstantExpression" ConstantType="string">
+<Constant>Molecule</Constant>
+                            </Value>
+                        </ConditionType>
+                    </Criterion>
+                </always>
+            </ConditionalStatement>
+            <ConditionalStatement xsi:type="AlwaysConditionalStatement">
+                <comment>reactant should be: atom, molecule or particle</comment>
+                <always>
+                    <Criterion xsi:type="Criterion">
+                        <Expression xsi:type="AtomicParameterExpression">
+                            <parameterRef ParameterName="reactant"/>
+                        </Expression>
+                        <ConditionType xsi:type="BelongToSet">
+                            <Value xsi:type="AtomicConstantExpression" ConstantType="string">
+<Constant>Atom</Constant>
+                            </Value>
+                            <Value xsi:type="AtomicConstantExpression" ConstantType="string">
+<Constant>Particle</Constant>
+                            </Value>
+                            <Value xsi:type="AtomicConstantExpression" ConstantType="string">
+<Constant>Molecule</Constant>
+                            </Value>
+                        </ConditionType>
+                    </Criterion>
+                </always>
+            </ConditionalStatement>
+            <ConditionalStatement xsi:type="AlwaysConditionalStatement">
+                <comment>product should be: atom, molecule or particle</comment>
+                <always>
+                    <Criterion xsi:type="Criterion">
+                        <Expression xsi:type="AtomicParameterExpression">
+                            <parameterRef ParameterName="product"/>
+                        </Expression>
+                        <ConditionType xsi:type="BelongToSet">
+                            <Value xsi:type="AtomicConstantExpression" ConstantType="string">
+<Constant>Atom</Constant>
+                            </Value>
+                            <Value xsi:type="AtomicConstantExpression" ConstantType="string">
+<Constant>Particle</Constant>
+                            </Value>
+                            <Value xsi:type="AtomicConstantExpression" ConstantType="string">
+<Constant>Molecule</Constant>
+                            </Value>
+                        </ConditionType>
+                    </Criterion>
+                </always>
+            </ConditionalStatement>
+        </ConstraintOnGroup>
+        <ParameterGroup>
+            <Name>targetDetails</Name>
+            <ParameterGroup>
+                <Name>targetAtomDetails</Name>
+                <ParameterRef ParameterName="AtomTargetName"/>
+                <ParameterRef ParameterName="atomTargetMassNumberInf"/>
+                <ParameterRef ParameterName="atomTargetMassNumberSup"/>
+                <ParameterRef ParameterName="atomTargetNuclearChargeInf"/>
+                <ParameterRef ParameterName="atomTargetNuclearChargeSup"/>
+                <ParameterRef ParameterName="targetAtomInChiKey"/>
+                <ParameterRef ParameterName="atomTargetStateEnergyInf"/>
+                <ParameterRef ParameterName="atomTargetStateEnergySup"/>
+                <Active>
+                    <when>
+                        <Criterion xsi:type="Criterion">
+                            <Expression xsi:type="AtomicParameterExpression">
+<parameterRef ParameterName="target"/>
+                            </Expression>
+                            <ConditionType xsi:type="BelongToSet">
+<Value xsi:type="AtomicConstantExpression" ConstantType="string">
+    <Constant>Atom</Constant>
+</Value>
+                            </ConditionType>
+                        </Criterion>
+                    </when>
+                </Active>
+            </ParameterGroup>
+            <ParameterGroup>
+                <Name>targetParticleDetails</Name>
+                <Active>
+                    <when>
+                        <Criterion xsi:type="Criterion">
+                            <Expression xsi:type="AtomicParameterExpression">
+<parameterRef ParameterName="target"/>
+                            </Expression>
+                            <ConditionType xsi:type="BelongToSet">
+<Value xsi:type="AtomicConstantExpression" ConstantType="string">
+    <Constant>Particle</Constant>
+</Value>
+                            </ConditionType>
+                        </Criterion>
+                    </when>
+                </Active>
+            </ParameterGroup>
+            <ParameterGroup>
+                <Name>targetMoleculeDetails</Name>
+                <ParameterRef ParameterName="moleculeTargetChemicalName"/>
+                <ParameterRef ParameterName="stoichiometric Formula"/>
+                <Active>
+                    <when>
+                        <Criterion xsi:type="Criterion">
+                            <Expression xsi:type="AtomicParameterExpression">
+<parameterRef ParameterName="target"/>
+                            </Expression>
+                            <ConditionType xsi:type="BelongToSet">
+<Value xsi:type="AtomicConstantExpression" ConstantType="string">
+    <Constant>Molecule</Constant>
+</Value>
+                            </ConditionType>
+                        </Criterion>
+                    </when>
+                </Active>
+            </ParameterGroup>
+        </ParameterGroup>
+        <ParameterGroup>
+            <Name>colliderDetails</Name>
+            <ParameterGroup>
+                <Name>colliderAtomDetails</Name>
+                <Active>
+                    <when>
+                        <Criterion xsi:type="Criterion">
+                            <Expression xsi:type="AtomicParameterExpression">
+<parameterRef ParameterName="collider"/>
+                            </Expression>
+                            <ConditionType xsi:type="BelongToSet">
+<Value xsi:type="AtomicConstantExpression" ConstantType="string">
+    <Constant>Atom</Constant>
+</Value>
+                            </ConditionType>
+                        </Criterion>
+                    </when>
+                </Active>
+            </ParameterGroup>
+            <ParameterGroup>
+                <Name>colliderParticleDetails</Name>
+                <Active>
+                    <when>
+                        <Criterion xsi:type="Criterion">
+                            <Expression xsi:type="AtomicParameterExpression">
+<parameterRef ParameterName="collider"/>
+                            </Expression>
+                            <ConditionType xsi:type="BelongToSet">
+<Value xsi:type="AtomicConstantExpression" ConstantType="string">
+    <Constant>Particle</Constant>
+</Value>
+                            </ConditionType>
+                        </Criterion>
+                    </when>
+                </Active>
+            </ParameterGroup>
+            <ParameterGroup>
+                <Name>colliderMoleculeDetails</Name>
+                <Active>
+                    <when>
+                        <Criterion xsi:type="Criterion">
+                            <Expression xsi:type="AtomicParameterExpression">
+<parameterRef ParameterName="collider"/>
+                            </Expression>
+                            <ConditionType xsi:type="BelongToSet">
+<Value xsi:type="AtomicConstantExpression" ConstantType="string">
+    <Constant>Molecule</Constant>
+</Value>
+                            </ConditionType>
+                        </Criterion>
+                    </when>
+                </Active>
+            </ParameterGroup>
+        </ParameterGroup>
+        <ParameterGroup>
+            <Name>reactantDetails</Name>
+            <ParameterGroup>
+                <Name>reactantAtomDetails</Name>
+                <Active>
+                    <when>
+                        <Criterion xsi:type="Criterion">
+                            <Expression xsi:type="AtomicParameterExpression">
+<parameterRef ParameterName="reactant"/>
+                            </Expression>
+                            <ConditionType xsi:type="BelongToSet">
+<Value xsi:type="AtomicConstantExpression" ConstantType="string">
+    <Constant>Atom</Constant>
+</Value>
+                            </ConditionType>
+                        </Criterion>
+                    </when>
+                </Active>
+            </ParameterGroup>
+            <ParameterGroup>
+                <Name>reactantParticleDetails</Name>
+                <Active>
+                    <when>
+                        <Criterion xsi:type="Criterion">
+                            <Expression xsi:type="AtomicParameterExpression">
+<parameterRef ParameterName="reactant"/>
+                            </Expression>
+                            <ConditionType xsi:type="BelongToSet">
+<Value xsi:type="AtomicConstantExpression" ConstantType="string">
+    <Constant>Particle</Constant>
+</Value>
+                            </ConditionType>
+                        </Criterion>
+                    </when>
+                </Active>
+            </ParameterGroup>
+            <ParameterGroup>
+                <Name>reactantMoleculeDetails</Name>
+                <Active>
+                    <when>
+                        <Criterion xsi:type="Criterion">
+                            <Expression xsi:type="AtomicParameterExpression">
+<parameterRef ParameterName="reactant"/>
+                            </Expression>
+                            <ConditionType xsi:type="BelongToSet">
+<Value xsi:type="AtomicConstantExpression" ConstantType="string">
+    <Constant>Molecule</Constant>
+</Value>
+                            </ConditionType>
+                        </Criterion>
+                    </when>
+                </Active>
+            </ParameterGroup>
+        </ParameterGroup>
+        <ParameterGroup>
+            <Name>productDetails</Name>
+            <ParameterGroup>
+                <Name>productAtomDetails</Name>
+                <Active>
+                    <when>
+                        <Criterion xsi:type="Criterion">
+                            <Expression xsi:type="AtomicParameterExpression">
+<parameterRef ParameterName="product"/>
+                            </Expression>
+                            <ConditionType xsi:type="BelongToSet">
+<Value xsi:type="AtomicConstantExpression" ConstantType="string">
+    <Constant>Atom</Constant>
+</Value>
+                            </ConditionType>
+                        </Criterion>
+                    </when>
+                </Active>
+            </ParameterGroup>
+            <ParameterGroup>
+                <Name>productParticleDetails</Name>
+                <Active>
+                    <when>
+                        <Criterion xsi:type="Criterion">
+                            <Expression xsi:type="AtomicParameterExpression">
+<parameterRef ParameterName="product"/>
+                            </Expression>
+                            <ConditionType xsi:type="BelongToSet">
+<Value xsi:type="AtomicConstantExpression" ConstantType="string">
+    <Constant>Particle</Constant>
+</Value>
+                            </ConditionType>
+                        </Criterion>
+                    </when>
+                </Active>
+            </ParameterGroup>
+            <ParameterGroup>
+                <Name>productMoleculeDetails</Name>
+                <Active>
+                    <when>
+                        <Criterion xsi:type="Criterion">
+                            <Expression xsi:type="AtomicParameterExpression">
+<parameterRef ParameterName="product"/>
+                            </Expression>
+                            <ConditionType xsi:type="BelongToSet">
+<Value xsi:type="AtomicConstantExpression" ConstantType="string">
+    <Constant>Molecule</Constant>
+</Value>
+                            </ConditionType>
+                        </Criterion>
+                    </when>
+                </Active>
+            </ParameterGroup>
+        </ParameterGroup>
+    </Inputs>
+    <Outputs>
+        <Name>outputs</Name>
+        <ParameterRef ParameterName="fileResult"/>
+    </Outputs>
+</Service>

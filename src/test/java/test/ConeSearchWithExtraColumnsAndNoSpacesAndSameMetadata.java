@@ -105,7 +105,8 @@ public class ConeSearchWithExtraColumnsAndNoSpacesAndSameMetadata extends BaseEx
 		SingleParameter result = factory.createSingleParameter();
 		result.setName("responseBody");
 		result.setSkosConcept("VOTable that contains the result of the service");
-		result.setParameterType(ParameterType.TABLE);
+		//result.setParameterType(ParameterType.TABLE);
+		result.setParameterType(ParameterType.STRING);
 		result.setPrecision(mkconst(0.0));
 		result.setUnit("None");
 		result.setDimension(mktconst("1", ParameterType.INTEGER));

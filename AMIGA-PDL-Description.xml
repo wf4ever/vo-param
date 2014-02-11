@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<Service xmlns="http://www.ivoa.net/xml/Parameter/v0.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ivoa.net/xml/Parameter/v0.1 PDL-V1.0.xsd">
+<Service xmlns="http://www.ivoa.net/xml/PDL/v1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ivoa.net/xml/Parameter/v0.1 PDL-V1.0.xsd">
     <ServiceId>http://amiga.iaa.csic.es/amigasearch/search</ServiceId>
     <ServiceName>AMIGA cone search</ServiceName>
     <Description>Cone search for isolated galaxies catalog</Description>
@@ -8,7 +8,7 @@
             <Name>RA</Name>
             <ParameterType>real</ParameterType>
             <UCD>POS_EQ_RA</UCD>
-            <SkossConcept>Right ascension</SkossConcept>
+            <SkosConcept>Right ascension</SkosConcept>
             <Unit>deg</Unit>
             <Precision xsi:type="AtomicConstantExpression" ConstantType="real">
                 <Constant>0.0</Constant>
@@ -21,7 +21,7 @@
             <Name>DEC</Name>
             <ParameterType>real</ParameterType>
             <UCD>POS_EQ_DEC</UCD>
-            <SkossConcept>Declination</SkossConcept>
+            <SkosConcept>Declination</SkosConcept>
             <Unit>deg</Unit>
             <Precision xsi:type="AtomicConstantExpression" ConstantType="real">
                 <Constant>0.0</Constant>
@@ -34,7 +34,7 @@
             <Name>SR</Name>
             <ParameterType>real</ParameterType>
             <UCD>OBS_ANG-SIZE</UCD>
-            <SkossConcept>Radius</SkossConcept>
+            <SkosConcept>Radius</SkosConcept>
             <Unit>None</Unit>
             <Precision xsi:type="AtomicConstantExpression" ConstantType="real">
                 <Constant>0.0</Constant>
@@ -45,8 +45,8 @@
         </parameter>
         <parameter>
             <Name>VOTableResult</Name>
-            <ParameterType>Table</ParameterType>
-            <SkossConcept>url to the tar file containing the mosaiced fits files</SkossConcept>
+            <ParameterType>string</ParameterType>
+            <SkosConcept>Catalogue (table)</SkosConcept>
             <Unit>None</Unit>
             <Precision xsi:type="AtomicConstantExpression" ConstantType="real">
                 <Constant>0.0</Constant>
