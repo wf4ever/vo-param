@@ -63,7 +63,8 @@ public class AtomicConstantExpressionParser extends ExpressionWithPowerParser {
     private ParameterType buildGeneralHandledParameterType(
             AtomicConstantExpression exp2) throws InvalidParameterException {
         String type = exp.getConstantType().toString();
-
+       
+        
         switch (exp.getConstantType())
         {
         case INTEGER:
@@ -73,6 +74,7 @@ public class AtomicConstantExpressionParser extends ExpressionWithPowerParser {
             return exp.getConstantType();
 
         case REAL:
+        	return exp.getConstantType();
        
             
         default:  
