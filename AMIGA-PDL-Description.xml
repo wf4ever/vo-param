@@ -4,7 +4,7 @@
     <ServiceName>AMIGA cone search</ServiceName>
     <Description>Cone search for isolated galaxies catalog</Description>
     <Parameters>
-        <parameter>
+        <parameter dependency="required">
             <Name>RA</Name>
             <ParameterType>real</ParameterType>
             <UCD>POS_EQ_RA</UCD>
@@ -17,7 +17,7 @@
                 <Constant>1</Constant>
             </Dimension>
         </parameter>
-        <parameter>
+        <parameter dependency="required">
             <Name>DEC</Name>
             <ParameterType>real</ParameterType>
             <UCD>POS_EQ_DEC</UCD>
@@ -30,7 +30,7 @@
                 <Constant>1</Constant>
             </Dimension>
         </parameter>
-        <parameter>
+        <parameter dependency="required">
             <Name>SR</Name>
             <ParameterType>real</ParameterType>
             <UCD>OBS_ANG-SIZE</UCD>

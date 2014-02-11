@@ -18,6 +18,7 @@ import net.ivoa.parameter.model.Criterion;
 import net.ivoa.parameter.model.DefaultValue;
 import net.ivoa.parameter.model.Operation;
 import net.ivoa.parameter.model.OperationType;
+import net.ivoa.parameter.model.ParameterDependency;
 import net.ivoa.parameter.model.ParameterGroup;
 import net.ivoa.parameter.model.ParameterReference;
 import net.ivoa.parameter.model.ParameterType;
@@ -71,6 +72,7 @@ public class ConeSearch extends BaseExample {
 		RA.setUnit("deg");
 		RA.setUCD("POS_EQ_RA");
 		RA.setDimension(mktconst("1", ParameterType.INTEGER));
+		RA.setDependency(ParameterDependency.REQUIRED);
 		parameterList.getParameter().add(RA);
 		ParameterReference RA_REF = new ParameterReference()
 				.withParameterName(RA.getName());
@@ -83,6 +85,7 @@ public class ConeSearch extends BaseExample {
 		DEC.setUnit("deg");
 		DEC.setUCD("POS_EQ_DEC");
 		DEC.setDimension(mktconst("1", ParameterType.INTEGER));
+		DEC.setDependency(ParameterDependency.REQUIRED);
 		parameterList.getParameter().add(DEC);
 		ParameterReference DEC_REF = new ParameterReference()
 				.withParameterName(DEC.getName());
@@ -95,6 +98,7 @@ public class ConeSearch extends BaseExample {
 		SR.setUnit("None");
 		SR.setUCD("OBS_ANG-SIZE");
 		SR.setDimension(mktconst("1", ParameterType.INTEGER));
+		SR.setDependency(ParameterDependency.REQUIRED);
 		parameterList.getParameter().add(SR);
 		ParameterReference SR_REF = new ParameterReference()
 				.withParameterName(SR.getName());
